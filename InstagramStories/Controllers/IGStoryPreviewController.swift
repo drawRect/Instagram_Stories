@@ -9,15 +9,15 @@
 import UIKit
 
 struct StoryConstants {
-    static let snapTime:Double = 5.0
+    static let snapTime:Double = 1.0
 }
 
 class IGStoryPreviewController: UIViewController {
 
-    lazy var snapTimer = Timer.scheduledTimer(timeInterval: StoryConstants.snapTime, target: self, selector: #selector(IGStoryPreviewController.didMoveNextSnap), userInfo: nil, repeats: false)
     public var stories:[IGStory]?
     private var storyIndex:Int = 0
     var headerView:IGStoryPreviewHeaderView?
+    private var snapTimer:Timer?
     
     @IBOutlet weak var storyPreview: UIView! {
         didSet {
@@ -42,6 +42,7 @@ class IGStoryPreviewController: UIViewController {
         self.automaticallyAdjustsScrollViewInsets = false
         headerView?.stories = stories
         headerView?.generateSnappers()
+        snapTimer = Timer.scheduledTimer(timeInterval: StoryConstants.snapTime, target: self, selector: #selector(IGStoryPreviewController.didMoveNextSnap), userInfo: nil, repeats: true)
     }
     
     //MARK: - Selectors
@@ -49,11 +50,14 @@ class IGStoryPreviewController: UIViewController {
         guard let stories = stories else {
             return
         }
-        storyIndex = storyIndex + 1
-        if storyIndex <= stories.count-1{
+        storyIndex = storyIndex+1
+        if storyIndex == stories.count-1 {
+            snapTimer?.invalidate()
+            return
+        }
+        if storyIndex<stories.count{
             let indexPath = IndexPath.init(row: storyIndex, section: 0)
             collectionview.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-            snapTimer.fire()
         }
     }
     //MARK: -
