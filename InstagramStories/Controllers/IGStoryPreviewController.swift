@@ -17,12 +17,13 @@ class IGStoryPreviewController: UIViewController {
     lazy var snapTimer = Timer.scheduledTimer(timeInterval: StoryConstants.snapTime, target: self, selector: #selector(IGStoryPreviewController.didMoveNextSnap), userInfo: nil, repeats: false)
     public var stories:[IGStory]?
     private var storyIndex:Int = 0
-   
+    var headerView:IGStoryPreviewHeaderView?
+    
     @IBOutlet weak var storyPreview: UIView! {
         didSet {
-            let iv = IGStoryPreviewHeaderView.instanceFromNib()
-            iv.delegate = self
-            storyPreview.addSubview(iv)
+            headerView = IGStoryPreviewHeaderView.instanceFromNib()
+            headerView?.delegate = self
+            storyPreview.addSubview(headerView!)
         }
     }
     
@@ -39,6 +40,8 @@ class IGStoryPreviewController: UIViewController {
         super.viewDidLoad()
         self.title = "Story"
         self.automaticallyAdjustsScrollViewInsets = false
+        headerView?.stories = stories
+        headerView?.getBackMyProgressview()
     }
     
     //MARK: - Selectors
