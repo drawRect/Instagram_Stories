@@ -30,6 +30,7 @@ class IGStoryPreviewHeaderView: UIView {
     public var stories:[IGStory]? {
         didSet {
             maxStories  = (stories?.count)! < maxStories ? (stories?.count)! : maxStories
+            self.generateSnappers()
         }
     }
     @IBOutlet weak var progressView: UIView!
@@ -48,12 +49,14 @@ class IGStoryPreviewHeaderView: UIView {
     @IBAction func didTapClose(_ sender: Any) {
         self.delegate?.didTapCloseButton()
     }
+    
+    //MARK: - Selectors
     class func instanceFromNib() -> IGStoryPreviewHeaderView {
         let view =  Bundle.loadView(fromNib: "IGStoryPreviewHeaderView", withType: IGStoryPreviewHeaderView.self)
         return view
     }
-  
-    func generateSnappers(){
+    
+    private func generateSnappers(){
         let padding:CGFloat = 8
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
@@ -70,7 +73,6 @@ class IGStoryPreviewHeaderView: UIView {
 }
 
 extension Bundle {
-    
     static func loadView<T>(fromNib name: String, withType type: T.Type) -> T {
         if let view = Bundle.main.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
             return view

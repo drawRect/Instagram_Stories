@@ -22,21 +22,18 @@ class IGHomeController: UIViewController {
     }
 
     lazy var stories: [IGStory] = {
-        var data = [IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+        return [IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
                     IGStory.init(snap: #imageLiteral(resourceName: "Story_3"))]
-        return data
     }()
     
     override func viewDidLoad() {

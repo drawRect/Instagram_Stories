@@ -41,7 +41,6 @@ class IGStoryPreviewController: UIViewController {
         self.title = "Story"
         self.automaticallyAdjustsScrollViewInsets = false
         headerView?.stories = stories
-        headerView?.generateSnappers()
         snapTimer = Timer.scheduledTimer(timeInterval: StoryConstants.snapTime, target: self, selector: #selector(IGStoryPreviewController.didMoveNextSnap), userInfo: nil, repeats: true)
     }
     
@@ -61,6 +60,9 @@ class IGStoryPreviewController: UIViewController {
         }
     }
     //MARK: -
+    deinit {
+        snapTimer?.invalidate()
+    }
 
 }
 
