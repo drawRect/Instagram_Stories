@@ -41,7 +41,7 @@ class IGStoryPreviewController: UIViewController {
         self.title = "Story"
         self.automaticallyAdjustsScrollViewInsets = false
         headerView?.stories = stories
-        headerView?.getBackMyProgressview()
+        headerView?.generateSnappers()
     }
     
     //MARK: - Selectors

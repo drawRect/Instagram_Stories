@@ -26,7 +26,7 @@ protocol StoryPreviewHeaderTapper {
 
 class IGStoryPreviewHeaderView: UIView {
     public var delegate:StoryPreviewHeaderTapper?
-    fileprivate var maxStories:Int = 10
+    fileprivate var maxStories:Int = 15
     public var stories:[IGStory]? {
         didSet {
             maxStories  = (stories?.count)! < maxStories ? (stories?.count)! : maxStories
@@ -52,11 +52,8 @@ class IGStoryPreviewHeaderView: UIView {
         let view =  Bundle.loadView(fromNib: "IGStoryPreviewHeaderView", withType: IGStoryPreviewHeaderView.self)
         return view
     }
-    
-    override func awakeFromNib() {
-    }
-    
-    func getBackMyProgressview(){
+  
+    func generateSnappers(){
         let padding:CGFloat = 8
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
@@ -68,13 +65,7 @@ class IGStoryPreviewHeaderView: UIView {
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }
-        
-        
     }
-    
-}
-
-extension IGStoryPreviewHeaderView:Progresser {
     
 }
 
