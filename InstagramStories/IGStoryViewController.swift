@@ -24,7 +24,6 @@ class IGStoryViewController: UIViewController {
             layout.minimumInteritemSpacing = 0
             layout.minimumLineSpacing = 0
             layout.scrollDirection = .horizontal
-            collectionview.collectionViewLayout = layout
             
         }
     }
@@ -35,7 +34,13 @@ class IGStoryViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         self.title = "Story"
-        self.automaticallyAdjustsScrollViewInsets = false
+        //self.automaticallyAdjustsScrollViewInsets = false
+    }
+    
+    func scrolltonextcell()
+    {
+        let contentOffset = collectionview.contentOffset
+        
     }
 
 }
@@ -59,4 +64,5 @@ extension IGStoryViewController:UICollectionViewDelegate,UICollectionViewDataSou
         let screenheight = UIScreen.main.bounds.size.height
         return CGSize(width: screenwidth, height: screenheight)
     }
+    
 }
