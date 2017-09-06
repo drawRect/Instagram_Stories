@@ -13,6 +13,8 @@ class IGStoryViewController: UIViewController {
     public var imagearray:Array! = []
     var currentindex = 0
     var timer:Timer? = nil
+    @IBOutlet weak var progressMainView: UIView!
+    
     @IBOutlet weak var collectionview: UICollectionView! {
         didSet {
         
@@ -32,18 +34,14 @@ class IGStoryViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        
         self.title = "Story"
-        //self.automaticallyAdjustsScrollViewInsets = false
+        self.automaticallyAdjustsScrollViewInsets = false
 
         timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(IGStoryViewController.scrolltonextcell), userInfo: nil, repeats: false)
-        
     }
     
     func scrolltonextcell()
     {
-        print("Current index:\(currentindex)")
         currentindex = currentindex + 1
         
         if currentindex <= imagearray.count-1
@@ -61,7 +59,7 @@ class IGStoryViewController: UIViewController {
 extension IGStoryViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        return imagearray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

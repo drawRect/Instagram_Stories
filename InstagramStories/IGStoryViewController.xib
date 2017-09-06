@@ -9,9 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="StoryViewController" customModule="InstagramStories" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="IGStoryViewController" customModule="InstagramStories" customModuleProvider="target">
             <connections>
                 <outlet property="collectionview" destination="Y7L-zX-nLY" id="lEK-Rk-TQc"/>
+                <outlet property="progressMainView" destination="RV1-qh-v57" id="iCe-z0-cd6"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,13 +31,23 @@
                         <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                     </collectionViewFlowLayout>
                 </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RV1-qh-v57">
+                    <rect key="frame" x="0.0" y="33" width="375" height="60"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="UH6-TC-m5A"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="Y7L-zX-nLY" secondAttribute="bottom" id="8M2-BT-Y80"/>
                 <constraint firstItem="Y7L-zX-nLY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="92Z-q9-T4Y"/>
+                <constraint firstAttribute="trailing" secondItem="RV1-qh-v57" secondAttribute="trailing" id="AIg-2O-bxB"/>
                 <constraint firstAttribute="trailing" secondItem="Y7L-zX-nLY" secondAttribute="trailing" id="OIg-CM-ZSe"/>
                 <constraint firstItem="Y7L-zX-nLY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="PbE-3d-Azs"/>
+                <constraint firstItem="RV1-qh-v57" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="VDP-7i-v2C"/>
+                <constraint firstItem="RV1-qh-v57" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="33" id="uIW-rC-RYR"/>
             </constraints>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
