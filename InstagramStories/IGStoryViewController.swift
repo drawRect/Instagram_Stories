@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StoryViewController: UIViewController {
+class IGStoryViewController: UIViewController {
 
     public var imagearray:NSArray!
     
@@ -17,8 +17,8 @@ class StoryViewController: UIViewController {
         
             collectionview.delegate = self
             collectionview.dataSource = self
-            let storyNib = UINib.init(nibName: StoryCollectionViewCell.reuseIdentifier(), bundle: nil)
-            collectionview.register(storyNib, forCellWithReuseIdentifier: StoryCollectionViewCell.reuseIdentifier())
+            let storyNib = UINib.init(nibName: IGStoryCollectionViewCell.reuseIdentifier(), bundle: nil)
+            collectionview.register(storyNib, forCellWithReuseIdentifier: IGStoryCollectionViewCell.reuseIdentifier())
             
             let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
             layout.minimumInteritemSpacing = 0
@@ -40,14 +40,14 @@ class StoryViewController: UIViewController {
 
 }
 
-extension StoryViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+extension IGStoryViewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: StoryCollectionViewCell.reuseIdentifier(), for: indexPath) as! StoryCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryCollectionViewCell.reuseIdentifier(), for: indexPath) as! IGStoryCollectionViewCell
         cell.imageview.image = UIImage(named:"\(imagearray.object(at: indexPath.row))")
         
         return cell

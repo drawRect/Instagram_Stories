@@ -8,7 +8,7 @@
 
 import UIKit
 
-class StoryCollectionViewCell: UICollectionViewCell {
+class IGStoryCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageview: UIImageView!
     
@@ -18,7 +18,7 @@ class StoryCollectionViewCell: UICollectionViewCell {
     }
     
     public class func reuseIdentifier()->String{
-        return "StoryCollectionViewCell"
+        return "IGStoryCollectionViewCell"
     }
 
 }

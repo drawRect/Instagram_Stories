@@ -16,13 +16,13 @@
 		07FDECF31F5FDEE6004BC833 /* IGStoryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECF11F5FDEE5004BC833 /* IGStoryListCell.xib */; };
 		07FDECF61F5FE4A6004BC833 /* IGAddStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECF41F5FE4A6004BC833 /* IGAddStoryCell.swift */; };
 		07FDECF71F5FE4A6004BC833 /* IGAddStoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECF51F5FE4A6004BC833 /* IGAddStoryCell.xib */; };
-		10D801381F5FF7EB00B4CE22 /* StoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D801361F5FF7EB00B4CE22 /* StoryViewController.swift */; };
-		10D801391F5FF7EB00B4CE22 /* StoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D801371F5FF7EB00B4CE22 /* StoryViewController.xib */; };
+		10D801381F5FF7EB00B4CE22 /* IGStoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D801361F5FF7EB00B4CE22 /* IGStoryViewController.swift */; };
+		10D801391F5FF7EB00B4CE22 /* IGStoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D801371F5FF7EB00B4CE22 /* IGStoryViewController.xib */; };
 		10D8013E1F5FF97700B4CE22 /* nature1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 10D8013B1F5FF97700B4CE22 /* nature1.jpg */; };
 		10D8013F1F5FF97700B4CE22 /* nature2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 10D8013C1F5FF97700B4CE22 /* nature2.jpg */; };
 		10D801401F5FF97700B4CE22 /* nature3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 10D8013D1F5FF97700B4CE22 /* nature3.jpg */; };
-		10D801431F5FF9A400B4CE22 /* StoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D801411F5FF9A400B4CE22 /* StoryCollectionViewCell.swift */; };
-		10D801441F5FF9A400B4CE22 /* StoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D801421F5FF9A400B4CE22 /* StoryCollectionViewCell.xib */; };
+		10D801431F5FF9A400B4CE22 /* IGStoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D801411F5FF9A400B4CE22 /* IGStoryCollectionViewCell.swift */; };
+		10D801441F5FF9A400B4CE22 /* IGStoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 10D801421F5FF9A400B4CE22 /* IGStoryCollectionViewCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,13 +37,13 @@
 		07FDECF11F5FDEE5004BC833 /* IGStoryListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IGStoryListCell.xib; sourceTree = "<group>"; };
 		07FDECF41F5FE4A6004BC833 /* IGAddStoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGAddStoryCell.swift; sourceTree = "<group>"; };
 		07FDECF51F5FE4A6004BC833 /* IGAddStoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IGAddStoryCell.xib; sourceTree = "<group>"; };
-		10D801361F5FF7EB00B4CE22 /* StoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryViewController.swift; sourceTree = "<group>"; };
-		10D801371F5FF7EB00B4CE22 /* StoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryViewController.xib; sourceTree = "<group>"; };
+		10D801361F5FF7EB00B4CE22 /* IGStoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryViewController.swift; sourceTree = "<group>"; };
+		10D801371F5FF7EB00B4CE22 /* IGStoryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IGStoryViewController.xib; sourceTree = "<group>"; };
 		10D8013B1F5FF97700B4CE22 /* nature1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nature1.jpg; sourceTree = "<group>"; };
 		10D8013C1F5FF97700B4CE22 /* nature2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nature2.jpg; sourceTree = "<group>"; };
 		10D8013D1F5FF97700B4CE22 /* nature3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = nature3.jpg; sourceTree = "<group>"; };
-		10D801411F5FF9A400B4CE22 /* StoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryCollectionViewCell.swift; sourceTree = "<group>"; };
-		10D801421F5FF9A400B4CE22 /* StoryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StoryCollectionViewCell.xib; sourceTree = "<group>"; };
+		10D801411F5FF9A400B4CE22 /* IGStoryCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryCollectionViewCell.swift; sourceTree = "<group>"; };
+		10D801421F5FF9A400B4CE22 /* IGStoryCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IGStoryCollectionViewCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,10 +86,10 @@
 				07FDECF11F5FDEE5004BC833 /* IGStoryListCell.xib */,
 				07FDECF41F5FE4A6004BC833 /* IGAddStoryCell.swift */,
 				07FDECF51F5FE4A6004BC833 /* IGAddStoryCell.xib */,
-				10D801361F5FF7EB00B4CE22 /* StoryViewController.swift */,
-				10D801371F5FF7EB00B4CE22 /* StoryViewController.xib */,
-				10D801411F5FF9A400B4CE22 /* StoryCollectionViewCell.swift */,
-				10D801421F5FF9A400B4CE22 /* StoryCollectionViewCell.xib */,
+				10D801361F5FF7EB00B4CE22 /* IGStoryViewController.swift */,
+				10D801371F5FF7EB00B4CE22 /* IGStoryViewController.xib */,
+				10D801411F5FF9A400B4CE22 /* IGStoryCollectionViewCell.swift */,
+				10D801421F5FF9A400B4CE22 /* IGStoryCollectionViewCell.xib */,
 				10D8013A1F5FF96000B4CE22 /* Images */,
 			);
 			path = InstagramStories;
@@ -171,8 +171,8 @@
 				07FDECF31F5FDEE6004BC833 /* IGStoryListCell.xib in Resources */,
 				10D8013F1F5FF97700B4CE22 /* nature2.jpg in Resources */,
 				10D801401F5FF97700B4CE22 /* nature3.jpg in Resources */,
-				10D801391F5FF7EB00B4CE22 /* StoryViewController.xib in Resources */,
-				10D801441F5FF9A400B4CE22 /* StoryCollectionViewCell.xib in Resources */,
+				10D801391F5FF7EB00B4CE22 /* IGStoryViewController.xib in Resources */,
+				10D801441F5FF9A400B4CE22 /* IGStoryCollectionViewCell.xib in Resources */,
 				07FDECF71F5FE4A6004BC833 /* IGAddStoryCell.xib in Resources */,
 				07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */,
 				07FDECEF1F5FDB31004BC833 /* IGHomeController.xib in Resources */,
@@ -186,11 +186,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				10D801381F5FF7EB00B4CE22 /* StoryViewController.swift in Sources */,
+				10D801381F5FF7EB00B4CE22 /* IGStoryViewController.swift in Sources */,
 				07FDECEE1F5FDB31004BC833 /* IGHomeController.swift in Sources */,
 				07FDECF61F5FE4A6004BC833 /* IGAddStoryCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
-				10D801431F5FF9A400B4CE22 /* StoryCollectionViewCell.swift in Sources */,
+				10D801431F5FF9A400B4CE22 /* IGStoryCollectionViewCell.swift in Sources */,
 				07FDECF21F5FDEE6004BC833 /* IGStoryListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
