@@ -13,6 +13,8 @@ struct IGStory{
 }
 
 class IGHomeController: UIViewController {
+    
+    let imageArray:NSArray! = ["nature1.jpg","nature2.jpg","nature3.jpg"]
 
     @IBOutlet weak var storiesCollectionView: UICollectionView! {
         didSet {
@@ -47,6 +49,19 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
             cell.profileImageView.backgroundColor = UIColor.brown
             cell.profileNameLabel.text = "Story-\(indexPath.row+1)"
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0
+        {
+            //Add own story
+        }
+        else
+        {
+            let storyViewController = StoryViewController(nibName: "StoryViewController", bundle: nil) 
+            storyViewController.imagearray = imageArray
+            self.present(storyViewController, animated: true, completion: nil)
         }
     }
     
