@@ -12,6 +12,10 @@
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
 		07FDECEE1F5FDB31004BC833 /* IGHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECEC1F5FDB31004BC833 /* IGHomeController.swift */; };
 		07FDECEF1F5FDB31004BC833 /* IGHomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECED1F5FDB31004BC833 /* IGHomeController.xib */; };
+		07FDECF21F5FDEE6004BC833 /* IGStoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECF01F5FDEE5004BC833 /* IGStoryListCell.swift */; };
+		07FDECF31F5FDEE6004BC833 /* IGStoryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECF11F5FDEE5004BC833 /* IGStoryListCell.xib */; };
+		07FDECF61F5FE4A6004BC833 /* IGAddStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECF41F5FE4A6004BC833 /* IGAddStoryCell.swift */; };
+		07FDECF71F5FE4A6004BC833 /* IGAddStoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECF51F5FE4A6004BC833 /* IGAddStoryCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +26,10 @@
 		07FDECE21F5FD9BA004BC833 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		07FDECEC1F5FDB31004BC833 /* IGHomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGHomeController.swift; path = Controllers/IGHomeController.swift; sourceTree = "<group>"; };
 		07FDECED1F5FDB31004BC833 /* IGHomeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGHomeController.xib; path = Controllers/IGHomeController.xib; sourceTree = "<group>"; };
+		07FDECF01F5FDEE5004BC833 /* IGStoryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryListCell.swift; sourceTree = "<group>"; };
+		07FDECF11F5FDEE5004BC833 /* IGStoryListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IGStoryListCell.xib; sourceTree = "<group>"; };
+		07FDECF41F5FE4A6004BC833 /* IGAddStoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGAddStoryCell.swift; sourceTree = "<group>"; };
+		07FDECF51F5FE4A6004BC833 /* IGAddStoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IGAddStoryCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +68,10 @@
 				07FDECE21F5FD9BA004BC833 /* Info.plist */,
 				07FDECEC1F5FDB31004BC833 /* IGHomeController.swift */,
 				07FDECED1F5FDB31004BC833 /* IGHomeController.xib */,
+				07FDECF01F5FDEE5004BC833 /* IGStoryListCell.swift */,
+				07FDECF11F5FDEE5004BC833 /* IGStoryListCell.xib */,
+				07FDECF41F5FE4A6004BC833 /* IGAddStoryCell.swift */,
+				07FDECF51F5FE4A6004BC833 /* IGAddStoryCell.xib */,
 			);
 			path = InstagramStories;
 			sourceTree = "<group>";
@@ -126,6 +138,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */,
+				07FDECF31F5FDEE6004BC833 /* IGStoryListCell.xib in Resources */,
+				07FDECF71F5FE4A6004BC833 /* IGAddStoryCell.xib in Resources */,
 				07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */,
 				07FDECEF1F5FDB31004BC833 /* IGHomeController.xib in Resources */,
 			);
@@ -139,7 +153,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				07FDECEE1F5FDB31004BC833 /* IGHomeController.swift in Sources */,
+				07FDECF61F5FE4A6004BC833 /* IGAddStoryCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
+				07FDECF21F5FDEE6004BC833 /* IGStoryListCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
