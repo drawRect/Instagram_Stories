@@ -8,20 +8,20 @@
 
 /* Begin PBXBuildFile section */
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
-		07FDECD91F5FD9BA004BC833 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD81F5FD9BA004BC833 /* ViewController.swift */; };
-		07FDECDC1F5FD9BA004BC833 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDA1F5FD9BA004BC833 /* Main.storyboard */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
+		07FDECEE1F5FDB31004BC833 /* IGHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECEC1F5FDB31004BC833 /* IGHomeController.swift */; };
+		07FDECEF1F5FDB31004BC833 /* IGHomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECED1F5FDB31004BC833 /* IGHomeController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		07FDECD81F5FD9BA004BC833 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		07FDECDB1F5FD9BA004BC833 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07FDECE01F5FD9BA004BC833 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		07FDECE21F5FD9BA004BC833 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		07FDECEC1F5FDB31004BC833 /* IGHomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGHomeController.swift; path = Controllers/IGHomeController.swift; sourceTree = "<group>"; };
+		07FDECED1F5FDB31004BC833 /* IGHomeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGHomeController.xib; path = Controllers/IGHomeController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,11 +55,11 @@
 			isa = PBXGroup;
 			children = (
 				07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */,
-				07FDECD81F5FD9BA004BC833 /* ViewController.swift */,
-				07FDECDA1F5FD9BA004BC833 /* Main.storyboard */,
 				07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */,
 				07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */,
 				07FDECE21F5FD9BA004BC833 /* Info.plist */,
+				07FDECEC1F5FDB31004BC833 /* IGHomeController.swift */,
+				07FDECED1F5FDB31004BC833 /* IGHomeController.xib */,
 			);
 			path = InstagramStories;
 			sourceTree = "<group>";
@@ -90,6 +90,7 @@
 		07FDECCB1F5FD9BA004BC833 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = IG;
 				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = Dash;
@@ -126,7 +127,7 @@
 			files = (
 				07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */,
 				07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */,
-				07FDECDC1F5FD9BA004BC833 /* Main.storyboard in Resources */,
+				07FDECEF1F5FDB31004BC833 /* IGHomeController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +138,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				07FDECD91F5FD9BA004BC833 /* ViewController.swift in Sources */,
+				07FDECEE1F5FDB31004BC833 /* IGHomeController.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -145,14 +146,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		07FDECDA1F5FD9BA004BC833 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				07FDECDB1F5FD9BA004BC833 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
