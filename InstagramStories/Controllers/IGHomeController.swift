@@ -60,7 +60,7 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         else
         {
             let storyViewController = IGStoryViewController(nibName: "IGStoryViewController", bundle: nil) 
-            storyViewController.imagearray = imageArray
+            storyViewController.imagearray = imageArray as! Array<Any>!
             self.present(storyViewController, animated: true, completion: nil)
         }
     }

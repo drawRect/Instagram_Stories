@@ -10,7 +10,7 @@ import UIKit
 
 class IGStoryViewController: UIViewController {
 
-    public var imagearray:NSArray!
+    public var imagearray:Array! = []
     
     @IBOutlet weak var collectionview: UICollectionView! {
         didSet {
@@ -48,7 +48,7 @@ extension IGStoryViewController:UICollectionViewDelegate,UICollectionViewDataSou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryCollectionViewCell.reuseIdentifier(), for: indexPath) as! IGStoryCollectionViewCell
-        cell.imageview.image = UIImage(named:"\(imagearray.object(at: indexPath.row))")
+        cell.imageview.image = UIImage(named:"\(imagearray[indexPath.row])")
         
         return cell
         
