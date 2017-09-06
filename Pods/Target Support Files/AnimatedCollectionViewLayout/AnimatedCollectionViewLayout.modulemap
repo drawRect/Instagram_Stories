@@ -1,0 +1,6 @@
+framework module AnimatedCollectionViewLayout {
+  umbrella header "AnimatedCollectionViewLayout-umbrella.h"
+
+  export *
+  module * { export * }
+}
