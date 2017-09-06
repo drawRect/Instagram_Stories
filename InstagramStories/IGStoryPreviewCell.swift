@@ -1,5 +1,5 @@
 //
-//  StoryCollectionViewCell.swift
+//  IGStoryPreviewCell.swift
 //  InstagramStories
 //
 //  Created by Srikanth Vellore on 06/09/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IGStoryCollectionViewCell: UICollectionViewCell {
+class IGStoryPreviewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageview: UIImageView!
     
@@ -18,7 +18,7 @@ class IGStoryCollectionViewCell: UICollectionViewCell {
     }
     
     public class func reuseIdentifier()->String{
-        return "IGStoryCollectionViewCell"
+        return "IGStoryPreviewCell"
     }
 
 }
