@@ -77,16 +77,18 @@ class IGStoryPreviewController: UIViewController {
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (stories?.count)!-storyIndex 
+        //Start with handpicked story from Home.
+        return (stories?.count)!-storyIndex
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as! IGStoryPreviewCell
         cell.storyHeaderView?.delegate = self
+        //Start with handpicked story from Home.
         let story = stories?.stories?[indexPath.row+storyIndex]
-        cell.storyHeaderView?.snaps = story?.snaps
+        cell.storyHeaderView?.story = story
         cell.storyHeaderView?.generateSnappers()
-        let snap = story?.snaps?.first
+        let snap = story?.snaps?[indexPath.row]
         cell.imageview.image = UIImage.init(named: snap?.mediaURL ?? "")
         return cell
     }

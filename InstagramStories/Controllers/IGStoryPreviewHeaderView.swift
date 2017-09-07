@@ -26,12 +26,13 @@ protocol StoryPreviewHeaderTapper {
 
 class IGStoryPreviewHeaderView: UIView {
     public var delegate:StoryPreviewHeaderTapper?
-    fileprivate var maxSnaps:Int = 15
-    public var snaps:[IGSnap]? {
+    fileprivate var maxSnaps:Int = 30
+    public var story:IGStory? {
         didSet {
-            maxSnaps  = (snaps?.count)! < maxSnaps ? (snaps?.count)! : maxSnaps
+            maxSnaps  = (story?.snaps?.count)! < maxSnaps ? (story?.snaps?.count)! : maxSnaps
         }
     }
+   
     @IBOutlet weak var progressView: UIView!
     @IBOutlet weak var snaperImageView: UIImageView! {
         didSet {
@@ -39,17 +40,13 @@ class IGStoryPreviewHeaderView: UIView {
             snaperImageView.clipsToBounds = true
         }
     }
-    @IBOutlet weak var snaperNameLabel: UILabel!{
-        didSet {
-            snaperNameLabel.text = "Ramesh"
-        }
-    }
-    
+    @IBOutlet weak var snaperNameLabel: UILabel!
+
+    //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {
         self.delegate?.didTapCloseButton()
     }
     
-    //MARK: - Selectors
     class func instanceFromNib() -> IGStoryPreviewHeaderView {
         let view =  Bundle.loadView(fromNib: "IGStoryPreviewHeaderView", withType: IGStoryPreviewHeaderView.self)
         return view
@@ -59,7 +56,7 @@ class IGStoryPreviewHeaderView: UIView {
         let padding:CGFloat = 8
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
-        let pvWidth = (progressView.frame.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
+        let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
         let pvHeight:CGFloat = 5
         for _ in 0..<maxSnaps{
             let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
@@ -68,6 +65,7 @@ class IGStoryPreviewHeaderView: UIView {
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }
+        snaperNameLabel.text = story?.user?.name
     }
     
 }

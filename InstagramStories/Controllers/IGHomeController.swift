@@ -20,8 +20,8 @@ class IGHomeController: UIViewController {
             storiesCollectionView.register(addStoryNib, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
         }
     }
-
-    lazy var stories: IGStories = IGHomeController.loadStubbedData()!
+    //Keep it Immutable! don't get Dirty :P
+    let stories: IGStories = IGHomeController.loadStubbedData()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,7 @@ class IGHomeController: UIViewController {
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stories.count ?? 0 + 1 // Add Story cell
+        return stories.count! + 1 // Add Story cell
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
@@ -40,8 +40,9 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
             return cell
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as! IGStoryListCell
-            cell.profileImageView.backgroundColor = UIColor.brown
-            cell.profileNameLabel.text = "Story-\(indexPath.row)"
+            // Add Story cell
+            let story = stories.stories?[indexPath.row-1]
+            cell.profileNameLabel.text = story?.user?.name
             return cell
         }
     }
@@ -52,7 +53,8 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         }else{
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
-            storyPreviewScene.storyIndex = indexPath.row
+            //reducing Coz,Add Story cell
+            storyPreviewScene.storyIndex = indexPath.row-1
             self.present(storyPreviewScene, animated: true, completion: nil)
         }
     }

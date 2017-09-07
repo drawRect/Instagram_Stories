@@ -1,56 +1,76 @@
 {
-  "count": 3,
-  "stories": [
-    {
-      "id": 100,
-      "last_updated": 1504799962,
-      "snaps_count": 2,
-      "snaps": [
-        {
-          "id": 1,
-          "type": "image",
-          "mediaURL": "Story_1"
-        },
-        {
-          "id": 2,
-          "type": "image",
-          "mediaURL": "Story_2"
-        }
-      ]
-    },
-    {
-      "id": 101,
-      "last_updated": 1504799962,
-      "snaps_count": 2,
-      "snaps": [
-        {
-          "id": 1,
-          "type": "image",
-          "mediaURL": "Story_1"
-        },
-        {
-          "id": 2,
-          "type": "image",
-          "mediaURL": "Story_2"
-        }
-      ]
-    },
-    {
-      "id": 103,
-      "last_updated": 1504799962,
-      "snaps_count": 2,
-      "snaps": [
-        {
-          "id": 1,
-          "type": "image",
-          "mediaURL": "Story_1"
-        },
-        {
-          "id": 2,
-          "type": "image",
-          "mediaURL": "Story_2"
-        }
-      ]
-    }
-  ]
+    "count": 3,
+    "stories": [
+                {
+                "id": 100,
+                "last_updated": 1504799962,
+                "user": {
+                "name": "Bill",
+                "id": 90,
+                "picture": "www.google.com"
+                },
+                "snaps_count": 2,
+                "snaps": [
+                          {
+                          "id": 1,
+                          "type": "image",
+                          "mediaURL": "Story_1"
+                          },
+                          {
+                          "id": 2,
+                          "type": "image",
+                          "mediaURL": "Story_2"
+                          },
+                          {
+                          "id": 2.1,
+                          "type": "image",
+                          "mediaURL": "Story_3"
+                          }
+                          ]
+                },
+                {
+                "id": 101,
+                "last_updated": 1504799962,
+                "user": {
+                "name": "Jobs",
+                "id": 91,
+                "picture": "www.google.com"
+                },
+                "snaps_count": 2,
+                "snaps": [
+                          {
+                          "id": 3,
+                          "type": "image",
+                          "mediaURL": "Story_1"
+                          },
+                          {
+                          "id": 4,
+                          "type": "image",
+                          "mediaURL": "Story_2"
+                          }
+                          ]
+                },
+                {
+                "id": 103,
+                "last_updated": 1504799962,
+                "user": {
+                "name": "Jameson",
+                "id": 93,
+                "picture": "www.google.com"
+                },
+                "snaps_count": 2,
+                "snaps": [
+                          {
+                          "id": 5,
+                          "type": "image",
+                          "mediaURL": "Story_1"
+                          },
+                          {
+                          "id": 6,
+                          "type": "image",
+                          "mediaURL": "Story_2"
+                          }
+                          ]
+                }
+                ]
 }
