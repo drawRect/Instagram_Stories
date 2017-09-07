@@ -8,12 +8,8 @@
 
 import UIKit
 
-struct IGStory{
-    
-}
-
 class IGHomeController: UIViewController {
-
+    
     @IBOutlet weak var storiesCollectionView: UICollectionView! {
         didSet {
             storiesCollectionView.delegate = self
@@ -24,7 +20,21 @@ class IGHomeController: UIViewController {
             storiesCollectionView.register(addStoryNib, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
         }
     }
-    let stories:[IGStory] = []
+
+    lazy var stories: [IGStory] = {
+        return [IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
+                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3"))]
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +46,7 @@ class IGHomeController: UIViewController {
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10 + 1 // Add Story cell
+        return stories.count + 1 // Add Story cell
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
@@ -45,8 +55,18 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as! IGStoryListCell
             cell.profileImageView.backgroundColor = UIColor.brown
-            cell.profileNameLabel.text = "Story-\(indexPath.row+1)"
+            cell.profileNameLabel.text = "Story-\(indexPath.row)"
             return cell
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            //Add own story
+        }else{
+            let storyPreviewScene = IGStoryPreviewController()
+            storyPreviewScene.stories = stories
+            self.present(storyPreviewScene, animated: true, completion: nil)
         }
     }
     
