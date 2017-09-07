@@ -82,8 +82,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as! IGStoryPreviewCell
-        cell.storyHeaderView.delegate = self
-        cell.storyHeaderView.stories = stories
+        cell.storyHeaderView?.delegate = self
+        cell.storyHeaderView?.stories = stories
+        cell.storyHeaderView?.generateSnappers()
         cell.imageview.image = stories?[indexPath.row].snap
         return cell
     }

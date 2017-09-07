@@ -21,26 +21,15 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zhj-Vm-Ohx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     </imageView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lgh-VW-0nr">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="80" id="wbL-aD-guA"/>
-                        </constraints>
-                    </view>
                 </subviews>
             </view>
             <constraints>
                 <constraint firstItem="Zhj-Vm-Ohx" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="3fh-q2-Ckn"/>
                 <constraint firstItem="Zhj-Vm-Ohx" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dAn-CN-07u"/>
-                <constraint firstItem="lgh-VW-0nr" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hNb-KS-Vq5"/>
                 <constraint firstAttribute="trailing" secondItem="Zhj-Vm-Ohx" secondAttribute="trailing" id="iQY-Uv-okg"/>
-                <constraint firstItem="lgh-VW-0nr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="jGP-Lb-F0A"/>
                 <constraint firstAttribute="bottom" secondItem="Zhj-Vm-Ohx" secondAttribute="bottom" id="jhh-FR-yev"/>
-                <constraint firstAttribute="trailing" secondItem="lgh-VW-0nr" secondAttribute="trailing" id="nF7-k1-s5e"/>
             </constraints>
             <connections>
-                <outlet property="headerView" destination="lgh-VW-0nr" id="E3P-OI-L0g"/>
                 <outlet property="imageview" destination="Zhj-Vm-Ohx" id="upm-rk-KFe"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>

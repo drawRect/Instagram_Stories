@@ -11,12 +11,13 @@ import UIKit
 class IGStoryPreviewCell: UICollectionViewCell {
 
     @IBOutlet weak var imageview: UIImageView!
-    @IBOutlet weak var headerView: UIView!
-    lazy var storyHeaderView:IGStoryPreviewHeaderView=IGStoryPreviewHeaderView.instanceFromNib()
+    var storyHeaderView:IGStoryPreviewHeaderView?
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.headerView.addSubview(storyHeaderView)
+        storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
+        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:10)
+        self.contentView.addSubview(storyHeaderView!)
     }
     
     public class func reuseIdentifier()->String{

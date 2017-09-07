@@ -30,7 +30,6 @@ class IGStoryPreviewHeaderView: UIView {
     public var stories:[IGStory]? {
         didSet {
             maxStories  = (stories?.count)! < maxStories ? (stories?.count)! : maxStories
-            self.generateSnappers()
         }
     }
     @IBOutlet weak var progressView: UIView!
@@ -56,7 +55,7 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
-    private func generateSnappers(){
+    func generateSnappers(){
         let padding:CGFloat = 8
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
@@ -64,7 +63,8 @@ class IGStoryPreviewHeaderView: UIView {
         let pvHeight:CGFloat = 5
         for _ in 0..<maxStories{
             let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
-            pv.backgroundColor = .red
+            pv.progressTintColor = .red
+            pv.progress = 1.0
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }
