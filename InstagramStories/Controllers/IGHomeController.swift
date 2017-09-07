@@ -21,32 +21,18 @@ class IGHomeController: UIViewController {
         }
     }
 
-    lazy var stories: [IGStory] = {
-        return [IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3"))]
-    }()
+    lazy var stories: IGStories = IGHomeController.loadStubbedData()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Home"
         self.automaticallyAdjustsScrollViewInsets = false
     }
-   
 }
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stories.count + 1 // Add Story cell
+        return stories.count ?? 0 + 1 // Add Story cell
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
@@ -66,6 +52,7 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         }else{
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
+            storyPreviewScene.storyIndex = indexPath.row
             self.present(storyPreviewScene, animated: true, completion: nil)
         }
     }
@@ -74,5 +61,20 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return indexPath.row == 0 ? CGSize(width: 100, height: 100) : CGSize(width: 80, height: 100)
+    }
+}
+
+extension IGHomeController {
+    class func loadStubbedData()->IGStories? {
+        let url = Bundle.main.url(forResource: "stories", withExtension: "json")
+        let data = NSData(contentsOf: url!)
+        do {
+            let wrapped = try JSONSerialization.jsonObject(with: data! as Data, options: .allowFragments) as! [String:Any]
+            return IGStories.init(object: wrapped)
+        } catch {
+            // Handle Error
+            debugPrint(error)
+            return nil
+        }
     }
 }

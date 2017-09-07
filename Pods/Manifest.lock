@@ -1,12 +1,15 @@
 PODS:
   - AnimatedCollectionViewLayout (0.3.0)
+  - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
   - AnimatedCollectionViewLayout
+  - SwiftyJSON (~> 3.1)
 
 SPEC CHECKSUMS:
   AnimatedCollectionViewLayout: 504b992a4258eb39d2dd2b2b48e84b4b95860fd7
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: e4924822f45a9b59033616a420d4685b1345a51c
+PODFILE CHECKSUM: 178e65df58059594e90812b77563f87ca99a60dc
 
 COCOAPODS: 1.2.1

@@ -26,10 +26,10 @@ protocol StoryPreviewHeaderTapper {
 
 class IGStoryPreviewHeaderView: UIView {
     public var delegate:StoryPreviewHeaderTapper?
-    fileprivate var maxStories:Int = 15
-    public var stories:[IGStory]? {
+    fileprivate var maxSnaps:Int = 15
+    public var snaps:[IGSnap]? {
         didSet {
-            maxStories  = (stories?.count)! < maxStories ? (stories?.count)! : maxStories
+            maxSnaps  = (snaps?.count)! < maxSnaps ? (snaps?.count)! : maxSnaps
         }
     }
     @IBOutlet weak var progressView: UIView!
@@ -59,9 +59,9 @@ class IGStoryPreviewHeaderView: UIView {
         let padding:CGFloat = 8
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
-        let pvWidth = (progressView.frame.width - ((maxStories+1).toFloat() * padding))/maxStories.toFloat()
+        let pvWidth = (progressView.frame.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
         let pvHeight:CGFloat = 5
-        for _ in 0..<maxStories{
+        for _ in 0..<maxSnaps{
             let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = .red
             pv.progress = 1.0

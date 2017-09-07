@@ -1,0 +1,56 @@
+{
+  "count": 3,
+  "stories": [
+    {
+      "id": 100,
+      "last_updated": 1504799962,
+      "snaps_count": 2,
+      "snaps": [
+        {
+          "id": 1,
+          "type": "image",
+          "mediaURL": "Story_1"
+        },
+        {
+          "id": 2,
+          "type": "image",
+          "mediaURL": "Story_2"
+        }
+      ]
+    },
+    {
+      "id": 101,
+      "last_updated": 1504799962,
+      "snaps_count": 2,
+      "snaps": [
+        {
+          "id": 1,
+          "type": "image",
+          "mediaURL": "Story_1"
+        },
+        {
+          "id": 2,
+          "type": "image",
+          "mediaURL": "Story_2"
+        }
+      ]
+    },
+    {
+      "id": 103,
+      "last_updated": 1504799962,
+      "snaps_count": 2,
+      "snaps": [
+        {
+          "id": 1,
+          "type": "image",
+          "mediaURL": "Story_1"
+        },
+        {
+          "id": 2,
+          "type": "image",
+          "mediaURL": "Story_2"
+        }
+      ]
+    }
+  ]
+}
