@@ -88,8 +88,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let story = stories?.stories?[indexPath.row+storyIndex]
         cell.storyHeaderView?.story = story
         cell.storyHeaderView?.generateSnappers()
-        let snap = story?.snaps?[indexPath.row]
-        cell.imageview.image = UIImage.init(named: snap?.mediaURL ?? "")
+        cell.storyHeaderView?.snaperImageView.RK_setImage(urlString: story?.user?.picture ?? "")
+        let snap = story?.snaps?.first
+        cell.imageview.RK_setImage(urlString: snap?.mediaURL ?? "",imageStyle: .squared)
         return cell
     }
     

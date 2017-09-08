@@ -12,6 +12,8 @@
 		078E413D1F61E86500222191 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
 		078E413F1F61EA2A00222191 /* IGStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E413E1F61EA2A00222191 /* IGStories.swift */; };
 		078E41431F62092C00222191 /* IGUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41421F62092C00222191 /* IGUser.swift */; };
+		078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41451F62137E00222191 /* ImageView+Additions.swift */; };
+		078E41481F62140000222191 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41471F6213FF00222191 /* Color+Additions.swift */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
@@ -36,6 +38,8 @@
 		078E413C1F61E86500222191 /* stories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = stories.json; path = Stubs/stories.json; sourceTree = "<group>"; };
 		078E413E1F61EA2A00222191 /* IGStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStories.swift; path = Models/IGStories.swift; sourceTree = "<group>"; };
 		078E41421F62092C00222191 /* IGUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGUser.swift; path = Models/IGUser.swift; sourceTree = "<group>"; };
+		078E41451F62137E00222191 /* ImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImageView+Additions.swift"; path = "Extension/ImageView+Additions.swift"; sourceTree = "<group>"; };
+		078E41471F6213FF00222191 /* Color+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+Additions.swift"; path = "Extension/Color+Additions.swift"; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,6 +82,15 @@
 			name = Stubs;
 			sourceTree = "<group>";
 		};
+		078E41441F62137100222191 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				078E41451F62137E00222191 /* ImageView+Additions.swift */,
+				078E41471F6213FF00222191 /* Color+Additions.swift */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
 		07FDECCA1F5FD9BA004BC833 = {
 			isa = PBXGroup;
 			children = (
@@ -99,6 +112,7 @@
 		07FDECD51F5FD9BA004BC833 /* InstagramStories */ = {
 			isa = PBXGroup;
 			children = (
+				078E41441F62137100222191 /* Extension */,
 				07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */,
 				07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */,
 				07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */,
@@ -288,11 +302,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				078E41481F62140000222191 /* Color+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
 				1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */,
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */,
+				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
 				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,

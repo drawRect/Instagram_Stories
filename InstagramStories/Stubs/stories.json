@@ -7,19 +7,19 @@
                 "user": {
                 "name": "Bill",
                 "id": 90,
-                "picture": "www.google.com"
+                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
                 },
                 "snaps_count": 2,
                 "snaps": [
                           {
                           "id": 1,
                           "type": "image",
-                          "mediaURL": "Story_1"
+                          "mediaURL": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21041739_126118688026384_739808657901879296_n.jpg"
                           },
                           {
                           "id": 2,
                           "type": "image",
-                          "mediaURL": "Story_2"
+                          "mediaURL": "www.example.com"
                           },
                           {
                           "id": 2.1,
@@ -34,14 +34,14 @@
                 "user": {
                 "name": "Jobs",
                 "id": 91,
-                "picture": "www.google.com"
+                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
                 },
                 "snaps_count": 2,
                 "snaps": [
                           {
                           "id": 3,
                           "type": "image",
-                          "mediaURL": "Story_1"
+                          "mediaURL": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21372275_517628751909858_7889170223360638976_n.jpg"
                           },
                           {
                           "id": 4,
@@ -56,14 +56,14 @@
                 "user": {
                 "name": "Jameson",
                 "id": 93,
-                "picture": "www.google.com"
+                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
                 },
                 "snaps_count": 2,
                 "snaps": [
                           {
                           "id": 5,
                           "type": "image",
-                          "mediaURL": "Story_1"
+                          "mediaURL": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21224115_1954561241535581_4834338725074829312_n.jpg"
                           },
                           {
                           "id": 6,

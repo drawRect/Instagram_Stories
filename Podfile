@@ -9,5 +9,6 @@ target 'InstagramStories' do
     
     pod 'AnimatedCollectionViewLayout'
     pod 'SwiftyJSON', '~> 3.1'
-    
+    pod 'SDWebImage', '~>3.7'
+
 end
