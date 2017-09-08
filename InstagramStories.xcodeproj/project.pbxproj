@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		078E413A1F61E83200222191 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41381F61E83200222191 /* IGSnap.swift */; };
+		078E413B1F61E83200222191 /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41391F61E83200222191 /* IGStory.swift */; };
+		078E413D1F61E86500222191 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
+		078E413F1F61EA2A00222191 /* IGStories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E413E1F61EA2A00222191 /* IGStories.swift */; };
+		078E41431F62092C00222191 /* IGUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41421F62092C00222191 /* IGUser.swift */; };
+		078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41451F62137E00222191 /* ImageView+Additions.swift */; };
+		078E41481F62140000222191 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41471F6213FF00222191 /* Color+Additions.swift */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
@@ -20,13 +27,19 @@
 		109966191F6053DA005292CF /* IGStoryPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1099660F1F6053DA005292CF /* IGStoryPreviewCell.xib */; };
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		1099661B1F6053DA005292CF /* IGStoryPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966111F6053DA005292CF /* IGStoryPreviewController.xib */; };
-		1099661E1F6057A1005292CF /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661D1F6057A1005292CF /* IGStory.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		109966221F605818005292CF /* IGStoryPreviewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		078E41381F61E83200222191 /* IGSnap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnap.swift; path = Models/IGSnap.swift; sourceTree = "<group>"; };
+		078E41391F61E83200222191 /* IGStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStory.swift; path = Models/IGStory.swift; sourceTree = "<group>"; };
+		078E413C1F61E86500222191 /* stories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = stories.json; path = Stubs/stories.json; sourceTree = "<group>"; };
+		078E413E1F61EA2A00222191 /* IGStories.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStories.swift; path = Models/IGStories.swift; sourceTree = "<group>"; };
+		078E41421F62092C00222191 /* IGUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGUser.swift; path = Models/IGUser.swift; sourceTree = "<group>"; };
+		078E41451F62137E00222191 /* ImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImageView+Additions.swift"; path = "Extension/ImageView+Additions.swift"; sourceTree = "<group>"; };
+		078E41471F6213FF00222191 /* Color+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+Additions.swift"; path = "Extension/Color+Additions.swift"; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -42,7 +55,6 @@
 		1099660F1F6053DA005292CF /* IGStoryPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewCell.xib; path = Controllers/IGStoryPreviewCell.xib; sourceTree = "<group>"; };
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
 		109966111F6053DA005292CF /* IGStoryPreviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewController.xib; path = Controllers/IGStoryPreviewController.xib; sourceTree = "<group>"; };
-		1099661D1F6057A1005292CF /* IGStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStory.swift; path = Models/IGStory.swift; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewHeaderView.xib; path = Controllers/IGStoryPreviewHeaderView.xib; sourceTree = "<group>"; };
 		56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
@@ -62,6 +74,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		078E41231F61A3E000222191 /* Stubs */ = {
+			isa = PBXGroup;
+			children = (
+				078E413C1F61E86500222191 /* stories.json */,
+			);
+			name = Stubs;
+			sourceTree = "<group>";
+		};
+		078E41441F62137100222191 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				078E41451F62137E00222191 /* ImageView+Additions.swift */,
+				078E41471F6213FF00222191 /* Color+Additions.swift */,
+			);
+			name = Extension;
+			sourceTree = "<group>";
+		};
 		07FDECCA1F5FD9BA004BC833 = {
 			isa = PBXGroup;
 			children = (
@@ -83,10 +112,12 @@
 		07FDECD51F5FD9BA004BC833 /* InstagramStories */ = {
 			isa = PBXGroup;
 			children = (
+				078E41441F62137100222191 /* Extension */,
 				07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */,
 				07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */,
 				07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */,
 				07FDECE21F5FD9BA004BC833 /* Info.plist */,
+				078E41231F61A3E000222191 /* Stubs */,
 				1099661C1F605789005292CF /* Models */,
 				109966071F6053AD005292CF /* Controllers */,
 			);
@@ -115,7 +146,10 @@
 		1099661C1F605789005292CF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				1099661D1F6057A1005292CF /* IGStory.swift */,
+				078E413E1F61EA2A00222191 /* IGStories.swift */,
+				078E41391F61E83200222191 /* IGStory.swift */,
+				078E41381F61E83200222191 /* IGSnap.swift */,
+				078E41421F62092C00222191 /* IGUser.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -204,6 +238,7 @@
 				1099661B1F6053DA005292CF /* IGStoryPreviewController.xib in Resources */,
 				07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */,
 				109966171F6053DA005292CF /* IGStoryListCell.xib in Resources */,
+				078E413D1F61E86500222191 /* stories.json in Resources */,
 				109966131F6053DA005292CF /* IGAddStoryCell.xib in Resources */,
 				109966221F605818005292CF /* IGStoryPreviewHeaderView.xib in Resources */,
 				109966191F6053DA005292CF /* IGStoryPreviewCell.xib in Resources */,
@@ -267,13 +302,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				078E41481F62140000222191 /* Color+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
 				1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */,
-				1099661E1F6057A1005292CF /* IGStory.swift in Sources */,
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */,
+				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
+				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
+				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
+				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,
 				109966121F6053DA005292CF /* IGAddStoryCell.swift in Sources */,
+				078E41431F62092C00222191 /* IGUser.swift in Sources */,
 				109966141F6053DA005292CF /* IGHomeController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

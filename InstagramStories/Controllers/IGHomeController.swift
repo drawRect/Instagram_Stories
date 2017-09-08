@@ -20,33 +20,19 @@ class IGHomeController: UIViewController {
             storiesCollectionView.register(addStoryNib, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
         }
     }
-
-    lazy var stories: [IGStory] = {
-        return [IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_1")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_2")),
-                    IGStory.init(snap: #imageLiteral(resourceName: "Story_3"))]
-    }()
+    //Keep it Immutable! don't get Dirty :P
+    let stories: IGStories = IGHomeController.loadStubbedData()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Home"
         self.automaticallyAdjustsScrollViewInsets = false
     }
-   
 }
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stories.count + 1 // Add Story cell
+        return stories.count! + 1 // Add Story cell
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
@@ -54,8 +40,10 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
             return cell
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as! IGStoryListCell
-            cell.profileImageView.backgroundColor = UIColor.brown
-            cell.profileNameLabel.text = "Story-\(indexPath.row)"
+            // Add Story cell
+            let story = stories.stories?[indexPath.row-1]
+            cell.profileNameLabel.text = story?.user?.name
+            cell.profileImageView.RK_setImage(urlString: story?.user?.picture ?? "")
             return cell
         }
     }
@@ -66,6 +54,8 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         }else{
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
+            //reducing Coz,Add Story cell
+            storyPreviewScene.storyIndex = indexPath.row-1
             self.present(storyPreviewScene, animated: true, completion: nil)
         }
     }
@@ -74,5 +64,20 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return indexPath.row == 0 ? CGSize(width: 100, height: 100) : CGSize(width: 80, height: 100)
+    }
+}
+
+extension IGHomeController {
+    class func loadStubbedData()->IGStories? {
+        let url = Bundle.main.url(forResource: "stories", withExtension: "json")
+        let data = NSData(contentsOf: url!)
+        do {
+            let wrapped = try JSONSerialization.jsonObject(with: data! as Data, options: .allowFragments) as! [String:Any]
+            return IGStories.init(object: wrapped)
+        } catch {
+            // Handle Error
+            debugPrint(error)
+            return nil
+        }
     }
 }

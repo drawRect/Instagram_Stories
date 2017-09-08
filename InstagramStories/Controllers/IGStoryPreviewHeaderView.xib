@@ -15,6 +15,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m0F-co-YbD">
+                    <rect key="frame" x="0.0" y="8" width="375" height="10"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="10" id="cia-pD-LMb"/>
+                    </constraints>
+                </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vod-kW-TXa">
                     <rect key="frame" x="315" y="0.0" width="60" height="80"/>
                     <constraints>
@@ -36,19 +43,11 @@
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AFo-FB-0Tc">
                     <rect key="frame" x="8" y="20" width="40" height="40"/>
-                    <color key="backgroundColor" red="0.0" green="0.50980392159999999" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="CWU-nT-Td8"/>
                         <constraint firstAttribute="height" constant="40" id="yek-4D-j6f"/>
                     </constraints>
                 </imageView>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m0F-co-YbD">
-                    <rect key="frame" x="0.0" y="5" width="375" height="10"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="10" id="cia-pD-LMb"/>
-                    </constraints>
-                </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.051909110915492961" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -61,7 +60,7 @@
                 <constraint firstItem="AFo-FB-0Tc" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="Ug4-Tj-Evn"/>
                 <constraint firstItem="m0F-co-YbD" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="gG3-Xj-jFU"/>
                 <constraint firstAttribute="trailing" secondItem="m0F-co-YbD" secondAttribute="trailing" id="tR2-ER-Bff"/>
-                <constraint firstItem="m0F-co-YbD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="5" id="tnU-w4-TZt"/>
+                <constraint firstItem="m0F-co-YbD" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="tnU-w4-TZt"/>
                 <constraint firstItem="fh5-Pk-cSb" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="vfC-p3-jbF"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>

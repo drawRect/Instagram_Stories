@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,7 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return w }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        self.rootSceneSetup()
+        rootSceneSetup()
+        clearSDWebCache()
         return true
     }
 }
@@ -25,5 +27,9 @@ extension AppDelegate {
      func rootSceneSetup() {
         let nc = UINavigationController.init(rootViewController: IGHomeController())
         self.window?.rootViewController = nc
+    }
+    func clearSDWebCache() {
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
     }
 }

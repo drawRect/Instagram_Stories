@@ -15,8 +15,8 @@ struct StoryConstants {
 
 class IGStoryPreviewController: UIViewController {
 
-    public var stories:[IGStory]?
-    private var storyIndex:Int = 0
+    public var stories:IGStories?
+    public var storyIndex:Int = 0
     private var snapTimer:Timer?
     
     override var prefersStatusBarHidden: Bool { return true }
@@ -50,15 +50,15 @@ class IGStoryPreviewController: UIViewController {
     
     //MARK: - Selectors
     func didMoveNextSnap(){
-        guard let stories = stories else {
+        guard let count = stories?.count else {
             return
         }
         storyIndex = storyIndex+1
-        if storyIndex == stories.count-1 {
+        if storyIndex == count-1 {
             snapTimer?.invalidate()
             return
         }
-        if storyIndex<stories.count{
+        if storyIndex<count{
             let indexPath = IndexPath.init(row: storyIndex, section: 0)
             collectionview.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         }
@@ -77,15 +77,20 @@ class IGStoryPreviewController: UIViewController {
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stories?.count ?? 0
+        //Start with handpicked story from Home.
+        return (stories?.count)!-storyIndex
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as! IGStoryPreviewCell
         cell.storyHeaderView?.delegate = self
-        cell.storyHeaderView?.stories = stories
+        //Start with handpicked story from Home.
+        let story = stories?.stories?[indexPath.row+storyIndex]
+        cell.storyHeaderView?.story = story
         cell.storyHeaderView?.generateSnappers()
-        cell.imageview.image = stories?[indexPath.row].snap
+        cell.storyHeaderView?.snaperImageView.RK_setImage(urlString: story?.user?.picture ?? "")
+        let snap = story?.snaps?.first
+        cell.imageview.RK_setImage(urlString: snap?.mediaURL ?? "",imageStyle: .squared)
         return cell
     }
     
