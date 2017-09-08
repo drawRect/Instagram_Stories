@@ -112,11 +112,11 @@
 		07FDECD51F5FD9BA004BC833 /* InstagramStories */ = {
 			isa = PBXGroup;
 			children = (
-				078E41441F62137100222191 /* Extension */,
 				07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */,
 				07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */,
 				07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */,
 				07FDECE21F5FD9BA004BC833 /* Info.plist */,
+				078E41441F62137100222191 /* Extension */,
 				078E41231F61A3E000222191 /* Stubs */,
 				1099661C1F605789005292CF /* Models */,
 				109966071F6053AD005292CF /* Controllers */,

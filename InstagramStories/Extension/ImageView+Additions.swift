@@ -15,7 +15,7 @@ extension UIImageView {
         if urlString.characters.count < 1 {
             return
         }
-        backgroundColor = UIColor.rgb(fromHex: 0xEDF0F1)
+        backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         
         if(imageStyle == .rounded) {
             layer.cornerRadius = frame.height/2
