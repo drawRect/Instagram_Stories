@@ -16,7 +16,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
-        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:10)
+        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
         self.contentView.addSubview(storyHeaderView!)
     }
     
