@@ -8,7 +8,7 @@ enum ImageStyle:Int {
 
 extension UIImageView {
     
-    func RK_setImage(urlString:String,imageStyle:ImageStyle = .rounded) {
+    func RK_setImage(urlString:String,imageStyle:ImageStyle = .rounded,completion:@escaping(_ result:Bool,_ error:Error?)->Void) {
         
         image = nil
         
@@ -38,6 +38,7 @@ extension UIImageView {
                         self.backgroundColor = .clear
                         self.alpha = 0;
                         self.image = image
+                        completion(true,error)
                         self.clipsToBounds = true
                         UIView.animate(withDuration: 0.5, animations: {
                             self.alpha = 1

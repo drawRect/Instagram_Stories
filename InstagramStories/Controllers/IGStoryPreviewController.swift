@@ -9,16 +9,11 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
-struct StoryConstants {
-    static let snapTime:Double = 1.0
-}
-
 class IGStoryPreviewController: UIViewController {
 
     public var stories:IGStories?
     public var storiesIndex:Int = 0
     public var storyIndex:Int = 0
-    private var snapTimer:Timer?
     
     override var prefersStatusBarHidden: Bool { return true }
     var direction: UICollectionViewScrollDirection = .horizontal
@@ -45,28 +40,6 @@ class IGStoryPreviewController: UIViewController {
         self.title = "Story"
         self.automaticallyAdjustsScrollViewInsets = false
         dismissGesture.direction = direction == .horizontal ? .down : .left
-        
-//        snapTimer = Timer.scheduledTimer(timeInterval: StoryConstants.snapTime, target: self, selector: #selector(IGStoryPreviewController.didMoveNextSnap), userInfo: nil, repeats: true)
-    }
-    
-    //MARK: - Selectors
-    func didMoveNextSnap(){
-        guard let count = stories?.count else {
-            return
-        }
-        storiesIndex = storiesIndex+1
-        if storiesIndex == count-1 {
-            snapTimer?.invalidate()
-            return
-        }
-        if storiesIndex<count{
-            let indexPath = IndexPath.init(row: storiesIndex, section: 0)
-            collectionview.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-        }
-    }
-    //MARK: -
-    deinit {
-        snapTimer?.invalidate()
     }
     
     @IBAction func didSwipeDown(_ sender: Any) {
@@ -86,16 +59,14 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             cell.nextSnap(maxContentSize: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[0])!.snapsCount)!))
         }
     }
+    
+    //@Note:Story->ScrollView->NumberOfSnaps
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
         return (stories?.count)!-storyIndex
         
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //Start with handpicked story from Home.
-        
         return 1
-
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -106,14 +77,18 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let story = stories?.stories?[indexPath.section+storyIndex]
         cell.storyHeaderView?.story = story
         cell.storyHeaderView?.generateSnappers()
-        cell.storyHeaderView?.snaperImageView.RK_setImage(urlString: story?.user?.picture ?? "")
+        cell.storyHeaderView?.snaperImageView.RK_setImage(urlString: story?.user?.picture ?? "", completion: {_,error in
+            // leave it its a profile
+        })
         
         for snapcount in 0..<((stories?.stories?[indexPath.section+storyIndex])!.snapsCount)!
         {
             let snap = story?.snaps?[snapcount]
             let xOrigin:CGFloat = CGFloat(snapcount) * cell.scrollview.frame.size.width
             let imageView:UIImageView = UIImageView(frame: CGRect(x: xOrigin, y: 0, width: cell.scrollview.frame.size.width, height: cell.scrollview.frame.size.height))
-            imageView.RK_setImage(urlString: snap?.mediaURL ?? "",imageStyle: .squared)
+            imageView.RK_setImage(urlString: snap?.mediaURL ?? "",imageStyle: .squared,completion: {_,error in
+                // start the timer
+            })
             cell.scrollview.addSubview(imageView)
         }
         cell.scrollview.contentSize = CGSize(width: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[indexPath.section])!.snapsCount)!) , height: cell.scrollview.frame.size.height)

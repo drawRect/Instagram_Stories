@@ -12,12 +12,15 @@ protocol Progresser {
     func didCompleteProgress()
     func didBeginProgress()
 }
-class IGProgressView:UIProgressView {
-    var snapId:String?
-}
+class IGProgressView:UIProgressView {}
+
 extension IGProgressView:Progresser {
-    func didCompleteProgress() {}
-    func didBeginProgress() {}
+    func didCompleteProgress() {
+    
+    }
+    func didBeginProgress() {
+    
+    }
 }
 
 protocol StoryPreviewHeaderTapper {
@@ -27,6 +30,7 @@ protocol StoryPreviewHeaderTapper {
 class IGStoryPreviewHeaderView: UIView {
     public var delegate:StoryPreviewHeaderTapper?
     fileprivate var maxSnaps:Int = 30
+    fileprivate var snapIndex:Int = 0
     public var story:IGStory? {
         didSet {
             maxSnaps  = (story?.snaps?.count)! < maxSnaps ? (story?.snaps?.count)! : maxSnaps
@@ -52,16 +56,23 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
+    public func progressView(with index:Int,progress:Float) {
+        let pv = progressView.subviews.filter({v in v.tag == index}).first as! IGProgressView
+        pv.progress = pv.progress +  progress
+    }
+    
+    
     func generateSnappers(){
         let padding:CGFloat = 8
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
         let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
         let pvHeight:CGFloat = 5
-        for _ in 0..<maxSnaps{
+        for i in 0..<maxSnaps{
             let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = .red
             pv.progress = 0.0
+            pv.tag = i
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }
