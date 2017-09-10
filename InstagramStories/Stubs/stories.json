@@ -9,7 +9,7 @@
                 "id": 90,
                 "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
                 },
-                "snaps_count": 2,
+                "snaps_count": 3,
                 "snaps": [
                           {
                           "id": 1,
@@ -19,12 +19,12 @@
                           {
                           "id": 2,
                           "type": "image",
-                          "mediaURL": "www.example.com"
+                          "mediaURL": "https://static.pexels.com/photos/33109/fall-autumn-red-season.jpg"
                           },
                           {
                           "id": 2.1,
                           "type": "image",
-                          "mediaURL": "Story_3"
+                          "mediaURL": "https://static.pexels.com/photos/34950/pexels-photo.jpg"
                           }
                           ]
                 },
@@ -46,7 +46,7 @@
                           {
                           "id": 4,
                           "type": "image",
-                          "mediaURL": "Story_2"
+                          "mediaURL": "https://static.pexels.com/photos/230629/pexels-photo-230629.jpeg"
                           }
                           ]
                 },
@@ -68,7 +68,7 @@
                           {
                           "id": 6,
                           "type": "image",
-                          "mediaURL": "Story_2"
+                          "mediaURL": "https://static.pexels.com/photos/257360/pexels-photo-257360.jpeg"
                           }
                           ]
                 }

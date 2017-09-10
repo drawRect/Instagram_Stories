@@ -10,7 +10,8 @@ import UIKit
 
 class IGStoryPreviewCell: UICollectionViewCell {
 
-    @IBOutlet weak var imageview: UIImageView!
+    @IBOutlet weak var scrollview: UIScrollView!
+    //@IBOutlet weak var imageview: UIImageView!
     var storyHeaderView:IGStoryPreviewHeaderView?
     
     override func awakeFromNib() {

@@ -18,19 +18,22 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zhj-Vm-Ohx">
+                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-HJ-vkw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                    </imageView>
+                        <connections>
+                            <outlet property="delegate" destination="-1" id="Ocd-LD-cbu"/>
+                        </connections>
+                    </scrollView>
                 </subviews>
             </view>
             <constraints>
-                <constraint firstItem="Zhj-Vm-Ohx" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="3fh-q2-Ckn"/>
-                <constraint firstItem="Zhj-Vm-Ohx" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="dAn-CN-07u"/>
-                <constraint firstAttribute="trailing" secondItem="Zhj-Vm-Ohx" secondAttribute="trailing" id="iQY-Uv-okg"/>
-                <constraint firstAttribute="bottom" secondItem="Zhj-Vm-Ohx" secondAttribute="bottom" id="jhh-FR-yev"/>
+                <constraint firstAttribute="trailing" secondItem="iCW-HJ-vkw" secondAttribute="trailing" id="HBy-kM-cLg"/>
+                <constraint firstItem="iCW-HJ-vkw" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fSq-zI-5ii"/>
+                <constraint firstItem="iCW-HJ-vkw" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hVc-p3-xzf"/>
+                <constraint firstAttribute="bottom" secondItem="iCW-HJ-vkw" secondAttribute="bottom" id="mTu-QF-ncs"/>
             </constraints>
             <connections>
-                <outlet property="imageview" destination="Zhj-Vm-Ohx" id="upm-rk-KFe"/>
+                <outlet property="scrollview" destination="iCW-HJ-vkw" id="YGs-ff-cKN"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </collectionViewCell>
