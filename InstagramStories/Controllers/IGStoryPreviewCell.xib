@@ -18,7 +18,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-HJ-vkw">
+                    <scrollView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-HJ-vkw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <connections>
                             <outlet property="delegate" destination="-1" id="Ocd-LD-cbu"/>

@@ -77,16 +77,23 @@ class IGStoryPreviewController: UIViewController {
 
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        print("Will diplay cell")
+        let cell = cell as! IGStoryPreviewCell
+        if indexPath.section == 0
+        {
+            cell.nextSnap(maxContentSize: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[0])!.snapsCount)!))
+        }
+    }
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         
-        return (stories?.count)!
+        return (stories?.count)!-storyIndex
         
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //Start with handpicked story from Home.
-       // return (stories?.count)!-storyIndex
         
-        //return ((stories?.stories?[section])!.snapsCount)!
         return 1
 
     }
@@ -94,13 +101,14 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as! IGStoryPreviewCell
         cell.storyHeaderView?.delegate = self
+        
         //Start with handpicked story from Home.
         let story = stories?.stories?[indexPath.section+storyIndex]
         cell.storyHeaderView?.story = story
         cell.storyHeaderView?.generateSnappers()
         cell.storyHeaderView?.snaperImageView.RK_setImage(urlString: story?.user?.picture ?? "")
         
-        for snapcount in 0..<((stories?.stories?[indexPath.section])!.snapsCount)!
+        for snapcount in 0..<((stories?.stories?[indexPath.section+storyIndex])!.snapsCount)!
         {
             let snap = story?.snaps?[snapcount]
             let xOrigin:CGFloat = CGFloat(snapcount) * cell.scrollview.frame.size.width
@@ -109,11 +117,23 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             cell.scrollview.addSubview(imageView)
         }
         cell.scrollview.contentSize = CGSize(width: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[indexPath.section])!.snapsCount)!) , height: cell.scrollview.frame.size.height)
+        cell.scrollview.delegate = self
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+
+        let currentSection = (self.collectionview.contentOffset.x / self.collectionview.frame.size.width)
+        let cell = self.collectionview!.cellForItem(at: IndexPath(item: 0, section: Int(currentSection))) as! IGStoryPreviewCell
+        if currentSection != 0
+        {
+            cell.nextSnap(maxContentSize: cell.scrollview.contentSize.width)
+        }
     }
     
 }

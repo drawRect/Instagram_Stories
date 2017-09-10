@@ -61,7 +61,7 @@ class IGStoryPreviewHeaderView: UIView {
         for _ in 0..<maxSnaps{
             let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = .red
-            pv.progress = 1.0
+            pv.progress = 0.0
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }

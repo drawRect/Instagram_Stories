@@ -24,5 +24,18 @@ class IGStoryPreviewCell: UICollectionViewCell {
     public class func reuseIdentifier()->String{
         return "IGStoryPreviewCell"
     }
-
+    
+    public func nextSnap(maxContentSize:CGFloat)
+    {
+        if (self.scrollview.contentOffset.x + self.frame.size.width) < maxContentSize
+        {
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: 5.0, delay: 2, options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    self.scrollview.contentOffset.x += self.frame.size.width
+                }, completion: { (Bool) in
+                    self.nextSnap(maxContentSize: maxContentSize)
+                })
+            }
+        }
+    }
 }
