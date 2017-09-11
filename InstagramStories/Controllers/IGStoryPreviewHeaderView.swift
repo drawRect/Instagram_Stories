@@ -56,9 +56,9 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
-    public func progressView(with index:Int,progress:Float) {
+    public func progressView(with index:Int,progress:Double) {
         let pv = progressView.subviews.filter({v in v.tag == index}).first as! IGProgressView
-        pv.progress = pv.progress +  progress
+        pv.progress = pv.progress +  Float(progress)
     }
     
     
@@ -72,7 +72,7 @@ class IGStoryPreviewHeaderView: UIView {
             let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = .red
             pv.progress = 0.0
-            pv.tag = i
+            pv.tag = i+1
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }

@@ -15,6 +15,13 @@ class IGStoryPreviewController: UIViewController {
     public var storiesIndex:Int = 0
     public var storyIndex:Int = 0
     
+    var progressDelay:Double = 0.0
+    var progressBarIndex:Int = 1
+    var animateDelay:Double = 5.0
+    
+    var snapTimer: Timer?
+    var headerview:IGStoryPreviewHeaderView?
+    
     override var prefersStatusBarHidden: Bool { return true }
     var direction: UICollectionViewScrollDirection = .horizontal
     var animator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
@@ -45,6 +52,38 @@ class IGStoryPreviewController: UIViewController {
     @IBAction func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
+    
+    func nextSnap(maxContentSize:CGFloat, scrollview:UIScrollView, headerView:IGStoryPreviewHeaderView)
+    {
+        if (scrollview.contentOffset.x + self.view.frame.size.width) < maxContentSize
+        {
+            headerview = headerView
+            print("HeaderView:\(headerView)")
+            self.progressDelay = self.animateDelay/(self.animateDelay * self.animateDelay)
+            
+            DispatchQueue.main.async {
+                UIView.animate(withDuration: TimeInterval(0), delay: TimeInterval(self.animateDelay), options: UIViewAnimationOptions.curveEaseIn, animations: {
+                    scrollview.contentOffset.x += self.view.frame.size.width
+                }, completion: { (Bool) in
+                    self.nextProgressView()
+                    self.nextSnap(maxContentSize: maxContentSize, scrollview: scrollview, headerView: headerView)
+                })
+            }
+        }
+    }
+    
+    func runprogress()
+    {
+        headerview?.progressView(with: self.progressBarIndex, progress: self.progressDelay)
+    }
+    
+    func nextProgressView()
+    {
+        self.snapTimer?.invalidate()
+        self.progressBarIndex = self.progressBarIndex + 1
+        self.snapTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.runprogress), userInfo: nil, repeats: true)
+    }
+
 
 }
 
@@ -54,10 +93,13 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         print("Will diplay cell")
         let cell = cell as! IGStoryPreviewCell
-        if indexPath.section == 0
+        if((snapTimer) != nil)
         {
-            cell.nextSnap(maxContentSize: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[0])!.snapsCount)!))
+            self.snapTimer?.invalidate()
         }
+        self.progressBarIndex = 1
+        self.nextSnap(maxContentSize: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[indexPath.section+storyIndex])!.snapsCount)!), scrollview: cell.scrollview, headerView: cell.storyHeaderView!)
+        snapTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(runprogress), userInfo: nil, repeats: true)
     }
     
     //@Note:Story->ScrollView->NumberOfSnaps
@@ -91,7 +133,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             })
             cell.scrollview.addSubview(imageView)
         }
-        cell.scrollview.contentSize = CGSize(width: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[indexPath.section])!.snapsCount)!) , height: cell.scrollview.frame.size.height)
+        cell.scrollview.contentSize = CGSize(width: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[indexPath.section+storyIndex])!.snapsCount)!) , height: cell.scrollview.frame.size.height)
         cell.scrollview.delegate = self
         
         return cell
@@ -101,20 +143,12 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-
-        let currentSection = (self.collectionview.contentOffset.x / self.collectionview.frame.size.width)
-        let cell = self.collectionview!.cellForItem(at: IndexPath(item: 0, section: Int(currentSection))) as! IGStoryPreviewCell
-        if currentSection != 0
-        {
-            cell.nextSnap(maxContentSize: cell.scrollview.contentSize.width)
-        }
-    }
-    
 }
 
 extension IGStoryPreviewController:StoryPreviewHeaderTapper {
     func didTapCloseButton() {
+        self.snapTimer?.invalidate()
+        self.progressBarIndex = 1
         self.dismiss(animated: true, completion: nil)
     }
 }
