@@ -59,15 +59,12 @@ class IGStoryPreviewController: UIViewController {
         {
             headerview = headerView
             print("HeaderView:\(headerView)")
+            print("Progress bar index:\(self.progressBarIndex)")
             self.progressDelay = self.animateDelay/(self.animateDelay * self.animateDelay)
-            
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: TimeInterval(0), delay: TimeInterval(self.animateDelay), options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    scrollview.contentOffset.x += self.view.frame.size.width
-                }, completion: { (Bool) in
-                    self.nextProgressView()
-                    self.nextSnap(maxContentSize: maxContentSize, scrollview: scrollview, headerView: headerView)
-                })
+            DispatchQueue.main.asyncAfter(deadline: .now() + animateDelay) {
+                scrollview.contentOffset.x += self.view.frame.size.width
+                self.nextProgressView()
+                self.nextSnap(maxContentSize: maxContentSize, scrollview: scrollview, headerView: headerView)
             }
         }
     }
@@ -84,7 +81,6 @@ class IGStoryPreviewController: UIViewController {
         self.snapTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.runprogress), userInfo: nil, repeats: true)
     }
 
-
 }
 
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
@@ -97,6 +93,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         {
             self.snapTimer?.invalidate()
         }
+        self.collectionview.layer.removeAllAnimations()
         self.progressBarIndex = 1
         self.nextSnap(maxContentSize: cell.scrollview.frame.size.width * CGFloat(((stories?.stories?[indexPath.section+storyIndex])!.snapsCount)!), scrollview: cell.scrollview, headerView: cell.storyHeaderView!)
         snapTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(runprogress), userInfo: nil, repeats: true)
