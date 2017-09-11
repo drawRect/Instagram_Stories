@@ -16,7 +16,7 @@ public struct IGUser {
   private let kIGUserPictureKey: String = "picture"
 
   // MARK: Properties
-  public var internalIdentifier: Int?
+  public var internalIdentifier: String?
   public var name: String?
   public var picture: String?
 
@@ -36,7 +36,7 @@ public struct IGUser {
    - returns: An initalized instance of the class.
   */
   public init(json: JSON) {
-    internalIdentifier = json[kIGUserInternalIdentifierKey].int
+    internalIdentifier = json[kIGUserInternalIdentifierKey].string
     name = json[kIGUserNameKey].string
     picture = json[kIGUserPictureKey].string
   }

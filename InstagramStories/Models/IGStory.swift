@@ -20,7 +20,7 @@ public struct IGStory {
     // MARK: Properties
     public var snapsCount: Int?
     public var snaps: [IGSnap]?
-    public var internalIdentifier: Int?
+    public var internalIdentifier: String?
     public var lastUpdated: Int?
     public var user:IGUser?
     
@@ -42,7 +42,7 @@ public struct IGStory {
     public init(json: JSON) {
         snapsCount = json[kIGStorySnapsCountKey].int
         if let items = json[kIGStorySnapsKey].array { snaps = items.map { IGSnap(json: $0) } }
-        internalIdentifier = json[kIGStoryInternalIdentifierKey].int
+        internalIdentifier = json[kIGStoryInternalIdentifierKey].string
         lastUpdated = json[kIGStoryLastUpdatedKey].int
         user = IGUser.init(json: json[kIGStoryUserKey])
     }

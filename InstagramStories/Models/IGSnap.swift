@@ -16,7 +16,7 @@ public struct IGSnap {
   private let kIGSnapMediaURLKey: String = "mediaURL"
 
   // MARK: Properties
-  public var internalIdentifier: Int?
+  public var internalIdentifier: String?
   public var type: String?
   public var mediaURL: String?
 
@@ -36,7 +36,7 @@ public struct IGSnap {
    - returns: An initalized instance of the class.
   */
   public init(json: JSON) {
-    internalIdentifier = json[kIGSnapInternalIdentifierKey].int
+    internalIdentifier = json[kIGSnapInternalIdentifierKey].string
     type = json[kIGSnapTypeKey].string
     mediaURL = json[kIGSnapMediaURLKey].string
   }

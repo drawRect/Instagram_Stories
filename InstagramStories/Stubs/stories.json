@@ -1,74 +1,40 @@
 {
-    "count": 3,
+    "count": 1,
     "stories": [
                 {
-                "id": 100,
+                "id": "a1",
                 "last_updated": 1504799962,
                 "user": {
-                "name": "Bill",
-                "id": 90,
+                "id": "b1",
+                "name": "John",
                 "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
                 },
-                "snaps_count": 3,
+                "snaps_count": 5,
                 "snaps": [
                           {
-                          "id": 1,
-                          "type": "image",
-                          "mediaURL": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21041739_126118688026384_739808657901879296_n.jpg"
+                          "id": "c1",
+                          "type": "video",
+                          "url": "https://scontent-sin6-1.cdninstagram.com/t50.2886-16/21364209_1893940937538160_3854267384726552576_n.mp4"
                           },
                           {
-                          "id": 2,
-                          "type": "image",
-                          "mediaURL": "https://static.pexels.com/photos/33109/fall-autumn-red-season.jpg"
+                          "id": "c2",
+                          "type": "video",
+                          "url": "https://scontent-bom1-1.cdninstagram.com/t50.2886-16/20075443_2041837312696800_2246612996430233600_n.mp4"
                           },
                           {
-                          "id": 2.1,
+                          "id": "c3",
                           "type": "image",
-                          "mediaURL": "https://static.pexels.com/photos/34950/pexels-photo.jpg"
-                          }
-                          ]
-                },
-                {
-                "id": 101,
-                "last_updated": 1504799962,
-                "user": {
-                "name": "Jobs",
-                "id": 91,
-                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
-                },
-                "snaps_count": 2,
-                "snaps": [
-                          {
-                          "id": 3,
-                          "type": "image",
-                          "mediaURL": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21372275_517628751909858_7889170223360638976_n.jpg"
+                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/17334102_1853945801554235_292167778830385152_n.jpg"
                           },
                           {
-                          "id": 4,
+                          "id": "c4",
                           "type": "image",
-                          "mediaURL": "https://static.pexels.com/photos/230629/pexels-photo-230629.jpeg"
-                          }
-                          ]
-                },
-                {
-                "id": 103,
-                "last_updated": 1504799962,
-                "user": {
-                "name": "Jameson",
-                "id": 93,
-                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
-                },
-                "snaps_count": 2,
-                "snaps": [
-                          {
-                          "id": 5,
-                          "type": "image",
-                          "mediaURL": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21224115_1954561241535581_4834338725074829312_n.jpg"
+                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20686442_313543462441470_7519913257650356224_n.jpg"
                           },
                           {
-                          "id": 6,
+                          "id": "c5",
                           "type": "image",
-                          "mediaURL": "https://static.pexels.com/photos/257360/pexels-photo-257360.jpeg"
+                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20590257_1239496969506135_6559055998961582080_n.jpg"
                           }
                           ]
                 }
