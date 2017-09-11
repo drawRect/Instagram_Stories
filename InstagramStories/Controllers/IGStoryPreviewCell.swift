@@ -11,11 +11,19 @@ import UIKit
 class IGStoryPreviewCell: UICollectionViewCell {
 
     @IBOutlet weak var scrollview: UIScrollView!
-    //@IBOutlet weak var imageview: UIImageView!
+
     var storyHeaderView:IGStoryPreviewHeaderView?
     var progressDelay:Float = 0.0
     var progressBarIndex:Int = 0
     var animateDuration:Float = 5.0
+    public var story:IGStory? {
+        didSet {
+            self.storyHeaderView?.generateSnappers()
+            if let picture = story?.user?.picture {
+                self.storyHeaderView?.snaperImageView.setImage(url: picture)
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,14 +32,8 @@ class IGStoryPreviewCell: UICollectionViewCell {
         self.contentView.addSubview(storyHeaderView!)
     }
     
-    public class func reuseIdentifier()->String{
-        return "IGStoryPreviewCell"
-    }
-    
-    public func nextSnap(maxContentSize:CGFloat)
-    {
-        if (self.scrollview.contentOffset.x + self.frame.size.width) < maxContentSize
-        {
+    public func nextSnap(maxContentSize:CGFloat){
+        if (self.scrollview.contentOffset.x + self.frame.size.width) < maxContentSize{
             DispatchQueue.main.async {
                 UIView.animate(withDuration: TimeInterval(self.animateDuration), delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
                     self.scrollview.contentOffset.x += self.frame.size.width

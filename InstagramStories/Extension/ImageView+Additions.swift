@@ -8,41 +8,48 @@ enum ImageStyle:Int {
 
 extension UIImageView {
     
-    func RK_setImage(urlString:String,imageStyle:ImageStyle = .rounded,completion:@escaping(_ result:Bool,_ error:Error?)->Void) {
+    func setImage(url:String,style:ImageStyle = .rounded,
+                     completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
         
         image = nil
         
-        if urlString.characters.count < 1 {
+        if url.characters.count < 1 {
             return
         }
         backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         
-        if(imageStyle == .rounded) {
+        if(style == .rounded) {
             layer.cornerRadius = frame.height/2
-        }else if(imageStyle == .squared){
+        }else if(style == .squared){
             layer.cornerRadius = 0.0
         }
         
         setShowActivityIndicator(true)
         setIndicatorStyle(.gray)
         
-        if SDWebImageManager.shared().cachedImageExists(for: URL.init(string: urlString) ) {
+        if SDWebImageManager.shared().cachedImageExists(for: URL.init(string: url) ) {
             backgroundColor = .clear
-            sd_setImage(with: URL.init(string: urlString))
+            sd_setImage(with: URL.init(string: url))
             clipsToBounds = true
         }
         else {
-            self.sd_setImage(with: URL.init(string: urlString), placeholderImage:nil, options: [.avoidAutoSetImage,.highPriority,.retryFailed,.delayPlaceholder], completed: { (image, error, cacheType, url) in
+            self.sd_setImage(with: URL.init(string: url), placeholderImage:nil, options: [.avoidAutoSetImage,.highPriority,.retryFailed,.delayPlaceholder], completed: { (image, error, cacheType, url) in
                 if error == nil {
                     DispatchQueue.main.async {
                         self.backgroundColor = .clear
                         self.alpha = 0;
                         self.image = image
-                        completion(true,error)
+                        if let completion = completion {
+                            completion(true,error)
+                        }
                         self.clipsToBounds = true
                         UIView.animate(withDuration: 0.5, animations: {
                             self.alpha = 1
                         })
+                    }
+                }else {
+                    if let completion = completion {
+                        completion(false,error)
                     }
                 }
             })

@@ -63,6 +63,7 @@ public struct IGStory {
     
 }
 
+//@Note:When it required usecase would go more that one struct. try to use it on your custom protocol, and adopt into your structs. Rather than implementating in each structs. #ProtocolOrientedProgramming
 extension IGStory:Equatable {
     public /// Returns a Boolean value indicating whether two values are equal.
     ///

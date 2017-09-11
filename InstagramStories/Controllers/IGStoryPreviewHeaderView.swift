@@ -16,10 +16,10 @@ class IGProgressView:UIProgressView {}
 
 extension IGProgressView:Progresser {
     func didCompleteProgress() {
-    
+        
     }
     func didBeginProgress() {
-    
+        
     }
 }
 
@@ -36,7 +36,7 @@ class IGStoryPreviewHeaderView: UIView {
             maxSnaps  = (story?.snaps?.count)! < maxSnaps ? (story?.snaps?.count)! : maxSnaps
         }
     }
-   
+    
     @IBOutlet weak var progressView: UIView!
     @IBOutlet weak var snaperImageView: UIImageView! {
         didSet {
@@ -45,7 +45,7 @@ class IGStoryPreviewHeaderView: UIView {
         }
     }
     @IBOutlet weak var snaperNameLabel: UILabel!
-
+    
     //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {
         self.delegate?.didTapCloseButton()
@@ -81,14 +81,6 @@ class IGStoryPreviewHeaderView: UIView {
     
 }
 
-extension Bundle {
-    static func loadView<T>(fromNib name: String, withType type: T.Type) -> T {
-        if let view = Bundle.main.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
-            return view
-        }
-        fatalError("Could not load view with type " + String(describing: type))
-    }
-}
 
 extension Int {
     func toFloat()->CGFloat {

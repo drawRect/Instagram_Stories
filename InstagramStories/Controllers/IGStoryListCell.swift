@@ -18,14 +18,20 @@ class IGStoryListCell: UICollectionViewCell {
         }
     }
     @IBOutlet weak var profileNameLabel: UILabel!
+    public var story:IGStory? {
+        didSet {
+            self.profileNameLabel.text = story?.user?.name
+            if let picture = story?.user?.picture {
+                self.profileImageView.setImage(url: picture)
+            }
+        }
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
     
-    public class func reuseIdentifier()->String{
-        return "IGStoryListCell"
-    }
-   
 }
+
+
