@@ -1,5 +1,5 @@
 {
-    "count": 1,
+    "count": 2,
     "stories": [
                 {
                 "id": "a1",
@@ -9,7 +9,7 @@
                 "name": "John",
                 "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
                 },
-                "snaps_count": 5,
+                "snaps_count": 2,
                 "snaps": [
                           {
                           "id": "c1",
@@ -20,7 +20,19 @@
                           "id": "c2",
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20686442_313543462441470_7519913257650356224_n.jpg"
-                          },
+                          }
+                          ]
+                },
+                {
+                "id": "a2",
+                "last_updated": 1504799962,
+                "user": {
+                "id": "b2",
+                "name": "Steve",
+                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
+                },
+                "snaps_count": 3,
+                "snaps": [
                           {
                           "id": "c3",
                           "type": "image",
