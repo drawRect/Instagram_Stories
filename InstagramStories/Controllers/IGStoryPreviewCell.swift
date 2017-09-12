@@ -17,7 +17,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     @IBOutlet weak var scrollview: UIScrollView!
     public var delegate:StoryPreviewProtocol?
     var storyHeaderView:IGStoryPreviewHeaderView?
-    fileprivate var snapIndex:Int = 0 {
+    public var snapIndex:Int = 0 {
         didSet {
             if let snap = story?.snaps?[snapIndex] {
                 if let picture = snap.mediaURL {
@@ -35,13 +35,12 @@ class IGStoryPreviewCell: UICollectionViewCell {
             if let picture = story?.user?.picture {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
-            snapIndex = 0
         }
     }
     
     func generateImageViews() {
         if let count = story?.snapsCount {
-            for index in 0..<count {
+            for index in 0...count-1 {
                 let x:CGFloat = CGFloat(index) * frame.size.width
                 let iv = UIImageView(frame: CGRect(x:x, y:0, width:frame.size.width, height:frame.size.height))
                 iv.tag = index
@@ -74,6 +73,10 @@ class IGStoryPreviewCell: UICollectionViewCell {
         self.contentView.addSubview(storyHeaderView!)
     }
     
+    deinit {
+        scrollview.subviews.forEach({ $0.removeFromSuperview() })
+    }
+   
 }
 
 extension IGStoryPreviewCell:SnapProgresser {

@@ -21,8 +21,12 @@ extension IGSnapProgressView {
             self.delegate?.didCompleteProgress()
         }else {
             progress = progress+0.1
-            didBeginProgress()
+            self.perform(#selector(IGSnapProgressView.delayProcess), with: nil, afterDelay: 0.2)
         }
+    }
+    
+    func delayProcess() {
+        didBeginProgress()
     }
 }
 
@@ -70,7 +74,8 @@ class IGStoryPreviewHeaderView: UIView {
         let pvHeight:CGFloat = 5
         for i in 0..<maxSnaps{
             let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
-            pv.progressTintColor = .red
+            pv.progressTintColor = UIColor.lightGray
+            pv.trackTintColor = UIColor.white
             pv.progress = 0.0
             pv.tag = i
             progressView.addSubview(pv)

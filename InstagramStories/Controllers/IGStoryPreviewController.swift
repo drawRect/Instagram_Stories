@@ -62,11 +62,12 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         cell.storyHeaderView?.delegate = self
         
         //Start with handpicked story from Home.
-        let story = stories?.stories?[indexPath.section+storyIndex]
+        let story = stories?.stories?[indexPath.row+storyIndex]
         cell.story = story
-        cell.delegate = self
         cell.generateImageViews()
+        cell.delegate = self
         cell.scrollview.contentSize = CGSize(width:cell.scrollview.frame.size.width * CGFloat((story?.snapsCount)!), height:cell.scrollview.frame.size.height)
+        cell.snapIndex = 0
         return cell
     }
     

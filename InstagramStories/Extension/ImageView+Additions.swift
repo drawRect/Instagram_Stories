@@ -31,6 +31,9 @@ extension UIImageView {
             backgroundColor = .clear
             sd_setImage(with: URL.init(string: url))
             clipsToBounds = true
+            if let completion = completion {
+                completion(true,nil)
+            }
         }
         else {
             self.sd_setImage(with: URL.init(string: url), placeholderImage:nil, options: [.avoidAutoSetImage,.highPriority,.retryFailed,.delayPlaceholder], completed: { (image, error, cacheType, url) in
