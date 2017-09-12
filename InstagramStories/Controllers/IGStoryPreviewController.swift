@@ -98,4 +98,3 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
     }
 }
 
-    
