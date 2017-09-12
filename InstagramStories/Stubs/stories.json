@@ -13,28 +13,28 @@
                 "snaps": [
                           {
                           "id": "c1",
-                          "type": "video",
-                          "url": "https://scontent-sin6-1.cdninstagram.com/t50.2886-16/21364209_1893940937538160_3854267384726552576_n.mp4"
-                          },
-                          {
-                          "id": "c2",
-                          "type": "video",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t50.2886-16/20075443_2041837312696800_2246612996430233600_n.mp4"
-                          },
-                          {
-                          "id": "c3",
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/17334102_1853945801554235_292167778830385152_n.jpg"
                           },
                           {
-                          "id": "c4",
+                          "id": "c2",
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20686442_313543462441470_7519913257650356224_n.jpg"
                           },
                           {
-                          "id": "c5",
+                          "id": "c3",
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20590257_1239496969506135_6559055998961582080_n.jpg"
+                          },
+                          {
+                          "id": "c4",
+                          "type": "image",
+                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21434169_692022447659663_6822837183586500608_n.jpg"
+                          },
+                          {
+                          "id": "c5",
+                          "type": "image",
+                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21434113_115828119102860_8785064323580952576_n.jpg"
                           }
                           ]
                 }

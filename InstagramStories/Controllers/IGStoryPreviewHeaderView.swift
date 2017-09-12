@@ -8,18 +8,21 @@
 
 import UIKit
 
-protocol Progresser {
+protocol SnapProgresser {
     func didCompleteProgress()
-    func didBeginProgress()
 }
-class IGProgressView:UIProgressView {}
+class IGSnapProgressView:UIProgressView {
+    public var delegate:SnapProgresser?
+}
 
-extension IGProgressView:Progresser {
-    func didCompleteProgress() {
-        
-    }
+extension IGSnapProgressView {
     func didBeginProgress() {
-        
+        if progress == 1.0 {
+            self.delegate?.didCompleteProgress()
+        }else {
+            progress = progress+0.1
+            didBeginProgress()
+        }
     }
 }
 
@@ -30,7 +33,6 @@ protocol StoryPreviewHeaderTapper {
 class IGStoryPreviewHeaderView: UIView {
     public var delegate:StoryPreviewHeaderTapper?
     fileprivate var maxSnaps:Int = 30
-    fileprivate var snapIndex:Int = 0
     public var story:IGStory? {
         didSet {
             maxSnaps  = (story?.snaps?.count)! < maxSnaps ? (story?.snaps?.count)! : maxSnaps
@@ -56,20 +58,18 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
-    public func progressView(with index:Int,progress:Float) {
-        let pv = progressView.subviews.filter({v in v.tag == index}).first as! IGProgressView
-        pv.progress = pv.progress +  progress
+    public func progressView(with index:Int)->IGSnapProgressView {
+        return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
     }
     
-    
     func generateSnappers(){
-        let padding:CGFloat = 8
+        let padding:CGFloat = 8 //GUI-Padding
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
         let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
         let pvHeight:CGFloat = 5
         for i in 0..<maxSnaps{
-            let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
+            let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = .red
             pv.progress = 0.0
             pv.tag = i

@@ -39,12 +39,13 @@ extension UIImageView {
                         self.backgroundColor = .clear
                         self.alpha = 0;
                         self.image = image
-                        if let completion = completion {
-                            completion(true,error)
-                        }
                         self.clipsToBounds = true
-                        UIView.animate(withDuration: 0.5, animations: {
+                        UIView.animate(withDuration: 0.5, animations: { 
                             self.alpha = 1
+                        }, completion: { (done) in
+                            if let completion = completion {
+                                completion(true,error)
+                            }
                         })
                     }
                 }else {

@@ -13,7 +13,7 @@ public struct IGSnap {
   // MARK: Declaration for string constants to be used to decode and also serialize.
   private let kIGSnapInternalIdentifierKey: String = "id"
   private let kIGSnapTypeKey: String = "type"
-  private let kIGSnapMediaURLKey: String = "mediaURL"
+  private let kIGSnapMediaURLKey: String = "url"
 
   // MARK: Properties
   public var internalIdentifier: String?

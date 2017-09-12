@@ -8,21 +8,63 @@
 
 import UIKit
 
+protocol StoryPreviewProtocol {
+    func didCompletePreview()
+}
+
 class IGStoryPreviewCell: UICollectionViewCell {
-
+    
     @IBOutlet weak var scrollview: UIScrollView!
-
+    public var delegate:StoryPreviewProtocol?
     var storyHeaderView:IGStoryPreviewHeaderView?
-    var progressDelay:Float = 0.0
-    var progressBarIndex:Int = 0
-    var animateDuration:Float = 5.0
+    fileprivate var snapIndex:Int = 0 {
+        didSet {
+            if let snap = story?.snaps?[snapIndex] {
+                if let picture = snap.mediaURL {
+                    let iv = self.imageView(with: snapIndex)
+                    startLoadContent(with: iv, picture: picture)
+                }
+            }
+        }
+    }
+    
     public var story:IGStory? {
         didSet {
+            self.storyHeaderView?.story = story
             self.storyHeaderView?.generateSnappers()
             if let picture = story?.user?.picture {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
+            snapIndex = 0
         }
+    }
+    
+    func generateImageViews() {
+        if let count = story?.snapsCount {
+            for index in 0..<count {
+                let x:CGFloat = CGFloat(index) * frame.size.width
+                let iv = UIImageView(frame: CGRect(x:x, y:0, width:frame.size.width, height:frame.size.height))
+                iv.tag = index
+                scrollview.addSubview(iv)
+            }
+        }
+    }
+    
+    public func startLoadContent(with imageView:UIImageView,picture:String) {
+        imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
+            if let error = error {
+                print(error.localizedDescription)
+            }else {
+                //Start the progress
+                let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
+                pv?.delegate = self
+                pv?.didBeginProgress()
+            }
+        })
+    }
+    
+    public func imageView(with index:Int)->UIImageView {
+        return scrollview.subviews.filter({v in v.tag == index}).first as! UIImageView
     }
     
     override func awakeFromNib() {
@@ -32,17 +74,20 @@ class IGStoryPreviewCell: UICollectionViewCell {
         self.contentView.addSubview(storyHeaderView!)
     }
     
-    public func nextSnap(maxContentSize:CGFloat){
-        if (self.scrollview.contentOffset.x + self.frame.size.width) < maxContentSize{
-            DispatchQueue.main.async {
-                UIView.animate(withDuration: TimeInterval(self.animateDuration), delay: 0, options: UIViewAnimationOptions.curveEaseIn, animations: {
-                    self.scrollview.contentOffset.x += self.frame.size.width
-                    self.progressDelay = self.animateDuration/100
-                    self.storyHeaderView?.progressView(with: self.progressBarIndex, progress: 0.1)
-                    self.progressBarIndex = self.progressBarIndex + 1
-                }, completion: { (Bool) in
-                    self.nextSnap(maxContentSize: maxContentSize)
-                })
+}
+
+extension IGStoryPreviewCell:SnapProgresser {
+    func didCompleteProgress() {
+        let n = snapIndex + 1
+        if let count = story?.snapsCount {
+            if n < count {
+                //Move to next story
+                let x = n.toFloat() * frame.width
+                let offset = CGPoint(x:x,y:0)
+                scrollview.setContentOffset(offset, animated: false)
+                snapIndex = n
+            }else {
+                self.delegate?.didCompletePreview()
             }
         }
     }
