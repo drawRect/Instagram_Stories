@@ -62,7 +62,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         cell.storyHeaderView?.delegate = self
         
         //Start with handpicked story from Home.
-        let story = stories?.stories?[indexPath.row]
+        let story = stories?.stories?[indexPath.row+storyIndex]
         cell.story = story
         cell.generateImageViews()
         cell.delegate = self
