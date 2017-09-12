@@ -8,16 +8,26 @@
 
 import UIKit
 
-protocol Progresser {
+protocol SnapProgresser {
     func didCompleteProgress()
-    func didBeginProgress()
 }
-class IGProgressView:UIProgressView {
-    var snapId:String?
+class IGSnapProgressView:UIProgressView {
+    public var delegate:SnapProgresser?
 }
-extension IGProgressView:Progresser {
-    func didCompleteProgress() {}
-    func didBeginProgress() {}
+
+extension IGSnapProgressView {
+    func didBeginProgress() {
+        if progress == 1.0 {
+            self.delegate?.didCompleteProgress()
+        }else {
+            progress = progress+0.1
+            self.perform(#selector(IGSnapProgressView.delayProcess), with: nil, afterDelay: 0.2)
+        }
+    }
+    
+    func delayProcess() {
+        didBeginProgress()
+    }
 }
 
 protocol StoryPreviewHeaderTapper {
@@ -32,7 +42,7 @@ class IGStoryPreviewHeaderView: UIView {
             maxSnaps  = (story?.snaps?.count)! < maxSnaps ? (story?.snaps?.count)! : maxSnaps
         }
     }
-   
+    
     @IBOutlet weak var progressView: UIView!
     @IBOutlet weak var snaperImageView: UIImageView! {
         didSet {
@@ -41,7 +51,7 @@ class IGStoryPreviewHeaderView: UIView {
         }
     }
     @IBOutlet weak var snaperNameLabel: UILabel!
-
+    
     //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {
         self.delegate?.didTapCloseButton()
@@ -52,16 +62,22 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
+    public func progressView(with index:Int)->IGSnapProgressView {
+        return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
+    }
+    
     func generateSnappers(){
-        let padding:CGFloat = 8
+        let padding:CGFloat = 8 //GUI-Padding
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-5
         let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
         let pvHeight:CGFloat = 5
-        for _ in 0..<maxSnaps{
-            let pv = IGProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
-            pv.progressTintColor = .red
-            pv.progress = 1.0
+        for i in 0..<maxSnaps{
+            let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
+            pv.progressTintColor = UIColor.lightGray
+            pv.trackTintColor = UIColor.white
+            pv.progress = 0.0
+            pv.tag = i
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }
@@ -70,14 +86,6 @@ class IGStoryPreviewHeaderView: UIView {
     
 }
 
-extension Bundle {
-    static func loadView<T>(fromNib name: String, withType type: T.Type) -> T {
-        if let view = Bundle.main.loadNibNamed(name, owner: nil, options: nil)?.first as? T {
-            return view
-        }
-        fatalError("Could not load view with type " + String(describing: type))
-    }
-}
 
 extension Int {
     func toFloat()->CGFloat {

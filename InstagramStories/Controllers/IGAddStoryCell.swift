@@ -15,7 +15,4 @@ class IGAddStoryCell: UICollectionViewCell {
         // Initialization code
     }
 
-    public class func reuseIdentifier()->String{
-        return "IGAddStoryCell"
-    }
 }

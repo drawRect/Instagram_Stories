@@ -13,10 +13,10 @@ public struct IGSnap {
   // MARK: Declaration for string constants to be used to decode and also serialize.
   private let kIGSnapInternalIdentifierKey: String = "id"
   private let kIGSnapTypeKey: String = "type"
-  private let kIGSnapMediaURLKey: String = "mediaURL"
+  private let kIGSnapMediaURLKey: String = "url"
 
   // MARK: Properties
-  public var internalIdentifier: Int?
+  public var internalIdentifier: String?
   public var type: String?
   public var mediaURL: String?
 
@@ -36,7 +36,7 @@ public struct IGSnap {
    - returns: An initalized instance of the class.
   */
   public init(json: JSON) {
-    internalIdentifier = json[kIGSnapInternalIdentifierKey].int
+    internalIdentifier = json[kIGSnapInternalIdentifierKey].string
     type = json[kIGSnapTypeKey].string
     mediaURL = json[kIGSnapMediaURLKey].string
   }

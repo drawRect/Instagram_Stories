@@ -20,7 +20,7 @@ public struct IGStory {
     // MARK: Properties
     public var snapsCount: Int?
     public var snaps: [IGSnap]?
-    public var internalIdentifier: Int?
+    public var internalIdentifier: String?
     public var lastUpdated: Int?
     public var user:IGUser?
     
@@ -42,7 +42,7 @@ public struct IGStory {
     public init(json: JSON) {
         snapsCount = json[kIGStorySnapsCountKey].int
         if let items = json[kIGStorySnapsKey].array { snaps = items.map { IGSnap(json: $0) } }
-        internalIdentifier = json[kIGStoryInternalIdentifierKey].int
+        internalIdentifier = json[kIGStoryInternalIdentifierKey].string
         lastUpdated = json[kIGStoryLastUpdatedKey].int
         user = IGUser.init(json: json[kIGStoryUserKey])
     }
@@ -63,6 +63,7 @@ public struct IGStory {
     
 }
 
+//@Note:When it required usecase would go more that one struct. try to use it on your custom protocol, and adopt into your structs. Rather than implementating in each structs. #ProtocolOrientedProgramming
 extension IGStory:Equatable {
     public /// Returns a Boolean value indicating whether two values are equal.
     ///

@@ -18,7 +18,7 @@ public struct IGStories {
     // MARK: Properties
     public var count: Int?
     public var stories: [IGStory]?
-    public var internalIdentifier: Int?
+    public var internalIdentifier: String?
     
     // MARK: SwiftyJSON Initalizers
     /**
@@ -38,7 +38,7 @@ public struct IGStories {
     public init(json: JSON) {
         count = json[kIGStoriesCountKey].int
         if let items = json[kIGStoriesStoriesKey].array { stories = items.map { IGStory(json: $0) } }
-        internalIdentifier = json[kIGStoriesInternalIdentifierKey].int
+        internalIdentifier = json[kIGStoriesInternalIdentifierKey].string
     }
     
     /**

@@ -8,16 +8,15 @@
 
 import UIKit
 
+
 class IGHomeController: UIViewController {
     
     @IBOutlet weak var storiesCollectionView: UICollectionView! {
         didSet {
             storiesCollectionView.delegate = self
             storiesCollectionView.dataSource = self
-            let storyListNib = UINib.init(nibName: IGStoryListCell.reuseIdentifier(), bundle: nil)
-            storiesCollectionView.register(storyListNib, forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
-            let addStoryNib = UINib.init(nibName: IGAddStoryCell.reuseIdentifier(), bundle: nil)
-            storiesCollectionView.register(addStoryNib, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
+            storiesCollectionView.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
+            storiesCollectionView.register(IGAddStoryCell.nib(), forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
         }
     }
     //Keep it Immutable! don't get Dirty :P
@@ -41,9 +40,7 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         }else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as! IGStoryListCell
             // Add Story cell
-            let story = stories.stories?[indexPath.row-1]
-            cell.profileNameLabel.text = story?.user?.name
-            cell.profileImageView.RK_setImage(urlString: story?.user?.picture ?? "")
+            cell.story = stories.stories?[indexPath.row-1]
             return cell
         }
     }

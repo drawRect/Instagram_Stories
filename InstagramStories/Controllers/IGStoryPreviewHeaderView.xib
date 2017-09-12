@@ -18,6 +18,7 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m0F-co-YbD">
                     <rect key="frame" x="0.0" y="8" width="375" height="10"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="10" id="cia-pD-LMb"/>
                     </constraints>
@@ -49,7 +50,7 @@
                     </constraints>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.051909110915492961" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstItem="Vod-kW-TXa" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="5r5-5z-Un0"/>
                 <constraint firstItem="Vod-kW-TXa" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" id="6ci-Hq-DBp"/>
