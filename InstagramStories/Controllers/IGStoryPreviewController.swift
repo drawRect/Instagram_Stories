@@ -37,7 +37,6 @@ class IGStoryPreviewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Story"
-        self.automaticallyAdjustsScrollViewInsets = false
         dismissGesture.direction = direction == .horizontal ? .down : .left
     }
     

@@ -14,6 +14,7 @@ protocol StoryPreviewProtocol {
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var scrollview: UIScrollView!
     public var delegate:StoryPreviewProtocol?
     var storyHeaderView:IGStoryPreviewHeaderView?
@@ -70,7 +71,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
         super.awakeFromNib()
         storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
         storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
-        self.contentView.addSubview(storyHeaderView!)
+        self.headerView.addSubview(storyHeaderView!)
     }
     
     deinit {
