@@ -52,7 +52,7 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
             //reducing Coz,Add Story cell
-            storyPreviewScene.storyIndex = indexPath.row-1
+            storyPreviewScene.handPickedIndex = indexPath.row-1
             self.present(storyPreviewScene, animated: true, completion: nil)
         }
     }

@@ -12,7 +12,8 @@ import AnimatedCollectionViewLayout
 class IGStoryPreviewController: UIViewController {
     
     public var stories:IGStories?
-    public var storyIndex:Int = 0
+    var storyIndex:Int = 0
+    public var handPickedIndex:Int = 0
     
     override var prefersStatusBarHidden: Bool { return true }
     var direction: UICollectionViewScrollDirection = .horizontal
@@ -54,7 +55,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (stories?.count)!-storyIndex
+        return (stories?.count)!-handPickedIndex
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -62,7 +63,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         cell.storyHeaderView?.delegate = self
         
         //Start with handpicked story from Home.
-        let story = stories?.stories?[indexPath.row+storyIndex]
+        let story = stories?.stories?[indexPath.row+handPickedIndex]
         cell.story = story
         cell.generateImageViews()
         cell.delegate = self
