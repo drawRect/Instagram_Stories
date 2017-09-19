@@ -86,7 +86,6 @@ class IGStoryPreviewHeaderView: UIView {
     
 }
 
-
 extension Int {
     func toFloat()->CGFloat {
         return CGFloat(self)

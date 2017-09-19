@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class IGHomeController: UIViewController {
     
     @IBOutlet weak var storiesCollectionView: UICollectionView! {
@@ -24,21 +23,25 @@ class IGHomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Home"
-        self.automaticallyAdjustsScrollViewInsets = false
+        title = "Home"
+        automaticallyAdjustsScrollViewInsets = false
     }
 }
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return stories.count! + 1 // Add Story cell
+        if let count = stories.count {
+            return count + 1 // Add Story cell
+        }
+        return 1
     }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGAddStoryCell.reuseIdentifier(),for: indexPath) as! IGAddStoryCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGAddStoryCell.reuseIdentifier(),for: indexPath) as? IGAddStoryCell else { return UICollectionViewCell() }
             return cell
         }else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as! IGStoryListCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
             // Add Story cell
             cell.story = stories.stories?[indexPath.row-1]
             return cell
@@ -52,8 +55,8 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
             //reducing Coz,Add Story cell
-            storyPreviewScene.storyIndex = indexPath.row-1
-            self.present(storyPreviewScene, animated: true, completion: nil)
+            storyPreviewScene.handPickedIndex = indexPath.row-1
+            present(storyPreviewScene, animated: true, completion: nil)
         }
     }
     
@@ -66,15 +69,16 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
 
 extension IGHomeController {
     class func loadStubbedData()->IGStories? {
-        let url = Bundle.main.url(forResource: "stories", withExtension: "json")
-        let data = NSData(contentsOf: url!)
+        guard let url = Bundle.main.url(forResource: "stories", withExtension: "json") else {return nil}
+        guard let data = try? Data.init(contentsOf: url) else { return nil }
         do {
-            let wrapped = try JSONSerialization.jsonObject(with: data! as Data, options: .allowFragments) as! [String:Any]
-            return IGStories.init(object: wrapped)
+            if let wrapped = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String:Any] {
+                return IGStories.init(object: wrapped)
+            }
         } catch {
             // Handle Error
             debugPrint(error)
-            return nil
         }
+        return nil
     }
 }

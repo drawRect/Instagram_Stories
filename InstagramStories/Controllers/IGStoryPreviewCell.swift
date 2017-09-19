@@ -14,6 +14,7 @@ protocol StoryPreviewProtocol {
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
+    @IBOutlet weak var headerView: UIView!
     @IBOutlet weak var scrollview: UIScrollView!
     public var delegate:StoryPreviewProtocol?
     var storyHeaderView:IGStoryPreviewHeaderView?
@@ -30,11 +31,13 @@ class IGStoryPreviewCell: UICollectionViewCell {
     
     public var story:IGStory? {
         didSet {
-            self.storyHeaderView?.story = story
-            self.storyHeaderView?.generateSnappers()
+            storyHeaderView?.story = story
+            storyHeaderView?.generateSnappers()
             if let picture = story?.user?.picture {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
+            generateImageViews()
+            snapIndex = 0
         }
     }
     
@@ -46,6 +49,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 iv.tag = index
                 scrollview.addSubview(iv)
             }
+            scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
         }
     }
     
@@ -70,7 +74,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
         super.awakeFromNib()
         storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
         storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
-        self.contentView.addSubview(storyHeaderView!)
+        self.headerView.addSubview(storyHeaderView!)
     }
     
     deinit {

@@ -12,7 +12,8 @@ import AnimatedCollectionViewLayout
 class IGStoryPreviewController: UIViewController {
     
     public var stories:IGStories?
-    public var storyIndex:Int = 0
+    var storyIndex:Int = 0
+    public var handPickedIndex:Int = 0
     
     override var prefersStatusBarHidden: Bool { return true }
     var direction: UICollectionViewScrollDirection = .horizontal
@@ -36,7 +37,6 @@ class IGStoryPreviewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Story"
-        self.automaticallyAdjustsScrollViewInsets = false
         dismissGesture.direction = direction == .horizontal ? .down : .left
     }
     
@@ -54,20 +54,20 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (stories?.count)!-storyIndex
+        if let count = stories?.count {
+            return count-handPickedIndex
+        }
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as! IGStoryPreviewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
         
         //Start with handpicked story from Home.
-        let story = stories?.stories?[indexPath.row]
+        let story = stories?.stories?[indexPath.row+handPickedIndex]
         cell.story = story
-        cell.generateImageViews()
         cell.delegate = self
-        cell.scrollview.contentSize = CGSize(width:cell.scrollview.frame.size.width * CGFloat((story?.snapsCount)!), height:cell.scrollview.frame.size.height)
-        cell.snapIndex = 0
         return cell
     }
     
