@@ -11,13 +11,14 @@ import UIKit
 protocol StoryPreviewHeaderTapper {
     func didTapCloseButton()
 }
+fileprivate let maxSnaps = 30
 
 class IGStoryPreviewHeaderView: UIView {
     public var delegate:StoryPreviewHeaderTapper?
-    fileprivate var maxSnaps:Int = 30
+    fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
         didSet {
-            maxSnaps  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
+            snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
         }
     }
     
@@ -50,8 +51,8 @@ class IGStoryPreviewHeaderView: UIView {
         let pvHeight:CGFloat = 5
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight //Height:5
-        let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
-        for i in 0..<maxSnaps{
+        let pvWidth = (UIScreen.main.bounds.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
+        for i in 0..<snapsPerStory{
             let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = UIColor.white
             pv.trackTintColor = UIColor.white.withAlphaComponent(0.2)

@@ -28,9 +28,7 @@ extension IGSnapProgressView {
             progress = progress+0.1
             self.perform(#selector(delayProcess), with: nil, afterDelay: 0.1)
         }
-        
-        print("Progress:\(progress)")
-        
+
     }
     
     func didBeginProgress() {

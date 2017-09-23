@@ -23,7 +23,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
             if let snap = story?.snaps?[snapIndex] {
                 if let picture = snap.mediaURL {
                     let iv = self.imageView(with: snapIndex)
-                    print("Calling Did Set")
                     startLoadContent(with: iv, picture: picture)
                 }
             }
@@ -92,7 +91,6 @@ extension IGStoryPreviewCell:SnapProgresser {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next snap
-                print("Snap Index:\(n)")
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)
