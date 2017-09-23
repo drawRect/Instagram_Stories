@@ -51,7 +51,6 @@ class IGStoryPreviewHeaderView: UIView {
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight //Height:5
         let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
-        
         for i in 0..<maxSnaps{
             let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = UIColor.white

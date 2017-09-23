@@ -80,9 +80,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
         self.headerView.addSubview(storyHeaderView!)
     }
     
-   /* deinit {
-        scrollview.subviews.forEach({ $0.removeFromSuperview() })
-    }*/
+    override func prepareForReuse() {
+         self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
+    }
    
 }
 
