@@ -32,7 +32,8 @@ extension UIImageView {
             sd_setImage(with: URL.init(string: url))
             clipsToBounds = true
             if let completion = completion {
-                completion(true,nil)
+                print("Counting in If")
+                return completion(true,nil)
             }
         }
         else {
@@ -47,13 +48,14 @@ extension UIImageView {
                             self.alpha = 1
                         }, completion: { (done) in
                             if let completion = completion {
-                                completion(true,error)
+                                print("Counting in else")
+                                return completion(true,error)
                             }
                         })
                     }
                 }else {
                     if let completion = completion {
-                        completion(false,error)
+                        return completion(false,error)
                     }
                 }
             })

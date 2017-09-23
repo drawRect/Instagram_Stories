@@ -14,7 +14,7 @@ protocol StoryPreviewProtocol {
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
-    @IBOutlet weak var headerView: UIView!
+    @IBOutlet weak private var headerView: UIView!
     @IBOutlet weak var scrollview: UIScrollView!
     public var delegate:StoryPreviewProtocol?
     var storyHeaderView:IGStoryPreviewHeaderView?
@@ -23,6 +23,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
             if let snap = story?.snaps?[snapIndex] {
                 if let picture = snap.mediaURL {
                     let iv = self.imageView(with: snapIndex)
+                    print("Calling Did Set")
                     startLoadContent(with: iv, picture: picture)
                 }
             }
@@ -37,7 +38,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
             generateImageViews()
-            snapIndex = 0
+            //snapIndex = 0
         }
     }
     
@@ -61,7 +62,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 //Start the progress
                 let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
                 pv?.delegate = self
-                pv?.didBeginProgress()
+                DispatchQueue.main.async {
+                 pv?.didBeginProgress()
+                }
             }
         })
     }
@@ -77,9 +80,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
         self.headerView.addSubview(storyHeaderView!)
     }
     
-    deinit {
+   /* deinit {
         scrollview.subviews.forEach({ $0.removeFromSuperview() })
-    }
+    }*/
    
 }
 
@@ -88,7 +91,8 @@ extension IGStoryPreviewCell:SnapProgresser {
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {
-                //Move to next story
+                //Move to next snap
+                print("Snap Index:\(n)")
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)

@@ -8,28 +8,6 @@
 
 import UIKit
 
-protocol SnapProgresser {
-    func didCompleteProgress()
-}
-class IGSnapProgressView:UIProgressView {
-    public var delegate:SnapProgresser?
-}
-
-extension IGSnapProgressView {
-    func didBeginProgress() {
-        if progress == 1.0 {
-            self.delegate?.didCompleteProgress()
-        }else {
-            progress = progress+0.1
-            self.perform(#selector(IGSnapProgressView.delayProcess), with: nil, afterDelay: 0.2)
-        }
-    }
-    
-    func delayProcess() {
-        didBeginProgress()
-    }
-}
-
 protocol StoryPreviewHeaderTapper {
     func didTapCloseButton()
 }
@@ -39,7 +17,7 @@ class IGStoryPreviewHeaderView: UIView {
     fileprivate var maxSnaps:Int = 30
     public var story:IGStory? {
         didSet {
-            maxSnaps  = (story?.snaps?.count)! < maxSnaps ? (story?.snaps?.count)! : maxSnaps
+            maxSnaps  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
         }
     }
     
@@ -57,27 +35,31 @@ class IGStoryPreviewHeaderView: UIView {
         self.delegate?.didTapCloseButton()
     }
     
+    //MARK: - Class functions
     class func instanceFromNib() -> IGStoryPreviewHeaderView {
         let view =  Bundle.loadView(fromNib: "IGStoryPreviewHeaderView", withType: IGStoryPreviewHeaderView.self)
         return view
     }
     
+    //MARK: - Public functions
     public func progressView(with index:Int)->IGSnapProgressView {
         return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
     }
-    
-    func generateSnappers(){
+    public func generateSnappers(){
         let padding:CGFloat = 8 //GUI-Padding
-        var pvX:CGFloat = padding
-        let pvY:CGFloat = (self.progressView.frame.height/2)-5
-        let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
         let pvHeight:CGFloat = 5
+        var pvX:CGFloat = padding
+        let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight //Height:5
+        let pvWidth = (UIScreen.main.bounds.width - ((maxSnaps+1).toFloat() * padding))/maxSnaps.toFloat()
+        
         for i in 0..<maxSnaps{
             let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
-            pv.progressTintColor = UIColor.lightGray
-            pv.trackTintColor = UIColor.white
+            pv.progressTintColor = UIColor.white
+            pv.trackTintColor = UIColor.white.withAlphaComponent(0.2)
             pv.progress = 0.0
             pv.tag = i
+            pv.layer.cornerRadius = pvHeight/2
+            pv.layer.masksToBounds = true
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }

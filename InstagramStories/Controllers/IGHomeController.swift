@@ -10,7 +10,7 @@ import UIKit
 
 class IGHomeController: UIViewController {
     
-    @IBOutlet weak var storiesCollectionView: UICollectionView! {
+    @IBOutlet weak private var storiesCollectionView: UICollectionView! {
         didSet {
             storiesCollectionView.delegate = self
             storiesCollectionView.dataSource = self
@@ -51,11 +51,12 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             //Add own story
+            debugPrint("Need to implement!")
         }else{
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
             //reducing Coz,Add Story cell
-            storyPreviewScene.handPickedIndex = indexPath.row-1
+            storyPreviewScene.storyIndex = indexPath.row-1
             present(storyPreviewScene, animated: true, completion: nil)
         }
     }

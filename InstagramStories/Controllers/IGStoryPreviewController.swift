@@ -11,11 +11,10 @@ import AnimatedCollectionViewLayout
 
 class IGStoryPreviewController: UIViewController {
     
+    //MARK: - iVars
     public var stories:IGStories?
-    var storyIndex:Int = 0
-    public var handPickedIndex:Int = 0
+    public var storyIndex:Int = 0
     
-    override var prefersStatusBarHidden: Bool { return true }
     var direction: UICollectionViewScrollDirection = .horizontal
     var animator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
     
@@ -26,7 +25,7 @@ class IGStoryPreviewController: UIViewController {
             collectionview.dataSource = self
             collectionview.register(IGStoryPreviewCell.nib(), forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
             collectionview?.isPagingEnabled = true
-            
+            collectionview.isPrefetchingEnabled = false
             if let layout = collectionview?.collectionViewLayout as? AnimatedCollectionViewLayout {
                 layout.scrollDirection = direction
                 layout.animator = animator.0
@@ -34,12 +33,19 @@ class IGStoryPreviewController: UIViewController {
         }
     }
     
+    //MARK: - Lifecycle functions
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Story"
         dismissGesture.direction = direction == .horizontal ? .down : .left
+        /* let nIndexPath = IndexPath.init(row: storyIndex, section: 0)
+         collectionview.scrollToItem(at: nIndexPath, at: .centeredHorizontally, animated: true)*/
+        print("Story\(storyIndex)")
     }
     
+    override var prefersStatusBarHidden: Bool { return true }
+    
+    //MARK: - Selectors
     @IBAction func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
@@ -55,7 +61,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = stories?.count {
-            return count-handPickedIndex
+            return count
         }
         return 0
     }
@@ -64,10 +70,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
         
-        //Start with handpicked story from Home.
-        let story = stories?.stories?[indexPath.row+handPickedIndex]
+        let story = stories?.stories?[indexPath.row]
         cell.story = story
         cell.delegate = self
+        cell.snapIndex = 0
+        
         return cell
     }
     
@@ -89,8 +96,10 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
             if n < count {
                 //Move to next story
                 storyIndex = storyIndex + 1
-                let nIndexPath = IndexPath.init(row: storyIndex, section: 0)
-                collectionview.scrollToItem(at: nIndexPath, at: .centeredHorizontally, animated: true)
+                print("Story\(storyIndex)")
+                let nIndexPath = IndexPath.init(row: self.storyIndex, section: 0)
+                self.collectionview.scrollToItem(at: nIndexPath, at: .right, animated: true)
+                
             }else {
                 self.dismiss(animated: true, completion: nil)
             }
