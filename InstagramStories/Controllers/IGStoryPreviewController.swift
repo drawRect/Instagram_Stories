@@ -81,12 +81,22 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
-    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        nIndex = nIndex + 1
-        self.previewScrollerDelegate?.didScrollStoryPreview()
+        let pageWidth = scrollView.frame.size.width
+        let fractionalPage = scrollView.contentOffset.x / pageWidth
+        let page = lroundf(Float(fractionalPage))
+        if page != 0 && page != (stories?.count)!-1 {
+            if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
+                nIndex = nIndex - 1 // back to previous story
+            }else{
+                nIndex = nIndex + 1 // go to next story
+            }
+            print("Nindex:\(nIndex)")
+            if nIndex != 0 && storyIndex+nIndex+1 != (stories?.count)!{
+                self.previewScrollerDelegate?.didScrollStoryPreview()
+            }
+        }
     }
-
 }
 
 extension IGStoryPreviewController:StoryPreviewHeaderTapper {

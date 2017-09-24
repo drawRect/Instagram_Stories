@@ -58,7 +58,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     public func startLoadContent(with imageView:UIImageView,picture:String) {
-        operationQueue.addOperation({
+        let ivOperation =  BlockOperation() {
             imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
                 //print("Loading content")
                 if let error = error {
@@ -72,7 +72,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
                     }
                 }
             })
-        })
+        }
+        operationQueue.addOperations([ivOperation], waitUntilFinished: false)
+        operationQueue.maxConcurrentOperationCount = 1
     }
     
     public func imageView(with index:Int)->UIImageView {

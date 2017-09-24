@@ -86,13 +86,13 @@ extension IGStoryPreviewHeaderView:didStoryPreviewScroller {
     func didScrollStoryPreview() {
         let cell = superview?.superview?.superview as! IGStoryPreviewCell
         cell.operationQueue.cancelAllOperations()
+        print("Number of operations:\(cell.operationQueue.operationCount)")
         let pvBaseView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
             v == self.progressView
         }).first
         let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
         progressViews.forEach({v in v.stopTimer()})
         cell.snapIndex = cell.story?.snapsCount ?? 0
-        print("Number of operations:\(cell.operationQueue.operationCount)")
         //let timers = progressViews.filter({p in p.progressor?.isValid==true})
     }
 }
