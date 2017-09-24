@@ -9,12 +9,17 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
+protocol didStoryPreviewScroller:class {
+    func didScrollStoryPreview()
+}
+
 class IGStoryPreviewController: UIViewController {
     
     //MARK: - iVars
     public var stories:IGStories?
     public var storyIndex:Int = 0
     internal var nIndex:Int = 0
+    public var previewScrollerDelegate:didStoryPreviewScroller?
     
     var direction: UICollectionViewScrollDirection = .horizontal
     var animator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
@@ -68,7 +73,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         cell.story = story
         cell.delegate = self
         cell.snapIndex = 0
-        
+        self.previewScrollerDelegate = cell.storyHeaderView
         return cell
     }
     
@@ -76,6 +81,12 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        nIndex = nIndex + 1
+        self.previewScrollerDelegate?.didScrollStoryPreview()
+    }
+
 }
 
 extension IGStoryPreviewController:StoryPreviewHeaderTapper {

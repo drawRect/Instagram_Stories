@@ -11,29 +11,36 @@ import UIKit
 protocol SnapProgresser {
     func didCompleteProgress()
 }
+fileprivate let interval:Float = 0.1
+
 class IGSnapProgressView:UIProgressView {
     public var delegate:SnapProgresser?
+    internal var elapsedTime:Float = 0.0
+    internal var progressor:Timer?
 }
 
 extension IGSnapProgressView {
     
     func delayProcess() {
-        
-        let progressValue:Float = Float(String(format: "%.1f", progress))!
-        
-        if progressValue == 1.0 {
-            progress = 0.0
+        if elapsedTime >= 1.0 {
+            stopTimer()
             self.delegate?.didCompleteProgress()
-        }else {
-            progress = progress+0.1
-            self.perform(#selector(delayProcess), with: nil, afterDelay: 0.1)
+        }else{
+            elapsedTime += 0.1
+            progress = progress + 0.1
         }
-
     }
     
-    func didBeginProgress() {
-        delayProcess()
+    public func stopTimer(){
+        progressor?.invalidate()
+        progressor = nil
+    }
+    
+    public func didBeginProgress() {
+        elapsedTime = 0.0
+        progressor = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target: self, selector: #selector(IGSnapProgressView.delayProcess), userInfo: nil, repeats: true)
     }
     
 }
+
 

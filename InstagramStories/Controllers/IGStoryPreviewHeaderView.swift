@@ -42,6 +42,14 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
+    override func awakeFromNib() {
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.layer.shadowRadius = 1
+    }
+    
     //MARK: - Public functions
     public func progressView(with index:Int)->IGSnapProgressView {
         return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
@@ -58,7 +66,7 @@ class IGStoryPreviewHeaderView: UIView {
             pv.trackTintColor = UIColor.white.withAlphaComponent(0.2)
             pv.progress = 0.0
             pv.tag = i
-            pv.layer.cornerRadius = pvHeight/2
+            pv.layer.cornerRadius = 2
             pv.layer.masksToBounds = true
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
@@ -71,5 +79,20 @@ class IGStoryPreviewHeaderView: UIView {
 extension Int {
     func toFloat()->CGFloat {
         return CGFloat(self)
+    }
+}
+
+extension IGStoryPreviewHeaderView:didStoryPreviewScroller {
+    func didScrollStoryPreview() {
+        let cell = superview?.superview?.superview as! IGStoryPreviewCell
+        cell.operationQueue.cancelAllOperations()
+        let pvBaseView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
+            v == self.progressView
+        }).first
+        let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
+        progressViews.forEach({v in v.stopTimer()})
+        cell.snapIndex = cell.story?.snapsCount ?? 0
+        print("Number of operations:\(cell.operationQueue.operationCount)")
+        //let timers = progressViews.filter({p in p.progressor?.isValid==true})
     }
 }

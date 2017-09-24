@@ -18,12 +18,16 @@ class IGStoryPreviewCell: UICollectionViewCell {
     @IBOutlet weak var scrollview: UIScrollView!
     public var delegate:StoryPreviewProtocol?
     var storyHeaderView:IGStoryPreviewHeaderView?
+    lazy var operationQueue = OperationQueue.init()
+    //internal let operationQueue:OperationQueue
     public var snapIndex:Int = 0 {
         didSet {
-            if let snap = story?.snaps?[snapIndex] {
-                if let picture = snap.mediaURL {
-                    let iv = self.imageView(with: snapIndex)
-                    startLoadContent(with: iv, picture: picture)
+            if snapIndex < story?.snapsCount ?? 0 {
+                if let snap = story?.snaps?[snapIndex] {
+                    if let picture = snap.mediaURL {
+                        let iv = self.imageView(with: snapIndex)
+                        self.startLoadContent(with: iv, picture: picture)
+                    }
                 }
             }
         }
@@ -54,17 +58,20 @@ class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     public func startLoadContent(with imageView:UIImageView,picture:String) {
-        imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
-            if let error = error {
-                print(error.localizedDescription)
-            }else {
-                //Start the progress
-                let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
-                pv?.delegate = self
-                DispatchQueue.main.async {
-                 pv?.didBeginProgress()
+        operationQueue.addOperation({
+            imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
+                //print("Loading content")
+                if let error = error {
+                    print(error.localizedDescription)
+                }else {
+                    //Start the progress
+                    let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
+                    pv?.delegate = self
+                    DispatchQueue.main.async {
+                        pv?.didBeginProgress()
+                    }
                 }
-            }
+            })
         })
     }
     
@@ -80,9 +87,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-         self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
+        self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
     }
-   
+    
 }
 
 extension IGStoryPreviewCell:SnapProgresser {

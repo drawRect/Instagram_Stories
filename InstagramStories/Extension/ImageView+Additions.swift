@@ -6,8 +6,9 @@ enum ImageStyle:Int {
     case rounded
 }
 
+
 extension UIImageView {
-    
+ 
     func setImage(url:String,style:ImageStyle = .rounded,
                      completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
         
@@ -17,7 +18,6 @@ extension UIImageView {
             return
         }
         backgroundColor = UIColor.rgb(from: 0xEDF0F1)
-        
         if(style == .rounded) {
             layer.cornerRadius = frame.height/2
         }else if(style == .squared){
