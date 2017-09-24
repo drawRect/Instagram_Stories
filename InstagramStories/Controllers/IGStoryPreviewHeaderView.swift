@@ -14,6 +14,16 @@ protocol StoryPreviewHeaderTapper {
 fileprivate let maxSnaps = 30
 
 class IGStoryPreviewHeaderView: UIView {
+    //MARK: - Overriden functions
+    //Warning: If you use this following shadow one more time. Please create UIView+Additions(Extension)
+    override func awakeFromNib() {
+        self.layer.masksToBounds = false
+        self.layer.shadowColor = UIColor.black.cgColor
+        self.layer.shadowOpacity = 0.5
+        self.layer.shadowOffset = CGSize(width: -1, height: 1)
+        self.layer.shadowRadius = 1
+    }
+    
     public var delegate:StoryPreviewHeaderTapper?
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
@@ -42,13 +52,6 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
-    override func awakeFromNib() {
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowOffset = CGSize(width: -1, height: 1)
-        self.layer.shadowRadius = 1
-    }
     
     //MARK: - Public functions
     public func progressView(with index:Int)->IGSnapProgressView {
@@ -58,8 +61,8 @@ class IGStoryPreviewHeaderView: UIView {
         let padding:CGFloat = 8 //GUI-Padding
         let pvHeight:CGFloat = 5
         var pvX:CGFloat = padding
-        let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight //Height:5
-        let pvWidth = (UIScreen.main.bounds.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
+        let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight
+        let pvWidth = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
             let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = UIColor.white
@@ -82,7 +85,7 @@ extension Int {
     }
 }
 
-extension IGStoryPreviewHeaderView:didStoryPreviewScroller {
+extension IGStoryPreviewHeaderView:pastStoryClearer {
     func didScrollStoryPreview() {
         let cell = superview?.superview?.superview as! IGStoryPreviewCell
         cell.operationQueue.cancelAllOperations()

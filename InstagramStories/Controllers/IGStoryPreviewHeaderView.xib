@@ -28,6 +28,7 @@
                     <constraints>
                         <constraint firstAttribute="width" constant="60" id="EKN-a0-gl6"/>
                     </constraints>
+                    <inset key="imageEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                     <state key="normal" image="ic_close">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
@@ -74,6 +75,6 @@
         </view>
     </objects>
     <resources>
-        <image name="ic_close" width="25" height="25"/>
+        <image name="ic_close" width="20" height="20"/>
     </resources>
 </document>

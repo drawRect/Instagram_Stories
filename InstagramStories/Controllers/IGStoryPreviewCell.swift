@@ -15,11 +15,23 @@ protocol StoryPreviewProtocol {
 class IGStoryPreviewCell: UICollectionViewCell {
     
     @IBOutlet weak private var headerView: UIView!
-    @IBOutlet weak var scrollview: UIScrollView!
+    @IBOutlet weak internal var scrollview: UIScrollView!
+    
+    //MARK: - Overriden functions
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
+        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
+        self.headerView.addSubview(storyHeaderView!)
+    }
+    
+    override func prepareForReuse() {
+        self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
+    }
+    //MARK: - iVars
     public var delegate:StoryPreviewProtocol?
-    var storyHeaderView:IGStoryPreviewHeaderView?
-    lazy var operationQueue = OperationQueue.init()
-    //internal let operationQueue:OperationQueue
+    public var storyHeaderView:IGStoryPreviewHeaderView?
+    public lazy var operationQueue = OperationQueue()
     public var snapIndex:Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
@@ -32,7 +44,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
             }
         }
     }
-    
     public var story:IGStory? {
         didSet {
             storyHeaderView?.story = story
@@ -41,11 +52,11 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
             generateImageViews()
-            //snapIndex = 0
         }
     }
     
-    func generateImageViews() {
+    //MARK: - Private functions
+    private func generateImageViews() {
         if let count = story?.snapsCount {
             for index in 0...count-1 {
                 let x:CGFloat = CGFloat(index) * frame.size.width
@@ -57,8 +68,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
         }
     }
     
-    public func startLoadContent(with imageView:UIImageView,picture:String) {
-        let ivOperation =  BlockOperation() {
+    private func startLoadContent(with imageView:UIImageView,picture:String) {
+        let blockOperation = BlockOperation()
+        blockOperation.addExecutionBlock {
             imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
                 //print("Loading content")
                 if let error = error {
@@ -73,23 +85,12 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 }
             })
         }
-        operationQueue.addOperations([ivOperation], waitUntilFinished: false)
+        operationQueue.addOperation(blockOperation)
         operationQueue.maxConcurrentOperationCount = 1
     }
     
-    public func imageView(with index:Int)->UIImageView {
+    private func imageView(with index:Int)->UIImageView {
         return scrollview.subviews.filter({v in v.tag == index}).first as! UIImageView
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
-        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
-        self.headerView.addSubview(storyHeaderView!)
-    }
-    
-    override func prepareForReuse() {
-        self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
     }
     
 }

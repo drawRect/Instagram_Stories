@@ -11,6 +11,7 @@ import UIKit
 protocol SnapProgresser {
     func didCompleteProgress()
 }
+
 fileprivate let interval:Float = 0.1
 
 class IGSnapProgressView:UIProgressView {
@@ -26,8 +27,8 @@ extension IGSnapProgressView {
             stopTimer()
             self.delegate?.didCompleteProgress()
         }else{
-            elapsedTime += 0.1
-            progress = progress + 0.1
+            elapsedTime = elapsedTime+0.1
+            progress = progress+0.1
         }
     }
     

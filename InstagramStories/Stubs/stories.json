@@ -7,7 +7,7 @@
                 "user": {
                 "id": "b1",
                 "name": "John",
-                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
+                "picture": "https://randomuser.me/api/portraits/med/men/1.jpg"
                 },
                 "snaps_count": 4,
                 "snaps": [
@@ -39,7 +39,7 @@
                 "user": {
                 "id": "b2",
                 "name": "Steve",
-                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
+                "picture": "https://randomuser.me/api/portraits/med/men/2.jpg"
                 },
                 "snaps_count": 7,
                 "snaps": [
@@ -86,7 +86,7 @@
                 "user": {
                 "id": "b2",
                 "name": "Wozniak",
-                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
+                "picture": "https://randomuser.me/api/portraits/med/men/3.jpg"
                 },
                 "snaps_count": 5,
                 "snaps": [
@@ -123,7 +123,7 @@
                 "user": {
                 "id": "b2",
                 "name": "Michael",
-                "picture": "https://randomuser.me/api/portraits/med/men/83.jpg"
+                "picture": "https://randomuser.me/api/portraits/med/men/4.jpg"
                 },
                 "snaps_count": 3,
                 "snaps": [

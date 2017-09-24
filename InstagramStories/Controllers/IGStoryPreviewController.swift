@@ -9,20 +9,27 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
-protocol didStoryPreviewScroller:class {
+protocol pastStoryClearer:class {
     func didScrollStoryPreview()
 }
 
+/**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
+ If Story.Starts -> Snap.Index(Captured|StartsWith.0)
+ While Snap.done->Next.snap(continues)->done
+ then Story Completed
+ */
 class IGStoryPreviewController: UIViewController {
     
     //MARK: - iVars
     public var stories:IGStories?
-    public var storyIndex:Int = 0
-    internal var nIndex:Int = 0
-    public var previewScrollerDelegate:didStoryPreviewScroller?
+    /** This index will tell you which Story, user has picked*/
+    public var handPickedStoryIndex:Int = 0 //starts with(i)
+    /** This index will help you simply iterate the story one by one*/
+    internal var nStoryIndex:Int = 0 //iteration(i+1)
+    public var storyPreviewHelperDelegate:pastStoryClearer?
     
-    var direction: UICollectionViewScrollDirection = .horizontal
-    var animator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
+    private var scrollDirection: UICollectionViewScrollDirection = .horizontal
+    private var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
     
     @IBOutlet var dismissGesture: UISwipeGestureRecognizer!
     @IBOutlet weak var collectionview: UICollectionView! {
@@ -33,17 +40,17 @@ class IGStoryPreviewController: UIViewController {
             collectionview?.isPagingEnabled = true
             collectionview.isPrefetchingEnabled = false
             if let layout = collectionview?.collectionViewLayout as? AnimatedCollectionViewLayout {
-                layout.scrollDirection = direction
-                layout.animator = animator.0
+                layout.scrollDirection = scrollDirection
+                layout.animator = layoutAnimator.0
             }
         }
     }
     
-    //MARK: - Lifecycle functions
+    //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Story"
-        dismissGesture.direction = direction == .horizontal ? .down : .left
+        dismissGesture.direction = scrollDirection == .horizontal ? .down : .left
     }
     
     override var prefersStatusBarHidden: Bool { return true }
@@ -52,15 +59,13 @@ class IGStoryPreviewController: UIViewController {
     @IBAction func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-    
 }
 
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
-    //@Note:Story->ScrollView->NumberOfSnaps
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = stories?.count {
-            return count-storyIndex
+            return count-handPickedStoryIndex
         }
         return 0
     }
@@ -68,12 +73,18 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
-        
-        let story = stories?.stories?[indexPath.row+storyIndex]
-        cell.story = story
-        cell.delegate = self
-        cell.snapIndex = 0
-        self.previewScrollerDelegate = cell.storyHeaderView
+        let counted = indexPath.row+handPickedStoryIndex
+        if let s_count = stories?.count {
+            if counted < s_count {
+                let story = stories?.stories?[counted]
+                cell.story = story
+                cell.delegate = self
+                cell.snapIndex = 0
+                self.storyPreviewHelperDelegate = cell.storyHeaderView
+            }else {
+                fatalError("Stories Index mis-matched :(")
+            }
+        }
         return cell
     }
     
@@ -85,15 +96,20 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = scrollView.contentOffset.x / pageWidth
         let page = lroundf(Float(fractionalPage))
-        if page != 0 && page != (stories?.count)!-1 {
-            if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
-                nIndex = nIndex - 1 // back to previous story
-            }else{
-                nIndex = nIndex + 1 // go to next story
-            }
-            print("Nindex:\(nIndex)")
-            if nIndex != 0 && storyIndex+nIndex+1 != (stories?.count)!{
-                self.previewScrollerDelegate?.didScrollStoryPreview()
+        if let s_count = stories?.count {
+            if page != 0 && page != s_count-1 {
+                //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
+                if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
+                    //if user do back scroll then we reducing -1 from iteration value
+                    nStoryIndex = nStoryIndex - 1
+                }else{
+                    //check(Right.Horizontl.Scroll)
+                    //if user do front scroll then we adding +1 from iteration value
+                    nStoryIndex = nStoryIndex + 1 // go to next story
+                }
+                if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != s_count{
+                    self.storyPreviewHelperDelegate?.didScrollStoryPreview()
+                }
             }
         }
     }
@@ -106,13 +122,13 @@ extension IGStoryPreviewController:StoryPreviewHeaderTapper {
 }
 extension IGStoryPreviewController:StoryPreviewProtocol {
     func didCompletePreview() {
-        let n = storyIndex+nIndex+1
+        let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories?.count {
             if n < count {
                 //Move to next story
-                nIndex = nIndex + 1
-                let nIndexPath = IndexPath.init(row: self.nIndex, section: 0)
-                self.collectionview.scrollToItem(at: nIndexPath, at: .right, animated: true)
+                nStoryIndex = nStoryIndex + 1
+                let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+                collectionview.scrollToItem(at: nIndexPath, at: .right, animated: true)
             }else {
                 self.dismiss(animated: true, completion: nil)
             }

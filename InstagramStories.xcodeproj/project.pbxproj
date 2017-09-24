@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0743496C1F782FFD00F02228 /* IGConstants.swift */; };
 		0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774D5191F7641AF0089791B /* IGSnapProgressView.swift */; };
 		078E413A1F61E83200222191 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41381F61E83200222191 /* IGSnap.swift */; };
 		078E413B1F61E83200222191 /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41391F61E83200222191 /* IGStory.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0743496C1F782FFD00F02228 /* IGConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGConstants.swift; path = Common/IGConstants.swift; sourceTree = "<group>"; };
 		0774D5191F7641AF0089791B /* IGSnapProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnapProgressView.swift; path = Controllers/IGSnapProgressView.swift; sourceTree = "<group>"; };
 		078E41381F61E83200222191 /* IGSnap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnap.swift; path = Models/IGSnap.swift; sourceTree = "<group>"; };
 		078E41391F61E83200222191 /* IGStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStory.swift; path = Models/IGStory.swift; sourceTree = "<group>"; };
@@ -102,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				07EBE8F01F672951007BCF29 /* IGCommon.swift */,
+				0743496C1F782FFD00F02228 /* IGConstants.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */,
 				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
+				0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
 				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,

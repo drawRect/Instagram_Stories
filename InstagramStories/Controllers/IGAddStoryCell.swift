@@ -8,11 +8,4 @@
 
 import UIKit
 
-class IGAddStoryCell: UICollectionViewCell {
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
-
-}
+class IGAddStoryCell: UICollectionViewCell {}
