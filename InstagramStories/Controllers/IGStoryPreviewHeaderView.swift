@@ -52,7 +52,6 @@ class IGStoryPreviewHeaderView: UIView {
         return view
     }
     
-    
     //MARK: - Public functions
     public func progressView(with index:Int)->IGSnapProgressView {
         return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
@@ -88,8 +87,8 @@ extension Int {
 extension IGStoryPreviewHeaderView:pastStoryClearer {
     func didScrollStoryPreview() {
         let cell = superview?.superview?.superview as! IGStoryPreviewCell
-        cell.operationQueue.cancelAllOperations()
-        print("Number of operations:\(cell.operationQueue.operationCount)")
+        cell.imageOperationQueue.cancelAllOperations()
+        print("Number of operations:\(cell.imageOperationQueue.operationCount)")
         let pvBaseView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
             v == self.progressView
         }).first

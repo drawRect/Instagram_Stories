@@ -6,11 +6,10 @@ enum ImageStyle:Int {
     case rounded
 }
 
-
 extension UIImageView {
  
     func setImage(url:String,style:ImageStyle = .rounded,
-                     completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
+                  completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
         
         image = nil
         
@@ -32,7 +31,7 @@ extension UIImageView {
             sd_setImage(with: URL.init(string: url))
             clipsToBounds = true
             if let completion = completion {
-                return completion(true,nil)
+                 completion(true,nil)
             }
         }
         else {
@@ -47,13 +46,13 @@ extension UIImageView {
                             self.alpha = 1
                         }, completion: { (done) in
                             if let completion = completion {
-                                return completion(true,error)
+                                 completion(true,error)
                             }
                         })
                     }
                 }else {
                     if let completion = completion {
-                        return completion(false,error)
+                         completion(false,error)
                     }
                 }
             })

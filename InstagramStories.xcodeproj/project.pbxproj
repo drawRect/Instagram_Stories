@@ -204,6 +204,7 @@
 				07FDECD11F5FD9BA004BC833 /* Resources */,
 				03E791D7B060970A2EF6D286 /* [CP] Embed Pods Frameworks */,
 				3CFF0914175D08127AA8AB48 /* [CP] Copy Pods Resources */,
+				071EA86E1F79B5DE00FF06A0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -284,6 +285,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		071EA86E1F79B5DE00FF06A0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 12;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 \\\n| xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" \\\n| perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
 		};
 		3CFF0914175D08127AA8AB48 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;

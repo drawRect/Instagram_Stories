@@ -15,3 +15,4 @@ public struct IGScreen {
     /**UIScreen.main.bounds.height*/
     static let height = UIScreen.main.bounds.height
 }
+

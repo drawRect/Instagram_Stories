@@ -49,7 +49,6 @@ class IGStoryPreviewController: UIViewController {
     //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Story"
         dismissGesture.direction = scrollDirection == .horizontal ? .down : .left
     }
     
@@ -91,7 +90,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
-    
+    //i guess there is some better place to handle this
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = scrollView.contentOffset.x / pageWidth
@@ -135,4 +134,3 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         }
     }
 }
-
