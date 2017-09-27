@@ -8,21 +8,21 @@
 
 import UIKit
 
-protocol SnapProgresser {
+protocol SnapProgresser:class {
     func didCompleteProgress()
 }
 
 fileprivate let interval:Float = 0.1
 
 class IGSnapProgressView:UIProgressView {
-    public var delegate:SnapProgresser?
+    public weak var delegate:SnapProgresser?
     internal var elapsedTime:Float = 0.0
     internal var progressor:Timer?
 }
 
 extension IGSnapProgressView {
     
-    func delayProcess() {
+   @objc func delayProcess() {
         if elapsedTime >= 1.0 {
             stopTimer()
             self.delegate?.didCompleteProgress()
@@ -30,6 +30,7 @@ extension IGSnapProgressView {
             elapsedTime = elapsedTime+0.1
             progress = progress+0.1
         }
+        print("progress:\(progress)")
     }
     
     public func stopTimer(){

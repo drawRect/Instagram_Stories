@@ -9,6 +9,10 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
+public enum layoutType {
+    case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
+}
+
 protocol pastStoryClearer:class {
     func didScrollStoryPreview()
 }
@@ -26,10 +30,24 @@ class IGStoryPreviewController: UIViewController {
     public var handPickedStoryIndex:Int = 0 //starts with(i)
     /** This index will help you simply iterate the story one by one*/
     internal var nStoryIndex:Int = 0 //iteration(i+1)
-    public var storyPreviewHelperDelegate:pastStoryClearer?
+    public weak var storyPreviewHelperDelegate:pastStoryClearer?
     
     private var scrollDirection: UICollectionViewScrollDirection = .horizontal
-    private var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
+    /**Layout Animate options(ie.choose which kinda animation you want!)*/
+    lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = {
+        switch(layoutType) {
+        case .crossFade:return(CrossFadeAttributesAnimator(), true, 1, 1)
+        case .cubic:return(CubeAttributesAnimator(), true, 1, 1)
+        case .linearCard:return(LinearCardAttributesAnimator(), true, 1, 1)
+        case .page:return(PageAttributesAnimator(), true, 1, 1)
+        case .parallax:return(ParallaxAttributesAnimator(), true, 1, 1)
+        case .rotateInOut:return(RotateInOutAttributesAnimator(), true, 1, 1)
+        case .snapIn:return(SnapInAttributesAnimator(), true, 1, 1)
+        case .zoomInOut:return(ZoomInOutAttributesAnimator(), true, 1, 1)
+        }
+    }()
+   // private var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
+    private var layoutType:layoutType = .cubic
     
     @IBOutlet var dismissGesture: UISwipeGestureRecognizer!
     @IBOutlet weak var collectionview: UICollectionView! {
@@ -50,6 +68,11 @@ class IGStoryPreviewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         dismissGesture.direction = scrollDirection == .horizontal ? .down : .left
+    }
+    
+    convenience init(kindOfLayout:layoutType = .cubic) {
+        self.init()
+        layoutType = kindOfLayout
     }
     
     override var prefersStatusBarHidden: Bool { return true }
@@ -73,8 +96,8 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
         let counted = indexPath.row+handPickedStoryIndex
-        if let s_count = stories?.count {
-            if counted < s_count {
+        if let count = stories?.count {
+            if counted < count {
                 let story = stories?.stories?[counted]
                 cell.story = story
                 cell.delegate = self
@@ -90,13 +113,20 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cell = cell as! IGStoryPreviewCell
+        let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
+        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+    }
+    
     //i guess there is some better place to handle this
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = scrollView.contentOffset.x / pageWidth
         let page = lroundf(Float(fractionalPage))
-        if let s_count = stories?.count {
-            if page != 0 && page != s_count-1 {
+        if let count = stories?.count {
+            if page != 0 && page != count-1 {
                 //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
                 if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
                     //if user do back scroll then we reducing -1 from iteration value
@@ -106,7 +136,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                     //if user do front scroll then we adding +1 from iteration value
                     nStoryIndex = nStoryIndex + 1 // go to next story
                 }
-                if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != s_count{
+                if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != count{
                     self.storyPreviewHelperDelegate?.didScrollStoryPreview()
                 }
             }
@@ -116,7 +146,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
 
 extension IGStoryPreviewController:StoryPreviewHeaderTapper {
     func didTapCloseButton() {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true, completion: {
+//            print("(Start)Number of operations:\(IGOperation.shared.imageOperationQueue.operationCount)")
+//            IGOperation.shared.imageOperationQueue.cancelAllOperations()
+//            print("(Cancel)Number of operations:\(IGOperation.shared.imageOperationQueue.operationCount)")
+        })
     }
 }
 extension IGStoryPreviewController:StoryPreviewProtocol {

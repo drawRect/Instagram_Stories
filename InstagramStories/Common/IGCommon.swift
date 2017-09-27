@@ -15,7 +15,6 @@ protocol CellConfigurer:class {
 }
 
 extension UICollectionViewCell:CellConfigurer {
-    
     static func nib() -> UINib {
         return UINib.init(nibName: self.reuseIdentifier(), bundle: nil)
     }

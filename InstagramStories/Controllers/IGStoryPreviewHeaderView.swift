@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SDWebImage
 
-protocol StoryPreviewHeaderTapper {
+protocol StoryPreviewHeaderTapper:class {
     func didTapCloseButton()
 }
 fileprivate let maxSnaps = 30
@@ -24,7 +25,7 @@ class IGStoryPreviewHeaderView: UIView {
         self.layer.shadowRadius = 1
     }
     
-    public var delegate:StoryPreviewHeaderTapper?
+    public weak var delegate:StoryPreviewHeaderTapper?
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
         didSet {
@@ -65,10 +66,10 @@ class IGStoryPreviewHeaderView: UIView {
         for i in 0..<snapsPerStory{
             let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
             pv.progressTintColor = UIColor.white
-            pv.trackTintColor = UIColor.white.withAlphaComponent(0.2)
+            pv.trackTintColor = UIColor.white.withAlphaComponent(0.1)
             pv.progress = 0.0
             pv.tag = i
-            pv.layer.cornerRadius = 2
+            pv.layer.cornerRadius = 1
             pv.layer.masksToBounds = true
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
@@ -87,11 +88,14 @@ extension Int {
 extension IGStoryPreviewHeaderView:pastStoryClearer {
     func didScrollStoryPreview() {
         let cell = superview?.superview?.superview as! IGStoryPreviewCell
-        cell.imageOperationQueue.cancelAllOperations()
-        print("Number of operations:\(cell.imageOperationQueue.operationCount)")
+        SDWebImageDownloader.shared().cancelAllDownloads()
+        //IGOperation.shared.imageOperationQueue.cancelAllOperations()
+        // print("Number of operations:\(IGOperation.shared.imageOperationQueue.operationCount)")
         let pvBaseView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
             v == self.progressView
         }).first
+        let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
         let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
         progressViews.forEach({v in v.stopTimer()})
         cell.snapIndex = cell.story?.snapsCount ?? 0

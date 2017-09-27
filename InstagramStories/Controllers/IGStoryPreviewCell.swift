@@ -8,26 +8,26 @@
 
 import UIKit
 
-protocol StoryPreviewProtocol {
+protocol StoryPreviewProtocol:class {
     func didCompletePreview()
     //func requestImage(with urlString:String)
 }
 
 /*protocol StoryPreviewImageProtocol {
-    func didSetImage()
-}
-class IGStoryPreviewImage:UIImageView {
-    public var delegate:StoryPreviewImageProtocol?
-    override var image: UIImage?{
-        didSet {
-            if image != nil{
-                delegate?.didSetImage()
-            } else {
-                //clean your filter or added layer (remove your effects over the view)
-            }
-        }
-    }
-}*/
+ func didSetImage()
+ }
+ class IGStoryPreviewImage:UIImageView {
+ public var delegate:StoryPreviewImageProtocol?
+ override var image: UIImage?{
+ didSet {
+ if image != nil{
+ delegate?.didSetImage()
+ } else {
+ //clean your filter or added layer (remove your effects over the view)
+ }
+ }
+ }
+ }*/
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
@@ -43,13 +43,15 @@ class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
-        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-        self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
+        
+//        SDWebImageManager.shared().cancelAll()
+//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
+//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+       self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
     }
     
     //MARK: - iVars
-    public var delegate:StoryPreviewProtocol?
+    public weak var delegate:StoryPreviewProtocol?
     public var storyHeaderView:IGStoryPreviewHeaderView?
     public var snapIndex:Int = 0 {
         didSet {
@@ -62,9 +64,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 }
             }
         }
-       /* willSet {
-            print("value")
-        }*/
+        /* willSet {
+         print("value")
+         }*/
     }
     public var story:IGStory? {
         didSet {
@@ -79,12 +81,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
             generateImageViews()
         }
     }
-    internal lazy var imageOperationQueue: OperationQueue = {
-        let oq = OperationQueue()
-        oq.maxConcurrentOperationCount = 1
-        return oq
-    }()
-    
     
     //MARK: - Private functions
     private func generateImageViews() {
@@ -104,27 +100,26 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //If Child wants an image it should not simply go and take
     //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
-        imageOperationQueue.addOperation {
-            imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
-                print("Loading content")
-                if let error = error {
-                    print(error.localizedDescription)
-                }else {
-                    OperationQueue.main.addOperation({
-                        //Start the progress
-                        let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
-                        pv?.delegate = self
-                        pv?.didBeginProgress()
-                    })
-                }
-            })
-        }
+        imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
+            print("Loading content")
+            if let error = error {
+                print(error.localizedDescription)
+            }else {
+                let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
+                pv?.delegate = self
+                pv?.didBeginProgress()
+            }
+        })
     }
     
     private func imageView(with index:Int)->UIImageView {
         return scrollview.subviews.filter({v in v.tag == index}).first as! UIImageView
     }
     
+    deinit {
+        let imageViews = self.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+    }
 }
 
 extension IGStoryPreviewCell:SnapProgresser {
@@ -144,12 +139,12 @@ extension IGStoryPreviewCell:SnapProgresser {
     }
 }
 /*extension IGStoryPreviewCell:StoryPreviewImageProtocol {
-    func didSetImage() {
-        //Start the progress
-        let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
-        pv?.delegate = self
-        DispatchQueue.main.async {
-            pv?.didBeginProgress()
-        }
-    }
-}*/
+ func didSetImage() {
+ //Start the progress
+ let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
+ pv?.delegate = self
+ DispatchQueue.main.async {
+ pv?.didBeginProgress()
+ }
+ }
+ }*/
