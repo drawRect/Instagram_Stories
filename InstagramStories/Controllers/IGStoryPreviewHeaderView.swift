@@ -41,6 +41,7 @@ class IGStoryPreviewHeaderView: UIView {
         }
     }
     @IBOutlet private weak var snaperNameLabel: UILabel!
+    @IBOutlet weak var lastUpdatedLabel: UILabel!
     
     //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {

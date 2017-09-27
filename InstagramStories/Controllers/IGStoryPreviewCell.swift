@@ -19,8 +19,8 @@ class IGStoryPreviewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
-        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
-        self.headerView.addSubview(storyHeaderView!)
+        storyHeaderView?.frame = CGRect(x:0,y:0,width:frame.width,height:80)
+        headerView.addSubview(storyHeaderView!)
     }
     
     override func prepareForReuse() {}
@@ -33,10 +33,11 @@ class IGStoryPreviewCell: UICollectionViewCell {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    if let picture = snap.mediaURL {
-                        let iv = self.imageView(with: snapIndex)
-                        self.startLoadContent(with: iv, picture: picture)
+                    if let picture = snap.url {
+                        let iv = imageView(with: snapIndex)
+                        startLoadContent(with: iv, picture: picture)
                     }
+                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
                 }
             }
         }
@@ -90,7 +91,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     deinit {
-        let imageViews = self.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
         imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
     }
 }
@@ -106,7 +107,7 @@ extension IGStoryPreviewCell:SnapProgresser {
                 scrollview.setContentOffset(offset, animated: false)
                 snapIndex = n
             }else {
-                self.delegate?.didCompletePreview()
+                delegate?.didCompletePreview()
             }
         }
     }
