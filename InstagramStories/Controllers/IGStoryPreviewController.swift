@@ -46,7 +46,6 @@ class IGStoryPreviewController: UIViewController {
         case .zoomInOut:return(ZoomInOutAttributesAnimator(), true, 1, 1)
         }
     }()
-   // private var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (CubeAttributesAnimator(), true, 1, 1)
     private var layoutType:layoutType = .cubic
     
     @IBOutlet var dismissGesture: UISwipeGestureRecognizer!
