@@ -11,11 +11,21 @@ import AnimatedCollectionViewLayout
 
 public enum layoutType {
     case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
+    var animator:LayoutAttributesAnimator {
+        switch self {
+        case .crossFade:return CrossFadeAttributesAnimator()
+        case .cubic:return CubeAttributesAnimator()
+        case .linearCard:return LinearCardAttributesAnimator()
+        case .page:return PageAttributesAnimator()
+        case .parallax:return ParallaxAttributesAnimator()
+        case .rotateInOut:return RotateInOutAttributesAnimator()
+        case .snapIn:return SnapInAttributesAnimator()
+        case .zoomInOut:return ZoomInOutAttributesAnimator()
+        }
+    }
 }
-
-protocol pastStoryClearer:class {
-    func didScrollStoryPreview()
-}
+/**Here we're clearing out carbage of last story*/
+protocol pastStoryClearer:class { func didScrollStoryPreview() }
 
 /**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
  If Story.Starts -> Snap.Index(Captured|StartsWith.0)
@@ -29,27 +39,17 @@ class IGStoryPreviewController: UIViewController {
     /** This index will tell you which Story, user has picked*/
     public var handPickedStoryIndex:Int = 0 //starts with(i)
     /** This index will help you simply iterate the story one by one*/
-    internal var nStoryIndex:Int = 0 //iteration(i+1)
+    fileprivate var nStoryIndex:Int = 0 //iteration(i+1)
     public weak var storyPreviewHelperDelegate:pastStoryClearer?
-    
-    private var scrollDirection: UICollectionViewScrollDirection = .horizontal
-    /**Layout Animate options(ie.choose which kinda animation you want!)*/
-    lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = {
-        switch(layoutType) {
-        case .crossFade:return(CrossFadeAttributesAnimator(), true, 1, 1)
-        case .cubic:return(CubeAttributesAnimator(), true, 1, 1)
-        case .linearCard:return(LinearCardAttributesAnimator(), true, 1, 1)
-        case .page:return(PageAttributesAnimator(), true, 1, 1)
-        case .parallax:return(ParallaxAttributesAnimator(), true, 1, 1)
-        case .rotateInOut:return(RotateInOutAttributesAnimator(), true, 1, 1)
-        case .snapIn:return(SnapInAttributesAnimator(), true, 1, 1)
-        case .zoomInOut:return(ZoomInOutAttributesAnimator(), true, 1, 1)
-        }
-    }()
     private var layoutType:layoutType = .cubic
     
-    @IBOutlet var dismissGesture: UISwipeGestureRecognizer!
-    @IBOutlet weak var collectionview: UICollectionView! {
+    /**Layout Animate options(ie.choose which kinda animation you want!)*/
+    private lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
+    
+    @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
+        didSet { dismissGesture.direction = .down }
+    }
+    @IBOutlet private weak var collectionview: UICollectionView! {
         didSet {
             collectionview.delegate = self
             collectionview.dataSource = self
@@ -57,7 +57,7 @@ class IGStoryPreviewController: UIViewController {
             collectionview?.isPagingEnabled = true
             collectionview.isPrefetchingEnabled = false
             if let layout = collectionview?.collectionViewLayout as? AnimatedCollectionViewLayout {
-                layout.scrollDirection = scrollDirection
+                layout.scrollDirection = .horizontal
                 layout.animator = layoutAnimator.0
             }
         }
@@ -66,7 +66,6 @@ class IGStoryPreviewController: UIViewController {
     //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        dismissGesture.direction = scrollDirection == .horizontal ? .down : .left
     }
     
     convenience init(kindOfLayout:layoutType = .cubic) {
@@ -145,11 +144,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
 
 extension IGStoryPreviewController:StoryPreviewHeaderTapper {
     func didTapCloseButton() {
-        self.dismiss(animated: true, completion: {
-//            print("(Start)Number of operations:\(IGOperation.shared.imageOperationQueue.operationCount)")
-//            IGOperation.shared.imageOperationQueue.cancelAllOperations()
-//            print("(Cancel)Number of operations:\(IGOperation.shared.imageOperationQueue.operationCount)")
-        })
+        self.dismiss(animated: true, completion:nil)
     }
 }
 extension IGStoryPreviewController:StoryPreviewProtocol {

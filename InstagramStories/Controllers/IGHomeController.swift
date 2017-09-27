@@ -16,15 +16,16 @@ class IGHomeController: UIViewController {
             storiesCollectionView.dataSource = self
             storiesCollectionView.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
             storiesCollectionView.register(IGAddStoryCell.nib(), forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
+            automaticallyAdjustsScrollViewInsets = false
         }
     }
     //Keep it Immutable! don't get Dirty :P
-    let stories: IGStories? = IGHomeController.loadStubbedData()
+    //Todo::Load this data in Async mode
+   fileprivate let stories: IGStories? = IGHomeController.loadStubbedData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
-        automaticallyAdjustsScrollViewInsets = false
     }
 }
 

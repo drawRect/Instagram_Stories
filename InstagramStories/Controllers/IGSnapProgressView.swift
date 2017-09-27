@@ -8,9 +8,7 @@
 
 import UIKit
 
-protocol SnapProgresser:class {
-    func didCompleteProgress()
-}
+protocol SnapProgresser:class {func didCompleteProgress()}
 
 fileprivate let interval:Float = 0.1
 
@@ -21,7 +19,6 @@ class IGSnapProgressView:UIProgressView {
 }
 
 extension IGSnapProgressView {
-    
    @objc func delayProcess() {
         if elapsedTime >= 1.0 {
             stopTimer()
@@ -30,7 +27,7 @@ extension IGSnapProgressView {
             elapsedTime = elapsedTime+0.1
             progress = progress+0.1
         }
-        print("progress:\(progress)")
+        debugPrint("Progress:\(progress)")
     }
     
     public func stopTimer(){
@@ -42,7 +39,4 @@ extension IGSnapProgressView {
         elapsedTime = 0.0
         progressor = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target: self, selector: #selector(IGSnapProgressView.delayProcess), userInfo: nil, repeats: true)
     }
-    
 }
-
-

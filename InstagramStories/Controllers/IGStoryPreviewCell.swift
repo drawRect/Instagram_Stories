@@ -8,26 +8,7 @@
 
 import UIKit
 
-protocol StoryPreviewProtocol:class {
-    func didCompletePreview()
-    //func requestImage(with urlString:String)
-}
-
-/*protocol StoryPreviewImageProtocol {
- func didSetImage()
- }
- class IGStoryPreviewImage:UIImageView {
- public var delegate:StoryPreviewImageProtocol?
- override var image: UIImage?{
- didSet {
- if image != nil{
- delegate?.didSetImage()
- } else {
- //clean your filter or added layer (remove your effects over the view)
- }
- }
- }
- }*/
+protocol StoryPreviewProtocol:class {func didCompletePreview()}
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
@@ -42,16 +23,11 @@ class IGStoryPreviewCell: UICollectionViewCell {
         self.headerView.addSubview(storyHeaderView!)
     }
     
-    override func prepareForReuse() {
-        
-//        SDWebImageManager.shared().cancelAll()
-//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
-//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-       self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
-    }
+    override func prepareForReuse() {}
     
     //MARK: - iVars
     public weak var delegate:StoryPreviewProtocol?
+    //TODO: - Make UI Elements scope as private
     public var storyHeaderView:IGStoryPreviewHeaderView?
     public var snapIndex:Int = 0 {
         didSet {
@@ -64,9 +40,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 }
             }
         }
-        /* willSet {
-         print("value")
-         }*/
     }
     public var story:IGStory? {
         didSet {
@@ -101,9 +74,9 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
         imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
-            print("Loading content")
+            debugPrint("Loading content")
             if let error = error {
-                print(error.localizedDescription)
+                debugPrint(error.localizedDescription)
             }else {
                 let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
                 pv?.delegate = self
@@ -138,13 +111,3 @@ extension IGStoryPreviewCell:SnapProgresser {
         }
     }
 }
-/*extension IGStoryPreviewCell:StoryPreviewImageProtocol {
- func didSetImage() {
- //Start the progress
- let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
- pv?.delegate = self
- DispatchQueue.main.async {
- pv?.didBeginProgress()
- }
- }
- }*/
