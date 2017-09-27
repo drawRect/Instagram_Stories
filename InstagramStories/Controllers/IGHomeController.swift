@@ -10,7 +10,7 @@ import UIKit
 
 class IGHomeController: UIViewController {
     
-    @IBOutlet weak var storiesCollectionView: UICollectionView! {
+    @IBOutlet weak private var storiesCollectionView: UICollectionView! {
         didSet {
             storiesCollectionView.delegate = self
             storiesCollectionView.dataSource = self
@@ -19,7 +19,7 @@ class IGHomeController: UIViewController {
         }
     }
     //Keep it Immutable! don't get Dirty :P
-    let stories: IGStories = IGHomeController.loadStubbedData()!
+    let stories: IGStories? = IGHomeController.loadStubbedData()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,7 +30,7 @@ class IGHomeController: UIViewController {
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let count = stories.count {
+        if let count = stories?.count {
             return count + 1 // Add Story cell
         }
         return 1
@@ -43,19 +43,19 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
         }else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
             // Add Story cell
-            cell.story = stories.stories?[indexPath.row-1]
+            cell.story = stories?.stories?[indexPath.row-1]
             return cell
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            //Add own story
+            //Add your own story
+            debugPrint("Need to implement!")
         }else{
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
-            //reducing Coz,Add Story cell
-            storyPreviewScene.handPickedIndex = indexPath.row-1
+            storyPreviewScene.handPickedStoryIndex = indexPath.row-1
             present(storyPreviewScene, animated: true, completion: nil)
         }
     }

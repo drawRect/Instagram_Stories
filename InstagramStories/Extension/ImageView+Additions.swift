@@ -7,9 +7,9 @@ enum ImageStyle:Int {
 }
 
 extension UIImageView {
-    
+ 
     func setImage(url:String,style:ImageStyle = .rounded,
-                     completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
+                  completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
         
         image = nil
         
@@ -17,7 +17,6 @@ extension UIImageView {
             return
         }
         backgroundColor = UIColor.rgb(from: 0xEDF0F1)
-        
         if(style == .rounded) {
             layer.cornerRadius = frame.height/2
         }else if(style == .squared){
@@ -32,11 +31,11 @@ extension UIImageView {
             sd_setImage(with: URL.init(string: url))
             clipsToBounds = true
             if let completion = completion {
-                completion(true,nil)
+                 completion(true,nil)
             }
         }
         else {
-            self.sd_setImage(with: URL.init(string: url), placeholderImage:nil, options: [.avoidAutoSetImage,.highPriority,.retryFailed,.delayPlaceholder], completed: { (image, error, cacheType, url) in
+            self.sd_setImage(with: URL.init(string: url), placeholderImage:nil, options: [.avoidAutoSetImage,.highPriority,.retryFailed,.delayPlaceholder,.continueInBackground], completed: { (image, error, cacheType, url) in
                 if error == nil {
                     DispatchQueue.main.async {
                         self.backgroundColor = .clear
@@ -47,13 +46,13 @@ extension UIImageView {
                             self.alpha = 1
                         }, completion: { (done) in
                             if let completion = completion {
-                                completion(true,error)
+                                 completion(true,error)
                             }
                         })
                     }
                 }else {
                     if let completion = completion {
-                        completion(false,error)
+                         completion(false,error)
                     }
                 }
             })
