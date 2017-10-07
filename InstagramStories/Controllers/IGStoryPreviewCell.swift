@@ -55,7 +55,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     public var story:IGStory? {
         didSet {
             storyHeaderView?.story = story
-            storyHeaderView?.generateSnappers()
+            //storyHeaderView?.generateSnappers()
             if let picture = story?.user?.picture {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }

@@ -83,6 +83,10 @@ class IGStoryPreviewHeaderView: UIView {
             (p as! IGSnapProgressView).progress = 0.0
         }
     }
+    
+    public func cancelTimers(snapIndex:Int){
+        self.progressView(with: snapIndex).stopTimer()
+    }
 }
 
 extension Int {
