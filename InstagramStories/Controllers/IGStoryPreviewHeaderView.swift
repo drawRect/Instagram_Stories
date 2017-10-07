@@ -9,9 +9,8 @@
 import UIKit
 import SDWebImage
 
-protocol StoryPreviewHeaderTapper:class {
-    func didTapCloseButton()
-}
+protocol StoryPreviewHeaderTapper:class {func didTapCloseButton()}
+
 fileprivate let maxSnaps = 30
 
 class IGStoryPreviewHeaderView: UIView {
@@ -33,14 +32,16 @@ class IGStoryPreviewHeaderView: UIView {
         }
     }
     
-    @IBOutlet weak var progressView: UIView!
-    @IBOutlet weak var snaperImageView: UIImageView! {
+    @IBOutlet private weak var progressView: UIView!
+    //Todo:Make Private scope
+    @IBOutlet internal weak var snaperImageView: UIImageView! {
         didSet {
             snaperImageView.layer.cornerRadius = 40/2
             snaperImageView.clipsToBounds = true
         }
     }
-    @IBOutlet weak var snaperNameLabel: UILabel!
+    @IBOutlet private weak var snaperNameLabel: UILabel!
+    @IBOutlet weak var lastUpdatedLabel: UILabel!
     
     //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {
@@ -89,8 +90,6 @@ extension IGStoryPreviewHeaderView:pastStoryClearer {
     func didScrollStoryPreview() {
         let cell = superview?.superview?.superview as! IGStoryPreviewCell
         SDWebImageDownloader.shared().cancelAllDownloads()
-        //IGOperation.shared.imageOperationQueue.cancelAllOperations()
-        // print("Number of operations:\(IGOperation.shared.imageOperationQueue.operationCount)")
         let pvBaseView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
             v == self.progressView
         }).first
@@ -99,6 +98,5 @@ extension IGStoryPreviewHeaderView:pastStoryClearer {
         let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
         progressViews.forEach({v in v.stopTimer()})
         cell.snapIndex = cell.story?.snapsCount ?? 0
-        //let timers = progressViews.filter({p in p.progressor?.isValid==true})
     }
 }

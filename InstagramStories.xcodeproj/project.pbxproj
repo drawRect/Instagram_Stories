@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		071EA8701F79BF1500FF06A0 /* IGOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071EA86F1F79BF1500FF06A0 /* IGOperation.swift */; };
 		0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0743496C1F782FFD00F02228 /* IGConstants.swift */; };
 		0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774D5191F7641AF0089791B /* IGSnapProgressView.swift */; };
 		078E413A1F61E83200222191 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41381F61E83200222191 /* IGSnap.swift */; };
@@ -17,7 +16,7 @@
 		078E41431F62092C00222191 /* IGUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41421F62092C00222191 /* IGUser.swift */; };
 		078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41451F62137E00222191 /* ImageView+Additions.swift */; };
 		078E41481F62140000222191 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41471F6213FF00222191 /* Color+Additions.swift */; };
-		07C124981F6BD0EA00BDBEB8 /* UIImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C124971F6BD0EA00BDBEB8 /* UIImageView+Additions.swift */; };
+		07B380C41F7C5AC800577D01 /* IGStory+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */; };
 		07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EBE8F01F672951007BCF29 /* IGCommon.swift */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
@@ -38,7 +37,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		071EA86F1F79BF1500FF06A0 /* IGOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGOperation.swift; path = Common/IGOperation.swift; sourceTree = "<group>"; };
 		0743496C1F782FFD00F02228 /* IGConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGConstants.swift; path = Common/IGConstants.swift; sourceTree = "<group>"; };
 		0774D5191F7641AF0089791B /* IGSnapProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnapProgressView.swift; path = Controllers/IGSnapProgressView.swift; sourceTree = "<group>"; };
 		078E41381F61E83200222191 /* IGSnap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnap.swift; path = Models/IGSnap.swift; sourceTree = "<group>"; };
@@ -48,7 +46,7 @@
 		078E41421F62092C00222191 /* IGUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGUser.swift; path = Models/IGUser.swift; sourceTree = "<group>"; };
 		078E41451F62137E00222191 /* ImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImageView+Additions.swift"; path = "Extension/ImageView+Additions.swift"; sourceTree = "<group>"; };
 		078E41471F6213FF00222191 /* Color+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+Additions.swift"; path = "Extension/Color+Additions.swift"; sourceTree = "<group>"; };
-		07C124971F6BD0EA00BDBEB8 /* UIImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImageView+Additions.swift"; path = "Models/UIImageView+Additions.swift"; sourceTree = "<group>"; };
+		07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "IGStory+Additions.swift"; path = "Models/IGStory+Additions.swift"; sourceTree = "<group>"; };
 		07EBE8F01F672951007BCF29 /* IGCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGCommon.swift; path = Common/IGCommon.swift; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -97,7 +95,6 @@
 			children = (
 				078E41451F62137E00222191 /* ImageView+Additions.swift */,
 				078E41471F6213FF00222191 /* Color+Additions.swift */,
-				07C124971F6BD0EA00BDBEB8 /* UIImageView+Additions.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -107,7 +104,6 @@
 			children = (
 				07EBE8F01F672951007BCF29 /* IGCommon.swift */,
 				0743496C1F782FFD00F02228 /* IGConstants.swift */,
-				071EA86F1F79BF1500FF06A0 /* IGOperation.swift */,
 			);
 			name = Common;
 			sourceTree = "<group>";
@@ -171,6 +167,7 @@
 			children = (
 				078E413E1F61EA2A00222191 /* IGStories.swift */,
 				078E41391F61E83200222191 /* IGStory.swift */,
+				07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */,
 				078E41381F61E83200222191 /* IGSnap.swift */,
 				078E41421F62092C00222191 /* IGUser.swift */,
 			);
@@ -348,6 +345,7 @@
 				109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */,
 				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
 				0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */,
+				07B380C41F7C5AC800577D01 /* IGStory+Additions.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
 				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,
@@ -355,8 +353,6 @@
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
 				07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */,
-				071EA8701F79BF1500FF06A0 /* IGOperation.swift in Sources */,
-				07C124981F6BD0EA00BDBEB8 /* UIImageView+Additions.swift in Sources */,
 				109966141F6053DA005292CF /* IGHomeController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -490,8 +486,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStories;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = "";
 			};
 			name = Debug;
 		};
@@ -505,8 +501,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStories;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
+				SWIFT_VERSION = "";
 			};
 			name = Release;
 		};

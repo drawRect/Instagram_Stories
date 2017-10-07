@@ -8,26 +8,7 @@
 
 import UIKit
 
-protocol StoryPreviewProtocol:class {
-    func didCompletePreview()
-    //func requestImage(with urlString:String)
-}
-
-/*protocol StoryPreviewImageProtocol {
- func didSetImage()
- }
- class IGStoryPreviewImage:UIImageView {
- public var delegate:StoryPreviewImageProtocol?
- override var image: UIImage?{
- didSet {
- if image != nil{
- delegate?.didSetImage()
- } else {
- //clean your filter or added layer (remove your effects over the view)
- }
- }
- }
- }*/
+protocol StoryPreviewProtocol:class {func didCompletePreview()}
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
@@ -38,35 +19,32 @@ class IGStoryPreviewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
-        storyHeaderView?.frame = CGRect(x:0,y:0,width:self.frame.width,height:80)
-        self.headerView.addSubview(storyHeaderView!)
+        storyHeaderView?.frame = CGRect(x:0,y:0,width:frame.width,height:80)
+        headerView.addSubview(storyHeaderView!)
     }
     
     override func prepareForReuse() {
-        
-//        SDWebImageManager.shared().cancelAll()
-//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
-//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-       self.storyHeaderView?.progressView.subviews.forEach({ $0.removeFromSuperview() })
+        super.prepareForReuse()
+        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+        imageViews.forEach({iv in iv.removeFromSuperview()})
     }
     
     //MARK: - iVars
     public weak var delegate:StoryPreviewProtocol?
+    //TODO: - Make UI Elements scope as private
     public var storyHeaderView:IGStoryPreviewHeaderView?
     public var snapIndex:Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    if let picture = snap.mediaURL {
-                        let iv = self.imageView(with: snapIndex)
-                        self.startLoadContent(with: iv, picture: picture)
+                    if let picture = snap.url {
+                        let iv = imageView(with: snapIndex)
+                        startLoadContent(with: iv, picture: picture)
                     }
+                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
                 }
             }
         }
-        /* willSet {
-         print("value")
-         }*/
     }
     public var story:IGStory? {
         didSet {
@@ -100,10 +78,11 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //If Child wants an image it should not simply go and take
     //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
+        imageView.sd_cancelCurrentImageLoad()
         imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
-            print("Loading content")
+            debugPrint("Loading content")
             if let error = error {
-                print(error.localizedDescription)
+                debugPrint(error.localizedDescription)
             }else {
                 let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
                 pv?.delegate = self
@@ -116,10 +95,10 @@ class IGStoryPreviewCell: UICollectionViewCell {
         return scrollview.subviews.filter({v in v.tag == index}).first as! UIImageView
     }
     
-    deinit {
-        let imageViews = self.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-    }
+//    deinit {
+//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+//    }
 }
 
 extension IGStoryPreviewCell:SnapProgresser {
@@ -133,18 +112,8 @@ extension IGStoryPreviewCell:SnapProgresser {
                 scrollview.setContentOffset(offset, animated: false)
                 snapIndex = n
             }else {
-                self.delegate?.didCompletePreview()
+                delegate?.didCompletePreview()
             }
         }
     }
 }
-/*extension IGStoryPreviewCell:StoryPreviewImageProtocol {
- func didSetImage() {
- //Start the progress
- let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
- pv?.delegate = self
- DispatchQueue.main.async {
- pv?.didBeginProgress()
- }
- }
- }*/
