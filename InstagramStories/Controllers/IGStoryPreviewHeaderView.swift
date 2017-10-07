@@ -59,6 +59,7 @@ class IGStoryPreviewHeaderView: UIView {
         return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
     }
     public func generateSnappers(){
+        self.progressView.subviews.forEach { v in v.removeFromSuperview()}
         let padding:CGFloat = 8 //GUI-Padding
         let pvHeight:CGFloat = 5
         var pvX:CGFloat = padding
@@ -77,7 +78,11 @@ class IGStoryPreviewHeaderView: UIView {
         }
         snaperNameLabel.text = story?.user?.name
     }
-    
+    public func nullifyProgressors() {
+        self.progressView.subviews.forEach { p in
+            (p as! IGSnapProgressView).progress = 0.0
+        }
+    }
 }
 
 extension Int {
@@ -89,14 +94,17 @@ extension Int {
 extension IGStoryPreviewHeaderView:pastStoryClearer {
     func didScrollStoryPreview() {
         let cell = superview?.superview?.superview as! IGStoryPreviewCell
-        SDWebImageDownloader.shared().cancelAllDownloads()
-        let pvBaseView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
+//        SDWebImageDownloader.shared().cancelAllDownloads()
+        let progressView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
             v == self.progressView
         }).first
-        let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-        let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
-        progressViews.forEach({v in v.stopTimer()})
+        progressView?.subviews.forEach({v in v.removeFromSuperview()})
+        //let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+        //imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+//        let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
+//        progressViews.forEach({v in v.stopTimer()})
+        let iv:UIImageView = cell.scrollview.subviews.last as! UIImageView
+        iv.sd_cancelCurrentImageLoad()
         cell.snapIndex = cell.story?.snapsCount ?? 0
     }
 }

@@ -1,12 +1,10 @@
 import UIKit
 import SDWebImage
-import ObjectiveC
 
 enum ImageStyle:Int {
     case squared
     case rounded
 }
-fileprivate var kStoryIdentifier: String = ""
 
 extension UIImageView {
  
@@ -60,15 +58,7 @@ extension UIImageView {
             })
         }
     }
-    
-    /*var laststoryIdentifier:String {
-     get {
-     return (objc_getAssociatedObject(self, &kStoryIdentifier) as! String)
-     }
-     set {
-     objc_setAssociatedObject(self, &kStoryIdentifier, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-     }
-     }*/
+
 }
 
 

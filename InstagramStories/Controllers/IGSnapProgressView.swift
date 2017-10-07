@@ -15,7 +15,10 @@ fileprivate let interval:Float = 0.1
 class IGSnapProgressView:UIProgressView {
     public weak var delegate:SnapProgresser?
     internal var elapsedTime:Float = 0.0
-    internal var progressor:Timer?
+    internal weak var progressor:Timer?
+//    deinit {
+//        stopTimer()
+//    }
 }
 
 extension IGSnapProgressView {
@@ -26,6 +29,7 @@ extension IGSnapProgressView {
         }else{
             elapsedTime = elapsedTime+0.1
             progress = progress+0.1
+            //self.perform(#selector(delayProcess), with: nil, afterDelay: TimeInterval(interval))
         }
         debugPrint("Progress:\(progress)")
     }
@@ -37,6 +41,9 @@ extension IGSnapProgressView {
     
     public func didBeginProgress() {
         elapsedTime = 0.0
+        progressor = nil
         progressor = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target: self, selector: #selector(IGSnapProgressView.delayProcess), userInfo: nil, repeats: true)
+        //self.perform(#selector(delayProcess), with: nil, afterDelay: TimeInterval(interval))
     }
+    
 }
