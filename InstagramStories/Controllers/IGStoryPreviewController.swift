@@ -129,13 +129,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let fractionalPage = scrollView.contentOffset.x / pageWidth
         let page = lroundf(Float(fractionalPage))
         if let count = stories?.count {
-//            if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
-//                
-//            }
+            let f_count = count-handPickedStoryIndex
             if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x < 0 {
                 nStoryIndex = nStoryIndex + 1
             }
-            else if page != 0 && page != count-1 {
+            else if page != 0 && page != f_count-1 {
                 //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
                 if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
                     //if user do back scroll then we reducing -1 from iteration value
@@ -146,23 +144,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                     nStoryIndex = nStoryIndex + 1 // go to next story
                 }
             }
-            else if page == count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
+            else if page == f_count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
                 nStoryIndex = nStoryIndex - 1
             }
-            /*if page != 0 && page != count-1 {
-                //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
-                if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
-                    //if user do back scroll then we reducing -1 from iteration value
-                    nStoryIndex = nStoryIndex - 1
-                }else{
-                    //check(Right.Horizontl.Scroll)
-                    //if user do front scroll then we adding +1 from iteration value
-                    nStoryIndex = nStoryIndex + 1 // go to next story
-                }
-//                if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != count{
-//                    self.storyPreviewHelperDelegate?.didScrollStoryPreview()
-//                }
-            }*/
         }
     }
 }
