@@ -12,15 +12,14 @@ protocol StoryPreviewProtocol:class {func didCompletePreview()}
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
-    var cellReuse:Bool = false
     @IBOutlet weak private var headerView: UIView!
     @IBOutlet weak internal var scrollview: UIScrollView!{
         didSet{
-        if let count = story?.snaps?.count
-        {
-        scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
+            if let count = story?.snaps?.count {
+                scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
+            }
         }
-        }}
+    }
     
     //MARK: - Overriden functions
     override func awakeFromNib() {
@@ -32,7 +31,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        let iv:UIImageView = self.scrollview.subviews.last as! UIImageView
+        guard let iv:UIImageView = self.scrollview.subviews.last as? UIImageView else{return}
         iv.sd_cancelCurrentImageLoad()
     }
     
@@ -55,7 +54,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
     public var story:IGStory? {
         didSet {
             storyHeaderView?.story = story
-            //storyHeaderView?.generateSnappers()
             if let picture = story?.user?.picture {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
@@ -81,7 +79,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
             }else {
                 let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
                 pv?.delegate = self
-                pv?.didBeginProgress()
+                pv?.willBeginProgress()
             }
         })
     }

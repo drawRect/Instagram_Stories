@@ -94,21 +94,3 @@ extension Int {
         return CGFloat(self)
     }
 }
-
-extension IGStoryPreviewHeaderView:pastStoryClearer {
-    func didScrollStoryPreview() {
-        let cell = superview?.superview?.superview as! IGStoryPreviewCell
-//        SDWebImageDownloader.shared().cancelAllDownloads()
-        let progressView = cell.storyHeaderView?.subviews.filter({ (v) -> Bool in
-            v == self.progressView
-        }).first
-        progressView?.subviews.forEach({v in v.removeFromSuperview()})
-        //let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-        //imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-//        let progressViews = pvBaseView?.subviews.filter({ v in v is IGSnapProgressView}) as! [IGSnapProgressView]
-//        progressViews.forEach({v in v.stopTimer()})
-        let iv:UIImageView = cell.scrollview.subviews.last as! UIImageView
-        iv.sd_cancelCurrentImageLoad()
-        cell.snapIndex = cell.story?.snapsCount ?? 0
-    }
-}

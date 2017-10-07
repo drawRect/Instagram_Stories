@@ -24,8 +24,6 @@ public enum layoutType {
         }
     }
 }
-/**Here we're clearing out carbage of last story*/
-protocol pastStoryClearer:class { func didScrollStoryPreview() }
 
 /**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
  If Story.Starts -> Snap.Index(Captured|StartsWith.0)
@@ -40,7 +38,7 @@ class IGStoryPreviewController: UIViewController {
     public var handPickedStoryIndex:Int = 0 //starts with(i)
     /** This index will help you simply iterate the story one by one*/
     fileprivate var nStoryIndex:Int = 0 //iteration(i+1)
-    public weak var storyPreviewHelperDelegate:pastStoryClearer?
+    //public weak var storyPreviewHelperDelegate:pastStoryClearer?
     private var layoutType:layoutType = .cubic
     
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
@@ -91,7 +89,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{ print("Cell not reused"); return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
         let counted = handPickedStoryIndex+nStoryIndex
         if let count = stories?.count {
@@ -99,7 +97,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 let story = stories?.stories?[counted]
                 cell.story = story
                 cell.delegate = self
-                self.storyPreviewHelperDelegate = cell.storyHeaderView
             }else {
                 fatalError("Stories Index mis-matched :(")
             }
@@ -117,13 +114,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         cell?.snapIndex = 0
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
         cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
     }
     
-    //i guess there is some better place to handle this
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = scrollView.contentOffset.x / pageWidth
@@ -132,19 +127,17 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             let f_count = count-handPickedStoryIndex
             if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x < 0 {
                 nStoryIndex = nStoryIndex + 1
-            }
-            else if page != 0 && page != f_count-1 {
+            }else if page != 0 && page != f_count-1 {
                 //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
-                if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
+                if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
                     //if user do back scroll then we reducing -1 from iteration value
                     nStoryIndex = nStoryIndex - 1
-                }else{
+                }else {
                     //check(Right.Horizontl.Scroll)
                     //if user do front scroll then we adding +1 from iteration value
                     nStoryIndex = nStoryIndex + 1 // go to next story
                 }
-            }
-            else if page == f_count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
+            }else {
                 nStoryIndex = nStoryIndex - 1
             }
         }
