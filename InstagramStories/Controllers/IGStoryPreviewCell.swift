@@ -23,7 +23,11 @@ class IGStoryPreviewCell: UICollectionViewCell {
         headerView.addSubview(storyHeaderView!)
     }
     
-    override func prepareForReuse() {}
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+        imageViews.forEach({iv in iv.removeFromSuperview()})
+    }
     
     //MARK: - iVars
     public weak var delegate:StoryPreviewProtocol?
@@ -74,6 +78,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //If Child wants an image it should not simply go and take
     //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
+        imageView.sd_cancelCurrentImageLoad()
         imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
             debugPrint("Loading content")
             if let error = error {
@@ -90,10 +95,10 @@ class IGStoryPreviewCell: UICollectionViewCell {
         return scrollview.subviews.filter({v in v.tag == index}).first as! UIImageView
     }
     
-    deinit {
-        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-    }
+//    deinit {
+//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+//    }
 }
 
 extension IGStoryPreviewCell:SnapProgresser {

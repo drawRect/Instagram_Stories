@@ -112,11 +112,15 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cell = cell as! IGStoryPreviewCell
-        let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
-        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-    }
+//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        
+//    }
+    
+//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+//        let cell = cell as! IGStoryPreviewCell
+//        let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
+//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
+//    }
     
     //i guess there is some better place to handle this
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -134,9 +138,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                     //if user do front scroll then we adding +1 from iteration value
                     nStoryIndex = nStoryIndex + 1 // go to next story
                 }
-                if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != count{
-                    self.storyPreviewHelperDelegate?.didScrollStoryPreview()
-                }
+                //if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != count{
+                    //self.storyPreviewHelperDelegate?.didScrollStoryPreview()
+                //}
             }
         }
     }
