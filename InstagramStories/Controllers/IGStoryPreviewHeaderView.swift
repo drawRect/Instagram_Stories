@@ -2,7 +2,7 @@
 //  IGStoryPreviewHeaderView.swift
 //  InstagramStories
 //
-//  Created by Srikanth Vellore on 06/09/17.
+//  Created by Boominadha Prakash on 06/09/17.
 //  Copyright © 2017 Dash. All rights reserved.
 //
 
