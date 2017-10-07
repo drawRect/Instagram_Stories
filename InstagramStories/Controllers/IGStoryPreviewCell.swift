@@ -12,8 +12,15 @@ protocol StoryPreviewProtocol:class {func didCompletePreview()}
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
+    var cellReuse:Bool = false
     @IBOutlet weak private var headerView: UIView!
-    @IBOutlet weak internal var scrollview: UIScrollView!
+    @IBOutlet weak internal var scrollview: UIScrollView!{
+        didSet{
+        if let count = story?.snaps?.count
+        {
+        scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
+        }
+        }}
     
     //MARK: - Overriden functions
     override func awakeFromNib() {
@@ -25,8 +32,8 @@ class IGStoryPreviewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-        imageViews.forEach({iv in iv.removeFromSuperview()})
+        let iv:UIImageView = self.scrollview.subviews.last as! UIImageView
+        iv.sd_cancelCurrentImageLoad()
     }
     
     //MARK: - iVars
@@ -38,8 +45,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
                     if let picture = snap.url {
-                        let iv = imageView(with: snapIndex)
-                        startLoadContent(with: iv, picture: picture)
+                        createImageView(with:picture)
                     }
                     storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
                 }
@@ -49,36 +55,25 @@ class IGStoryPreviewCell: UICollectionViewCell {
     public var story:IGStory? {
         didSet {
             storyHeaderView?.story = story
-            //Put this line into IInd Prioirty thread
-            storyHeaderView?.generateSnappers()
+            //storyHeaderView?.generateSnappers()
             if let picture = story?.user?.picture {
                 self.storyHeaderView?.snaperImageView.setImage(url: picture)
             }
-            //FIXME:Put this line into Ist Prioirty thread
-            //Scrollview should create 0th index UIImageView until user interested look for the next snap. you should not create the Imageview. This creation should happen at ON-DEMAND
-            generateImageViews()
         }
     }
     
     //MARK: - Private functions
-    private func generateImageViews() {
-        if let count = story?.snapsCount {
-            for index in 0...count-1 {
-                let x:CGFloat = CGFloat(index) * frame.size.width
-                let iv = UIImageView(frame: CGRect(x:x, y:0, width:frame.size.width, height:frame.size.height))
-                iv.tag = index
-                //iv.delegate = self
-                scrollview.addSubview(iv)
-            }
-            scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
-        }
+    private func createImageView(with picture:String) {
+        let iv = UIImageView(frame: CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),
+                                           y:0, width:scrollview.frame.size.width, height:scrollview.frame.size.height))
+        startLoadContent(with: iv, picture: picture)
+        scrollview.addSubview(iv)
     }
     
     //TODO:This expensive code should move to controller(ie.StoryPreviewController)
     //If Child wants an image it should not simply go and take
     //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
-        imageView.sd_cancelCurrentImageLoad()
         imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
             debugPrint("Loading content")
             if let error = error {
@@ -90,15 +85,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
             }
         })
     }
-    
-    private func imageView(with index:Int)->UIImageView {
-        return scrollview.subviews.filter({v in v.tag == index}).first as! UIImageView
-    }
-    
-//    deinit {
-//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-//    }
 }
 
 extension IGStoryPreviewCell:SnapProgresser {

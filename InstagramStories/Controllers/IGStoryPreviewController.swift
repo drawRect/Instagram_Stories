@@ -91,15 +91,14 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{ print("Cell not reused"); return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
-        let counted = indexPath.row+handPickedStoryIndex
+        let counted = handPickedStoryIndex+nStoryIndex
         if let count = stories?.count {
             if counted < count {
                 let story = stories?.stories?[counted]
                 cell.story = story
                 cell.delegate = self
-                cell.snapIndex = 0
                 self.storyPreviewHelperDelegate = cell.storyHeaderView
             }else {
                 fatalError("Stories Index mis-matched :(")
@@ -112,15 +111,17 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
     
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        
-//    }
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cell = cell as? IGStoryPreviewCell
+        cell?.storyHeaderView?.generateSnappers()
+        cell?.snapIndex = 0
+    }
     
-//    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let cell = cell as! IGStoryPreviewCell
-//        let imageViews = cell.scrollview.subviews.filter({v in v is UIImageView}) as![UIImageView]
-//        imageViews.forEach({iv in iv.sd_cancelCurrentImageLoad()})
-//    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let cell = cell as? IGStoryPreviewCell
+        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
+    }
     
     //i guess there is some better place to handle this
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -128,7 +129,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let fractionalPage = scrollView.contentOffset.x / pageWidth
         let page = lroundf(Float(fractionalPage))
         if let count = stories?.count {
-            if page != 0 && page != count-1 {
+            let f_count = count-handPickedStoryIndex
+            if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x < 0 {
+                nStoryIndex = nStoryIndex + 1
+            }
+            else if page != 0 && page != f_count-1 {
                 //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
                 if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0{
                     //if user do back scroll then we reducing -1 from iteration value
@@ -138,9 +143,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                     //if user do front scroll then we adding +1 from iteration value
                     nStoryIndex = nStoryIndex + 1 // go to next story
                 }
-                //if nStoryIndex != 0 && handPickedStoryIndex+nStoryIndex+1 != count{
-                    //self.storyPreviewHelperDelegate?.didScrollStoryPreview()
-                //}
+            }
+            else if page == f_count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
+                nStoryIndex = nStoryIndex - 1
             }
         }
     }
