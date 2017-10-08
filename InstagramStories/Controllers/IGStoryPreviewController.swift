@@ -9,6 +9,12 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
+private enum internalScrollType:String {
+    case left = "left"
+    case right = "right"
+    case notscrolled = "notscrolled"
+}
+
 public enum layoutType {
     case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
     var animator:LayoutAttributesAnimator {
@@ -47,6 +53,11 @@ class IGStoryPreviewController: UIViewController {
     @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
         didSet { dismissGesture.direction = .down }
     }
+    
+    //private var beginPage:Int = -1
+    private var lastContentOffset:CGPoint?
+    private var manualScrollDirection:String?
+    
     @IBOutlet private weak var collectionview: UICollectionView! {
         didSet {
             collectionview.delegate = self
@@ -123,22 +134,48 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let pageWidth = scrollView.frame.size.width
         let fractionalPage = scrollView.contentOffset.x / pageWidth
         let page = lroundf(Float(fractionalPage))
+        self.lastContentOffset = scrollView.contentOffset
         if let count = stories?.count {
             let f_count = count-handPickedStoryIndex
             if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x < 0 {
                 nStoryIndex = nStoryIndex + 1
+                //print("Begin start nStoryIndex:\(nStoryIndex)")
+                self.manualScrollDirection = internalScrollType.right.rawValue
             }else if page != 0 && page != f_count-1 {
                 //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
+                print("Scroll x value:\(scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0)")
                 if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
                     //if user do back scroll then we reducing -1 from iteration value
                     nStoryIndex = nStoryIndex - 1
+                    self.manualScrollDirection = internalScrollType.left.rawValue
+                    print("Begin inbetween left nStoryIndex:\(nStoryIndex)")
                 }else {
                     //check(Right.Horizontl.Scroll)
                     //if user do front scroll then we adding +1 from iteration value
                     nStoryIndex = nStoryIndex + 1 // go to next story
+                    self.manualScrollDirection = internalScrollType.right.rawValue
+                    print("Begin inbetween right nStoryIndex:\(nStoryIndex)")
                 }
-            }else {
+            }else if page == f_count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
                 nStoryIndex = nStoryIndex - 1
+                self.manualScrollDirection = internalScrollType.left.rawValue
+                //print("Begin end nStoryIndex:\(nStoryIndex)")
+            }else if page == 0 || page == f_count-1 {
+                self.manualScrollDirection = internalScrollType.notscrolled.rawValue
+            }
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if self.lastContentOffset?.x ?? 0 == scrollView.contentOffset.x  {
+            print("Manual scroll direction:\(self.manualScrollDirection!)")
+            if self.manualScrollDirection == internalScrollType.left.rawValue {
+                nStoryIndex = nStoryIndex + 1
+                print("End nStoryIndex:\(nStoryIndex)")
+            }
+            else if self.manualScrollDirection == internalScrollType.right.rawValue {
+                nStoryIndex = nStoryIndex - 1
+                print("End nStoryIndex:\(nStoryIndex)")
             }
         }
     }
