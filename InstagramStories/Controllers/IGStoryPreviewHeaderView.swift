@@ -84,8 +84,14 @@ class IGStoryPreviewHeaderView: UIView {
         }
     }
     
-    public func cancelTimers(snapIndex:Int){
+    public func cancelTimers(snapIndex: Int){
         self.progressView(with: snapIndex).stopTimer()
+    }
+    public func pauseTimer(snapIndex: Int) {
+        self.progressView(with: snapIndex).pauseTimer()
+    }
+    public func resumeTimer(snapIndex: Int) {
+        self.progressView(with: snapIndex).resumeTimer()
     }
 }
 

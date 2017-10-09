@@ -15,7 +15,7 @@ fileprivate let interval:Float = 0.1
 class IGSnapProgressView:UIProgressView {
     public weak var delegate:SnapProgresser?
     internal var elapsedTime:Float = 0.0
-    internal weak var progressor:Timer?
+    internal weak var progressor:CSPausibleTimer?
 }
 
 extension IGSnapProgressView {
@@ -30,14 +30,22 @@ extension IGSnapProgressView {
         debugPrint("Progress:\(progress)")
     }
     
-    public func stopTimer(){
-        progressor?.invalidate()
+    //TODO: Move these functions into Timer Protocol(BluePrint)
+    public func stopTimer() {
+        progressor?.timer?.invalidate()
         progressor = nil
+    }
+    public func resumeTimer() {
+        progressor?.start()
+    }
+    public func pauseTimer() {
+        progressor?.pause()
     }
     
     public func willBeginProgress() {
         elapsedTime = 0.0
         progressor = nil
-        progressor = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target: self, selector: #selector(IGSnapProgressView.delayProcess), userInfo: nil, repeats: true)
+        progressor = CSPausibleTimer.init(timeInterval: TimeInterval(interval), target: self, selector: #selector(IGSnapProgressView.delayProcess), userInfo: nil, repeats: true)
+        progressor?.start()
     }
 }

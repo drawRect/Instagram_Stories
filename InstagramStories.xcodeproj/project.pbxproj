@@ -17,6 +17,7 @@
 		078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41451F62137E00222191 /* ImageView+Additions.swift */; };
 		078E41481F62140000222191 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41471F6213FF00222191 /* Color+Additions.swift */; };
 		07B380C41F7C5AC800577D01 /* IGStory+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */; };
+		07D6C7731F898D4500ECA74B /* CSPausibleTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 07D6C7721F898D4500ECA74B /* CSPausibleTimer.m */; };
 		07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EBE8F01F672951007BCF29 /* IGCommon.swift */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
@@ -48,6 +49,9 @@
 		078E41451F62137E00222191 /* ImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImageView+Additions.swift"; path = "Extension/ImageView+Additions.swift"; sourceTree = "<group>"; };
 		078E41471F6213FF00222191 /* Color+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+Additions.swift"; path = "Extension/Color+Additions.swift"; sourceTree = "<group>"; };
 		07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "IGStory+Additions.swift"; path = "Models/IGStory+Additions.swift"; sourceTree = "<group>"; };
+		07D6C76D1F898D0500ECA74B /* InstagramStories-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "InstagramStories-Bridging-Header.h"; sourceTree = "<group>"; };
+		07D6C7711F898D4400ECA74B /* CSPausibleTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CSPausibleTimer.h; path = Controllers/CSPausibleTimer.h; sourceTree = "<group>"; };
+		07D6C7721F898D4500ECA74B /* CSPausibleTimer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CSPausibleTimer.m; path = Controllers/CSPausibleTimer.m; sourceTree = "<group>"; };
 		07EBE8F01F672951007BCF29 /* IGCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGCommon.swift; path = Common/IGCommon.swift; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -161,6 +165,9 @@
 				1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */,
 				109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */,
 				0774D5191F7641AF0089791B /* IGSnapProgressView.swift */,
+				07D6C7711F898D4400ECA74B /* CSPausibleTimer.h */,
+				07D6C7721F898D4500ECA74B /* CSPausibleTimer.m */,
+				07D6C76D1F898D0500ECA74B /* InstagramStories-Bridging-Header.h */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -231,7 +238,7 @@
 				TargetAttributes = {
 					07FDECD21F5FD9BA004BC833 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = FLQ72JV77K;
+						DevelopmentTeam = KM7V5N6GFF;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -344,6 +351,7 @@
 				10E19A211F88E0DB00170EFA /* IGSnap+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
 				1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */,
+				07D6C7731F898D4500ECA74B /* CSPausibleTimer.m in Sources */,
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */,
@@ -485,11 +493,14 @@
 			baseConfigurationReference = 56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = FLQ72JV77K;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = KM7V5N6GFF;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriess1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "InstagramStories/InstagramStories-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 			};
@@ -500,11 +511,13 @@
 			baseConfigurationReference = A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = FLQ72JV77K;
+				CLANG_ENABLE_MODULES = YES;
+				DEVELOPMENT_TEAM = KM7V5N6GFF;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriess1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriess;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "InstagramStories/InstagramStories-Bridging-Header.h";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
 			};
