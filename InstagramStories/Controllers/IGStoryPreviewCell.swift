@@ -16,7 +16,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     @IBOutlet weak internal var scrollview: UIScrollView!{
         didSet{
             if let count = story?.snaps?.count {
-                scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
+                scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
             }
         }
     }
@@ -63,7 +63,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //MARK: - Private functions
     private func createImageView(with picture:String) {
         let iv = UIImageView(frame: CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),
-                                           y:0, width:scrollview.frame.size.width, height:scrollview.frame.size.height))
+                                           y:0, width:IGScreen.width, height:IGScreen.height))
         startLoadContent(with: iv, picture: picture)
         scrollview.addSubview(iv)
     }
