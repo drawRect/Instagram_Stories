@@ -9,8 +9,6 @@
 import UIKit
 import SDWebImage
 
-protocol StoryPreviewHeaderTapper:class {func didTapCloseButton()}
-
 fileprivate let maxSnaps = 30
 
 class IGStoryPreviewHeaderView: UIView {
@@ -24,7 +22,6 @@ class IGStoryPreviewHeaderView: UIView {
         self.layer.shadowRadius = 1
     }
     
-    public weak var delegate:StoryPreviewHeaderTapper?
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
         didSet {
@@ -45,13 +42,7 @@ class IGStoryPreviewHeaderView: UIView {
     
     //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {
-        self.delegate?.didTapCloseButton()
-    }
-    
-    //MARK: - Class functions
-    class func instanceFromNib() -> IGStoryPreviewHeaderView {
-        let view =  Bundle.loadView(fromNib: "IGStoryPreviewHeaderView", withType: IGStoryPreviewHeaderView.self)
-        return view
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: IGNotification.previewDismisser), object: nil)
     }
     
     //MARK: - Public functions

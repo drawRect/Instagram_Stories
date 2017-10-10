@@ -8,15 +8,21 @@
 
 import UIKit
 
-protocol StoryPreviewProtocol:class {func didCompletePreview()}
+//Exposing didTapClose function to Objc via #selector thats why we are adding
+@objc protocol StoryPreviewProtocol:class {
+    func didCompletePreview()
+    func didTapClose()
+}
 
 class IGStoryPreviewCell: UICollectionViewCell {
     
+    //Think about Xcode Snippets here! when you are creating UIElements default behaviour should be 'Private'
     @IBOutlet weak private var headerView: UIView!
-    @IBOutlet weak internal var scrollview: UIScrollView!{
+    @IBOutlet weak private var scrollView: UIScrollView!{
         didSet{
             if let count = story?.snaps?.count {
-                scrollview.contentSize = CGSize(width:scrollview.frame.size.width * CGFloat(count), height:scrollview.frame.size.height)
+                //Here there's an issue with taking scrollview.frame
+                scrollView.contentSize = CGSize(width:scrollView.frame.size.width * CGFloat(count), height:scrollView.frame.size.height)
             }
         }
     }
@@ -24,48 +30,54 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //MARK: - Overriden functions
     override func awakeFromNib() {
         super.awakeFromNib()
-        storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
+        storyHeaderView = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
         storyHeaderView?.frame = CGRect(x:0,y:0,width:frame.width,height:80)
         headerView.addSubview(storyHeaderView!)
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        guard let iv:UIImageView = self.scrollview.subviews.last as? UIImageView else{return}
+        guard let iv:UIImageView = self.scrollView.subviews.last as? UIImageView else{return}
         iv.sd_cancelCurrentImageLoad()
     }
     
     //MARK: - iVars
-    public weak var delegate:StoryPreviewProtocol?
-    //TODO: - Make UI Elements scope as private
-    public var storyHeaderView:IGStoryPreviewHeaderView?
-    public var snapIndex:Int = 0 {
+    public weak var delegate:StoryPreviewProtocol?{
         didSet {
-            if snapIndex < story?.snapsCount ?? 0 {
-                if let snap = story?.snaps?[snapIndex] {
-                    if let picture = snap.url {
-                        createImageView(with:picture)
-                    }
-                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
-                }
+            if let delegate = delegate {
+             NotificationCenter.default.addObserver(delegate, selector: #selector(delegate.didTapClose), name: NSNotification.Name(rawValue: IGNotification.previewDismisser), object: nil)
             }
         }
     }
-    public var story:IGStory? {
-        didSet {
-            storyHeaderView?.story = story
-            if let picture = story?.user?.picture {
-                self.storyHeaderView?.snaperImageView.setImage(url: picture)
-            }
-        }
-    }
+    private var storyHeaderView:IGStoryPreviewHeaderView?
+//    public var snapIndex:Int = 0 {
+//        didSet {
+//            if snapIndex < story?.snapsCount ?? 0 {
+//                if let snap = story?.snaps?[snapIndex] {
+//                    if let picture = snap.url {
+//                        createImageView(with:picture)
+//                    }
+//                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
+//                }
+//            }
+//        }
+//    }
+//    public var story:IGStory? {
+//        didSet {
+//            storyHeaderView?.story = story
+//            if let picture = story?.user?.picture {
+//                self.storyHeaderView?.snaperImageView.setImage(url: picture)
+//            }
+//        }
+//    }
     
     //MARK: - Private functions
+    //TODO:Here the ScrollView.width is not matching with UIScreen.width<Issue> fix it asap
     private func createImageView(with picture:String) {
-        let iv = UIImageView(frame: CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),
-                                           y:0, width:scrollview.frame.size.width, height:scrollview.frame.size.height))
+        let iv = UIImageView(frame: CGRect(x:scrollView.subviews.last?.frame.maxX ?? CGFloat(0.0),
+                                           y:0, width:scrollView.frame.size.width, height:scrollView.frame.size.height))
         startLoadContent(with: iv, picture: picture)
-        scrollview.addSubview(iv)
+        scrollView.addSubview(iv)
     }
     
     //TODO:This expensive code should move to controller(ie.StoryPreviewController)
@@ -93,7 +105,7 @@ extension IGStoryPreviewCell:SnapProgresser {
                 //Move to next snap
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x:x,y:0)
-                scrollview.setContentOffset(offset, animated: false)
+                scrollView.setContentOffset(offset, animated: false)
                 snapIndex = n
             }else {
                 delegate?.didCompletePreview()

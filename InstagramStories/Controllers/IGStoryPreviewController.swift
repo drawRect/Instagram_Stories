@@ -90,7 +90,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
-        cell.storyHeaderView?.delegate = self
         let counted = handPickedStoryIndex+nStoryIndex
         if let count = stories?.count {
             if counted < count {
@@ -105,18 +104,18 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
-        cell?.storyHeaderView?.generateSnappers()
+        //cell?.storyHeaderView?.generateSnappers()
         cell?.snapIndex = 0
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
-        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
+        //cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -144,11 +143,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
 }
 
-extension IGStoryPreviewController:StoryPreviewHeaderTapper {
-    func didTapCloseButton() {
-        self.dismiss(animated: true, completion:nil)
-    }
-}
 extension IGStoryPreviewController:StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
@@ -162,5 +156,8 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    @objc func didTapClose() {
+        self.dismiss(animated: true, completion:nil)
     }
 }

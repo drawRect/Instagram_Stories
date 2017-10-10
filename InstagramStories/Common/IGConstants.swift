@@ -16,3 +16,7 @@ public struct IGScreen {
     static let height = UIScreen.main.bounds.height
 }
 
+public struct IGNotification {
+    /**Dismiss the Story Preview*/
+    static let previewDismisser = "Notification.StoryPreview.Dismisser"
+}
