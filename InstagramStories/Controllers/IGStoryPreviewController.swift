@@ -79,7 +79,8 @@ class IGStoryPreviewController: UIViewController {
     }
 }
 
-extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = stories?.count {
@@ -109,13 +110,12 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
-        //cell?.storyHeaderView?.generateSnappers()
-        cell?.snapIndex = 0
+        cell?.willDisplay()
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
-        //cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
+        cell?.didEndDisplay()
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {

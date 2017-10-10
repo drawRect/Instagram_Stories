@@ -18,8 +18,8 @@ class IGStoryPreviewCell: UICollectionViewCell {
     
     //Think about Xcode Snippets here! when you are creating UIElements default behaviour should be 'Private'
     @IBOutlet weak private var headerView: UIView!
-    @IBOutlet weak private var scrollView: UIScrollView!{
-        didSet{
+    @IBOutlet weak private var scrollView: UIScrollView! {
+        didSet {
             if let count = story?.snaps?.count {
                 //Here there's an issue with taking scrollview.frame
                 scrollView.contentSize = CGSize(width:scrollView.frame.size.width * CGFloat(count), height:scrollView.frame.size.height)
@@ -50,41 +50,34 @@ class IGStoryPreviewCell: UICollectionViewCell {
         }
     }
     private var storyHeaderView:IGStoryPreviewHeaderView?
-//    public var snapIndex:Int = 0 {
-//        didSet {
-//            if snapIndex < story?.snapsCount ?? 0 {
-//                if let snap = story?.snaps?[snapIndex] {
-//                    if let picture = snap.url {
-//                        createImageView(with:picture)
-//                    }
-//                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
-//                }
-//            }
-//        }
-//    }
-//    public var story:IGStory? {
-//        didSet {
-//            storyHeaderView?.story = story
-//            if let picture = story?.user?.picture {
-//                self.storyHeaderView?.snaperImageView.setImage(url: picture)
-//            }
-//        }
-//    }
-    
-    //MARK: - Private functions
-    //TODO:Here the ScrollView.width is not matching with UIScreen.width<Issue> fix it asap
-    private func createImageView(with picture:String) {
-        let iv = UIImageView(frame: CGRect(x:scrollView.subviews.last?.frame.maxX ?? CGFloat(0.0),
-                                           y:0, width:scrollView.frame.size.width, height:scrollView.frame.size.height))
-        startLoadContent(with: iv, picture: picture)
-        scrollView.addSubview(iv)
+    fileprivate var snapIndex:Int = 0 {
+        didSet {
+            if snapIndex < story?.snapsCount ?? 0 {
+                if let snap = story?.snaps?[snapIndex] {
+                    if let urlString = snap.url {
+                        createImageView(with:urlString)
+                    }
+                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
+                }
+            }
+        }
+    }
+    public var story:IGStory? {
+        didSet {
+            storyHeaderView?.story = story
+            if let picture = story?.user?.picture {
+                self.storyHeaderView?.snaperImageView.setImage(url: picture)
+            }
+        }
     }
     
-    //TODO:This expensive code should move to controller(ie.StoryPreviewController)
-    //If Child wants an image it should not simply go and take
-    //It should ask parent i want an image to represent the UIImageView!!!
-    private func startLoadContent(with imageView:UIImageView,picture:String) {
-        imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
+    //MARK: - Private functions
+    //@note:Here we creating the ImageView before cell displaying on view;So we will get improper self.frame so that only am using IGScreen.frame
+    private func createImageView(with urlString:String) {
+        let x = scrollView.subviews.last?.frame.maxX ?? CGFloat(0.0)
+        let iv = UIImageView(frame: CGRect(x:x,y:0,width:IGScreen.width,height:IGScreen.height))
+        scrollView.addSubview(iv)
+        iv.setImage(url: urlString, style: .squared, completion: { (result, error) in
             debugPrint("Loading content")
             if let error = error {
                 debugPrint(error.localizedDescription)
@@ -94,6 +87,14 @@ class IGStoryPreviewCell: UICollectionViewCell {
                 pv?.willBeginProgress()
             }
         })
+    }
+    
+    public func willDisplay() {
+        storyHeaderView?.generateSnappers()
+        snapIndex = 0
+    }
+    public func didEndDisplay() {
+        storyHeaderView?.stopTimer(for: snapIndex)
     }
 }
 

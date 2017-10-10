@@ -32,7 +32,7 @@ extension UINib {
 
 extension Bundle {
     static func loadView<T>(with type: T.Type) -> T {
-        if let view = Bundle.main.loadNibNamed(String(describing: self), owner: nil, options: nil)?.first as? T {
+        if let view = Bundle.main.loadNibNamed(String(describing: type), owner: nil, options: nil)?.first as? T {
             return view
         }
         fatalError("Could not load view with type " + String(describing: type))
