@@ -45,7 +45,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     public weak var delegate:StoryPreviewProtocol?{
         didSet {
             if let delegate = delegate {
-             NotificationCenter.default.addObserver(delegate, selector: #selector(delegate.didTapClose), name: NSNotification.Name(rawValue: IGNotification.previewDismisser), object: nil)
+                NotificationCenter.default.addObserver(delegate, selector: #selector(delegate.didTapClose), name: NSNotification.Name(rawValue: IGNotification.previewDismisser), object: nil)
             }
         }
     }
@@ -95,6 +95,24 @@ class IGStoryPreviewCell: UICollectionViewCell {
     }
     public func didEndDisplay() {
         storyHeaderView?.stopTimer(for: snapIndex)
+    }
+    
+    @IBAction func didLongPressCollectionView(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began {
+            let location = sender.location(in: scrollView)
+            if scrollView.hitTest(location, with: nil) != nil{
+                storyHeaderView?.pauseTimer(snapIndex: snapIndex)
+            }else {
+                debugPrint("did Long press on out of ScrollView")
+            }
+        }else if sender.state == .ended {
+            let location = sender.location(in: scrollView)
+            if scrollView.hitTest(location, with: nil) != nil{
+                storyHeaderView?.resumeTimer(snapIndex: snapIndex)
+            }else {
+                debugPrint("did Long press on out of ScrollView")
+            }
+        }
     }
 }
 

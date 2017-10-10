@@ -45,9 +45,6 @@
                 <constraint firstItem="Y7L-zX-nLY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="PbE-3d-Azs"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
-            <connections>
-                <outletCollection property="gestureRecognizers" destination="hyN-DG-C3k" appends="YES" id="ytY-vq-MvC"/>
-            </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>
         </view>
         <swipeGestureRecognizer direction="down" id="uaQ-dj-9qm">
@@ -55,10 +52,5 @@
                 <action selector="didSwipeDown:" destination="-1" id="5it-6b-ax3"/>
             </connections>
         </swipeGestureRecognizer>
-        <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="2" id="hyN-DG-C3k">
-            <connections>
-                <action selector="didLongPressCollectionView:" destination="-1" id="2pW-dP-0cW"/>
-            </connections>
-        </pongPressGestureRecognizer>
     </objects>
 </document>

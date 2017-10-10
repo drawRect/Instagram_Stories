@@ -21,6 +21,7 @@
                     <scrollView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-HJ-vkw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                     </scrollView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNt-Vv-txT">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
@@ -32,6 +33,7 @@
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <gestureRecognizers/>
             <constraints>
                 <constraint firstItem="DNt-Vv-txT" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6id-7M-KEL"/>
                 <constraint firstAttribute="trailing" secondItem="DNt-Vv-txT" secondAttribute="trailing" id="85z-sR-xh7"/>

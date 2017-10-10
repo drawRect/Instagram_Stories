@@ -77,27 +77,6 @@ class IGStoryPreviewController: UIViewController {
     @IBAction func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
-
-    @IBAction func didLongPressCollectionView(_ sender: UILongPressGestureRecognizer) {
-        /*if sender.state == .began {
-            let location = sender.location(in: collectionview)
-            if let indexPath = collectionview.indexPathForItem(at: location) {
-                guard let cell = collectionview.cellForItem(at: indexPath) as? IGStoryPreviewCell else{return}
-                cell.storyHeaderView?.pauseTimer(snapIndex: (cell.snapIndex))
-            }else {
-                debugPrint("did Long press on Collectionview")
-            }
-        }else if sender.state == .ended {
-            let location = sender.location(in: collectionview)
-            if let indexPath = collectionview.indexPathForItem(at: location) {
-                guard let cell = collectionview.cellForItem(at: indexPath) as? IGStoryPreviewCell else{return}
-                cell.storyHeaderView?.resumeTimer(snapIndex: (cell.snapIndex))
-            }else {
-                debugPrint("did Long press on Collectionview")
-            }
-        }*/
-    }
-    
 }
 
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,

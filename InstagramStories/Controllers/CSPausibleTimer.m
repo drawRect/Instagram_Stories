@@ -98,6 +98,4 @@
     self.userInfo = nil;
 }
 
-
-
 @end
