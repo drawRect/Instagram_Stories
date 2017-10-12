@@ -31,8 +31,12 @@ class IGStoryPreviewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        guard let iv:UIImageView = self.scrollview.subviews.last as? UIImageView else{return}
-        iv.sd_cancelCurrentImageLoad()
+//        guard let iv:UIImageView = scrollview.subviews.last as? UIImageView else{return}
+//        iv.sd_cancelCurrentImageLoad()
+//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
+//        imageViews.forEach { iv in
+//            iv.image = nil
+//        }
     }
     
     //MARK: - iVars
@@ -73,7 +77,7 @@ class IGStoryPreviewCell: UICollectionViewCell {
     //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
         imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
-            debugPrint("Loading content")
+            //debugPrint("Loading content")
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {

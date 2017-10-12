@@ -127,7 +127,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
-        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
+//        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
@@ -138,28 +138,36 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         if let count = stories?.count {
             let f_count = count-handPickedStoryIndex
             if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x < 0 {
-                nStoryIndex = nStoryIndex + 1
+                let t = nStoryIndex + 1
+                if t < f_count {
+                     nStoryIndex = nStoryIndex + 1
+                    self.manualScrollDirection = internalScrollType.right.rawValue
+                }
                 //print("Begin start nStoryIndex:\(nStoryIndex)")
-                self.manualScrollDirection = internalScrollType.right.rawValue
             }else if page != 0 && page != f_count-1 {
                 //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
-                print("Scroll x value:\(scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0)")
                 if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
                     //if user do back scroll then we reducing -1 from iteration value
-                    nStoryIndex = nStoryIndex - 1
-                    self.manualScrollDirection = internalScrollType.left.rawValue
-                    print("Begin inbetween left nStoryIndex:\(nStoryIndex)")
+                    let t = nStoryIndex - 1
+                    if t > f_count {
+                        nStoryIndex = nStoryIndex - 1
+                        self.manualScrollDirection = internalScrollType.left.rawValue
+                    }
                 }else {
                     //check(Right.Horizontl.Scroll)
                     //if user do front scroll then we adding +1 from iteration value
-                    nStoryIndex = nStoryIndex + 1 // go to next story
-                    self.manualScrollDirection = internalScrollType.right.rawValue
-                    print("Begin inbetween right nStoryIndex:\(nStoryIndex)")
+                    let t = nStoryIndex + 1
+                    if t < f_count {
+                        nStoryIndex = nStoryIndex + 1 // go to next story
+                        self.manualScrollDirection = internalScrollType.right.rawValue
+                    }
                 }
             }else if page == f_count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
-                nStoryIndex = nStoryIndex - 1
-                self.manualScrollDirection = internalScrollType.left.rawValue
-                //print("Begin end nStoryIndex:\(nStoryIndex)")
+                let t = nStoryIndex - 1
+                if t > f_count {
+                    nStoryIndex = nStoryIndex - 1
+                    self.manualScrollDirection = internalScrollType.left.rawValue
+                }
             }else if page == 0 || page == f_count-1 {
                 self.manualScrollDirection = internalScrollType.notscrolled.rawValue
             }
@@ -168,14 +176,20 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if self.lastContentOffset?.x ?? 0 == scrollView.contentOffset.x  {
-            print("Manual scroll direction:\(self.manualScrollDirection!)")
+//            print("Manual scroll direction:\(self.manualScrollDirection!)")
             if self.manualScrollDirection == internalScrollType.left.rawValue {
-                nStoryIndex = nStoryIndex + 1
-                print("End nStoryIndex:\(nStoryIndex)")
+                let t = nStoryIndex + 1
+                if t < (stories?.count)!-handPickedStoryIndex {
+                    nStoryIndex = nStoryIndex + 1
+                }
+//                print("End nStoryIndex:\(nStoryIndex)")
             }
             else if self.manualScrollDirection == internalScrollType.right.rawValue {
-                nStoryIndex = nStoryIndex - 1
-                print("End nStoryIndex:\(nStoryIndex)")
+                let t = nStoryIndex - 1
+                if t > (stories?.count)!-handPickedStoryIndex {
+                    nStoryIndex = nStoryIndex - 1
+                }
+//                print("End nStoryIndex:\(nStoryIndex)")
             }
         }
     }
