@@ -47,6 +47,9 @@ class IGStoryPreviewController: UIViewController {
     //public weak var storyPreviewHelperDelegate:pastStoryClearer?
     private var layoutType:layoutType = .cubic
     
+    private var lastIndex:IndexPath?
+    private var manualScrollEnabled:Bool = true
+    
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
     
@@ -65,6 +68,7 @@ class IGStoryPreviewController: UIViewController {
             collectionview.register(IGStoryPreviewCell.nib(), forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
             collectionview?.isPagingEnabled = true
             collectionview.isPrefetchingEnabled = false
+            collectionview.decelerationRate = UIScrollViewDecelerationRateFast
             if let layout = collectionview?.collectionViewLayout as? AnimatedCollectionViewLayout {
                 layout.scrollDirection = .horizontal
                 layout.animator = layoutAnimator.0
@@ -101,7 +105,19 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
+        print("IndexPath:\(indexPath.row)")
         cell.storyHeaderView?.delegate = self
+        if manualScrollEnabled {
+            if let lastIndexValue = lastIndex {
+                if indexPath > lastIndexValue {
+                    nStoryIndex = nStoryIndex + 1
+                }
+                else {
+                    nStoryIndex = nStoryIndex - 1
+                }
+            }
+        }
+        print("nStoryIndex:\(nStoryIndex)")
         let counted = handPickedStoryIndex+nStoryIndex
         if let count = stories?.count {
             if counted < count {
@@ -112,6 +128,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 fatalError("Stories Index mis-matched :(")
             }
         }
+        lastIndex = indexPath
         return cell
     }
     
@@ -123,74 +140,23 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let cell = cell as? IGStoryPreviewCell
         cell?.storyHeaderView?.generateSnappers()
         cell?.snapIndex = 0
+        
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let cell = cell as? IGStoryPreviewCell
-//        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
+        if lastContentOffset == collectionView.contentOffset {
+            nStoryIndex = (lastIndex?.row)!-1
+            lastIndex = IndexPath(item: nStoryIndex, section: 0)
+            print("nStoryIndex in didend:\(nStoryIndex)")
+        }
+        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let pageWidth = scrollView.frame.size.width
-        let fractionalPage = scrollView.contentOffset.x / pageWidth
-        let page = lroundf(Float(fractionalPage))
-        self.lastContentOffset = scrollView.contentOffset
-        if let count = stories?.count {
-            let f_count = count-handPickedStoryIndex
-            if page == 0 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x < 0 {
-                let t = nStoryIndex + 1
-                if t < f_count {
-                     nStoryIndex = nStoryIndex + 1
-                    self.manualScrollDirection = internalScrollType.right.rawValue
-                }
-                //print("Begin start nStoryIndex:\(nStoryIndex)")
-            }else if page != 0 && page != f_count-1 {
-                //Here we will be able to get to which kind of scroll user is trying to do!. check(Left.Horizontl.Scroll)
-                if scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
-                    //if user do back scroll then we reducing -1 from iteration value
-                    let t = nStoryIndex - 1
-                    if t > f_count {
-                        nStoryIndex = nStoryIndex - 1
-                        self.manualScrollDirection = internalScrollType.left.rawValue
-                    }
-                }else {
-                    //check(Right.Horizontl.Scroll)
-                    //if user do front scroll then we adding +1 from iteration value
-                    let t = nStoryIndex + 1
-                    if t < f_count {
-                        nStoryIndex = nStoryIndex + 1 // go to next story
-                        self.manualScrollDirection = internalScrollType.right.rawValue
-                    }
-                }
-            }else if page == f_count-1 && scrollView.panGestureRecognizer.translation(in: scrollView.superview).x > 0 {
-                let t = nStoryIndex - 1
-                if t > f_count {
-                    nStoryIndex = nStoryIndex - 1
-                    self.manualScrollDirection = internalScrollType.left.rawValue
-                }
-            }else if page == 0 || page == f_count-1 {
-                self.manualScrollDirection = internalScrollType.notscrolled.rawValue
-            }
-        }
-    }
-    
-    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if self.lastContentOffset?.x ?? 0 == scrollView.contentOffset.x  {
-//            print("Manual scroll direction:\(self.manualScrollDirection!)")
-            if self.manualScrollDirection == internalScrollType.left.rawValue {
-                let t = nStoryIndex + 1
-                if t < (stories?.count)!-handPickedStoryIndex {
-                    nStoryIndex = nStoryIndex + 1
-                }
-//                print("End nStoryIndex:\(nStoryIndex)")
-            }
-            else if self.manualScrollDirection == internalScrollType.right.rawValue {
-                let t = nStoryIndex - 1
-                if t > (stories?.count)!-handPickedStoryIndex {
-                    nStoryIndex = nStoryIndex - 1
-                }
-//                print("End nStoryIndex:\(nStoryIndex)")
-            }
+        lastContentOffset = scrollView.contentOffset
+        if !manualScrollEnabled {
+            manualScrollEnabled = true
         }
     }
 }
@@ -206,8 +172,10 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         if let count = stories?.count {
             if n < count {
                 //Move to next story
+                manualScrollEnabled = false
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+                lastIndex = nIndexPath
                 collectionview.scrollToItem(at: nIndexPath, at: .right, animated: true)
             }else {
                 self.dismiss(animated: true, completion: nil)
