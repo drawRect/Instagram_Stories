@@ -9,12 +9,6 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
-private enum internalScrollType:String {
-    case left = "left"
-    case right = "right"
-    case notscrolled = "notscrolled"
-}
-
 public enum layoutType {
     case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
     var animator:LayoutAttributesAnimator {
@@ -46,7 +40,6 @@ class IGStoryPreviewController: UIViewController {
     fileprivate var nStoryIndex:Int = 0 //iteration(i+1)
     //public weak var storyPreviewHelperDelegate:pastStoryClearer?
     private var layoutType:layoutType = .cubic
-    
     private var lastIndex:IndexPath?
     private var manualScrollEnabled:Bool = true
     
@@ -56,10 +49,7 @@ class IGStoryPreviewController: UIViewController {
     @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
         didSet { dismissGesture.direction = .down }
     }
-    
-    //private var beginPage:Int = -1
     private var lastContentOffset:CGPoint?
-    private var manualScrollDirection:String?
     
     @IBOutlet private weak var collectionview: UICollectionView! {
         didSet {
@@ -68,7 +58,6 @@ class IGStoryPreviewController: UIViewController {
             collectionview.register(IGStoryPreviewCell.nib(), forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
             collectionview?.isPagingEnabled = true
             collectionview.isPrefetchingEnabled = false
-            collectionview.decelerationRate = UIScrollViewDecelerationRateFast
             if let layout = collectionview?.collectionViewLayout as? AnimatedCollectionViewLayout {
                 layout.scrollDirection = .horizontal
                 layout.animator = layoutAnimator.0
@@ -105,7 +94,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
-        print("IndexPath:\(indexPath.row)")
         cell.storyHeaderView?.delegate = self
         if manualScrollEnabled {
             if let lastIndexValue = lastIndex {
@@ -117,7 +105,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 }
             }
         }
-        print("nStoryIndex:\(nStoryIndex)")
         let counted = handPickedStoryIndex+nStoryIndex
         if let count = stories?.count {
             if counted < count {
@@ -140,7 +127,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         let cell = cell as? IGStoryPreviewCell
         cell?.storyHeaderView?.generateSnappers()
         cell?.snapIndex = 0
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -148,7 +134,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         if lastContentOffset == collectionView.contentOffset {
             nStoryIndex = (lastIndex?.row)!-1
             lastIndex = IndexPath(item: nStoryIndex, section: 0)
-            print("nStoryIndex in didend:\(nStoryIndex)")
+            print("nStoryIndex in did end:\(nStoryIndex)")
         }
         cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
     }
