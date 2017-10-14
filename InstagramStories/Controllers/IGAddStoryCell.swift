@@ -8,4 +8,4 @@
 
 import UIKit
 
-class IGAddStoryCell: UICollectionViewCell {}
+final class IGAddStoryCell: UICollectionViewCell {}

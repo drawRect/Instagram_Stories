@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -21,31 +21,21 @@
                     <scrollView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iCW-HJ-vkw">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <gestureRecognizers/>
                         <connections>
                             <outlet property="delegate" destination="-1" id="Ocd-LD-cbu"/>
                         </connections>
                     </scrollView>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DNt-Vv-txT">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="80" id="SE1-zd-6Vl"/>
-                        </constraints>
-                    </view>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="DNt-Vv-txT" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="6id-7M-KEL"/>
-                <constraint firstAttribute="trailing" secondItem="DNt-Vv-txT" secondAttribute="trailing" id="85z-sR-xh7"/>
                 <constraint firstAttribute="trailing" secondItem="iCW-HJ-vkw" secondAttribute="trailing" id="HBy-kM-cLg"/>
-                <constraint firstItem="DNt-Vv-txT" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="ZE2-uV-cLE"/>
                 <constraint firstItem="iCW-HJ-vkw" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fSq-zI-5ii"/>
                 <constraint firstItem="iCW-HJ-vkw" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hVc-p3-xzf"/>
                 <constraint firstAttribute="bottom" secondItem="iCW-HJ-vkw" secondAttribute="bottom" id="mTu-QF-ncs"/>
             </constraints>
             <connections>
-                <outlet property="headerView" destination="DNt-Vv-txT" id="4gJ-o3-3qb"/>
                 <outlet property="scrollview" destination="iCW-HJ-vkw" id="YGs-ff-cKN"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>

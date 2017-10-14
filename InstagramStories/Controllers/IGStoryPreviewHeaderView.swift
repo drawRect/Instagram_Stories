@@ -9,11 +9,14 @@
 import UIKit
 import SDWebImage
 
-protocol StoryPreviewHeaderTapper:class {func didTapCloseButton()}
+protocol StoryPreviewHeaderProtocol:class {func didTapCloseButton()}
 
 fileprivate let maxSnaps = 30
+//Identifiers
+public let progressIndicatorViewTag = 88
+public let progressViewTag = 99
 
-class IGStoryPreviewHeaderView: UIView {
+final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
     //Warning: If you use this following shadow one more time. Please create UIView+Additions(Extension)
     override func awakeFromNib() {
@@ -24,14 +27,13 @@ class IGStoryPreviewHeaderView: UIView {
         self.layer.shadowRadius = 1
     }
     
-    public weak var delegate:StoryPreviewHeaderTapper?
+    public weak var delegate:StoryPreviewHeaderProtocol?
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
         didSet {
             snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
         }
     }
-    
     @IBOutlet private weak var progressView: UIView!
     //Todo:Make Private scope
     @IBOutlet internal weak var snaperImageView: UIImageView! {
@@ -48,38 +50,31 @@ class IGStoryPreviewHeaderView: UIView {
         self.delegate?.didTapCloseButton()
     }
     
-    //MARK: - Class functions
-    class func instanceFromNib() -> IGStoryPreviewHeaderView {
-        return Bundle.loadView(with: IGStoryPreviewHeaderView.self)
-    }
-    
     //MARK: - Public functions
-    public func progressView(with index:Int)->IGSnapProgressView {
-        return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
-    }
     public func generateSnappers(){
         //clean up the garbage progress bars
         self.progressView.subviews.forEach { v in v.removeFromSuperview()}
         let padding:CGFloat = 8 //GUI-Padding
-        let pvHeight:CGFloat = 5
+        let pvHeight:CGFloat = 3
         var pvX:CGFloat = padding
         let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight
         let pvWidth = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
-            let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
-            pv.progressTintColor = UIColor.white
-            pv.trackTintColor = UIColor.white.withAlphaComponent(0.1)
-            pv.progress = 0.0
-            pv.tag = i
-            pv.layer.cornerRadius = 1
+            let pvIndicator = UIView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
+            pvIndicator.backgroundColor = UIColor.white.withAlphaComponent(0.1)
+            pvIndicator.tag = i+progressIndicatorViewTag
+            pvIndicator.layer.cornerRadius = 1
+            pvIndicator.layer.masksToBounds = true
+            progressView.addSubview(pvIndicator)
+            let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:0,height:pvHeight))
+            pv.backgroundColor = UIColor.white
+            pv.tag = i+progressViewTag
+            pv.layer.cornerRadius = pvIndicator.layer.cornerRadius
             pv.layer.masksToBounds = true
             progressView.addSubview(pv)
             pvX = pvX + pvWidth + padding
         }
         snaperNameLabel.text = story?.user?.name
-    }
-    public func cancelTimers(snapIndex:Int){
-        self.progressView(with: snapIndex).stopTimer()
     }
 }
 

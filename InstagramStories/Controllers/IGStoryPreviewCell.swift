@@ -8,31 +8,42 @@
 
 import UIKit
 
-protocol StoryPreviewProtocol:class {func didCompletePreview()}
+protocol StoryPreviewProtocol:class {
+    func didCompletePreview()
+    func didTapCloseButton()
+}
 
-class IGStoryPreviewCell: UICollectionViewCell {
+final class IGStoryPreviewCell: UICollectionViewCell {
     
-    @IBOutlet weak private var headerView: UIView!
-    @IBOutlet weak internal var scrollview: UIScrollView!{
+    @IBOutlet weak private var scrollview: UIScrollView!{
         didSet{
             if let count = story?.snaps?.count {
                 scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
             }
         }
     }
+    private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
+        let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
+        v.frame = CGRect(x:0,y:0,width:frame.width,height:80)
+        return v
+    }()
+    private lazy var longPress_gesture: UILongPressGestureRecognizer = {
+        let lp = UILongPressGestureRecognizer.init(target: self, action: #selector(didLongPress(_:)))
+        lp.minimumPressDuration = 0.2
+        return lp
+    }()
     
     //MARK: - Overriden functions
     override func awakeFromNib() {
         super.awakeFromNib()
-        storyHeaderView = IGStoryPreviewHeaderView.instanceFromNib()
-        storyHeaderView?.frame = CGRect(x:0,y:0,width:frame.width,height:80)
-        headerView.addSubview(storyHeaderView!)
+        addSubview(storyHeaderView)
+        addGestureRecognizer(longPress_gesture)
     }
     
     //MARK: - iVars
-    public weak var delegate:StoryPreviewProtocol?
-    //TODO: - Make UI Elements scope as private
-    public var storyHeaderView:IGStoryPreviewHeaderView?
+    public weak var delegate:StoryPreviewProtocol? {
+        didSet { storyHeaderView.delegate = self }
+    }
     public var snapIndex:Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
@@ -40,47 +51,43 @@ class IGStoryPreviewCell: UICollectionViewCell {
                     if let picture = snap.url {
                         createImageView(with:picture)
                     }
-                    storyHeaderView?.lastUpdatedLabel.text = snap.lastUpdated
+                    storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                 }
             }
         }
     }
     public var story:IGStory? {
         didSet {
-            storyHeaderView?.story = story
+            storyHeaderView.story = story
             if let picture = story?.user?.picture {
-                self.storyHeaderView?.snaperImageView.setImage(url: picture)
+                storyHeaderView.snaperImageView.setImage(url: picture)
             }
         }
     }
     
     //MARK: - Private functions
     private func createImageView(with picture:String) {
-        let iv = UIImageView(frame: CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),
-                                           y:0, width:IGScreen.width, height:IGScreen.height))
+        let iv = UIImageView(frame:
+            CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height))
         startLoadContent(with: iv, picture: picture)
         scrollview.addSubview(iv)
     }
     
-    //TODO:This expensive code should move to controller(ie.StoryPreviewController)
-    //If Child wants an image it should not simply go and take
-    //It should ask parent i want an image to represent the UIImageView!!!
     private func startLoadContent(with imageView:UIImageView,picture:String) {
         imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
-            //debugPrint("Loading content")
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                let pv = self.storyHeaderView?.progressView(with: self.snapIndex)
-                pv?.delegate = self
-                pv?.willBeginProgress()
+                let holderView = self.getProgressIndicatorView(with: self.snapIndex)
+                let animatableView = self.getProgressView(with: self.snapIndex)
+                animatableView.start(with: 1.0, width: holderView.frame.width, completion: {
+                    self.didCompleteProgress()
+                })
             }
         })
     }
-}
-
-extension IGStoryPreviewCell:SnapProgresser {
-    func didCompleteProgress() {
+    
+    private func didCompleteProgress() {
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {
@@ -93,5 +100,38 @@ extension IGStoryPreviewCell:SnapProgresser {
                 delegate?.didCompletePreview()
             }
         }
+    }
+    
+    private func getProgressView(with index:Int)->IGSnapProgressView {
+        return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
+    }
+    
+    private func getProgressIndicatorView(with index:Int)->UIView {
+        return (storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first)!
+    }
+    
+    public func willDisplayCell() {
+        storyHeaderView.generateSnappers()
+        snapIndex = 0
+    }
+    public func didEndDisplayingCell() {
+        getProgressView(with: snapIndex).stop()
+    }
+    
+    @objc func didLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began || sender.state == .ended {
+            let v = getProgressView(with: snapIndex)
+            if sender.state == .began {
+                v.pause()
+            }else {
+                v.play()
+            }
+        }
+    }
+}
+
+extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
+    func didTapCloseButton() {
+        delegate?.didTapCloseButton()
     }
 }
