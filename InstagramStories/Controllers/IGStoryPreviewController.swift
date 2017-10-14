@@ -40,8 +40,6 @@ class IGStoryPreviewController: UIViewController {
     fileprivate var nStoryIndex:Int = 0 //iteration(i+1)
     //public weak var storyPreviewHelperDelegate:pastStoryClearer?
     private var layoutType:layoutType = .cubic
-    private var lastIndex:IndexPath?
-    private var manualScrollEnabled:Bool = true
     
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
@@ -49,7 +47,6 @@ class IGStoryPreviewController: UIViewController {
     @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
         didSet { dismissGesture.direction = .down }
     }
-    private var lastContentOffset:CGPoint?
     
     @IBOutlet private weak var collectionview: UICollectionView! {
         didSet {
@@ -95,17 +92,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         cell.storyHeaderView?.delegate = self
-        if manualScrollEnabled {
-            if let lastIndexValue = lastIndex {
-                if indexPath > lastIndexValue {
-                    nStoryIndex = nStoryIndex + 1
-                }
-                else {
-                    nStoryIndex = nStoryIndex - 1
-                }
-            }
-        }
-        let counted = handPickedStoryIndex+nStoryIndex
+        let counted = handPickedStoryIndex+indexPath.item
         if let count = stories?.count {
             if counted < count {
                 let story = stories?.stories?[counted]
@@ -115,7 +102,8 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 fatalError("Stories Index mis-matched :(")
             }
         }
-        lastIndex = indexPath
+        
+        nStoryIndex = indexPath.item
         return cell
     }
     
@@ -130,20 +118,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        collectionView.isScrollEnabled = true
         let cell = cell as? IGStoryPreviewCell
-        if lastContentOffset == collectionView.contentOffset {
-            nStoryIndex = (lastIndex?.row)!-1
-            lastIndex = IndexPath(item: nStoryIndex, section: 0)
-            print("nStoryIndex in did end:\(nStoryIndex)")
-        }
         cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
-    }
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        lastContentOffset = scrollView.contentOffset
-        if !manualScrollEnabled {
-            manualScrollEnabled = true
-        }
     }
 }
 
@@ -158,10 +135,8 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         if let count = stories?.count {
             if n < count {
                 //Move to next story
-                manualScrollEnabled = false
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
-                lastIndex = nIndexPath
                 collectionview.scrollToItem(at: nIndexPath, at: .right, animated: true)
             }else {
                 self.dismiss(animated: true, completion: nil)
