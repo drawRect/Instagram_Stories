@@ -30,7 +30,7 @@ public enum layoutType {
  While Snap.done->Next.snap(continues)->done
  then Story Completed
  */
-class IGStoryPreviewController: UIViewController {
+final class IGStoryPreviewController: UIViewController {
     
     //MARK: - iVars
     public var stories:IGStories?
@@ -48,14 +48,14 @@ class IGStoryPreviewController: UIViewController {
         didSet { dismissGesture.direction = .down }
     }
     
-    @IBOutlet private weak var collectionview: UICollectionView! {
+    @IBOutlet private weak var snapsCollectionView: UICollectionView! {
         didSet {
-            collectionview.delegate = self
-            collectionview.dataSource = self
-            collectionview.register(IGStoryPreviewCell.nib(), forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
-            collectionview?.isPagingEnabled = true
-            collectionview.isPrefetchingEnabled = false
-            if let layout = collectionview?.collectionViewLayout as? AnimatedCollectionViewLayout {
+            snapsCollectionView.delegate = self
+            snapsCollectionView.dataSource = self
+            snapsCollectionView.register(IGStoryPreviewCell.nib(), forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
+            snapsCollectionView?.isPagingEnabled = true
+            snapsCollectionView.isPrefetchingEnabled = false
+            if let layout = snapsCollectionView?.collectionViewLayout as? AnimatedCollectionViewLayout {
                 layout.scrollDirection = .horizontal
                 layout.animator = layoutAnimator.0
             }
@@ -91,7 +91,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
-        cell.storyHeaderView?.delegate = self
         let counted = handPickedStoryIndex+indexPath.item
         if let count = stories?.count {
             if counted < count {
@@ -102,7 +101,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 fatalError("Stories Index mis-matched :(")
             }
         }
-        
         nStoryIndex = indexPath.item
         return cell
     }
@@ -112,23 +110,14 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let cell = cell as? IGStoryPreviewCell
-        cell?.storyHeaderView?.generateSnappers()
-        cell?.snapIndex = 0
+        (cell as? IGStoryPreviewCell)?.willDisplayCell()
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        collectionView.isScrollEnabled = true
-        let cell = cell as? IGStoryPreviewCell
-        cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
+        (cell as? IGStoryPreviewCell)?.didEndDisplayingCell()
     }
 }
 
-extension IGStoryPreviewController:StoryPreviewHeaderTapper {
-    func didTapCloseButton() {
-        self.dismiss(animated: true, completion:nil)
-    }
-}
 extension IGStoryPreviewController:StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
@@ -137,10 +126,13 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 //Move to next story
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
-                collectionview.scrollToItem(at: nIndexPath, at: .right, animated: true)
+                snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
             }else {
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    func didTapCloseButton() {
+        self.dismiss(animated: true, completion:nil)
     }
 }

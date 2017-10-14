@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IGStoryListCell: UICollectionViewCell {
+final class IGStoryListCell: UICollectionViewCell {
     
     @IBOutlet weak var profileImageView: UIImageView! {
         didSet {

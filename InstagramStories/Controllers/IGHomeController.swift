@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IGHomeController: UIViewController {
+final class IGHomeController: UIViewController {
     
     @IBOutlet weak private var storiesCollectionView: UICollectionView! {
         didSet {
@@ -20,8 +20,7 @@ class IGHomeController: UIViewController {
         }
     }
     //Keep it Immutable! don't get Dirty :P
-    //Todo::Load this data in Async mode
-   fileprivate let stories: IGStories? = IGHomeController.loadStubbedData()
+    let stories:IGStories? = {return IGHomeController.loadStubbedData()}()
     
     override func viewDidLoad() {
         super.viewDidLoad()

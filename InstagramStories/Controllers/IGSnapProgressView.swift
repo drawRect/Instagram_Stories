@@ -8,36 +8,39 @@
 
 import UIKit
 
-protocol SnapProgresser:class {func didCompleteProgress()}
-
-fileprivate let interval:Float = 0.1
-
-class IGSnapProgressView:UIProgressView {
-    public weak var delegate:SnapProgresser?
-    internal var elapsedTime:Float = 0.0
-    internal weak var progressor:Timer?
+protocol ViewAnimator:class {
+    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->())
+    func play()
+    func pause()
+    func stop()
 }
-
-extension IGSnapProgressView {
-   @objc func delayProcess() {
-        if elapsedTime >= 1.0 {
-            stopTimer()
-            self.delegate?.didCompleteProgress()
-        }else{
-            elapsedTime = elapsedTime+0.1
-            progress = progress+0.1
+extension ViewAnimator where Self:UIView {
+    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()) {
+        UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
+            self.frame.size.width = width
+        }) { (finished) in
+            if finished == true {
+                completion()
+            }
         }
-        //debugPrint("Progress:\(progress)")
     }
-    
-    public func stopTimer(){
-        progressor?.invalidate()
-        progressor = nil
+    func play(){
+        let pausedTime = layer.timeOffset
+        layer.speed = 1.0
+        layer.timeOffset = 0.0
+        layer.beginTime = 0.0
+        let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        layer.beginTime = timeSincePause
     }
-    
-    public func willBeginProgress() {
-        elapsedTime = 0.0
-        progressor = nil
-        progressor = Timer.scheduledTimer(timeInterval: TimeInterval(interval), target: self, selector: #selector(IGSnapProgressView.delayProcess), userInfo: nil, repeats: true)
+    func pause(){
+        let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
+        layer.speed = 0.0
+        layer.timeOffset = pausedTime
+    }
+    func stop(){
+        play()
+        layer.removeAllAnimations()
     }
 }
+
+final class IGSnapProgressView:UIView,ViewAnimator{}
