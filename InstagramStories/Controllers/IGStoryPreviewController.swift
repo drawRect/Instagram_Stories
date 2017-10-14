@@ -102,7 +102,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 fatalError("Stories Index mis-matched :(")
             }
         }
-        
         nStoryIndex = indexPath.item
         return cell
     }
@@ -118,7 +117,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        collectionView.isScrollEnabled = true
         let cell = cell as? IGStoryPreviewCell
         cell?.storyHeaderView?.cancelTimers(snapIndex: (cell?.snapIndex)!)
     }

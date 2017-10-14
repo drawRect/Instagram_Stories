@@ -29,16 +29,6 @@ class IGStoryPreviewCell: UICollectionViewCell {
         headerView.addSubview(storyHeaderView!)
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-//        guard let iv:UIImageView = scrollview.subviews.last as? UIImageView else{return}
-//        iv.sd_cancelCurrentImageLoad()
-//        let imageViews = scrollview.subviews.filter({v in v is UIImageView}) as! [UIImageView]
-//        imageViews.forEach { iv in
-//            iv.image = nil
-//        }
-    }
-    
     //MARK: - iVars
     public weak var delegate:StoryPreviewProtocol?
     //TODO: - Make UI Elements scope as private

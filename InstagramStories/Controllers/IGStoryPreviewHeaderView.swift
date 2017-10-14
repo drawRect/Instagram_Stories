@@ -50,8 +50,7 @@ class IGStoryPreviewHeaderView: UIView {
     
     //MARK: - Class functions
     class func instanceFromNib() -> IGStoryPreviewHeaderView {
-        let view =  Bundle.loadView(fromNib: "IGStoryPreviewHeaderView", withType: IGStoryPreviewHeaderView.self)
-        return view
+        return Bundle.loadView(with: IGStoryPreviewHeaderView.self)
     }
     
     //MARK: - Public functions
@@ -59,6 +58,7 @@ class IGStoryPreviewHeaderView: UIView {
         return progressView.subviews.filter({v in v.tag == index}).first as! IGSnapProgressView
     }
     public func generateSnappers(){
+        //clean up the garbage progress bars
         self.progressView.subviews.forEach { v in v.removeFromSuperview()}
         let padding:CGFloat = 8 //GUI-Padding
         let pvHeight:CGFloat = 5
@@ -78,12 +78,6 @@ class IGStoryPreviewHeaderView: UIView {
         }
         snaperNameLabel.text = story?.user?.name
     }
-    public func nullifyProgressors() {
-        self.progressView.subviews.forEach { p in
-            (p as! IGSnapProgressView).progress = 0.0
-        }
-    }
-    
     public func cancelTimers(snapIndex:Int){
         self.progressView(with: snapIndex).stopTimer()
     }

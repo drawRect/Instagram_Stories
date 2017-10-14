@@ -27,7 +27,6 @@ extension IGSnapProgressView {
             elapsedTime = elapsedTime+0.1
             progress = progress+0.1
         }
-        //debugPrint("Progress:\(progress)")
     }
     
     public func stopTimer(){
