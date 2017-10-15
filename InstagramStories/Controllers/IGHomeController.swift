@@ -51,7 +51,7 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             //Add your own story
-            debugPrint("Need to implement!")
+            //debugPrint("Need to implement!")
         }else{
             let storyPreviewScene = IGStoryPreviewController()
             storyPreviewScene.stories = stories
