@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13178.6" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13156.2"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -26,16 +26,27 @@
                             <outlet property="delegate" destination="-1" id="Ocd-LD-cbu"/>
                         </connections>
                     </scrollView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LnW-n6-1ML">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="80" id="b0s-V5-cOO"/>
+                        </constraints>
+                    </view>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="iCW-HJ-vkw" secondAttribute="trailing" id="HBy-kM-cLg"/>
+                <constraint firstItem="LnW-n6-1ML" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="KhM-C2-mCD"/>
+                <constraint firstItem="LnW-n6-1ML" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fJ8-Yg-7JS"/>
                 <constraint firstItem="iCW-HJ-vkw" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="fSq-zI-5ii"/>
                 <constraint firstItem="iCW-HJ-vkw" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hVc-p3-xzf"/>
                 <constraint firstAttribute="bottom" secondItem="iCW-HJ-vkw" secondAttribute="bottom" id="mTu-QF-ncs"/>
+                <constraint firstAttribute="trailing" secondItem="LnW-n6-1ML" secondAttribute="trailing" id="ptr-iT-2jP"/>
             </constraints>
             <connections>
+                <outlet property="headerView" destination="LnW-n6-1ML" id="TaR-KK-jwd"/>
                 <outlet property="scrollview" destination="iCW-HJ-vkw" id="YGs-ff-cKN"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="53.5"/>

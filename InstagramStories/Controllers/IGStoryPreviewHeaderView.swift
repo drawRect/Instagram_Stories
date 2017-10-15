@@ -55,27 +55,28 @@ final class IGStoryPreviewHeaderView: UIView {
         //clean up the garbage progress bars
         self.progressView.subviews.forEach { v in v.removeFromSuperview()}
         let padding:CGFloat = 8 //GUI-Padding
-        let pvHeight:CGFloat = 3
-        var pvX:CGFloat = padding
-        let pvY:CGFloat = (self.progressView.frame.height/2)-pvHeight
-        let pvWidth = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
+        let height:CGFloat = 3
+        var x:CGFloat = padding
+        let y:CGFloat = (self.progressView.frame.height/2)-height
+        let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
-            let pvIndicator = UIView.init(frame: CGRect(x:pvX,y:pvY,width:pvWidth,height:pvHeight))
-            pvIndicator.backgroundColor = UIColor.white.withAlphaComponent(0.1)
-            pvIndicator.tag = i+progressIndicatorViewTag
-            pvIndicator.layer.cornerRadius = 1
-            pvIndicator.layer.masksToBounds = true
-            progressView.addSubview(pvIndicator)
-            let pv = IGSnapProgressView.init(frame: CGRect(x:pvX,y:pvY,width:0,height:pvHeight))
-            pv.backgroundColor = UIColor.white
-            pv.tag = i+progressViewTag
-            pv.layer.cornerRadius = pvIndicator.layer.cornerRadius
-            pv.layer.masksToBounds = true
-            progressView.addSubview(pv)
-            pvX = pvX + pvWidth + padding
+            let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
+            progressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.1))
+            let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
+            progressView.addSubview(applyProperties(pv,with: i+progressViewTag))
+            x = x + width + padding
         }
         snaperNameLabel.text = story?.user?.name
     }
+    
+   private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
+        view.layer.cornerRadius = 1
+        view.layer.masksToBounds = true
+        view.backgroundColor = UIColor.white.withAlphaComponent(alpha)
+        view.tag = tag
+        return view
+    }
+    
 }
 
 extension Int {
