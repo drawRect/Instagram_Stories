@@ -15,6 +15,7 @@ protocol ViewAnimator:class {
     func stop()
 }
 extension ViewAnimator where Self:UIView {
+
     func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()) {
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
             self.frame.size.width = width
@@ -24,7 +25,7 @@ extension ViewAnimator where Self:UIView {
             }
         }
     }
-    func play(){
+    func play() {
         let pausedTime = layer.timeOffset
         layer.speed = 1.0
         layer.timeOffset = 0.0
@@ -32,12 +33,12 @@ extension ViewAnimator where Self:UIView {
         let timeSincePause = layer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
         layer.beginTime = timeSincePause
     }
-    func pause(){
+    func pause() {
         let pausedTime = layer.convertTime(CACurrentMediaTime(), from: nil)
         layer.speed = 0.0
         layer.timeOffset = pausedTime
     }
-    func stop(){
+    func stop() {
         play()
         layer.removeAllAnimations()
     }

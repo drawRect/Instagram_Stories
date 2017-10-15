@@ -231,7 +231,7 @@
 				TargetAttributes = {
 					07FDECD21F5FD9BA004BC833 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = KM7V5N6GFF;
+						DevelopmentTeam = FLQ72JV77K;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -485,7 +485,7 @@
 			baseConfigurationReference = 56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = KM7V5N6GFF;
+				DEVELOPMENT_TEAM = FLQ72JV77K;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriess;
@@ -500,7 +500,7 @@
 			baseConfigurationReference = A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = KM7V5N6GFF;
+				DEVELOPMENT_TEAM = FLQ72JV77K;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriess;

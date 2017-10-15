@@ -22,6 +22,9 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             }
         }
     }
+    
+    @IBOutlet weak private var headerView:UIView!
+    
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
         let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
         v.frame = CGRect(x:0,y:0,width:frame.width,height:80)
@@ -36,8 +39,12 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     //MARK: - Overriden functions
     override func awakeFromNib() {
         super.awakeFromNib()
-        addSubview(storyHeaderView)
+        headerView.addSubview(storyHeaderView)
         addGestureRecognizer(longPress_gesture)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     //MARK: - iVars
@@ -79,15 +86,25 @@ final class IGStoryPreviewCell: UICollectionViewCell {
                 debugPrint(error.localizedDescription)
             }else {
                 let holderView = self.getProgressIndicatorView(with: self.snapIndex)
-                let animatableView = self.getProgressView(with: self.snapIndex)
-                animatableView.start(with: 1.0, width: holderView.frame.width, completion: {
+                let progressView = self.getProgressView(with: self.snapIndex)
+                progressView.start(with: 5.0, width: holderView.frame.width, completion: {
                     self.didCompleteProgress()
                 })
             }
         })
     }
     
-    private func didCompleteProgress() {
+    @objc private func didEnterForeground() {
+        let holderView = self.getProgressIndicatorView(with: self.snapIndex)
+        let pv = self.getProgressView(with: self.snapIndex)
+        pv.start(with: 5.0, width: holderView.frame.width, completion: {
+            self.didCompleteProgress()
+        })
+    }
+
+    
+    @objc private func didCompleteProgress() {
+        //let progressView = self.getProgressView(with: self.snapIndex)
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {
@@ -113,12 +130,14 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     public func willDisplayCell() {
         storyHeaderView.generateSnappers()
         snapIndex = 0
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     public func didEndDisplayingCell() {
         getProgressView(with: snapIndex).stop()
+        NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func didLongPress(_ sender: UILongPressGestureRecognizer) {
+    @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
             let v = getProgressView(with: snapIndex)
             if sender.state == .began {
