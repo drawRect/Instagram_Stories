@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct IGStory {
+public class IGStory {
     
     // MARK: Declaration for string constants to be used to decode and also serialize.
     private let kIGStorySnapsCountKey: String = "snaps_count"
@@ -23,14 +23,14 @@ public struct IGStory {
     public var internalIdentifier: String?
     public var lastUpdated: Int?
     public var user:IGUser?
-    
+    private var _lastPlayedSnap:Int = 0
     // MARK: SwiftyJSON Initalizers
     /**
      Initates the instance based on the object
      - parameter object: The object of either Dictionary or Array kind that was passed.
      - returns: An initalized instance of the class.
      */
-    public init(object: Any) {
+    public convenience init(object: Any) {
         self.init(json: JSON(object))
     }
     

@@ -61,6 +61,7 @@ final class IGStoryPreviewController: UIViewController {
             }
         }
     }
+    var tempStory:IGStory?
     
     //MARK: - Overriden functions
     override func viewDidLoad() {
@@ -110,11 +111,37 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as? IGStoryPreviewCell)?.willDisplayCell()
+        if tempStory == nil {
+            (cell as? IGStoryPreviewCell)?.createGenerateSnappersFirstTime()
+        }else {
+            (cell as? IGStoryPreviewCell)?.willDisplayCell()
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         (cell as? IGStoryPreviewCell)?.didEndDisplayingCell()
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+        print("willBegin\(visibleCell.story?.user?.name)")
+        tempStory = stories?.stories?[nStoryIndex]
+        tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+        visibleCell.willBeginDragging(with: (tempStory?.lastPlayedSnapIndex)!)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if let tempStory = tempStory {
+            let story = stories?.stories?[nStoryIndex]
+            if tempStory == story {
+                let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+                print("didEnd\(visibleCell.story?.user?.name)")
+                visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+            }
+        }else {
+            let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+            visibleCell.startSnappers()
+        }
     }
 }
 

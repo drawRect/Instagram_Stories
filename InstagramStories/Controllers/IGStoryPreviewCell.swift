@@ -35,6 +35,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         lp.minimumPressDuration = 0.2
         return lp
     }()
+    public var isVisible:Bool = false
     
     //MARK: - Overriden functions
     override func awakeFromNib() {
@@ -74,8 +75,9 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     
     //MARK: - Private functions
     private func createImageView(with picture:String) {
-        let iv = UIImageView(frame:
+        let iv = IGImageView(frame:
             CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height))
+        iv.delegate = self
         startLoadContent(with: iv, picture: picture)
         scrollview.addSubview(iv)
     }
@@ -85,11 +87,11 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                let holderView = self.getProgressIndicatorView(with: self.snapIndex)
-                let progressView = self.getProgressView(with: self.snapIndex)
-                progressView.start(with: 5.0, width: holderView.frame.width, completion: {
-                    self.didCompleteProgress()
-                })
+//                let holderView = self.getProgressIndicatorView(with: self.snapIndex)
+//                let progressView = self.getProgressView(with: self.snapIndex)
+//                progressView.start(with: 5.0, width: holderView.frame.width, completion: {
+//                    self.didCompleteProgress()
+//                })
             }
         })
     }
@@ -113,8 +115,19 @@ final class IGStoryPreviewCell: UICollectionViewCell {
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)
                 snapIndex = n
+                
             }else {
                 delegate?.didCompletePreview()
+            }
+        }
+    }
+    
+    private func markProgressViewAsCompleted() {
+        if let count = story?.snapsCount {
+            for i in 0..<count {
+                if i == snapIndex{ break }
+                let pv = getProgressView(with: i)
+                pv.frame = CGRect(x:pv.frame.origin.x,y:pv.frame.origin.y,width:getProgressIndicatorView(with: i).frame.width,height:pv.frame.height)
             }
         }
     }
@@ -133,10 +146,20 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     public func didEndDisplayingCell() {
-        getProgressView(with: snapIndex).stop()
         NotificationCenter.default.removeObserver(self)
+        getProgressView(with: snapIndex).stop()
     }
-    
+    public func willBeginDragging(with index:Int) {
+        getProgressView(with: index).pause()
+    }
+    public func didEndDecelerating(with index:Int) {
+        getProgressView(with: index).play()
+    }
+    public func createGenerateSnappersFirstTime() {
+        isVisible = true
+        storyHeaderView.generateSnappers()
+        startSnappers()
+    }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
             let v = getProgressView(with: snapIndex)
@@ -147,6 +170,14 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             }
         }
     }
+    func startSnappers() {
+        getProgressView(with: snapIndex).stop()
+        let holderView = self.getProgressIndicatorView(with: self.snapIndex)
+        let progressView = self.getProgressView(with: self.snapIndex)
+        progressView.start(with: 5.0, width: holderView.frame.width, completion: {
+            self.didCompleteProgress()
+        })
+    }
 }
 
 extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
@@ -154,3 +185,33 @@ extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
         delegate?.didTapCloseButton()
     }
 }
+extension IGStoryPreviewCell:IGImageviewProtocol {
+    func imageloaded(_ successfully: Bool) {
+        if successfully && isVisible {
+            startSnappers()
+        }else {
+            debugPrint("Someone fucked this image :(")
+        }
+    }
+}
+
+protocol IGImageviewProtocol:class {
+    func imageloaded(_ successfully:Bool)
+}
+
+class IGImageView:UIImageView {
+    public weak var delegate:IGImageviewProtocol?
+    override var image: UIImage?{
+        didSet {
+            if image != nil{
+                //do your stuff (add effects, layers, ...)
+                delegate?.imageloaded(true)
+            } else {
+                //clean your filter or added layer (remove your effects over the view)
+                delegate?.imageloaded(false)
+            }
+        }
+    }
+
+}
+

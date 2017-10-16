@@ -22,3 +22,18 @@ extension IGStory:Equatable {
         return lhs == rhs
     }
 }
+
+import ObjectiveC
+
+fileprivate var kLastPlayedSnapIndex: String = "story.lastPlayedSnapIndex"
+
+extension IGStory {
+    var lastPlayedSnapIndex:Int {
+        get {
+            return (objc_getAssociatedObject(self, &kLastPlayedSnapIndex) as! Int)
+        }
+        set {
+            objc_setAssociatedObject(self, &kLastPlayedSnapIndex, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        }
+    }
+}
