@@ -44,4 +44,19 @@ extension ViewAnimator where Self:UIView {
     }
 }
 
-final class IGSnapProgressView:UIView,ViewAnimator{}
+protocol SnapProgressViewProtocol:class {
+    func didPlayProgress()
+}
+
+final class IGSnapProgressView:UIView,ViewAnimator{
+    public var indicatorWidth:CGFloat = 0
+    public weak var delegate:SnapProgressViewProtocol?
+    override var frame: CGRect {
+        didSet {
+            if frame.width == indicatorWidth {
+                delegate?.didPlayProgress()
+            } else {
+            }
+        }
+    }
+}

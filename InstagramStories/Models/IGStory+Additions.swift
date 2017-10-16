@@ -9,7 +9,7 @@
 import Foundation
 
 //@Note:When it required usecase would go more that one struct. try to use it on your custom protocol, and adopt into your structs. Rather than implementating in each structs. #ProtocolOrientedProgramming
-extension IGStory:Equatable {
+extension IGStory {
     public /// Returns a Boolean value indicating whether two values are equal.
     ///
     /// Equality is the inverse of inequality. For any values `a` and `b`,

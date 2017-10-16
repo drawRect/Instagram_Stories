@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public class IGStory {
+public class IGStory:NSObject {
     
     // MARK: Declaration for string constants to be used to decode and also serialize.
     private let kIGStorySnapsCountKey: String = "snaps_count"

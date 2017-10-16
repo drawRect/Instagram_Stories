@@ -132,8 +132,14 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let tempStory = tempStory {
-            let story = stories?.stories?[nStoryIndex]
+            let whichPlaceOf_T = stories?.stories?.index(of: tempStory)
+            let story = stories?.stories?[whichPlaceOf_T!+handPickedStoryIndex]
             if tempStory == story {
+                let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+                visibleCell.markProgressViewAsCompleted()
+                //visibleCell.startSnappers()
+            }
+            else {
                 let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
                 print("didEnd\(visibleCell.story?.user?.name)")
                 visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
