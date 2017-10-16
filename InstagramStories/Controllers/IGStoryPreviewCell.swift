@@ -118,7 +118,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)
                 snapIndex = n
-                
+                startSnappers()
             }else {
                 delegate?.didCompletePreview()
             }
@@ -135,10 +135,8 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             }
         }*/
         let pv = getProgressView(with: snapIndex)
-        let indicatorView = getProgressIndicatorView(with: snapIndex)
-        pv.delegate = self
-        pv.play()
-        pv.indicatorWidth = indicatorView.frame.width
+        pv.stop()
+        didEnterForeground()
     }
     
     private func getProgressView(with index:Int)->IGSnapProgressView {
