@@ -12,8 +12,7 @@ final class IGStoryListCell: UICollectionViewCell {
     
     @IBOutlet weak var profileImageView: UIImageView! {
         didSet {
-            //TODO:Remove the hardcoded value
-            profileImageView.layer.cornerRadius = 60/2
+            profileImageView.layer.cornerRadius = profileImageView.frame.width/2
             profileImageView.clipsToBounds = true
         }
     }

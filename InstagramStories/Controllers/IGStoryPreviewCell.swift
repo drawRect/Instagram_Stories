@@ -35,7 +35,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         lp.minimumPressDuration = 0.2
         return lp
     }()
-    public var isVisible:Bool = false {
+    public var isCompletelyVisible:Bool = false {
         didSet{
             didObserveProgressor()
         }
@@ -63,7 +63,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
                 if let snap = story?.snaps?[snapIndex] {
                     if let url = snap.url {
                         createSnapView()
-                        //Requesting a snap should be on-demand
+                        //Requesting a snap on-demand
                         startRequestSnap(with: url)
                     }
                     storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
@@ -171,13 +171,13 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     public func didEndDecelerating(with index:Int) {
         //This is a Initial setting up the true' value for upcoming cell
-        isVisible = true
+        isCompletelyVisible = true
         getProgressView(with: index).play()
     }
     
     public func willDisplayingAtFirstTime(){
         //for the very first cell is already in visible state
-        isVisible = true
+        isCompletelyVisible = true
         willDisplayCell()
     }
     
@@ -190,7 +190,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     private func didObserveProgressor(with content:Bool = false) {
-        if isVisible && content {
+        if isCompletelyVisible && content {
             gearupTheProgressors()
         }
     }

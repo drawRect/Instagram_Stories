@@ -111,41 +111,50 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if tempStory == nil {
-            (cell as? IGStoryPreviewCell)?.willDisplayingAtFirstTime()
-        }else {
-            (cell as? IGStoryPreviewCell)?.isVisible = false
-            (cell as? IGStoryPreviewCell)?.willDisplayCell()
-        }
+        if let cell = cell as? IGStoryPreviewCell {
+            if tempStory == nil {
+                cell.willDisplayingAtFirstTime()
+            }else {
+                cell.isCompletelyVisible = false
+                cell.willDisplayCell()
+            }
+        }else {fatalError()}
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        (cell as? IGStoryPreviewCell)?.didEndDisplayingCell()
+        if let cell = cell as? IGStoryPreviewCell {
+            cell.didEndDisplayingCell()
+        }else {fatalError()}
     }
     
+    //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{fatalError("Error:Cell could not load")}
+        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return fatalError()}
         tempStory = stories?.stories?[nStoryIndex]
         tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
-        visibleCell.willBeginDragging(with: (tempStory?.lastPlayedSnapIndex)!)
+        visibleCell.willBeginDragging(with: tempStory?.lastPlayedSnapIndex ?? 0)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let tempStory = tempStory {
-            let whichPlaceOf_T = stories?.stories?.index(of: tempStory)
-            let story = stories?.stories?[whichPlaceOf_T!+handPickedStoryIndex]
-            if tempStory == story {
-                let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
-            }
-            else {
-                let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+            if let index = stories?.stories?.index(of: tempStory) {
+                let story = stories?.stories?[index+handPickedStoryIndex]
+                guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return fatalError()}
+                if tempStory == story {
+                    visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
+                }else {
+                    let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                }
             }
         }else {
-            let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-            visibleCell.isVisible = true
+            guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return fatalError()}
+            visibleCell.isCompletelyVisible = true
         }
+    }
+    //MARK: -
+    private func fatalError(_ msg:String="InAppropriate with IGStoryPreviewCell") {
+        fatalError(msg)
     }
 }
 

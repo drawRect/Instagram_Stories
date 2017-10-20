@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SDWebImage
 
 protocol StoryPreviewHeaderProtocol:class {func didTapCloseButton()}
 
