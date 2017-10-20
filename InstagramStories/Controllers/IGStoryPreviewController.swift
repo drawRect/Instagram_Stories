@@ -112,8 +112,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if tempStory == nil {
-            (cell as? IGStoryPreviewCell)?.createGenerateSnappersFirstTime()
+            (cell as? IGStoryPreviewCell)?.willDisplayingAtFirstTime()
         }else {
+            (cell as? IGStoryPreviewCell)?.isVisible = false
             (cell as? IGStoryPreviewCell)?.willDisplayCell()
         }
     }
@@ -123,8 +124,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-        print("willBegin\(visibleCell.story?.user?.name)")
+        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{fatalError("Error:Cell could not load")}
         tempStory = stories?.stories?[nStoryIndex]
         tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
         visibleCell.willBeginDragging(with: (tempStory?.lastPlayedSnapIndex)!)
@@ -136,17 +136,15 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             let story = stories?.stories?[whichPlaceOf_T!+handPickedStoryIndex]
             if tempStory == story {
                 let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                visibleCell.markProgressViewAsCompleted()
-                //visibleCell.startSnappers()
+                visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
             }
             else {
                 let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                print("didEnd\(visibleCell.story?.user?.name)")
                 visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
             }
         }else {
             let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-            visibleCell.startSnappers()
+            visibleCell.isVisible = true
         }
     }
 }

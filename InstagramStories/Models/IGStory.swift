@@ -23,7 +23,7 @@ public class IGStory:NSObject {
     public var internalIdentifier: String?
     public var lastUpdated: Int?
     public var user:IGUser?
-    private var _lastPlayedSnap:Int = 0
+
     // MARK: SwiftyJSON Initalizers
     /**
      Initates the instance based on the object

@@ -51,9 +51,12 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Public functions
-    public func generateSnappers(){
+    public func createSnapProgressors(){
         //clean up the garbage progress bars
-        self.progressView.subviews.forEach { v in v.removeFromSuperview()}
+        let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
+        progressors.forEach({v in v.stop()})
+        progressView.subviews.forEach { v in v.removeFromSuperview()}
+        
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding

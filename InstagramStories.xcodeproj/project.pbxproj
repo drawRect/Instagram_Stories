@@ -33,7 +33,6 @@
 		1099661B1F6053DA005292CF /* IGStoryPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966111F6053DA005292CF /* IGStoryPreviewController.xib */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		109966221F605818005292CF /* IGStoryPreviewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */; };
-		10E19A211F88E0DB00170EFA /* IGSnap+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E19A201F88E0DB00170EFA /* IGSnap+Additions.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,7 +65,6 @@
 		109966111F6053DA005292CF /* IGStoryPreviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewController.xib; path = Controllers/IGStoryPreviewController.xib; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewHeaderView.xib; path = Controllers/IGStoryPreviewHeaderView.xib; sourceTree = "<group>"; };
-		10E19A201F88E0DB00170EFA /* IGSnap+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "IGSnap+Additions.swift"; path = "Extension/IGSnap+Additions.swift"; sourceTree = "<group>"; };
 		56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
 		A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.release.xcconfig"; sourceTree = "<group>"; };
 		ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramStories.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,7 +94,6 @@
 			isa = PBXGroup;
 			children = (
 				078E41451F62137E00222191 /* ImageView+Additions.swift */,
-				10E19A201F88E0DB00170EFA /* IGSnap+Additions.swift */,
 				078E41471F6213FF00222191 /* Color+Additions.swift */,
 			);
 			name = Extension;
@@ -341,7 +338,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				078E41481F62140000222191 /* Color+Additions.swift in Sources */,
-				10E19A211F88E0DB00170EFA /* IGSnap+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
 				1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */,
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
