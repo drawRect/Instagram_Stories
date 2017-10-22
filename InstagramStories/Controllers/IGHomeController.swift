@@ -20,7 +20,16 @@ final class IGHomeController: UIViewController {
         }
     }
     //Keep it Immutable! don't get Dirty :P
-    let stories:IGStories? = {return IGHomeController.loadStubbedData()}()
+    let stories:IGStories? = {
+        do {
+            return try IGMockLoader.loadMockFile(named: "stories.json")
+        } catch let e as MockLoaderError{
+            e.desc()
+        }catch{
+            debugPrint("could not read Mock json file :(")
+        }
+        return nil
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +37,8 @@ final class IGHomeController: UIViewController {
     }
 }
 
-extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = stories?.count {
             return count + 1 // Add Story cell
@@ -64,21 +74,5 @@ extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,U
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return indexPath.row == 0 ? CGSize(width: 100, height: 100) : CGSize(width: 80, height: 100)
-    }
-}
-
-extension IGHomeController {
-    class func loadStubbedData()->IGStories? {
-        guard let url = Bundle.main.url(forResource: "stories", withExtension: "json") else {return nil}
-        guard let data = try? Data.init(contentsOf: url) else { return nil }
-        do {
-            if let wrapped = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String:Any] {
-                return IGStories.init(object: wrapped)
-            }
-        } catch {
-            // Handle Error
-            debugPrint(error)
-        }
-        return nil
     }
 }

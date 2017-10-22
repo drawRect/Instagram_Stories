@@ -47,6 +47,7 @@ final class IGStoryPreviewController: UIViewController {
     @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
         didSet { dismissGesture.direction = .down }
     }
+    var isUserScrolled:Bool = false
     
     @IBOutlet private weak var snapsCollectionView: UICollectionView! {
         didSet {
@@ -113,11 +114,19 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? IGStoryPreviewCell {
             if tempStory == nil {
-                cell.willDisplayingAtFirstTime()
+                cell.displayingAtZerothStory()
             }else {
-                cell.isCompletelyVisible = false
-                cell.willDisplayCell()
+                if isUserScrolled == false {
+                    guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
+                    visibleCell.isCompletelyVisible = true
+                    tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+                    cell.isCompletelyVisible = true
+                }else {
+                    cell.isCompletelyVisible = false
+                    isUserScrolled = false
+                }
             }
+            cell.willDisplayCell()
         }else {fatalError()}
     }
     
@@ -129,7 +138,8 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return fatalError()}
+        isUserScrolled = true
+        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
         tempStory = stories?.stories?[nStoryIndex]
         tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
         visibleCell.willBeginDragging(with: tempStory?.lastPlayedSnapIndex ?? 0)
@@ -139,7 +149,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         if let tempStory = tempStory {
             if let index = stories?.stories?.index(of: tempStory) {
                 let story = stories?.stories?[index+handPickedStoryIndex]
-                guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return fatalError()}
+                guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
                 if tempStory == story {
                     visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
                 }else {
@@ -148,14 +158,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 }
             }
         }else {
-            guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return fatalError()}
+            guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
             visibleCell.isCompletelyVisible = true
         }
     }
     //MARK: -
-    private func fatalError(_ msg:String="InAppropriate with IGStoryPreviewCell") {
-        fatalError(msg)
-    }
 }
 
 extension IGStoryPreviewController:StoryPreviewProtocol {
@@ -163,6 +170,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories?.count {
             if n < count {
+                tempStory = stories?.stories?[nStoryIndex]
                 //Move to next story
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)

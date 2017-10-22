@@ -109,9 +109,9 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     @objc private func didEnterForeground() {
-        let holderView = self.getProgressIndicatorView(with: self.snapIndex)
-        let pv = self.getProgressView(with: self.snapIndex)
-        pv.start(with: 5.0, width: holderView.frame.width, completion: {
+        let indicatorView = getProgressIndicatorView(with: snapIndex)
+        let pv = getProgressView(with: snapIndex)
+        pv.start(with: 5.0, width: indicatorView.frame.width, completion: {
             self.didCompleteProgress()
         })
     }
@@ -133,8 +133,8 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     /*-----------------------Boiler Plate Code----------------------------------------*/
     /*---------------Don't spoil the above code,if you want, start writting it down---*/
     
-    
-    public func markProgressViewAsCompleted() {
+    //Todo::
+   /* public func markProgressViewAsCompleted() {
         /*if let count = story?.snapsCount {
          for i in 0..<count {
          if i == snapIndex{ break }
@@ -146,7 +146,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         let pv = getProgressView(with: snapIndex)
         pv.stop()
         didEnterForeground()
-    }
+    }*/
     
     private func getProgressView(with index:Int)->IGSnapProgressView {
         return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
@@ -175,10 +175,9 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         getProgressView(with: index).play()
     }
     
-    public func willDisplayingAtFirstTime(){
+    public func displayingAtZerothStory(){
         //for the very first cell is already in visible state
         isCompletelyVisible = true
-        willDisplayCell()
     }
     
     func gearupTheProgressors() {
