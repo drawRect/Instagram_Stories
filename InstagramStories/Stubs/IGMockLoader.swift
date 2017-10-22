@@ -22,8 +22,9 @@ enum MockLoaderError:Error {
 }
 
 struct IGMockLoader {
-    static func loadMockFile(named fileName:String) throws -> IGStories? {
-        guard let url = Bundle.main.url(forResource: fileName, withExtension: nil) else {throw MockLoaderError.invalidFileName(fileName)}
+    //XCTestCase will go for differnt set of bundle
+    static func loadMockFile(named fileName:String,bundle:Bundle = .main) throws -> IGStories {
+        guard let url = bundle.url(forResource: fileName, withExtension: nil) else {throw MockLoaderError.invalidFileName(fileName)}
         do {
             let data = try Data.init(contentsOf: url)
             if let wrapped = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String:Any] {

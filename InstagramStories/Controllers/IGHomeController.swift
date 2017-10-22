@@ -22,7 +22,7 @@ final class IGHomeController: UIViewController {
     //Keep it Immutable! don't get Dirty :P
     let stories:IGStories? = {
         do {
-            return try IGMockLoader.loadMockFile(named: "stories.json")
+            return try IGMockLoader.loadMockFile(named: "stories.json",bundle:.main)
         } catch let e as MockLoaderError{
             e.desc()
         }catch{

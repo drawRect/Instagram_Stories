@@ -29,6 +29,16 @@
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "074861771F9D4D0900C1AC1F"
+               BuildableName = "InstagramStoriesTests.xctest"
+               BlueprintName = "InstagramStoriesTests"
+               ReferencedContainer = "container:InstagramStories.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
