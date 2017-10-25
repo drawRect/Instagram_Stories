@@ -14,6 +14,8 @@ final class IGStoryListCell: UICollectionViewCell {
         didSet {
             profileImageView.layer.cornerRadius = profileImageView.frame.width/2
             profileImageView.clipsToBounds = true
+            profileImageView.layer.borderWidth = 3.0
+            profileImageView.layer.borderColor = UIColor.white.cgColor
         }
     }
     @IBOutlet weak var profileNameLabel: UILabel!

@@ -63,9 +63,7 @@ UICollectionViewDelegateFlowLayout {
             //Add your own story
             debugPrint("Need to implement!")
         }else{
-            let storyPreviewScene = IGStoryPreviewController()
-            storyPreviewScene.stories = stories
-            storyPreviewScene.handPickedStoryIndex = indexPath.row-1
+            let storyPreviewScene = IGStoryPreviewController.init(stories: stories!, handPickedStoryIndex: indexPath.row-1)
             present(storyPreviewScene, animated: true, completion: nil)
         }
     }

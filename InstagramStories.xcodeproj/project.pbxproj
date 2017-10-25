@@ -81,7 +81,7 @@
 		109966111F6053DA005292CF /* IGStoryPreviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewController.xib; path = Controllers/IGStoryPreviewController.xib; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewHeaderView.xib; path = Controllers/IGStoryPreviewHeaderView.xib; sourceTree = "<group>"; };
-		56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
+		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
 		A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.release.xcconfig"; sourceTree = "<group>"; };
 		ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramStories.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -220,8 +220,8 @@
 		DE68E5B9A2923CB2094E4BDB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */,
 				A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */,
+				13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -457,7 +457,6 @@
 /* Begin XCBuildConfiguration section */
 		074861801F9D4D0900C1AC1F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -605,7 +604,7 @@
 		};
 		07FDECE61F5FD9BA004BC833 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 56918266D90E0721D78EBEA7 /* Pods-InstagramStories.debug.xcconfig */;
+			baseConfigurationReference = 13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "";
@@ -613,7 +612,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriesss;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStories;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
@@ -631,7 +630,7 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStoriesss;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ranjith.InstagramStories;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
