@@ -177,6 +177,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     
     public func displayingAtZerothStory(){
         //for the very first cell is already in visible state
+        story?.lastPlayedSnapIndex = 0
         isCompletelyVisible = true
     }
     
@@ -189,8 +190,12 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     private func didObserveProgressor(with content:Bool = false) {
-        if isCompletelyVisible && content {
-            gearupTheProgressors()
+        if scrollview.subviews.count > 0{
+            let snapView = (story?.lastPlayedSnapIndex)! < scrollview.subviews.count ? scrollview.subviews[(story?.lastPlayedSnapIndex)!] as! UIImageView : scrollview.subviews.first as! UIImageView
+            
+            if isCompletelyVisible && snapView.image != nil {
+                gearupTheProgressors()
+            }
         }
     }
 }
