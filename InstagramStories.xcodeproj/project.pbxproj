@@ -26,7 +26,6 @@
 		109966121F6053DA005292CF /* IGAddStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966081F6053DA005292CF /* IGAddStoryCell.swift */; };
 		109966131F6053DA005292CF /* IGAddStoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966091F6053DA005292CF /* IGAddStoryCell.xib */; };
 		109966141F6053DA005292CF /* IGHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660A1F6053DA005292CF /* IGHomeController.swift */; };
-		109966151F6053DA005292CF /* IGHomeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1099660B1F6053DA005292CF /* IGHomeController.xib */; };
 		109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660C1F6053DA005292CF /* IGStoryListCell.swift */; };
 		109966171F6053DA005292CF /* IGStoryListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1099660D1F6053DA005292CF /* IGStoryListCell.xib */; };
 		109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */; };
@@ -72,7 +71,6 @@
 		109966081F6053DA005292CF /* IGAddStoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGAddStoryCell.swift; path = Controllers/IGAddStoryCell.swift; sourceTree = "<group>"; };
 		109966091F6053DA005292CF /* IGAddStoryCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGAddStoryCell.xib; path = Controllers/IGAddStoryCell.xib; sourceTree = "<group>"; };
 		1099660A1F6053DA005292CF /* IGHomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGHomeController.swift; path = Controllers/IGHomeController.swift; sourceTree = "<group>"; };
-		1099660B1F6053DA005292CF /* IGHomeController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGHomeController.xib; path = Controllers/IGHomeController.xib; sourceTree = "<group>"; };
 		1099660C1F6053DA005292CF /* IGStoryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryListCell.swift; path = Controllers/IGStoryListCell.swift; sourceTree = "<group>"; };
 		1099660D1F6053DA005292CF /* IGStoryListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryListCell.xib; path = Controllers/IGStoryListCell.xib; sourceTree = "<group>"; };
 		1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewCell.swift; path = Controllers/IGStoryPreviewCell.swift; sourceTree = "<group>"; };
@@ -181,7 +179,6 @@
 			isa = PBXGroup;
 			children = (
 				1099660A1F6053DA005292CF /* IGHomeController.swift */,
-				1099660B1F6053DA005292CF /* IGHomeController.xib */,
 				109966081F6053DA005292CF /* IGAddStoryCell.swift */,
 				109966091F6053DA005292CF /* IGAddStoryCell.xib */,
 				1099660C1F6053DA005292CF /* IGStoryListCell.swift */,
@@ -332,7 +329,6 @@
 				109966221F605818005292CF /* IGStoryPreviewHeaderView.xib in Resources */,
 				109966191F6053DA005292CF /* IGStoryPreviewCell.xib in Resources */,
 				07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */,
-				109966151F6053DA005292CF /* IGHomeController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

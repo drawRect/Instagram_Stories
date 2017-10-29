@@ -10,15 +10,26 @@ import UIKit
 
 final class IGHomeController: UIViewController {
     
-    @IBOutlet weak private var storiesCollectionView: UICollectionView! {
-        didSet {
-            storiesCollectionView.delegate = self
-            storiesCollectionView.dataSource = self
-            storiesCollectionView.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
-            storiesCollectionView.register(IGAddStoryCell.nib(), forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
+     lazy var storiesCollectionView: UICollectionView = {
+        //setting the flowlayout for collectionView
+        let storyFlowLayout:UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        storyFlowLayout.scrollDirection = .horizontal
+        storyFlowLayout.itemSize = CGSize(width: 100, height: 100)
+        
+        //setting the properties for collectionview
+        let storyCV:UICollectionView = UICollectionView(frame: view.frame, collectionViewLayout: storyFlowLayout)
+            storyCV.delegate = self
+            storyCV.dataSource = self
+            storyCV.backgroundColor = .white
+        storyCV.showsVerticalScrollIndicator = false
+        storyCV.showsHorizontalScrollIndicator = false
+            storyCV.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
+            storyCV.register(IGAddStoryCell.nib(), forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
+            storyCV.translatesAutoresizingMaskIntoConstraints = false
             automaticallyAdjustsScrollViewInsets = false
-        }
-    }
+        return storyCV
+    }()
+    
     //Keep it Immutable! don't get Dirty :P
     let stories:IGStories? = {
         do {
@@ -34,6 +45,16 @@ final class IGHomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
+        view.backgroundColor = .white
+        view.addSubview(storiesCollectionView)
+        setupLayout()
+    }
+    
+    func setupLayout(){
+        storiesCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        storiesCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        storiesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 64).isActive = true
+        storiesCollectionView.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
 }
 
