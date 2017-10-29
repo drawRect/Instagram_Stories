@@ -25,7 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
      func rootSceneSetup() {
-        let nc = UINavigationController.init(rootViewController: IGHomeController())
+        let nc:UINavigationController = UINavigationController.init(rootViewController: IGHomeController())
         window?.rootViewController = nc
     }
     func clearSDWebCache() {

@@ -53,7 +53,7 @@ final class IGStoryPreviewController: UIViewController {
         didSet {
             snapsCollectionView.delegate = self
             snapsCollectionView.dataSource = self
-            //snapsCollectionView.register(IGStoryPreviewCell.nib(), forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
+            snapsCollectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
             snapsCollectionView?.isPagingEnabled = true
             snapsCollectionView.isPrefetchingEnabled = false
             if let layout = snapsCollectionView?.collectionViewLayout as? AnimatedCollectionViewLayout {

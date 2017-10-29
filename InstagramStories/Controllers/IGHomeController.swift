@@ -10,23 +10,20 @@ import UIKit
 
 final class IGHomeController: UIViewController {
     
-     lazy var storiesCollectionView: UICollectionView = {
-        //setting the flowlayout for collectionView
-        let storyFlowLayout:UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        storyFlowLayout.scrollDirection = .horizontal
-        storyFlowLayout.itemSize = CGSize(width: 100, height: 100)
+     let storiesCollectionView: UICollectionView = {
+        //Setting the Layout
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.itemSize = CGSize(width: 100, height: 100)
         
         //setting the properties for collectionview
-        let storyCV:UICollectionView = UICollectionView(frame: view.frame, collectionViewLayout: storyFlowLayout)
-        storyCV.delegate = self
-        storyCV.dataSource = self
+        let storyCV:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
         storyCV.backgroundColor = .white
         storyCV.showsVerticalScrollIndicator = false
         storyCV.showsHorizontalScrollIndicator = false
-        storyCV.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
+        storyCV.register(IGStoryListCell.self, forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
         storyCV.register(IGAddStoryCell.self, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
         storyCV.translatesAutoresizingMaskIntoConstraints = false
-        automaticallyAdjustsScrollViewInsets = false
         return storyCV
     }()
     
@@ -42,18 +39,32 @@ final class IGHomeController: UIViewController {
         return nil
     }()
     
+    private func setupNavigationBar(){
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.barStyle = .blackTranslucent
+    }
+    
+    private func loadUIElements(){
+        setupNavigationBar()
+        view.addSubview(storiesCollectionView)
+        storiesCollectionView.delegate = self
+        storiesCollectionView.dataSource = self
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
+        automaticallyAdjustsScrollViewInsets = false
         view.backgroundColor = .white
-        view.addSubview(storiesCollectionView)
+        
+        loadUIElements()
         setupLayout()
     }
     
     func setupLayout(){
         storiesCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         storiesCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        storiesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: 64).isActive = true
+        storiesCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         storiesCollectionView.heightAnchor.constraint(equalToConstant: 100).isActive = true
     }
 }
