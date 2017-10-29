@@ -18,15 +18,15 @@ final class IGHomeController: UIViewController {
         
         //setting the properties for collectionview
         let storyCV:UICollectionView = UICollectionView(frame: view.frame, collectionViewLayout: storyFlowLayout)
-            storyCV.delegate = self
-            storyCV.dataSource = self
-            storyCV.backgroundColor = .white
+        storyCV.delegate = self
+        storyCV.dataSource = self
+        storyCV.backgroundColor = .white
         storyCV.showsVerticalScrollIndicator = false
         storyCV.showsHorizontalScrollIndicator = false
-            storyCV.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
-            storyCV.register(IGAddStoryCell.nib(), forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
-            storyCV.translatesAutoresizingMaskIntoConstraints = false
-            automaticallyAdjustsScrollViewInsets = false
+        storyCV.register(IGStoryListCell.nib(), forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier())
+        storyCV.register(IGAddStoryCell.self, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier())
+        storyCV.translatesAutoresizingMaskIntoConstraints = false
+        automaticallyAdjustsScrollViewInsets = false
         return storyCV
     }()
     
