@@ -85,7 +85,7 @@ UICollectionViewDelegateFlowLayout {
         }else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
             // Add Story cell
-            cell.story = stories?.stories?[indexPath.row-1]
+            (cell.contentView.subviews.first as? IGStoryListView)?.story = stories?.stories?[indexPath.row-1]
             return cell
         }
     }

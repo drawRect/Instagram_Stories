@@ -27,11 +27,11 @@
 		109966141F6053DA005292CF /* IGHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660A1F6053DA005292CF /* IGHomeController.swift */; };
 		109966161F6053DA005292CF /* IGStoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660C1F6053DA005292CF /* IGStoryListCell.swift */; };
 		109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */; };
-		109966191F6053DA005292CF /* IGStoryPreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1099660F1F6053DA005292CF /* IGStoryPreviewCell.xib */; };
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
-		1099661B1F6053DA005292CF /* IGStoryPreviewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966111F6053DA005292CF /* IGStoryPreviewController.xib */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		109966221F605818005292CF /* IGStoryPreviewHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */; };
+		10CC2FE21FA832A6008BAAA1 /* IGAddStoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CC2FE11FA832A6008BAAA1 /* IGAddStoryView.swift */; };
+		10CC2FE41FA833E4008BAAA1 /* IGStoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10CC2FE31FA833E4008BAAA1 /* IGStoryListView.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
 /* End PBXBuildFile section */
 
@@ -70,11 +70,11 @@
 		1099660A1F6053DA005292CF /* IGHomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGHomeController.swift; path = Controllers/IGHomeController.swift; sourceTree = "<group>"; };
 		1099660C1F6053DA005292CF /* IGStoryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryListCell.swift; path = Controllers/IGStoryListCell.swift; sourceTree = "<group>"; };
 		1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewCell.swift; path = Controllers/IGStoryPreviewCell.swift; sourceTree = "<group>"; };
-		1099660F1F6053DA005292CF /* IGStoryPreviewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewCell.xib; path = Controllers/IGStoryPreviewCell.xib; sourceTree = "<group>"; };
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
-		109966111F6053DA005292CF /* IGStoryPreviewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewController.xib; path = Controllers/IGStoryPreviewController.xib; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = IGStoryPreviewHeaderView.xib; path = Controllers/IGStoryPreviewHeaderView.xib; sourceTree = "<group>"; };
+		10CC2FE11FA832A6008BAAA1 /* IGAddStoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGAddStoryView.swift; path = Controllers/IGAddStoryView.swift; sourceTree = "<group>"; };
+		10CC2FE31FA833E4008BAAA1 /* IGStoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGStoryListView.swift; path = Controllers/IGStoryListView.swift; sourceTree = "<group>"; };
 		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
 		A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.release.xcconfig"; sourceTree = "<group>"; };
 		ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramStories.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -175,12 +175,12 @@
 			isa = PBXGroup;
 			children = (
 				1099660A1F6053DA005292CF /* IGHomeController.swift */,
+				10CC2FE11FA832A6008BAAA1 /* IGAddStoryView.swift */,
 				109966081F6053DA005292CF /* IGAddStoryCell.swift */,
+				10CC2FE31FA833E4008BAAA1 /* IGStoryListView.swift */,
 				1099660C1F6053DA005292CF /* IGStoryListCell.swift */,
 				109966101F6053DA005292CF /* IGStoryPreviewController.swift */,
-				109966111F6053DA005292CF /* IGStoryPreviewController.xib */,
 				1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */,
-				1099660F1F6053DA005292CF /* IGStoryPreviewCell.xib */,
 				1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */,
 				109966211F605818005292CF /* IGStoryPreviewHeaderView.xib */,
 				0774D5191F7641AF0089791B /* IGSnapProgressView.swift */,
@@ -315,11 +315,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1099661B1F6053DA005292CF /* IGStoryPreviewController.xib in Resources */,
 				07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */,
 				078E413D1F61E86500222191 /* stories.json in Resources */,
 				109966221F605818005292CF /* IGStoryPreviewHeaderView.xib in Resources */,
-				109966191F6053DA005292CF /* IGStoryPreviewCell.xib in Resources */,
 				07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -400,6 +398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				10CC2FE21FA832A6008BAAA1 /* IGAddStoryView.swift in Sources */,
 				074861711F9D431A00C1AC1F /* IGMockLoader.swift in Sources */,
 				078E41481F62140000222191 /* Color+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
@@ -415,6 +414,7 @@
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,
 				109966121F6053DA005292CF /* IGAddStoryCell.swift in Sources */,
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
+				10CC2FE41FA833E4008BAAA1 /* IGStoryListView.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
 				07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */,
 				109966141F6053DA005292CF /* IGHomeController.swift in Sources */,

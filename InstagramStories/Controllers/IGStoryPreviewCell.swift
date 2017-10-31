@@ -14,20 +14,26 @@ protocol StoryPreviewProtocol:class {
 }
 
 final class IGStoryPreviewCell: UICollectionViewCell {
+    /*didSet{
+     if let count = story?.snaps?.count {
+     scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
+     }
+     }*/
+    let scrollview: UIScrollView = {
+        let sv = UIScrollView()
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        return sv
+    }()
     
-    @IBOutlet weak private var scrollview: UIScrollView!{
-        didSet{
-            if let count = story?.snaps?.count {
-                scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
-            }
-        }
-    }
-    
-    @IBOutlet weak private var headerView:UIView!
+    let headerView:UIView = {
+        let hv = UIView()
+        hv.translatesAutoresizingMaskIntoConstraints = false
+        return hv
+    }()
     
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
-        v.frame = CGRect(x:0,y:0,width:frame.width,height:80)
+        //let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
+        let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
         return v
     }()
     private lazy var longPress_gesture: UILongPressGestureRecognizer = {
@@ -43,10 +49,53 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     private var snapView:UIImageView?
     
     //MARK: - Overriden functions
-    override func awakeFromNib() {
+    /*override func awakeFromNib() {
         super.awakeFromNib()
         headerView.addSubview(storyHeaderView)
         addGestureRecognizer(longPress_gesture)
+    }*/
+    
+    func loadUIElements(){
+        scrollview.delegate = self as? UIScrollViewDelegate
+        scrollview.isPagingEnabled = true
+        contentView.addSubview(scrollview)
+        contentView.addSubview(headerView)
+        headerView.backgroundColor = .lightGray
+        storyHeaderView.backgroundColor = .orange
+        storyHeaderView.frame = headerView.frame
+        headerView.addSubview(storyHeaderView)
+        addGestureRecognizer(longPress_gesture)
+    }
+    
+    /*override func layoutSubviews() {
+        super.layoutSubviews()
+        if let count = story?.snaps?.count {
+            scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
+        }
+    }*/
+    
+    func installLayoutConstraints(){
+        //Setting constraints for scrollview
+        scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        
+        //Setting constraints for headerView
+        headerView.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        headerView.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        headerView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 80).isActive = true
+    }
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        loadUIElements()
+        installLayoutConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
@@ -82,9 +131,9 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     
     //MARK: - Private functions
     private func createSnapView() {
-        let iv_frame = CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height)
-        snapView = UIImageView.init(frame: iv_frame)
-        scrollview.addSubview(snapView!)
+            let iv_frame = CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height)
+            snapView = UIImageView.init(frame: iv_frame)
+            scrollview.addSubview(snapView!)
     }
     private func startRequestSnap(with url:String) {
         snapView?.setImage(url: url, style: .squared, completion: { (result, error) in
@@ -149,11 +198,19 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }*/
     
     private func getProgressView(with index:Int)->IGSnapProgressView {
-        return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
+        if (storyHeaderView.subviews.first?.subviews.count)! > 0{
+            return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
+        }else{
+            return IGSnapProgressView()
+        }
     }
     
     private func getProgressIndicatorView(with index:Int)->UIView {
-        return (storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first)!
+        if (storyHeaderView.subviews.first?.subviews.count)! > 0{
+            return (storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first)!
+        }else{
+            return UIView()
+        }
     }
     
     public func willDisplayCell() {

@@ -30,7 +30,7 @@ public enum layoutType {
  While Snap.done->Next.snap(continues)->done
  then Story Completed
  */
-final class IGStoryPreviewController: UIViewController {
+final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelegate {
     
     //MARK: - iVars
     private(set) var stories:IGStories
@@ -44,29 +44,63 @@ final class IGStoryPreviewController: UIViewController {
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private(set) lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
     
-    @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
-        didSet { dismissGesture.direction = .down }
-    }
+    let dismissGesture: UISwipeGestureRecognizer = {
+        let gesture = UISwipeGestureRecognizer()
+        gesture.direction = .down
+        return gesture
+    }()
+    
     var isUserScrolled:Bool = false
     
-    @IBOutlet private weak var snapsCollectionView: UICollectionView! {
-        didSet {
-            snapsCollectionView.delegate = self
-            snapsCollectionView.dataSource = self
-            snapsCollectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
-            snapsCollectionView?.isPagingEnabled = true
-            snapsCollectionView.isPrefetchingEnabled = false
-            if let layout = snapsCollectionView?.collectionViewLayout as? AnimatedCollectionViewLayout {
-                layout.scrollDirection = .horizontal
-                layout.animator = layoutAnimator.0
-            }
-        }
-    }
+    let snapsCollectionView: UICollectionView = {
+        //Setting the Layout
+        let flowLayout = AnimatedCollectionViewLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.itemSize = CGSize(width: 100, height: 100)
+        flowLayout.animator = (CubeAttributesAnimator(), true, 1, 1) as? LayoutAttributesAnimator
+        
+        //setting the properties for collectionview
+        let snapsCV:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        snapsCV.backgroundColor = .black
+        snapsCV.showsVerticalScrollIndicator = false
+        snapsCV.showsHorizontalScrollIndicator = false
+        snapsCV.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
+        snapsCV.translatesAutoresizingMaskIntoConstraints = false
+        snapsCV.isPagingEnabled = true
+        snapsCV.isPrefetchingEnabled = false
+        
+       /* if let layout = snapsCV.collectionViewLayout as? AnimatedCollectionViewLayout {
+            layout.scrollDirection = .horizontal
+            //layout.animator = layoutAnimator.0
+        }*/
+        
+        return snapsCV
+    }()
+    
     var tempStory:IGStory?
     
+    func loadUIElements(){
+        view.backgroundColor = .white
+        dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
+    
+        snapsCollectionView.addGestureRecognizer(dismissGesture)
+        snapsCollectionView.delegate = self
+        snapsCollectionView.dataSource = self
+        view.addSubview(snapsCollectionView)
+    }
+    
+    func installLayoutConstraints(){
+        //Setting constraints for snapsCollectionview
+        snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
     //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadUIElements()
+        installLayoutConstraints()
     }
 
     init(layout:layoutType = .cubic,stories:IGStories,handPickedStoryIndex:Int) {
@@ -83,7 +117,7 @@ final class IGStoryPreviewController: UIViewController {
     override var prefersStatusBarHidden: Bool { return true }
     
     //MARK: - Selectors
-    @IBAction func didSwipeDown(_ sender: Any) {
+    @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 }
