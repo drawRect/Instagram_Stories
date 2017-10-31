@@ -2,7 +2,7 @@
 //  IGStoryListView.swift
 //  InstagramStories
 //
-//  Created by Srikanth Vellore on 31/10/17.
+//  Created by Boominadha Prakash on 31/10/17.
 //  Copyright © 2017 Dash. All rights reserved.
 //
 

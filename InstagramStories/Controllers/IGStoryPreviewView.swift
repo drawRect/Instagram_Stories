@@ -2,7 +2,7 @@
 //  IGStoryPreviewView.swift
 //  InstagramStories
 //
-//  Created by Srikanth Vellore on 31/10/17.
+//  Created by Boominadha Prakash on 31/10/17.
 //  Copyright © 2017 Dash. All rights reserved.
 //
 
@@ -25,11 +25,10 @@ class IGStoryPreviewView: UIView {
     let headerView:UIView = {
         let hv = UIView()
         hv.translatesAutoresizingMaskIntoConstraints = false
+        hv.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         return hv
-        
     }()
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        //let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
         let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
         return v
     }()
@@ -117,8 +116,6 @@ class IGStoryPreviewView: UIView {
         scrollview.isPagingEnabled = true
         self.addSubview(scrollview)
         self.addSubview(headerView)
-        headerView.backgroundColor = .lightGray
-        storyHeaderView.backgroundColor = .orange
         storyHeaderView.frame = headerView.frame
         headerView.addSubview(storyHeaderView)
         addGestureRecognizer(longPress_gesture)
@@ -131,6 +128,7 @@ class IGStoryPreviewView: UIView {
         scrollview.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         scrollview.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
         scrollview.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
         //Setting constraints for headerView
         headerView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         headerView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true

@@ -10,13 +10,11 @@ import UIKit
 
 final class IGStoryPreviewCell: UICollectionViewCell {
     
-    
     //MARK: - Overriden functions
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(IGStoryPreviewView(frame:contentView.frame))
-        
     }
     
     required init?(coder aDecoder: NSCoder) {

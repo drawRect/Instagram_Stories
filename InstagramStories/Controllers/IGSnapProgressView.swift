@@ -14,6 +14,7 @@ protocol ViewAnimator:class {
     func pause()
     func stop()
 }
+
 extension ViewAnimator where Self:IGSnapProgressView {
 
     func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()) {
