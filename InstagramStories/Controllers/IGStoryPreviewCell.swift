@@ -14,11 +14,7 @@ protocol StoryPreviewProtocol:class {
 }
 
 final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
-    /*didSet{
-     if let count = story?.snaps?.count {
-     scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
-     }
-     }*/
+    
     lazy var scrollview: UIScrollView = {
         let sv = UIScrollView()
         sv.translatesAutoresizingMaskIntoConstraints = false
@@ -38,13 +34,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         lp.minimumPressDuration = 0.2
         return lp
     }()
-    public var isCompletelyVisible:Bool = false {
-        didSet{
-            didObserveProgressor()
-        }
-    }
-    private var snapView:UIImageView?
-    
     //MARK: - Overriden functions
     
     func loadUIElements(){
@@ -86,9 +75,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
                     if let url = snap.url {
-                        createSnapView()
-                        //Requesting a snap on-demand
-                        startRequestSnap(with: url)
+                        let snapView = createSnapView()
+                        startRequest(snapView: snapView, with: url)
                     }
                     storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                 }
@@ -105,18 +93,18 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     //MARK: - Private functions
-    private func createSnapView() {
+    private func createSnapView()->UIImageView {
         let iv_frame = CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height)
-        snapView = UIImageView.init(frame: iv_frame)
-        scrollview.addSubview(snapView!)
+        let snapView = UIImageView.init(frame: iv_frame)
+        scrollview.addSubview(snapView)
+        return snapView
     }
-    private func startRequestSnap(with url:String) {
-        snapView?.setImage(url: url, style: .squared, completion: { (result, error) in
+    private func startRequest(snapView:UIImageView,with url:String) {
+        snapView.setImage(url: url, style: .squared, completion: { (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                // Cross check the function whether image has been loaded and also cell might get visible!
-                self.didObserveProgressor(with: true)
+                self.gearupTheProgressors()
             }
         })
     }
@@ -154,23 +142,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    /*-----------------------Boiler Plate Code----------------------------------------*/
-    /*---------------Don't spoil the above code,if you want, start writting it down---*/
-    
-    //Todo::
-    /* public func markProgressViewAsCompleted() {
-     /*if let count = story?.snapsCount {
-     for i in 0..<count {
-     if i == snapIndex{ break }
-     let pv = getProgressView(with: i)
-     pv.frame = CGRect(x:pv.frame.origin.x,y:pv.frame.origin.y,width:getProgressIndicatorView(with: i).frame.width,height:pv.frame.height)
-     pv.stop()
-     }
-     }*/
-     let pv = getProgressView(with: snapIndex)
-     pv.stop()
-     didEnterForeground()
-     }*/
     
     private func getProgressView(with index:Int)->IGSnapProgressView {
         if (storyHeaderView.subviews.first?.subviews.count)! > 0{
@@ -202,17 +173,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         getProgressView(with: index).pause()
     }
     public func didEndDecelerating(with index:Int) {
-        //This is a Initial setting up the true' value for upcoming cell
-        isCompletelyVisible = true
         getProgressView(with: index).play()
     }
-    
-    public func displayingAtZerothStory(){
-        //for the very first cell is already in visible state
-        story?.lastPlayedSnapIndex = 0
-        isCompletelyVisible = true
-    }
-    
+
     func gearupTheProgressors() {
         let holderView = getProgressIndicatorView(with: snapIndex)
         let progressView = getProgressView(with: snapIndex)
@@ -221,15 +184,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         })
     }
     
-    private func didObserveProgressor(with content:Bool = false) {
-        if scrollview.subviews.count > 0{
-            let snapView = (story?.lastPlayedSnapIndex)! < scrollview.subviews.count ? scrollview.subviews[(story?.lastPlayedSnapIndex)!] as! UIImageView : scrollview.subviews.first as! UIImageView
-            
-            if isCompletelyVisible && snapView.image != nil {
-                gearupTheProgressors()
-            }
-        }
-    }
 }
 
 extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
