@@ -18,13 +18,17 @@ public let progressViewTag = 99
 
 final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
-    //Warning: If you use this following shadow one more time. Please create UIView+Additions(Extension)
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.frame = frame
+        loadUIElements()
+        installLayoutConstraints()
+    }
     
-    private lazy var mainView:UIView = {
-        let view = UIView()
-        view.frame = self.frame
-        return view
-    }()
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     
     let progressView:UIView = {
         let view = UIView()
@@ -60,8 +64,8 @@ final class IGStoryPreviewHeaderView: UIView {
         label.textColor = .white
         return label
     }()
-    
-    let closeButton:UIButton = {
+   
+    lazy var closeButton:UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(#imageLiteral(resourceName: "ic_close"), for: .normal)
@@ -71,7 +75,6 @@ final class IGStoryPreviewHeaderView: UIView {
     
     func loadUIElements(){
         self.addSubview(progressView)
-        self.addSubview(mainView)
         self.addSubview(snaperImageView)
         self.addSubview(detailView)
         detailView.addSubview(snaperNameLabel)
@@ -93,20 +96,20 @@ final class IGStoryPreviewHeaderView: UIView {
         snaperImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
         snaperImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0.0)
-        snaperImageView.centerYAnchor.constraint(equalTo: mainView.centerYAnchor, constant: 0.0).isActive = true
+        snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0).isActive = true
         
         //Setting constraints for detailView
-        detailView.centerYAnchor.constraint(equalTo: mainView.centerYAnchor).isActive = true
+        detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         detailView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10).isActive = true
         detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10).isActive = true
         
         //Setting constraints for closeButton
-        closeButton.centerYAnchor.constraint(equalTo: mainView.centerYAnchor).isActive = true
-        closeButton.rightAnchor.constraint(equalTo: mainView.rightAnchor).isActive = true
+        closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        closeButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         closeButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
         closeButton.heightAnchor.constraint(equalToConstant:
-            mainView.frame.height).isActive = true
+            self.frame.height).isActive = true
         
         
         //Setting constraints for snapperNameLabel
@@ -121,16 +124,7 @@ final class IGStoryPreviewHeaderView: UIView {
 
         layoutIfNeeded()
     }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        loadUIElements()
-        installLayoutConstraints()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
+
     public weak var delegate:StoryPreviewHeaderProtocol?
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
@@ -140,7 +134,7 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Selectors
-    @objc func didTapClose(_ sender: Any) {
+    @objc func didTapClose(_ sender: UIButton) {
         delegate?.didTapCloseButton()
     }
     

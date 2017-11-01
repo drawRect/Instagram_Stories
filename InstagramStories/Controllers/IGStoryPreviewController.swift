@@ -52,7 +52,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     
     var isUserScrolled:Bool = false
     
-    let snapsCollectionView: UICollectionView = {
+    lazy var snapsCollectionView: UICollectionView = {
         //Setting the Layout
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
@@ -69,10 +69,10 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         snapsCV.isPagingEnabled = true
         snapsCV.isPrefetchingEnabled = false
         
-       /* if let layout = snapsCV.collectionViewLayout as? AnimatedCollectionViewLayout {
+        if let layout = snapsCV.collectionViewLayout as? AnimatedCollectionViewLayout {
             layout.scrollDirection = .horizontal
-            //layout.animator = layoutAnimator.0
-        }*/
+            layout.animator = layoutAnimator.0
+        }
         
         return snapsCV
     }()
@@ -137,8 +137,8 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         if let count = stories.count {
             if counted < count {
                 let story = stories.stories?[counted]
-                (cell.contentView.subviews.first as? IGStoryPreviewView)?.story = story
-                (cell.contentView.subviews.first as? IGStoryPreviewView)?.delegate = self
+                cell.story = story
+                cell.delegate = self
             }else {
                 fatalError("Stories Index mis-matched :(")
             }
@@ -152,27 +152,27 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     }
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if let cell = cell as? IGStoryPreviewCell {
+       if let cell = cell as? IGStoryPreviewCell {
             if tempStory == nil {
-                (cell.contentView.subviews.first as? IGStoryPreviewView)?.displayingAtZerothStory()
+                cell.displayingAtZerothStory()
             }else {
                 if isUserScrolled == false {
                     guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
-                    (visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.isCompletelyVisible = true
-                    tempStory?.lastPlayedSnapIndex = ((visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.snapIndex)!
-                    (cell.contentView.subviews.first as? IGStoryPreviewView)?.isCompletelyVisible = true
+                    visibleCell.isCompletelyVisible = true
+                    tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+                    cell.isCompletelyVisible = true
                 }else {
-                    (cell.contentView.subviews.first as? IGStoryPreviewView)?.isCompletelyVisible = false
+                    cell.isCompletelyVisible = false
                     isUserScrolled = false
                 }
             }
-            (cell.contentView.subviews.first as? IGStoryPreviewView)?.willDisplayCell()
+            cell.willDisplayCell()
         }else {fatalError()}
     }
     
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? IGStoryPreviewCell {
-            (cell.contentView.subviews.first as? IGStoryPreviewView)?.didEndDisplayingCell()
+            cell.didEndDisplayingCell()
         }else {fatalError()}
     }
     
@@ -181,8 +181,8 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         isUserScrolled = true
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
         tempStory = stories.stories?[nStoryIndex]
-        tempStory?.lastPlayedSnapIndex = ((visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.snapIndex)!
-        (visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.willBeginDragging(with: tempStory?.lastPlayedSnapIndex ?? 0)
+        tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+        visibleCell.willBeginDragging(with: tempStory?.lastPlayedSnapIndex ?? 0)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
@@ -191,15 +191,15 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 let story = stories.stories?[index+handPickedStoryIndex]
                 guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
                 if tempStory == story {
-                    (visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.didEndDecelerating(with: ((visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.snapIndex)!)
+                    visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
                 }else {
                     let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                    (visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
                 }
             }
         }else {
             guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
-            (visibleCell.contentView.subviews.first as? IGStoryPreviewView)?.isCompletelyVisible = true
+            visibleCell.isCompletelyVisible = true
         }
     }
     //MARK: -
