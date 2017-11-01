@@ -1,14 +1,26 @@
 //
-//  IGStoryListView.swift
+//  IGStoryListCell.swift
 //  InstagramStories
 //
-//  Created by Boominadha Prakash on 31/10/17.
+//  Created by Ranjith Kumar on 9/6/17.
 //  Copyright © 2017 Dash. All rights reserved.
 //
 
 import UIKit
 
-class IGStoryListView: UIView {
+final class IGStoryListCell: UICollectionViewCell {
+    
+    override init(frame:CGRect)
+    {
+        super.init(frame:frame)
+        loadUIElements()
+        installLayoutConstraints()
+       // contentView.addSubview(IGStoryListView.init(frame: contentView.frame))
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let profileImageView:UIImageView = {
         let imageView = UIImageView()
@@ -55,15 +67,5 @@ class IGStoryListView: UIView {
         profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         layoutIfNeeded()
-    }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        loadUIElements()
-        installLayoutConstraints()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
     }
 }

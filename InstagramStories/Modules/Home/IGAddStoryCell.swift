@@ -1,14 +1,25 @@
 //
-//  IGAddStoryView.swift
+//  IGAddStoryCell.swift
 //  InstagramStories
 //
-//  Created by Boominadha Prakash on 31/10/17.
+//  Created by Ranjith Kumar on 9/6/17.
 //  Copyright © 2017 Dash. All rights reserved.
 //
 
 import UIKit
 
-class IGAddStoryView: UIView {
+final class IGAddStoryCell: UICollectionViewCell {
+    
+    override init(frame: CGRect) {
+        super.init(frame:frame)
+        //contentView.addSubview(IGAddStoryView.init(frame: contentView.frame))
+        loadUIElements()
+        installLayoutConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     let addStoryLabel:UILabel = {
         let label = UILabel()
@@ -26,15 +37,5 @@ class IGAddStoryView: UIView {
     private func installLayoutConstraints() {
         addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        loadUIElements()
-        installLayoutConstraints()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

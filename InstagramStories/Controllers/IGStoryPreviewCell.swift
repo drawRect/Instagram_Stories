@@ -15,12 +15,10 @@ protocol StoryPreviewProtocol:class {
 
 final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
-    lazy var scrollview: UIScrollView = {
+    let scrollview: UIScrollView = {
         let sv = UIScrollView()
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        if let count = story?.snaps?.count {
-            sv.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
-        }
+        sv.showsVerticalScrollIndicator = false
+        sv.showsHorizontalScrollIndicator = false
         return sv
     }()
 
@@ -36,12 +34,23 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }()
     //MARK: - Overriden functions
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        scrollview.frame = bounds
+        loadUIElements()
+        //installLayoutConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func loadUIElements(){
         scrollview.delegate = self
         scrollview.isPagingEnabled = true
-        contentView.addSubview(scrollview)
+        addSubview(scrollview)
         storyHeaderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        contentView.addSubview(storyHeaderView)
+        addSubview(storyHeaderView)
         scrollview.addGestureRecognizer(longPress_gesture)
     }
     func installLayoutConstraints(){
@@ -50,16 +59,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
         scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        loadUIElements()
-        installLayoutConstraints()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
@@ -89,13 +88,17 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if let picture = story?.user?.picture {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
+            if let count = story?.snaps?.count {
+                scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
+            }
         }
     }
     
     //MARK: - Private functions
     private func createSnapView()->UIImageView {
-        let iv_frame = CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height)
-        let snapView = UIImageView.init(frame: iv_frame)
+        //print("Scrollview subview:\(scrollview.subviews[0])")
+        let xValue = scrollview.subviews.count > 0 ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
+        let snapView = UIImageView.init(frame: CGRect(x: xValue, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         scrollview.addSubview(snapView)
         return snapView
     }
