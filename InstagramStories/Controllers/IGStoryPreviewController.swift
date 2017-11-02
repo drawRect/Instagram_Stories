@@ -55,6 +55,9 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.itemSize = CGSize(width: 100, height: 100)
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         flowLayout.animator = (CubeAttributesAnimator(), true, 1, 1) as? LayoutAttributesAnimator
         
         //setting the properties for collectionview

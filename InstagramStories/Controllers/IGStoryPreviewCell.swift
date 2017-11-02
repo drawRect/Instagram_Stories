@@ -19,6 +19,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
+        sv.isScrollEnabled = false
         return sv
     }()
 
@@ -43,6 +44,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+
     }
     
     func loadUIElements(){
@@ -97,7 +102,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     //MARK: - Private functions
     private func createSnapView()->UIImageView {
         //print("Scrollview subview:\(scrollview.subviews[0])")
-        let xValue = scrollview.subviews.count > 0 ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
+        let xValue = (scrollview.subviews.count > 0 && snapIndex > 0) ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
         let snapView = UIImageView.init(frame: CGRect(x: xValue, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         scrollview.addSubview(snapView)
         return snapView
