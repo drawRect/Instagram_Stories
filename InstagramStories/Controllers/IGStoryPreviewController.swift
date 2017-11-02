@@ -50,18 +50,19 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         return gesture
     }()
     
-    lazy var snapsCollectionView: UICollectionView = {
-        //Setting the Layout
+    lazy var layout:AnimatedCollectionViewLayout = {
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.itemSize = CGSize(width: 100, height: 100)
         flowLayout.minimumLineSpacing = 0
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        flowLayout.animator = (CubeAttributesAnimator(), true, 1, 1) as? LayoutAttributesAnimator
-        
-        //setting the properties for collectionview
-        let cv:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: flowLayout)
+        flowLayout.animator = layoutAnimator.0
+        return flowLayout
+    }()
+    
+    lazy var snapsCollectionView: UICollectionView = {
+        let cv:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
@@ -70,17 +71,16 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
         
-        if let layout = cv.collectionViewLayout as? AnimatedCollectionViewLayout {
-            layout.scrollDirection = .horizontal
-            layout.animator = layoutAnimator.0
-        }
+//        if let layout = cv.collectionViewLayout as? AnimatedCollectionViewLayout {
+//            layout.scrollDirection = .horizontal
+//            layout.animator = layoutAnimator.0
+//        }
         return cv
     }()
     
     func loadUIElements(){
         view.backgroundColor = .white
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
-    
         snapsCollectionView.addGestureRecognizer(dismissGesture)
         snapsCollectionView.delegate = self
         snapsCollectionView.dataSource = self
