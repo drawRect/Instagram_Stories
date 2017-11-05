@@ -37,7 +37,7 @@ final class IGStoryPreviewController: UIViewController {
     /** This index will tell you which Story, user has picked*/
     private(set) var handPickedStoryIndex:Int //starts with(i)
     /** This index will help you simply iterate the story one by one*/
-    private var nStoryIndex:Int = 0 //iteration(i+1)
+    private var nStoryIndex:Int = 0 //iteration(i++)
     //public weak var storyPreviewHelperDelegate:pastStoryClearer?
     private(set) var layoutType:layoutType
     
@@ -47,7 +47,6 @@ final class IGStoryPreviewController: UIViewController {
     @IBOutlet private var dismissGesture: UISwipeGestureRecognizer! {
         didSet { dismissGesture.direction = .down }
     }
-    var isUserScrolled:Bool = false
     
     @IBOutlet private weak var snapsCollectionView: UICollectionView! {
         didSet {
@@ -122,17 +121,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             if tempStory == nil {
                 cell.displayingAtZerothStory()
             }else {
-                if isUserScrolled == false {
-                    guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
-                    visibleCell.isCompletelyVisible = true
-                    tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
-                    cell.isCompletelyVisible = true
-                }else {
-                    cell.isCompletelyVisible = false
-                    isUserScrolled = false
-                }
+                guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
+                tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+                cell.isCompletelyVisible = false
+                cell.willDisplayCell()
             }
-            cell.willDisplayCell()
         }else {fatalError()}
     }
     
@@ -144,7 +137,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        isUserScrolled = true
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
         tempStory = stories.stories?[nStoryIndex]
         tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex

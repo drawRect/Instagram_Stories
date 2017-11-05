@@ -130,23 +130,6 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             }
         }
     }
-    /*-----------------------Boiler Plate Code----------------------------------------*/
-    /*---------------Don't spoil the above code,if you want, start writting it down---*/
-    
-    //Todo::
-   /* public func markProgressViewAsCompleted() {
-        /*if let count = story?.snapsCount {
-         for i in 0..<count {
-         if i == snapIndex{ break }
-         let pv = getProgressView(with: i)
-         pv.frame = CGRect(x:pv.frame.origin.x,y:pv.frame.origin.y,width:getProgressIndicatorView(with: i).frame.width,height:pv.frame.height)
-         pv.stop()
-         }
-         }*/
-        let pv = getProgressView(with: snapIndex)
-        pv.stop()
-        didEnterForeground()
-    }*/
     
     private func getProgressView(with index:Int)->IGSnapProgressView {
         return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
@@ -205,3 +188,22 @@ extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
         delegate?.didTapCloseButton()
     }
 }
+
+
+/*-----------------------Boiler Plate Code----------------------------------------*/
+/*---------------Don't spoil the above code,if you want, start writting it down---*/
+
+//Todo::
+/* public func markProgressViewAsCompleted() {
+ /*if let count = story?.snapsCount {
+ for i in 0..<count {
+ if i == snapIndex{ break }
+ let pv = getProgressView(with: i)
+ pv.frame = CGRect(x:pv.frame.origin.x,y:pv.frame.origin.y,width:getProgressIndicatorView(with: i).frame.width,height:pv.frame.height)
+ pv.stop()
+ }
+ }*/
+ let pv = getProgressView(with: snapIndex)
+ pv.stop()
+ didEnterForeground()
+ }*/
