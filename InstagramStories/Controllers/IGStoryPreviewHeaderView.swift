@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SDWebImage
 
 protocol StoryPreviewHeaderProtocol:class {func didTapCloseButton()}
 
@@ -20,11 +19,11 @@ final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
     //Warning: If you use this following shadow one more time. Please create UIView+Additions(Extension)
     override func awakeFromNib() {
-        self.layer.masksToBounds = false
-        self.layer.shadowColor = UIColor.black.cgColor
-        self.layer.shadowOpacity = 0.5
-        self.layer.shadowOffset = CGSize(width: -1, height: 1)
-        self.layer.shadowRadius = 1
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: -1, height: 1)
+        layer.shadowRadius = 1
     }
     
     public weak var delegate:StoryPreviewHeaderProtocol?
@@ -38,8 +37,10 @@ final class IGStoryPreviewHeaderView: UIView {
     //Todo:Make Private scope
     @IBOutlet internal weak var snaperImageView: UIImageView! {
         didSet {
-            snaperImageView.layer.cornerRadius = 40/2
+            snaperImageView.layer.cornerRadius = snaperImageView.frame.height/2
             snaperImageView.clipsToBounds = true
+            snaperImageView.layer.borderWidth = 1.0
+            snaperImageView.layer.borderColor = UIColor.white.cgColor
         }
     }
     @IBOutlet private weak var snaperNameLabel: UILabel!
@@ -47,13 +48,16 @@ final class IGStoryPreviewHeaderView: UIView {
     
     //MARK: - Selectors
     @IBAction func didTapClose(_ sender: Any) {
-        self.delegate?.didTapCloseButton()
+        delegate?.didTapCloseButton()
     }
     
     //MARK: - Public functions
-    public func generateSnappers(){
+    public func createSnapProgressors(){
         //clean up the garbage progress bars
-        self.progressView.subviews.forEach { v in v.removeFromSuperview()}
+        let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
+        progressors.forEach({v in v.stop()})
+        progressView.subviews.forEach { v in v.removeFromSuperview()}
+        
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding

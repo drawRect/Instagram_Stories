@@ -14,7 +14,7 @@ protocol ViewAnimator:class {
     func pause()
     func stop()
 }
-extension ViewAnimator where Self:UIView {
+extension ViewAnimator where Self:IGSnapProgressView {
 
     func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()) {
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {

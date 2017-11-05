@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
      func rootSceneSetup() {
         let nc = UINavigationController.init(rootViewController: IGHomeController())
-        self.window?.rootViewController = nc
+        window?.rootViewController = nc
     }
     func clearSDWebCache() {
         SDImageCache.shared().clearMemory()
