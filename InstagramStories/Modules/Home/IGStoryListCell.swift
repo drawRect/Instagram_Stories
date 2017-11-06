@@ -12,8 +12,8 @@ final class IGStoryListCell: UICollectionViewCell {
     
     override init(frame:CGRect){
         super.init(frame:frame)
-        loadUIElements()
-        installLayoutConstraints()
+        createViews()
+        installConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -39,21 +39,22 @@ final class IGStoryListCell: UICollectionViewCell {
         return label
     }()
     
-    func loadUIElements(){
+    func createViews(){
         addSubview(profileImageView)
         addSubview(profileNameLabel)
     }
     
     public var story:IGStory? {
         didSet {
-            self.profileNameLabel.text = story?.user?.name
+            profileNameLabel.text = story?.user?.name
             if let picture = story?.user?.picture {
-                self.profileImageView.setImage(url: picture)
+                profileImageView.setImage(url: picture)
             }
         }
     }
-    
-    func installLayoutConstraints(){
+    //TODO:-Need some improvements
+    //Missing Basic 8-8(top|bottom) space on Label
+    func installConstraints(){
         profileImageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
         profileImageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
         profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true

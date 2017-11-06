@@ -47,7 +47,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     var tempStory:IGStory?
     
     let dismissGesture: UISwipeGestureRecognizer = {
-        let gesture = UISwipeGestureRecognizer()
+        let gesture = UISwipeGestureRecognizer.init()
         gesture.direction = .down
         return gesture
     }()
@@ -75,7 +75,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         return cv
     }()
     
-    func loadUIElements(){
+    func createViews(){
         view.backgroundColor = .white
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
         snapsCollectionView.addGestureRecognizer(dismissGesture)
@@ -87,8 +87,8 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadUIElements()
-        installLayoutConstraints()
+        createViews()
+        installConstraints()
     }
     
     init(layout:layoutType = .cubic,stories:IGStories,handPickedStoryIndex:Int) {
@@ -109,7 +109,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         dismiss(animated: true, completion: nil)
     }
     //MARK: - Private functions
-    private func installLayoutConstraints(){
+    private func installConstraints(){
         snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
@@ -173,16 +173,16 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let tempStory = tempStory,
             let index = stories.stories?.index(of: tempStory),
-            let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell{
+        let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell{
             let story = stories.stories?[index+handPickedStoryIndex]
-            if tempStory == story {
-                visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
-                nStoryIndex = index
-            }else {
-                let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                if tempStory == story {
+                    visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
+                    nStoryIndex = index
+                }else {
+                    let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                }
             }
-        }
         else {
             guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
             visibleCell.isCompletelyVisible = true

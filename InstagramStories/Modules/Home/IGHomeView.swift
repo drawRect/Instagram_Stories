@@ -33,7 +33,7 @@ class IGHomeView: UIView {
         super.init(frame: frame)
         backgroundColor = UIColor.rgb(from: 0xEFEFF4)
         createUIElements()
-        installLayoutConstraints()
+        installConstraints()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -42,7 +42,7 @@ class IGHomeView: UIView {
     private func createUIElements(){
         addSubview(collectionView)
     }
-    private func installLayoutConstraints(){
+    private func installConstraints(){
         collectionView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         collectionView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         collectionView.topAnchor.constraint(equalTo: topAnchor).isActive = true

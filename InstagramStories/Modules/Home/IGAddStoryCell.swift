@@ -12,8 +12,8 @@ final class IGAddStoryCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame:frame)
-        loadUIElements()
-        installLayoutConstraints()
+        createViews()
+        installConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -29,10 +29,10 @@ final class IGAddStoryCell: UICollectionViewCell {
         return label
     }()
     
-    private func loadUIElements() {
+    private func createViews() {
         addSubview(addStoryLabel)
     }
-    private func installLayoutConstraints() {
+    private func installConstraints() {
         addStoryLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         addStoryLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }

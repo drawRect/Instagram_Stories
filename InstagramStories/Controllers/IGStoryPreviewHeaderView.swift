@@ -23,8 +23,8 @@ final class IGStoryPreviewHeaderView: UIView {
         super.init(frame: frame)
         self.frame = frame
         applyShadowOffset()
-        loadUIElements()
-        installLayoutConstraints()
+        createViews()
+        installConstraints()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -82,7 +82,7 @@ final class IGStoryPreviewHeaderView: UIView {
         layer.shadowRadius = 1
     }
     
-    private func loadUIElements(){
+    private func createViews(){
         addSubview(progressView)
         addSubview(snaperImageView)
         addSubview(detailView)
@@ -91,7 +91,7 @@ final class IGStoryPreviewHeaderView: UIView {
         detailView.addSubview(lastUpdatedLabel)
     }
     
-    private func installLayoutConstraints(){
+    private func installConstraints(){
         //Setting constraints for progressView
         progressView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         progressView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
