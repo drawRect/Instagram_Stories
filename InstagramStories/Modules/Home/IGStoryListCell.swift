@@ -10,12 +10,10 @@ import UIKit
 
 final class IGStoryListCell: UICollectionViewCell {
     
-    override init(frame:CGRect)
-    {
+    override init(frame:CGRect){
         super.init(frame:frame)
         loadUIElements()
         installLayoutConstraints()
-       // contentView.addSubview(IGStoryListView.init(frame: contentView.frame))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,8 +40,8 @@ final class IGStoryListCell: UICollectionViewCell {
     }()
     
     func loadUIElements(){
-        self.addSubview(profileImageView)
-        self.addSubview(profileNameLabel)
+        addSubview(profileImageView)
+        addSubview(profileNameLabel)
     }
     
     public var story:IGStory? {

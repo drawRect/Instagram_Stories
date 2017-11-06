@@ -12,7 +12,6 @@ final class IGAddStoryCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame:frame)
-        //contentView.addSubview(IGAddStoryView.init(frame: contentView.frame))
         loadUIElements()
         installLayoutConstraints()
     }
@@ -23,7 +22,6 @@ final class IGAddStoryCell: UICollectionViewCell {
     
     let addStoryLabel:UILabel = {
         let label = UILabel()
-        label.textColor = .black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Add Story"
@@ -32,10 +30,10 @@ final class IGAddStoryCell: UICollectionViewCell {
     }()
     
     private func loadUIElements() {
-        self.addSubview(addStoryLabel)
+        addSubview(addStoryLabel)
     }
     private func installLayoutConstraints() {
-        addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        addStoryLabel.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
+        addStoryLabel.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
 }

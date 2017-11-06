@@ -31,7 +31,7 @@ class IGHomeView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = UIColor.rgb(from: 0xEFEFF4)
         createUIElements()
         installLayoutConstraints()
     }

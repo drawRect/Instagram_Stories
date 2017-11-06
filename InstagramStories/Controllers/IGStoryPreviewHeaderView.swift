@@ -18,10 +18,11 @@ public let progressViewTag = 99
 
 final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
+        applyShadowOffset()
         loadUIElements()
         installLayoutConstraints()
     }
@@ -30,13 +31,13 @@ final class IGStoryPreviewHeaderView: UIView {
         super.init(coder: aDecoder)
     }
     
-    let progressView:UIView = {
+    private let progressView:UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let snaperImageView:UIImageView = {
+    public let snaperImageView:UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = imageView.frame.height/2
         imageView.clipsToBounds = true
@@ -45,27 +46,27 @@ final class IGStoryPreviewHeaderView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    let detailView:UIView = {
+    private let detailView:UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let snaperNameLabel:UILabel = {
+    private let snaperNameLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         return label
     }()
     
-    let lastUpdatedLabel:UILabel = {
+    public let lastUpdatedLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         return label
     }()
-   
-    lazy var closeButton:UIButton = {
+    
+    private lazy var closeButton:UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(#imageLiteral(resourceName: "ic_close"), for: .normal)
@@ -73,25 +74,31 @@ final class IGStoryPreviewHeaderView: UIView {
         return button
     }()
     
-    func loadUIElements(){
-        self.addSubview(progressView)
-        self.addSubview(snaperImageView)
-        self.addSubview(detailView)
-        detailView.addSubview(snaperNameLabel)
-        detailView.addSubview(lastUpdatedLabel)
-        self.addSubview(closeButton)
+    private func applyShadowOffset() {
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: -1, height: 1)
+        layer.shadowRadius = 1
     }
     
-    func installLayoutConstraints(){
+    private func loadUIElements(){
+        addSubview(progressView)
+        addSubview(snaperImageView)
+        addSubview(detailView)
+        addSubview(closeButton)
+        detailView.addSubview(snaperNameLabel)
+        detailView.addSubview(lastUpdatedLabel)
+    }
+    
+    private func installLayoutConstraints(){
         //Setting constraints for progressView
-
         progressView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         progressView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
         progressView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         progressView.heightAnchor.constraint(equalToConstant: 10)
         
         //Setting constraints for snapperImageView
-        
         snaperImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
         snaperImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
@@ -111,7 +118,6 @@ final class IGStoryPreviewHeaderView: UIView {
         closeButton.heightAnchor.constraint(equalToConstant:
             self.frame.height).isActive = true
         
-        
         //Setting constraints for snapperNameLabel
         snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor).isActive = true
         snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0).isActive = true
@@ -121,10 +127,10 @@ final class IGStoryPreviewHeaderView: UIView {
         //Setting constraints for lastUpdatedLabel
         lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor).isActive = true
         lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0).isActive = true
-
+        
         layoutIfNeeded()
     }
-
+    
     public weak var delegate:StoryPreviewHeaderProtocol?
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
@@ -160,7 +166,7 @@ final class IGStoryPreviewHeaderView: UIView {
         snaperNameLabel.text = story?.user?.name
     }
     
-   private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
+    private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
         view.layer.cornerRadius = 1
         view.layer.masksToBounds = true
         view.backgroundColor = UIColor.white.withAlphaComponent(alpha)

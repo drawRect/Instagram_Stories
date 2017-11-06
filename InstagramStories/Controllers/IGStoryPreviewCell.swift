@@ -13,8 +13,12 @@ protocol StoryPreviewProtocol:class {
     func didTapCloseButton()
 }
 
+//Identifiers
+fileprivate let snapViewTag = 8
+
 final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
-    
+
+    //MARK: - iVars
     let scrollview: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
@@ -24,7 +28,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }()
     
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        //let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
         let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
         return v
     }()
@@ -37,7 +40,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     var isCompletelyVisible:Bool = false{
         didSet{
             if scrollview.subviews.count > 0{
-                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + 8}.first as? UIImageView
+                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTag}.first as? UIImageView
                 if imageView?.image != nil && isCompletelyVisible == true{
                     gearupTheProgressors()
                 }
@@ -46,7 +49,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     //MARK: - Overriden functions
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         scrollview.frame = bounds
@@ -60,22 +62,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    func loadUIElements(){
-        scrollview.delegate = self
-        scrollview.isPagingEnabled = true
-        addSubview(scrollview)
-        storyHeaderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
-        addSubview(storyHeaderView)
-        scrollview.addGestureRecognizer(longPress_gesture)
-    }
-    func installLayoutConstraints(){
-        //Setting constraints for scrollview
-        scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }
     
     deinit {
@@ -114,12 +100,27 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     //MARK: - Private functions
+    
+    private func loadUIElements(){
+        scrollview.delegate = self
+        scrollview.isPagingEnabled = true
+        addSubview(scrollview)
+        //storyHeaderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        addSubview(storyHeaderView)
+        scrollview.addGestureRecognizer(longPress_gesture)
+    }
+    
+    private func installLayoutConstraints(){
+        scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+    }
+    
     private func createSnapView()->UIImageView {
-        //print("Scrollview subview:\(scrollview.subviews[0])")
         let xValue = (scrollview.subviews.count > 0) ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
-        print("Xvalue:\(xValue)")
         let snapView = UIImageView.init(frame: CGRect(x: xValue, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
-        snapView.tag = snapIndex + 8
+        snapView.tag = snapIndex + snapViewTag
         scrollview.addSubview(snapView)
         return snapView
     }

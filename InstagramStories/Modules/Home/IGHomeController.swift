@@ -15,21 +15,15 @@ final class IGHomeController: UIViewController {
     
     override func loadView() {
         super.loadView()
-        view = IGHomeView.init(frame: UIScreen.main.bounds)
+        view = IGHomeView.init(frame: view.bounds)
         _view.collectionView.delegate = self
         _view.collectionView.dataSource = self
-    }
-    
-    private func setupNavigationBar(){
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .blackTranslucent
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
-        setupNavigationBar()
-        automaticallyAdjustsScrollViewInsets = false
+        edgesForExtendedLayout = []
     }
 }
 
