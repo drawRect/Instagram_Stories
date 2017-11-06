@@ -44,6 +44,8 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private(set) lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
     
+    var tempStory:IGStory?
+    
     let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
         gesture.direction = .down
@@ -70,11 +72,6 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
-        
-//        if let layout = cv.collectionViewLayout as? AnimatedCollectionViewLayout {
-//            layout.scrollDirection = .horizontal
-//            layout.animator = layoutAnimator.0
-//        }
         return cv
     }()
     
@@ -100,7 +97,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         loadUIElements()
         installLayoutConstraints()
     }
-
+    
     init(layout:layoutType = .cubic,stories:IGStories,handPickedStoryIndex:Int) {
         self.layoutType = layout
         self.stories = stories
@@ -141,6 +138,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 fatalError("Stories Index mis-matched :(")
             }
         }
+        nStoryIndex = indexPath.item
         return cell
     }
     
@@ -150,7 +148,11 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? IGStoryPreviewCell {
-            cell.willDisplayCell()
+            if tempStory == nil {
+                cell.willDisplayAtZerothIndex()
+            }else {
+                cell.willDisplayCell(with: tempStory?.lastPlayedSnapIndex ?? 0)
+            }
         }
     }
     
@@ -159,7 +161,34 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             cell.didEndDisplayingCell()
         }else {fatalError()}
     }
-   
+    
+    //MARK: - UIScrollView Delegates
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
+        tempStory = stories.stories?[nStoryIndex]
+        tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+        visibleCell.willBeginDragging(with: tempStory?.lastPlayedSnapIndex ?? 0)
+    }
+    
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        if let tempStory = tempStory {
+            if let index = stories.stories?.index(of: tempStory) {
+                let story = stories.stories?[index+handPickedStoryIndex]
+                guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
+                if tempStory == story {
+                    visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
+                    nStoryIndex = index
+                }else {
+                    let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                }
+            }
+        }else {
+            guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
+            visibleCell.isCompletelyVisible = true
+        }
+    }
+    
 }
 
 extension IGStoryPreviewController:StoryPreviewProtocol {
@@ -171,6 +200,10 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
                 snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+                    let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell
+                    cell?.isCompletelyVisible = true
+                }
             }else {
                 self.dismiss(animated: true, completion: nil)
             }

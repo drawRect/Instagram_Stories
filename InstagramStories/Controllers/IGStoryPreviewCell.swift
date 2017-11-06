@@ -22,7 +22,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         sv.isScrollEnabled = false
         return sv
     }()
-
+    
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
         //let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
         let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
@@ -33,6 +33,18 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         lp.minimumPressDuration = 0.2
         return lp
     }()
+    
+    var isCompletelyVisible:Bool = false{
+        didSet{
+            if scrollview.subviews.count > 0{
+                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + 8}.first as? UIImageView
+                if imageView?.image != nil && isCompletelyVisible == true{
+                    gearupTheProgressors()
+                }
+            }
+        }
+    }
+    
     //MARK: - Overriden functions
     
     override init(frame: CGRect) {
@@ -41,13 +53,13 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         loadUIElements()
         //installLayoutConstraints()
     }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        isCompletelyVisible = false
+    }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func prepareForReuse() {
-
     }
     
     func loadUIElements(){
@@ -94,6 +106,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
             if let count = story?.snaps?.count {
+                let scrollview_subviews = scrollview.subviews.filter({v in v is UIImageView})
+                scrollview_subviews.forEach{v in v.removeFromSuperview()}
                 scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
             }
         }
@@ -102,8 +116,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     //MARK: - Private functions
     private func createSnapView()->UIImageView {
         //print("Scrollview subview:\(scrollview.subviews[0])")
-        let xValue = (scrollview.subviews.count > 0 && snapIndex > 0) ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
+        let xValue = (scrollview.subviews.count > 0) ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
+        print("Xvalue:\(xValue)")
         let snapView = UIImageView.init(frame: CGRect(x: xValue, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        snapView.tag = snapIndex + 8
         scrollview.addSubview(snapView)
         return snapView
     }
@@ -112,7 +128,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                self.gearupTheProgressors()
+                if self.isCompletelyVisible {
+                    self.gearupTheProgressors()
+                }
             }
         })
     }
@@ -155,6 +173,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         if (storyHeaderView.subviews.first?.subviews.count)! > 0{
             return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
         }else{
+            //correct it!
             return IGSnapProgressView()
         }
     }
@@ -163,28 +182,34 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         if (storyHeaderView.subviews.first?.subviews.count)! > 0{
             return (storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first)!
         }else{
+            //correct it!
             return UIView()
         }
     }
     
-    public func willDisplayCell() {
+    public func willDisplayAtZerothIndex() {
+        isCompletelyVisible = true
+        willDisplayCell(with: 0)
+    }
+    
+    public func willDisplayCell(with sIndex:Int) {
         storyHeaderView.createSnapProgressors()
-        snapIndex = 0
+        snapIndex = sIndex
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
     public func didEndDisplayingCell() {
         NotificationCenter.default.removeObserver(self)
-        //        getProgressView(with: snapIndex).stop()
     }
+    
     public func willBeginDragging(with index:Int) {
         getProgressView(with: index).pause()
     }
     public func didEndDecelerating(with index:Int) {
         getProgressView(with: index).play()
     }
-
-    func gearupTheProgressors() {
+    
+    private func gearupTheProgressors() {
         let holderView = getProgressIndicatorView(with: snapIndex)
         let progressView = getProgressView(with: snapIndex)
         progressView.start(with: 5.0, width: holderView.frame.width, completion: {
