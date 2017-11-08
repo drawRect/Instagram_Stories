@@ -23,6 +23,7 @@ public class IGStory:NSObject {
     public var internalIdentifier: String?
     public var lastUpdated: Int?
     public var user:IGUser?
+    var lastPlayedSnapIndex:Int = 0
 
     // MARK: SwiftyJSON Initalizers
     /**

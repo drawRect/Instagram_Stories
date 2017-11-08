@@ -56,6 +56,11 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         isCompletelyVisible = false
+        /*if scrollview.subviews.count>0 {
+            //Self might get reused!
+            let scrollview_subviews = scrollview.subviews.filter({v in v is UIImageView})
+            scrollview_subviews.forEach{v in v.removeFromSuperview()}
+        }*/
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -106,8 +111,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
             if let count = story?.snaps?.count {
-                let scrollview_subviews = scrollview.subviews.filter({v in v is UIImageView})
-                scrollview_subviews.forEach{v in v.removeFromSuperview()}
+//                let scrollview_subviews = scrollview.subviews.filter({v in v is UIImageView})
+//                scrollview_subviews.forEach{v in v.removeFromSuperview()}
                 scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
             }
         }
@@ -115,7 +120,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
     //MARK: - Private functions
     private func createSnapView()->UIImageView {
-        //print("Scrollview subview:\(scrollview.subviews[0])")
         let xValue = (scrollview.subviews.count > 0) ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
         print("Xvalue:\(xValue)")
         let snapView = UIImageView.init(frame: CGRect(x: xValue, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
@@ -155,6 +159,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     @objc private func didCompleteProgress() {
+        story?.lastPlayedSnapIndex = snapIndex
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {

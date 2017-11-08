@@ -151,7 +151,12 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             if tempStory == nil {
                 cell.willDisplayAtZerothIndex()
             }else {
-                cell.willDisplayCell(with: tempStory?.lastPlayedSnapIndex ?? 0)
+                if (stories.stories?[nStoryIndex].lastPlayedSnapIndex != nil){
+                    let lastPlayedSnapIndex = stories.stories?[nStoryIndex].lastPlayedSnapIndex
+                    cell.willDisplayCell(with:  lastPlayedSnapIndex!)
+                }else {
+                    cell.willDisplayCell(with:  0)
+                }
             }
         }
     }
@@ -173,14 +178,16 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let tempStory = tempStory {
             if let index = stories.stories?.index(of: tempStory) {
-                let story = stories.stories?[index+handPickedStoryIndex]
+                //let story = stories.stories?[index+handPickedStoryIndex]
                 guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
+                let story = visibleCell.story
                 if tempStory == story {
-                    visibleCell.didEndDecelerating(with: visibleCell.snapIndex)
+                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
                     nStoryIndex = index
                 }else {
                     let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
-                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                    visibleCell.isCompletelyVisible = true
+                    visibleCell.didEndDecelerating(with: 0)
                 }
             }
         }else {
@@ -197,6 +204,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         if let count = stories.count {
             if n < count {
                 //Move to next story
+                tempStory = stories.stories?[nStoryIndex]
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
                 snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
