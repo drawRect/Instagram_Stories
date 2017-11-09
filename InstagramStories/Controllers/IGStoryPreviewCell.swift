@@ -39,6 +39,16 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if scrollview.subviews.count > 0{
                 let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + 8}.first as? UIImageView
                 if imageView?.image != nil && isCompletelyVisible == true{
+                    if snapIndex > 0{
+                        for i in 0...snapIndex{
+                            let holderView = getProgressIndicatorView(with: i)
+                            let progressView = getProgressView(with: i)
+                            progressView.start(with: 0.0, width: holderView.frame.width, completion: {
+                                //self.didCompleteProgress()
+                            })
+                        }
+                    }
+                    
                     gearupTheProgressors()
                 }
             }
@@ -120,9 +130,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
     //MARK: - Private functions
     private func createSnapView()->UIImageView {
-        let xValue = (scrollview.subviews.count > 0) ? scrollview.subviews[snapIndex-1].frame.maxX : scrollview.frame.origin.x
-        print("Xvalue:\(xValue)")
-        let snapView = UIImageView.init(frame: CGRect(x: xValue, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let xValue = (scrollview.subviews.count > 0) ? scrollview.subviews.last?.frame.maxX : scrollview.frame.origin.x
+        print("Xvalue:\(String(describing: xValue))")
+        let snapView = UIImageView.init(frame: CGRect(x: xValue!, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         snapView.tag = snapIndex + 8
         scrollview.addSubview(snapView)
         return snapView
@@ -199,6 +209,15 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
     public func willDisplayCell(with sIndex:Int) {
         storyHeaderView.createSnapProgressors()
+        print("SnapIndex:\(sIndex)")
+        if sIndex > 0{
+            for i in 0...sIndex-1{
+                let holderView = self.getProgressIndicatorView(with: i)
+                let progressView = self.getProgressView(with: i)
+                progressView.start(with: 0.0, width: holderView.frame.width, completion: {
+                })
+            }
+        }
         snapIndex = sIndex
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
