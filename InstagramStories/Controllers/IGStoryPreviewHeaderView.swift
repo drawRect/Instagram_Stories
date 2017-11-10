@@ -16,9 +16,11 @@ fileprivate let maxSnaps = 30
 public let progressIndicatorViewTag = 88
 public let progressViewTag = 99
 
+public var storyId:String?
+
 final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
@@ -140,11 +142,10 @@ final class IGStoryPreviewHeaderView: UIView {
     
     //MARK: - Public functions
     public func createSnapProgressors(){
-        
-        let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
+        /*let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
         progressors.forEach({v in v.stop()})
         //Improvise this code
-        progressView.subviews.forEach { v in v.removeFromSuperview()}
+        progressView.subviews.forEach { v in v.removeFromSuperview()}*/
         
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3

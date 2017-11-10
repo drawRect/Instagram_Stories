@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ViewAnimator:class {
-    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->())
+    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping (_ story_id:String)->())
     func play()
     func pause()
     func stop()
@@ -17,12 +17,12 @@ protocol ViewAnimator:class {
 
 extension ViewAnimator where Self:IGSnapProgressView {
 
-    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()) {
+    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping (_ story_id:String)->()) {
         UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
             self.frame.size.width = width
         }) { (finished) in
             if finished == true {
-                completion()
+                completion(storyId!)
             }
         }
     }
@@ -41,6 +41,11 @@ extension ViewAnimator where Self:IGSnapProgressView {
     }
     func stop() {
         play()
+        layer.removeAllAnimations()
+    }
+    
+    func _stop() {
+        layer.speed = 0.0
         layer.removeAllAnimations()
     }
 }
