@@ -178,7 +178,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let tempStory = tempStory {
             if let index = stories.stories?.index(of: tempStory) {
-                //let story = stories.stories?[index+handPickedStoryIndex]
                 guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
                 let story = visibleCell.story
                 if tempStory == story {
@@ -205,7 +204,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
             if n < count {
                 //Move to next story
                 tempStory = stories.stories?[nStoryIndex]
-                //tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
+//                tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
                 snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)

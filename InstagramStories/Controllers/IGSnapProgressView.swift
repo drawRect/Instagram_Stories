@@ -16,7 +16,6 @@ protocol ViewAnimator:class {
 }
 
 extension ViewAnimator where Self:IGSnapProgressView {
-
     func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()){
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {
             self.frame.size.width = width

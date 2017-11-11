@@ -18,7 +18,6 @@ public let progressViewTag = 99
 
 final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
@@ -30,6 +29,7 @@ final class IGStoryPreviewHeaderView: UIView {
         super.init(coder: aDecoder)
     }
     
+    //MARK: - iVars
     let progressView:UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -82,7 +82,11 @@ final class IGStoryPreviewHeaderView: UIView {
         self.addSubview(closeButton)
     }
     
-    func installLayoutConstraints(){
+    public func getProgressView()->UIView {
+        return progressView
+    }
+    
+   private func installLayoutConstraints(){
         //Setting constraints for progressView
 
         progressView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
@@ -139,10 +143,9 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Public functions
-    public func clearTheProgressorViews() {
-        let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
-        progressors.forEach({v in v.stop()})
-        //Improvise this code
+    public func clearTheProgressorViews(for snapIndex:Int) {
+        let progressor = progressView.subviews[snapIndex] as? IGSnapProgressView
+        progressor?.stop()
         progressView.subviews.forEach { v in v.removeFromSuperview()}
     }
     public func createSnapProgressors(){
@@ -168,7 +171,6 @@ final class IGStoryPreviewHeaderView: UIView {
         view.tag = tag
         return view
     }
-    
 }
 
 extension Int {
