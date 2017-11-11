@@ -55,7 +55,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     override func prepareForReuse() {
         super.prepareForReuse()
-        //        isCompletelyVisible = false
         /*if scrollview.subviews.count>0 {
          //Self might get reused!
          let scrollview_subviews = scrollview.subviews.filter({v in v is UIImageView})
@@ -107,7 +106,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public var story:IGStory? {
         didSet {
             storyHeaderView.story = story
-            storyId = self.story?.internalIdentifier
             if let picture = story?.user?.picture {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
@@ -150,7 +148,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if sender.state == .began {
                 v.pause()
             }else {
-                v.play()
+                v.resume()
             }
         }
     }
@@ -158,36 +156,30 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     @objc private func didEnterForeground() {
         let indicatorView = getProgressIndicatorView(with: snapIndex)
         let pv = getProgressView(with: snapIndex)
-        pv.start(with: 5.0, width: indicatorView.frame.width, completion: { storyId in
-            self.didCompleteProgress(with: storyId)
+        pv.start(with: 5.0, width: indicatorView.frame.width, completion: {
+            self.didCompleteProgress()
         })
     }
     
-    @objc private func didCompleteProgress(with storyId:String? = nil) {
-        //Todo: Handle Nil case for the back to foregroud
-        if let storyId = storyId {
-            if storyId == self.story?.internalIdentifier {
-                story?.lastPlayedSnapIndex = snapIndex
-                let n = snapIndex + 1
-                if let count = story?.snapsCount {
-                    if n < count {
-                        //Move to next snap
-                        let x = n.toFloat() * frame.width
-                        let offset = CGPoint(x:x,y:0)
-                        scrollview.setContentOffset(offset, animated: false)
-                        snapIndex = n
-                    }else {
-                        delegate?.didCompletePreview()
-                    }
-                }
+    @objc private func didCompleteProgress() {
+        story?.lastPlayedSnapIndex = snapIndex
+        let n = snapIndex + 1
+        if let count = story?.snapsCount {
+            if n < count {
+                //Move to next snap
+                let x = n.toFloat() * frame.width
+                let offset = CGPoint(x:x,y:0)
+                scrollview.setContentOffset(offset, animated: false)
+                snapIndex = n
             }else {
-                
+                delegate?.didCompletePreview()
             }
         }
     }
     
     private func getProgressView(with index:Int)->IGSnapProgressView {
         if (storyHeaderView.subviews.first?.subviews.count)! > 0{
+            print("getProgressView/called\(index)and \(String(describing: story?.user?.name))")
             return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
         }else{
             //correct it!
@@ -225,28 +217,29 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     public func didEndDisplayingCell() {
+        isCompletelyVisible = false
         if let lastPlayedIndex = story?.lastPlayedSnapIndex {
             let imageView = scrollview.subviews[lastPlayedIndex] as? UIImageView
             imageView?.removeFromSuperview()
         }
+        self.storyHeaderView.clearTheProgressorViews()
         NotificationCenter.default.removeObserver(self)
     }
     
     public func willBeginDragging(with index:Int) {
-        getProgressView(with: index)._stop()
+        getProgressView(with: index).pause()
     }
     public func didEndDecelerating(with index:Int) {
-        //getProgressView(with: index).play()
+        getProgressView(with: index).resume()
     }
     
     private func gearupTheProgressors() {
         let holderView = getProgressIndicatorView(with: snapIndex)
         let progressView = getProgressView(with: snapIndex)
-        progressView.start(with: 5.0, width: holderView.frame.width, completion: { storyId in
-            self.didCompleteProgress(with: storyId)
+        progressView.start(with: 5.0, width: holderView.frame.width, completion: {
+            self.didCompleteProgress()
         })
     }
-    
 }
 
 extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {

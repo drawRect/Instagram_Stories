@@ -16,8 +16,6 @@ fileprivate let maxSnaps = 30
 public let progressIndicatorViewTag = 88
 public let progressViewTag = 99
 
-public var storyId:String?
-
 final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Overriden functions
     
@@ -141,12 +139,13 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Public functions
-    public func createSnapProgressors(){
-        /*let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
+    public func clearTheProgressorViews() {
+        let progressors = progressView.subviews.filter({v in v is IGSnapProgressView}) as! [IGSnapProgressView]
         progressors.forEach({v in v.stop()})
         //Improvise this code
-        progressView.subviews.forEach { v in v.removeFromSuperview()}*/
-        
+        progressView.subviews.forEach { v in v.removeFromSuperview()}
+    }
+    public func createSnapProgressors(){
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding
@@ -154,7 +153,7 @@ final class IGStoryPreviewHeaderView: UIView {
         let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
             let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
-            progressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.1))
+            progressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.5))
             let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
             progressView.addSubview(applyProperties(pv,with: i+progressViewTag))
             x = x + width + padding
