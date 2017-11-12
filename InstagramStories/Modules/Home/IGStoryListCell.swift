@@ -15,7 +15,6 @@ final class IGStoryListCell: UICollectionViewCell {
         super.init(frame:frame)
         loadUIElements()
         installLayoutConstraints()
-       // contentView.addSubview(IGStoryListView.init(frame: contentView.frame))
     }
     
     required init?(coder aDecoder: NSCoder) {
