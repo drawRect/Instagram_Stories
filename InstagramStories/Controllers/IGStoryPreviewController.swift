@@ -83,6 +83,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
     }
     override var prefersStatusBarHidden: Bool { return true }

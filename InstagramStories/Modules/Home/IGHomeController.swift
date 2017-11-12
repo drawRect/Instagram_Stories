@@ -10,16 +10,17 @@ import UIKit
 
 final class IGHomeController: UIViewController {
     
+    //MARK: - iVars
     private var _view:IGHomeView{return view as! IGHomeView}
     private var viewModel:IGHomeViewModel = IGHomeViewModel()
     
+    //MARK: - Overridden functions
     override func loadView() {
         super.loadView()
         view = IGHomeView.init(frame: UIScreen.main.bounds)
         _view.collectionView.delegate = self
         _view.collectionView.dataSource = self
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"

@@ -10,18 +10,19 @@ import UIKit
 
 final class IGAddStoryCell: UICollectionViewCell {
     
+    //MARK: - Overriden functions
     override init(frame: CGRect) {
         super.init(frame:frame)
-        //contentView.addSubview(IGAddStoryView.init(frame: contentView.frame))
         loadUIElements()
         installLayoutConstraints()
     }
-    
     required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
     }
     
-    let addStoryLabel:UILabel = {
+    //MARK: - iVars
+    private let addStoryLabel:UILabel = {
         let label = UILabel()
         label.textColor = .black
         label.textAlignment = .center
@@ -31,11 +32,12 @@ final class IGAddStoryCell: UICollectionViewCell {
         return label
     }()
     
+    //MARK: - Private functions
     private func loadUIElements() {
         self.addSubview(addStoryLabel)
     }
     private func installLayoutConstraints() {
         NSLayoutConstraint.activate([addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)])
+                                     addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)])
     }
 }

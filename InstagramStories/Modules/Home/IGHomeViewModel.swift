@@ -10,6 +10,7 @@ import Foundation
 
 class IGHomeViewModel:NSObject{
     
+    //MARK: - iVars
     //Keep it Immutable! don't get Dirty :P
     private let stories:IGStories? = {
         do {
@@ -21,10 +22,11 @@ class IGHomeViewModel:NSObject{
         }
         return nil
     }()
+    
+    //MARK: - Public functions
     public func getStories()->IGStories? {
         return stories
     }
-    
     public func numberOfItemsInSection(_ section:Int)->Int {
         if let count = stories?.count {
             return count + 1 // Add Story cell
