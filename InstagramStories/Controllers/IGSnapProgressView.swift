@@ -10,14 +10,14 @@ import UIKit
 
 protocol ViewAnimator:class {
     func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->())
-    func play()
+    func resume()
     func pause()
     func stop()
 }
-extension ViewAnimator where Self:UIView {
 
-    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()) {
-        UIView.animate(withDuration: duration, delay: 0.0, options: .curveLinear, animations: {
+extension ViewAnimator where Self:IGSnapProgressView {
+    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()){
+        UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {
             self.frame.size.width = width
         }) { (finished) in
             if finished == true {
@@ -25,7 +25,7 @@ extension ViewAnimator where Self:UIView {
             }
         }
     }
-    func play() {
+    func resume() {
         let pausedTime = layer.timeOffset
         layer.speed = 1.0
         layer.timeOffset = 0.0
@@ -39,7 +39,7 @@ extension ViewAnimator where Self:UIView {
         layer.timeOffset = pausedTime
     }
     func stop() {
-        play()
+        resume()
         layer.removeAllAnimations()
     }
 }

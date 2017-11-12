@@ -13,21 +13,25 @@ protocol StoryPreviewProtocol:class {
     func didTapCloseButton()
 }
 
-final class IGStoryPreviewCell: UICollectionViewCell {
+fileprivate let snapViewTagIndicator:Int = 8
+
+final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
-    @IBOutlet weak private var scrollview: UIScrollView!{
-        didSet{
-            if let count = story?.snaps?.count {
-                scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
-            }
-        }
+    //MARK: - iVars
+    public weak var delegate:StoryPreviewProtocol? {
+        didSet { storyHeaderView.delegate = self }
     }
     
-    @IBOutlet weak private var headerView:UIView!
+    private let scrollview: UIScrollView = {
+        let sv = UIScrollView()
+        sv.showsVerticalScrollIndicator = false
+        sv.showsHorizontalScrollIndicator = false
+        sv.isScrollEnabled = false
+        return sv
+    }()
     
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
-        v.frame = CGRect(x:0,y:0,width:frame.width,height:80)
+        let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
         return v
     }()
     private lazy var longPress_gesture: UILongPressGestureRecognizer = {
@@ -36,27 +40,24 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         return lp
     }()
     
-    //MARK: - Overriden functions
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        headerView.addSubview(storyHeaderView)
-        addGestureRecognizer(longPress_gesture)
+    public var isCompletelyVisible:Bool = false{
+        didSet{
+            if scrollview.subviews.count > 0 {
+                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
+                if imageView?.image != nil && isCompletelyVisible == true{
+                    gearupTheProgressors()
+                }
+            }
+        }
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    //MARK: - iVars
-    public weak var delegate:StoryPreviewProtocol? {
-        didSet { storyHeaderView.delegate = self }
-    }
     public var snapIndex:Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    if let picture = snap.url {
-                        createImageView(with:picture)
+                    if let url = snap.url {
+                        let snapView = createSnapView()
+                        startRequest(snapView: snapView, with: url)
                     }
                     storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                 }
@@ -69,42 +70,87 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             if let picture = story?.user?.picture {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
+            if let count = story?.snaps?.count {
+                scrollview.contentSize = CGSize(width:IGScreen.width * CGFloat(count), height:IGScreen.height)
+            }
         }
     }
     
-    //MARK: - Private functions
-    private func createImageView(with picture:String) {
-        let iv = UIImageView(frame:
-            CGRect(x:scrollview.subviews.last?.frame.maxX ?? CGFloat(0.0),y:0, width:IGScreen.width, height:IGScreen.height))
-        startLoadContent(with: iv, picture: picture)
-        scrollview.addSubview(iv)
+    //MARK: - Overriden functions
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        scrollview.frame = bounds
+        loadUIElements()
+        installLayoutConstraints()
+    }
+    override func prepareForReuse() {
+        super.prepareForReuse()
     }
     
-    private func startLoadContent(with imageView:UIImageView,picture:String) {
-        imageView.setImage(url: picture, style: .squared, completion: { (result, error) in
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    //MARK: - Private functions
+    private func loadUIElements(){
+        scrollview.delegate = self
+        scrollview.isPagingEnabled = true
+        addSubview(scrollview)
+        addSubview(storyHeaderView)
+        scrollview.addGestureRecognizer(longPress_gesture)
+    }
+    private func installLayoutConstraints(){
+        //Setting constraints for scrollview
+        scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
+        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
+        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+    }
+    private func createSnapView()->UIImageView {
+        let previousSnapIndex = snapIndex - 1
+        let x_value = (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
+        let snapView = UIImageView.init(frame: CGRect(x: x_value, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        snapView.tag = snapIndex + snapViewTagIndicator
+        scrollview.addSubview(snapView)
+        return snapView
+    }
+    
+    private func startRequest(snapView:UIImageView,with url:String) {
+        snapView.setImage(url: url, style: .squared, completion: { (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                let holderView = self.getProgressIndicatorView(with: self.snapIndex)
-                let progressView = self.getProgressView(with: self.snapIndex)
-                progressView.start(with: 5.0, width: holderView.frame.width, completion: {
-                    self.didCompleteProgress()
-                })
+                if self.isCompletelyVisible {
+                    self.gearupTheProgressors()
+                }
             }
         })
     }
     
-    @objc private func didEnterForeground() {
-        let holderView = self.getProgressIndicatorView(with: self.snapIndex)
-        let pv = self.getProgressView(with: self.snapIndex)
-        pv.start(with: 5.0, width: holderView.frame.width, completion: {
-            self.didCompleteProgress()
-        })
+    @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began || sender.state == .ended {
+            let v = getProgressView(with: snapIndex)
+            if sender.state == .began {
+                v?.pause()
+            }else {
+                v?.resume()
+            }
+        }
     }
-
+    
+    @objc private func didEnterForeground() {
+        if let indicatorView = getProgressIndicatorView(with: snapIndex),
+            let pv = getProgressView(with: snapIndex) {
+            pv.start(with: 5.0, width: indicatorView.frame.width, completion: {
+                self.didCompleteProgress()
+            })
+        }
+    }
     
     @objc private func didCompleteProgress() {
-        //let progressView = self.getProgressView(with: self.snapIndex)
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {
@@ -112,6 +158,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)
+                story?.lastPlayedSnapIndex = snapIndex
                 snapIndex = n
             }else {
                 delegate?.didCompletePreview()
@@ -119,36 +166,76 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         }
     }
     
-    private func getProgressView(with index:Int)->IGSnapProgressView {
-        return storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressViewTag}).first as! IGSnapProgressView
+    private func getProgressView(with index:Int)->IGSnapProgressView? {
+        let progressView = storyHeaderView.getProgressView()
+        if progressView.subviews.count>0 {
+            return progressView.subviews.filter({v in v.tag == index+progressViewTag}).first as? IGSnapProgressView
+        }
+        return nil
     }
     
-    private func getProgressIndicatorView(with index:Int)->UIView {
-        return (storyHeaderView.subviews.first?.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first)!
+    private func getProgressIndicatorView(with index:Int)->UIView? {
+        let progressView = storyHeaderView.getProgressView()
+        if progressView.subviews.count>0 {
+            return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first
+        }else{
+            return nil
+        }
     }
-    
-    public func willDisplayCell() {
-        storyHeaderView.generateSnappers()
-        snapIndex = 0
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-    }
-    public func didEndDisplayingCell() {
-        getProgressView(with: snapIndex).stop()
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .began || sender.state == .ended {
-            let v = getProgressView(with: snapIndex)
-            if sender.state == .began {
-                v.pause()
-            }else {
-                v.play()
+    private func fillupLastPlayedSnaps(_ sIndex:Int) {
+        //Coz, we are ignoring the first.snap
+        if sIndex != 0 {
+            for i in 0..<sIndex {
+                if let holderView = self.getProgressIndicatorView(with: i),
+                    let progressView = self.getProgressView(with: i){
+                    progressView.frame.size.width = holderView.frame.width
+                }
             }
         }
     }
+    private func gearupTheProgressors() {
+        if let holderView = getProgressIndicatorView(with: snapIndex),
+            let progressView = getProgressView(with: snapIndex){
+            progressView.start(with: 5.0, width: holderView.frame.width, completion: {
+                self.didCompleteProgress()
+            })
+        }
+    }
+    
+    //MARK: - Public functions
+    public func willDisplayAtZerothIndex() {
+        isCompletelyVisible = true
+        willDisplayCell(with: 0)
+    }
+    
+    public func willDisplayCell(with sIndex:Int) {
+        //Todo:Make sure to move filling part and creating at one place
+        storyHeaderView.createSnapProgressors()
+        fillupLastPlayedSnaps(sIndex)
+        snapIndex = sIndex
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+    }
+    
+    public func didEndDisplayingCell() {
+        isCompletelyVisible = false
+        if let lastPlayedIndex = story?.lastPlayedSnapIndex {
+            let imageView = scrollview.subviews[lastPlayedIndex] as? UIImageView
+            imageView?.removeFromSuperview()
+            self.storyHeaderView.clearTheProgressorViews(for: lastPlayedIndex)
+        }
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    public func willBeginDragging(with index:Int) {
+        getProgressView(with: index)?.pause()
+    }
+    public func didEndDecelerating(with index:Int) {
+        getProgressView(with: index)?.resume()
+    }
+    
+    
 }
-
+//MARK: - Extension/StoryPreviewHeaderProtocol
 extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
     func didTapCloseButton() {
         delegate?.didTapCloseButton()
