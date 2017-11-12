@@ -22,6 +22,7 @@
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
+		101422F51FB89147004D3D4F /* IGAdditions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 101422F41FB89147004D3D4F /* IGAdditions.swift */; };
 		1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024C9F61FAA0D4300237538 /* IGHomeController.swift */; };
 		1024C9FB1FAA0D4400237538 /* IGAddStoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */; };
 		1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */; };
@@ -63,6 +64,7 @@
 		07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		07FDECE01F5FD9BA004BC833 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		07FDECE21F5FD9BA004BC833 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		101422F41FB89147004D3D4F /* IGAdditions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGAdditions.swift; path = Extension/IGAdditions.swift; sourceTree = "<group>"; };
 		1024C9F61FAA0D4300237538 /* IGHomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGHomeController.swift; path = Modules/Home/IGHomeController.swift; sourceTree = "<group>"; };
 		1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGAddStoryCell.swift; path = Modules/Home/IGAddStoryCell.swift; sourceTree = "<group>"; };
 		1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryListCell.swift; path = Modules/Home/IGStoryListCell.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			children = (
 				078E41451F62137E00222191 /* ImageView+Additions.swift */,
 				078E41471F6213FF00222191 /* Color+Additions.swift */,
+				101422F41FB89147004D3D4F /* IGAdditions.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -422,6 +425,7 @@
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,
 				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,
+				101422F51FB89147004D3D4F /* IGAdditions.swift in Sources */,
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
 				1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */,

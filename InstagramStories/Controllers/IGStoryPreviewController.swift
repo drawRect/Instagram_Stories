@@ -40,19 +40,15 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     private var nStoryIndex:Int = 0 //iteration(i+1)
     //public weak var storyPreviewHelperDelegate:pastStoryClearer?
     private(set) var layoutType:layoutType
-    
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private(set) lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
-    
     private var story_copy:IGStory?
-    
-    let dismissGesture: UISwipeGestureRecognizer = {
+    private let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
         gesture.direction = .down
         return gesture
     }()
-    
-    lazy var layout:AnimatedCollectionViewLayout = {
+    private lazy var layout:AnimatedCollectionViewLayout = {
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.itemSize = CGSize(width: 100, height: 100)
@@ -62,8 +58,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         flowLayout.animator = layoutAnimator.0
         return flowLayout
     }()
-    
-    lazy var snapsCollectionView: UICollectionView = {
+    private lazy var snapsCollectionView: UICollectionView = {
         let cv:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
@@ -75,7 +70,30 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         return cv
     }()
     
-    func loadUIElements(){
+    //MARK: - Overriden functions
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        loadUIElements()
+        installLayoutConstraints()
+    }
+    init(layout:layoutType = .cubic,stories:IGStories,handPickedStoryIndex:Int) {
+        self.layoutType = layout
+        self.stories = stories
+        self.handPickedStoryIndex = handPickedStoryIndex
+        super.init(nibName: nil, bundle: nil)
+    }
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    override var prefersStatusBarHidden: Bool { return true }
+
+    //MARK: - Selectors
+    @objc func didSwipeDown(_ sender: Any) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: - Private functions
+    private func loadUIElements(){
         view.backgroundColor = .white
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
         snapsCollectionView.addGestureRecognizer(dismissGesture)
@@ -83,38 +101,14 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         snapsCollectionView.dataSource = self
         view.addSubview(snapsCollectionView)
     }
-    
-    func installLayoutConstraints(){
+    private func installLayoutConstraints(){
         //Setting constraints for snapsCollectionview
         snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
         snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
         snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
-    //MARK: - Overriden functions
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        loadUIElements()
-        installLayoutConstraints()
-    }
     
-    init(layout:layoutType = .cubic,stories:IGStories,handPickedStoryIndex:Int) {
-        self.layoutType = layout
-        self.stories = stories
-        self.handPickedStoryIndex = handPickedStoryIndex
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override var prefersStatusBarHidden: Bool { return true }
-
-    //MARK: - Selectors
-    @objc func didSwipeDown(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
 }
 
 extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
@@ -205,10 +199,12 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
             if n < count {
                 //Move to next story
                 story_copy = stories.stories?[nStoryIndex]
-//                tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
                 snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
+                /**@Note:
+                 Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress wont see :P
+                 */
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
                     let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell
                     cell?.isCompletelyVisible = true

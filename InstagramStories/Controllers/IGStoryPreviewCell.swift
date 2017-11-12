@@ -13,13 +13,16 @@ protocol StoryPreviewProtocol:class {
     func didTapCloseButton()
 }
 
+fileprivate let snapViewTagIndicator:Int = 8
+
 final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
+    //MARK: - iVars
     public weak var delegate:StoryPreviewProtocol? {
         didSet { storyHeaderView.delegate = self }
     }
     
-    let scrollview: UIScrollView = {
+    private let scrollview: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
@@ -28,7 +31,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }()
     
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        //let v = Bundle.loadView(with: IGStoryPreviewHeaderView.self)
         let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
         return v
     }()
@@ -38,10 +40,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         return lp
     }()
     
-    var isCompletelyVisible:Bool = false{
+    public var isCompletelyVisible:Bool = false{
         didSet{
             if scrollview.subviews.count > 0 {
-                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + 8}.first as? UIImageView
+                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
                 if imageView?.image != nil && isCompletelyVisible == true{
                     gearupTheProgressors()
                 }
@@ -79,7 +81,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         super.init(frame: frame)
         scrollview.frame = bounds
         loadUIElements()
-        //installLayoutConstraints()
+        installLayoutConstraints()
     }
     override func prepareForReuse() {
         super.prepareForReuse()
@@ -88,33 +90,30 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
     
-    func loadUIElements(){
+    //MARK: - Private functions
+    private func loadUIElements(){
         scrollview.delegate = self
         scrollview.isPagingEnabled = true
         addSubview(scrollview)
-        storyHeaderView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
         addSubview(storyHeaderView)
-        //scrollview.addGestureRecognizer(longPress_gesture)
+        scrollview.addGestureRecognizer(longPress_gesture)
     }
-    func installLayoutConstraints(){
+    private func installLayoutConstraints(){
         //Setting constraints for scrollview
         scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
         scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
         scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
         scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
     }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    //MARK: - Private functions
     private func createSnapView()->UIImageView {
         let previousSnapIndex = snapIndex - 1
         let x_value = (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
         let snapView = UIImageView.init(frame: CGRect(x: x_value, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
-        snapView.tag = snapIndex + 8
+        snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
         return snapView
     }
@@ -183,7 +182,27 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             return nil
         }
     }
+    private func fillupLastPlayedSnaps(_ sIndex:Int) {
+        //Coz, we are ignoring the first.snap
+        if sIndex != 0 {
+            for i in 0..<sIndex {
+                if let holderView = self.getProgressIndicatorView(with: i),
+                    let progressView = self.getProgressView(with: i){
+                    progressView.frame.size.width = holderView.frame.width
+                }
+            }
+        }
+    }
+    private func gearupTheProgressors() {
+        if let holderView = getProgressIndicatorView(with: snapIndex),
+            let progressView = getProgressView(with: snapIndex){
+            progressView.start(with: 5.0, width: holderView.frame.width, completion: {
+                self.didCompleteProgress()
+            })
+        }
+    }
     
+    //MARK: - Public functions
     public func willDisplayAtZerothIndex() {
         isCompletelyVisible = true
         willDisplayCell(with: 0)
@@ -192,19 +211,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func willDisplayCell(with sIndex:Int) {
         //Todo:Make sure to move filling part and creating at one place
         storyHeaderView.createSnapProgressors()
-        fillupLastPlayedSnaps()
+        fillupLastPlayedSnaps(sIndex)
         snapIndex = sIndex
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-    }
-    private func fillupLastPlayedSnaps() {
-        //Coz, we are ignoring the first.snap
-        /*if sIndex != 0 {
-         for i in 0..<sIndex {
-         let holderView = self.getProgressIndicatorView(with: i)
-         let progressView = self.getProgressView(with: i)
-         progressView.frame.size.width = holderView.frame.width
-         }
-         }*/
     }
     
     public func didEndDisplayingCell() {
@@ -224,16 +233,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         getProgressView(with: index)?.resume()
     }
     
-    private func gearupTheProgressors() {
-        if let holderView = getProgressIndicatorView(with: snapIndex),
-            let progressView = getProgressView(with: snapIndex){
-            progressView.start(with: 5.0, width: holderView.frame.width, completion: {
-                self.didCompleteProgress()
-            })
-        }
-    }
+    
 }
-
+//MARK: - Extension/StoryPreviewHeaderProtocol
 extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
     func didTapCloseButton() {
         delegate?.didTapCloseButton()

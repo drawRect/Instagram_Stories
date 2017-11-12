@@ -20,15 +20,9 @@ final class IGHomeController: UIViewController {
         _view.collectionView.dataSource = self
     }
     
-    private func setupNavigationBar(){
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .blackTranslucent
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
-        setupNavigationBar()
         automaticallyAdjustsScrollViewInsets = false
     }
 }

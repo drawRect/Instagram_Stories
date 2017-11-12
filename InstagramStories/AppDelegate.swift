@@ -26,6 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 extension AppDelegate {
      func rootSceneSetup() {
         let nc:UINavigationController = UINavigationController.init(rootViewController: IGHomeController())
+        nc.navigationBar.isTranslucent = false
         window?.rootViewController = nc
     }
     func clearSDWebCache() {
