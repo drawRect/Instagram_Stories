@@ -18,7 +18,6 @@
 		078E41431F62092C00222191 /* IGUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41421F62092C00222191 /* IGUser.swift */; };
 		078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41451F62137E00222191 /* ImageView+Additions.swift */; };
 		078E41481F62140000222191 /* Color+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41471F6213FF00222191 /* Color+Additions.swift */; };
-		07B380C41F7C5AC800577D01 /* IGStory+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */; };
 		07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07EBE8F01F672951007BCF29 /* IGCommon.swift */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
@@ -58,7 +57,6 @@
 		078E41421F62092C00222191 /* IGUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGUser.swift; path = Models/IGUser.swift; sourceTree = "<group>"; };
 		078E41451F62137E00222191 /* ImageView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "ImageView+Additions.swift"; path = "Extension/ImageView+Additions.swift"; sourceTree = "<group>"; };
 		078E41471F6213FF00222191 /* Color+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "Color+Additions.swift"; path = "Extension/Color+Additions.swift"; sourceTree = "<group>"; };
-		07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "IGStory+Additions.swift"; path = "Models/IGStory+Additions.swift"; sourceTree = "<group>"; };
 		07EBE8F01F672951007BCF29 /* IGCommon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGCommon.swift; path = Common/IGCommon.swift; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -198,7 +196,6 @@
 			children = (
 				078E413E1F61EA2A00222191 /* IGStories.swift */,
 				078E41391F61E83200222191 /* IGStory.swift */,
-				07B380C31F7C5AC800577D01 /* IGStory+Additions.swift */,
 				078E41381F61E83200222191 /* IGSnap.swift */,
 				078E41421F62092C00222191 /* IGUser.swift */,
 			);
@@ -420,7 +417,6 @@
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
 				0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */,
-				07B380C41F7C5AC800577D01 /* IGStory+Additions.swift in Sources */,
 				1024C9FF1FAA0D5F00237538 /* IGHomeView.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,

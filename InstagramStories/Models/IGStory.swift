@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public class IGStory:NSObject {
+public struct IGStory {
     
     // MARK: Declaration for string constants to be used to decode and also serialize.
     private let kIGStorySnapsCountKey: String = "snaps_count"
@@ -31,7 +31,7 @@ public class IGStory:NSObject {
      - parameter object: The object of either Dictionary or Array kind that was passed.
      - returns: An initalized instance of the class.
      */
-    public convenience init(object: Any) {
+    public init(object: Any) {
         self.init(json: JSON(object))
     }
     

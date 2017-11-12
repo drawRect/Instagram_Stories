@@ -44,7 +44,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private(set) lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
     
-    var tempStory:IGStory?
+    private var story_copy:IGStory?
     
     let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
@@ -110,7 +110,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     }
     
     override var prefersStatusBarHidden: Bool { return true }
-    
+
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -148,7 +148,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if let cell = cell as? IGStoryPreviewCell {
-            if tempStory == nil {
+            if story_copy == nil {
                 cell.willDisplayAtZerothIndex()
             }else {
                 if (stories.stories?[nStoryIndex].lastPlayedSnapIndex != nil){
@@ -170,18 +170,19 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
-        tempStory = stories.stories?[nStoryIndex]
-        tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
-        visibleCell.willBeginDragging(with: tempStory?.lastPlayedSnapIndex ?? 0)
+        story_copy = stories.stories?[nStoryIndex]
+        story_copy?.lastPlayedSnapIndex = visibleCell.snapIndex
+        visibleCell.willBeginDragging(with: story_copy?.lastPlayedSnapIndex ?? 0)
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        if let tempStory = tempStory {
-            if let index = stories.stories?.index(of: tempStory) {
+        if let story_copy = story_copy {
+            if let index = stories.stories?.index(where: { story in
+                return story.internalIdentifier == story_copy.internalIdentifier }) {
                 guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
                 let story = visibleCell.story
-                if tempStory == story {
-                    visibleCell.didEndDecelerating(with: tempStory.lastPlayedSnapIndex)
+                if story_copy.internalIdentifier == story?.internalIdentifier {
+                    visibleCell.didEndDecelerating(with: story_copy.lastPlayedSnapIndex)
                     nStoryIndex = index
                 }else {
                     let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
@@ -203,7 +204,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         if let count = stories.count {
             if n < count {
                 //Move to next story
-                tempStory = stories.stories?[nStoryIndex]
+                story_copy = stories.stories?[nStoryIndex]
 //                tempStory?.lastPlayedSnapIndex = visibleCell.snapIndex
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)

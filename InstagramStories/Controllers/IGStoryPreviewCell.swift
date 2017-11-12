@@ -152,7 +152,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     @objc private func didCompleteProgress() {
-        story?.lastPlayedSnapIndex = snapIndex
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {
@@ -160,6 +159,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)
+                story?.lastPlayedSnapIndex = snapIndex
                 snapIndex = n
             }else {
                 delegate?.didCompletePreview()
