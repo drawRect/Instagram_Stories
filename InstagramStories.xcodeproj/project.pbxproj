@@ -32,6 +32,7 @@
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
+		F658095D1FB87A9000A9B3B5 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F658095C1FB87A9000A9B3B5 /* IGPlayerView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
 		A93F28D93E82F98C333EF7F8 /* Pods-InstagramStories.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.release.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.release.xcconfig"; sourceTree = "<group>"; };
 		ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InstagramStories.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F658095C1FB87A9000A9B3B5 /* IGPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGPlayerView.swift; path = Modules/Home/IGPlayerView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +180,7 @@
 				1024CA001FAA102200237538 /* IGHomeViewModel.swift */,
 				1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */,
 				1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */,
+				F658095C1FB87A9000A9B3B5 /* IGPlayerView.swift */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
 				1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */,
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
+				F658095D1FB87A9000A9B3B5 /* IGPlayerView.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
 				0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */,
