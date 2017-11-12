@@ -35,7 +35,7 @@ final class IGAddStoryCell: UICollectionViewCell {
         self.addSubview(addStoryLabel)
     }
     private func installLayoutConstraints() {
-        addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)])
     }
 }

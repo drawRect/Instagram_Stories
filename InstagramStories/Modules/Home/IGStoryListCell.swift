@@ -56,16 +56,16 @@ final class IGStoryListCell: UICollectionViewCell {
     }
     
     func installLayoutConstraints(){
-        profileImageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([profileImageView.widthAnchor.constraint(equalToConstant: 60),
+        profileImageView.heightAnchor.constraint(equalToConstant: 60),
+        profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
         
-        profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        profileNameLabel.heightAnchor.constraint(equalToConstant: 21).isActive = true
-        profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+        profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
+        profileNameLabel.heightAnchor.constraint(equalToConstant: 21),
+        profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
+        profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
         layoutIfNeeded()
     }
 }

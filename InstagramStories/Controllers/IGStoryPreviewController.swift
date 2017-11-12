@@ -103,10 +103,10 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     }
     private func installLayoutConstraints(){
         //Setting constraints for snapsCollectionview
-        snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+        snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+        snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+        snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
     
 }

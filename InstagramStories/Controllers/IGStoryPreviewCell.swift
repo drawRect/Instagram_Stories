@@ -104,10 +104,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     private func installLayoutConstraints(){
         //Setting constraints for scrollview
-        scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
+        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
     private func createSnapView()->UIImageView {
         let previousSnapIndex = snapIndex - 1
