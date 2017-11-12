@@ -38,7 +38,7 @@ final class IGStoryListCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 3.0
-        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.layer.borderColor = UIColor.red.withAlphaComponent(0.3).cgColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
