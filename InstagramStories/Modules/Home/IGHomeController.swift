@@ -25,6 +25,13 @@ final class IGHomeController: UIViewController {
         title = "Home"
         automaticallyAdjustsScrollViewInsets = false
     }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        let stories = viewModel.getStories()
+        stories?.stories?.forEach({ (story) in
+            print("story of:\(String(describing: story.user?.name)) and lastPlayedSnapIndex:\(story.lastPlayedSnapIndex)")
+        })
+    }
 }
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,
@@ -49,8 +56,11 @@ UICollectionViewDelegateFlowLayout {
         if indexPath.row == 0 {
             debugPrint("Need to implement!")
         }else{
-            let storyPreviewScene = IGStoryPreviewController.init(stories: viewModel.getStories()!, handPickedStoryIndex: indexPath.row-1)
-            present(storyPreviewScene, animated: true, completion: nil)
+            if let stories = viewModel.getStories() {
+                let stories_copy = stories.copy() as! IGStories
+                let storyPreviewScene = IGStoryPreviewController.init(stories:stories_copy, handPickedStoryIndex: indexPath.row-1)
+                present(storyPreviewScene, animated: true, completion: nil)
+            }
         }
     }
     

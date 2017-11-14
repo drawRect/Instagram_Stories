@@ -9,7 +9,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct IGStories {
+public class IGStories:NSObject {
     // MARK: Declaration for string constants to be used to decode and also serialize.
     private let kIGStoriesCountKey: String = "count"
     private let kIGStoriesStoriesKey: String = "stories"
@@ -20,13 +20,17 @@ public struct IGStories {
     public var stories: [IGStory]?
     public var internalIdentifier: String?
     
+    public override init() {
+        super.init()
+    }
+    
     // MARK: SwiftyJSON Initalizers
     /**
      Initates the instance based on the object
      - parameter object: The object of either Dictionary or Array kind that was passed.
      - returns: An initalized instance of the class.
      */
-    public init(object: Any) {
+    public convenience init(object: Any) {
         self.init(json: JSON(object))
     }
     
@@ -52,5 +56,20 @@ public struct IGStories {
         if let value = internalIdentifier { dictionary[kIGStoriesInternalIdentifierKey] = value }
         return dictionary
     }
+   
+}
 
+extension IGStories:NSCopying {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let copy = IGStories()
+        copy.count = count
+        var mutableStories:[IGStory] = Array()
+        stories?.forEach({ story in
+            let copy_story = story.copy() as! IGStory
+            mutableStories.append(copy_story)
+        })
+        copy.stories = mutableStories
+        copy.internalIdentifier = internalIdentifier
+        return copy
+    }
 }
