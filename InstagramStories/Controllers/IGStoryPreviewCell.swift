@@ -212,7 +212,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func willDisplayCell(with sIndex:Int) {
         //Todo:Make sure to move filling part and creating at one place
         storyHeaderView.createSnapProgressors()
-        fillupLastPlayedSnaps(sIndex)
+        //fillupLastPlayedSnaps(sIndex)
         snapIndex = sIndex
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
@@ -233,7 +233,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func didEndDecelerating(with index:Int) {
         getProgressView(with: index)?.resume()
     }
-    
     
 }
 //MARK: - Extension/StoryPreviewHeaderProtocol
