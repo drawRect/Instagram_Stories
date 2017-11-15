@@ -10,16 +10,17 @@ import UIKit
 
 final class IGHomeController: UIViewController {
     
+    //MARK: - iVars
     private var _view:IGHomeView{return view as! IGHomeView}
     private var viewModel:IGHomeViewModel = IGHomeViewModel()
     
+    //MARK: - Overridden functions
     override func loadView() {
         super.loadView()
         view = IGHomeView.init(frame: UIScreen.main.bounds)
         _view.collectionView.delegate = self
         _view.collectionView.dataSource = self
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Home"
@@ -49,8 +50,11 @@ UICollectionViewDelegateFlowLayout {
         if indexPath.row == 0 {
             debugPrint("Need to implement!")
         }else{
-            let storyPreviewScene = IGStoryPreviewController.init(stories: viewModel.getStories()!, handPickedStoryIndex: indexPath.row-1)
-            present(storyPreviewScene, animated: true, completion: nil)
+            if let stories = viewModel.getStories() {
+                let stories_copy = stories.copy() as! IGStories
+                let storyPreviewScene = IGStoryPreviewController.init(stories:stories_copy, handPickedStoryIndex: indexPath.row-1)
+                present(storyPreviewScene, animated: true, completion: nil)
+            }
         }
     }
     

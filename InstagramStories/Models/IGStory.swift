@@ -8,7 +8,7 @@
 import Foundation
 import SwiftyJSON
 
-public struct IGStory {
+public class IGStory:NSObject {
     
     // MARK: Declaration for string constants to be used to decode and also serialize.
     private let kIGStorySnapsCountKey: String = "snaps_count"
@@ -25,13 +25,16 @@ public struct IGStory {
     public var user:IGUser?
     var lastPlayedSnapIndex:Int = 0
 
+    public override init() {
+        super.init()
+    }
     // MARK: SwiftyJSON Initalizers
     /**
      Initates the instance based on the object
      - parameter object: The object of either Dictionary or Array kind that was passed.
      - returns: An initalized instance of the class.
      */
-    public init(object: Any) {
+    public convenience init(object: Any) {
         self.init(json: JSON(object))
     }
     
@@ -61,7 +64,17 @@ public struct IGStory {
         if let value = user {dictionary[kIGStoryUserKey] = value}
         return dictionary
     }
-    
 }
 
-
+extension IGStory:NSCopying {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let copy = IGStory()
+        copy.snapsCount = snapsCount
+        copy.snaps = snaps
+        copy.internalIdentifier = internalIdentifier
+        copy.lastUpdated = lastUpdated
+        copy.user = user
+        copy.lastPlayedSnapIndex = lastPlayedSnapIndex
+        return copy
+    }
+}

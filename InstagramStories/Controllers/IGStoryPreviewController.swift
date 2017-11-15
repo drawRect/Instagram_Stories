@@ -103,10 +103,10 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     }
     private func installLayoutConstraints(){
         //Setting constraints for snapsCollectionview
-        snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+        snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+        snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+        snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
     
 }
@@ -145,11 +145,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             if story_copy == nil {
                 cell.willDisplayAtZerothIndex()
             }else {
-                if (stories.stories?[nStoryIndex].lastPlayedSnapIndex != nil){
-                    let lastPlayedSnapIndex = stories.stories?[nStoryIndex].lastPlayedSnapIndex
-                    cell.willDisplayCell(with:  lastPlayedSnapIndex!)
-                }else {
-                    cell.willDisplayCell(with:  0)
+                let s = stories.stories?[nStoryIndex]
+                if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
+                    cell.willDisplayCell(with: lastPlayedSnapIndex)
                 }
             }
         }
@@ -171,11 +169,10 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         if let story_copy = story_copy {
-            if let index = stories.stories?.index(where: { story in
-                return story.internalIdentifier == story_copy.internalIdentifier }) {
+            if let index = stories.stories?.index(of: story_copy) {
                 guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
                 let story = visibleCell.story
-                if story_copy.internalIdentifier == story?.internalIdentifier {
+                if story_copy == story {
                     visibleCell.didEndDecelerating(with: story_copy.lastPlayedSnapIndex)
                     nStoryIndex = index
                 }else {
@@ -203,7 +200,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
                 snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
                 /**@Note:
-                 Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress wont see :P
+                 Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
                  */
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
                     let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell

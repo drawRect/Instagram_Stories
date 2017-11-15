@@ -10,42 +10,7 @@ import UIKit
 
 final class IGStoryListCell: UICollectionViewCell {
     
-    override init(frame:CGRect)
-    {
-        super.init(frame:frame)
-        loadUIElements()
-        installLayoutConstraints()
-       // contentView.addSubview(IGStoryListView.init(frame: contentView.frame))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    let profileImageView:UIImageView = {
-        let imageView = UIImageView()
-        imageView.frame = CGRect.zero
-        imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.clipsToBounds = true
-        
-        imageView.layer.borderWidth = 3.0
-        imageView.layer.borderColor = UIColor.white.cgColor
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    
-    let profileNameLabel:UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        return label
-    }()
-    
-    func loadUIElements(){
-        self.addSubview(profileImageView)
-        self.addSubview(profileNameLabel)
-    }
-    
+    //MARK: - iVars
     public var story:IGStory? {
         didSet {
             self.profileNameLabel.text = story?.user?.name
@@ -55,17 +20,50 @@ final class IGStoryListCell: UICollectionViewCell {
         }
     }
     
-    func installLayoutConstraints(){
-        profileImageView.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        profileImageView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+    //MARK: - Overriden functions
+    override init(frame:CGRect) {
+        super.init(frame:frame)
+        loadUIElements()
+        installLayoutConstraints()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Private functions
+    private let profileImageView:UIImageView = {
+        let imageView = UIImageView()
+        imageView.frame = CGRect.zero
+        imageView.layer.cornerRadius = imageView.frame.width/2
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 3.0
+        imageView.layer.borderColor = UIColor.rgb(from: 0xC91F37).cgColor
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    private let profileNameLabel:UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        return label
+    }()
+    private func loadUIElements() {
+        self.addSubview(profileImageView)
+        self.addSubview(profileNameLabel)
+    }
+    private func installLayoutConstraints(){
+        NSLayoutConstraint.activate([profileImageView.widthAnchor.constraint(equalToConstant: 60),
+                                     profileImageView.heightAnchor.constraint(equalToConstant: 60),
+                                     profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+                                     profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
         
-        profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        profileNameLabel.heightAnchor.constraint(equalToConstant: 21).isActive = true
-        profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+                                     profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
+                                     profileNameLabel.heightAnchor.constraint(equalToConstant: 21),
+                                     profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
+                                     profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+        
         layoutIfNeeded()
     }
 }

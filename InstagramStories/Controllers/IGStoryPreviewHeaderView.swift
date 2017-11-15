@@ -26,7 +26,6 @@ final class IGStoryPreviewHeaderView: UIView {
         loadUIElements()
         installLayoutConstraints()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -90,42 +89,39 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     private func installLayoutConstraints(){
         //Setting constraints for progressView
-        progressView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        progressView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        progressView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        progressView.heightAnchor.constraint(equalToConstant: 10)
+        NSLayoutConstraint.activate([progressView.leftAnchor.constraint(equalTo: self.leftAnchor),
+        progressView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+        progressView.rightAnchor.constraint(equalTo: self.rightAnchor),
+        progressView.heightAnchor.constraint(equalToConstant: 10)])
         
         //Setting constraints for snapperImageView
-        snaperImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        snaperImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        snaperImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0.0)
-        snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0).isActive = true
+     NSLayoutConstraint.activate([snaperImageView.widthAnchor.constraint(equalToConstant: 40),
+        snaperImageView.heightAnchor.constraint(equalToConstant: 40),
+        snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
+        snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
         
         //Setting constraints for detailView
-        detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        detailView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10).isActive = true
-        detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10).isActive = true
+        NSLayoutConstraint.activate([detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        detailView.heightAnchor.constraint(equalToConstant: 40),
+        detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
+        detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10)])
         
         //Setting constraints for closeButton
-        closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        closeButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        closeButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        closeButton.heightAnchor.constraint(equalToConstant:
-            self.frame.height).isActive = true
-        
+        NSLayoutConstraint.activate([closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
+        closeButton.widthAnchor.constraint(equalToConstant: 60),
+        closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
         
         //Setting constraints for snapperNameLabel
-        snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor).isActive = true
-        snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0).isActive = true
-        snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
-        snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
+        snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
+        snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
+        snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
         
         //Setting constraints for lastUpdatedLabel
-        lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor).isActive = true
-        lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0).isActive = true
-        
+        NSLayoutConstraint.activate([lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
+        lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0)])
+
         layoutIfNeeded()
     }
     private func applyShadowOffset() {

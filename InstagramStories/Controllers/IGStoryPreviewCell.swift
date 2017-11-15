@@ -12,7 +12,7 @@ protocol StoryPreviewProtocol:class {
     func didCompletePreview()
     func didTapCloseButton()
 }
-
+//Identifiers
 fileprivate let snapViewTagIndicator:Int = 8
 
 final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
@@ -85,9 +85,11 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     override func prepareForReuse() {
         super.prepareForReuse()
+        clearScrollViewGarbages()
     }
     
     required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
     }
     deinit {
@@ -104,10 +106,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     private func installLayoutConstraints(){
         //Setting constraints for scrollview
-        scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor).isActive = true
-        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor).isActive = true
-        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
+        NSLayoutConstraint.activate([scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+        scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+        scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
+        scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
     private func createSnapView()->UIImageView {
         let previousSnapIndex = snapIndex - 1
@@ -182,6 +184,17 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             return nil
         }
     }
+    
+    private func fillUpMissingImageViews(_ sIndex:Int) {
+        if sIndex != 0 {
+            for i in 0..<sIndex {
+                snapIndex = i
+            }
+            let xValue = sIndex.toFloat() * scrollview.frame.width
+            scrollview.contentOffset = CGPoint(x: xValue, y: 0)
+        }
+    }
+    
     private func fillupLastPlayedSnaps(_ sIndex:Int) {
         //Coz, we are ignoring the first.snap
         if sIndex != 0 {
@@ -211,6 +224,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func willDisplayCell(with sIndex:Int) {
         //Todo:Make sure to move filling part and creating at one place
         storyHeaderView.createSnapProgressors()
+        fillUpMissingImageViews(sIndex)
         fillupLastPlayedSnaps(sIndex)
         snapIndex = sIndex
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
@@ -219,11 +233,27 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func didEndDisplayingCell() {
         isCompletelyVisible = false
         if let lastPlayedIndex = story?.lastPlayedSnapIndex {
-            let imageView = scrollview.subviews[lastPlayedIndex] as? UIImageView
-            imageView?.removeFromSuperview()
             self.storyHeaderView.clearTheProgressorViews(for: lastPlayedIndex)
         }
         NotificationCenter.default.removeObserver(self)
+    }
+    private func clearScrollViewGarbages() {
+        scrollview.contentOffset = CGPoint(x: 0, y: 0)
+        if scrollview.subviews.count > 0 {
+            var i = 0 + snapViewTagIndicator
+            var snapViews = [UIView]()
+            scrollview.subviews.forEach({ (imageView) in
+                if imageView.tag == i {
+                    snapViews.append(imageView)
+                    i += 1
+                }
+            })
+            if snapViews.count > 0 {
+                snapViews.forEach({ (view) in
+                    view.removeFromSuperview()
+                })
+            }
+        }
     }
     
     public func willBeginDragging(with index:Int) {
@@ -232,7 +262,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func didEndDecelerating(with index:Int) {
         getProgressView(with: index)?.resume()
     }
-    
     
 }
 //MARK: - Extension/StoryPreviewHeaderProtocol
