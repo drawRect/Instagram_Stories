@@ -26,13 +26,6 @@ final class IGHomeController: UIViewController {
         title = "Home"
         automaticallyAdjustsScrollViewInsets = false
     }
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        let stories = viewModel.getStories()
-        stories?.stories?.forEach({ (story) in
-            print("story of:\(String(describing: story.user?.name)) and lastPlayedSnapIndex:\(story.lastPlayedSnapIndex)")
-        })
-    }
 }
 
 extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,

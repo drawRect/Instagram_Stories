@@ -145,12 +145,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             if story_copy == nil {
                 cell.willDisplayAtZerothIndex()
             }else {
-                print("Each story lastplayed index:\(String(describing: stories.stories?[nStoryIndex].lastPlayedSnapIndex))")
-                if (stories.stories?[nStoryIndex].lastPlayedSnapIndex != 0){
-                    let lastPlayedSnapIndex = stories.stories?[nStoryIndex].lastPlayedSnapIndex
-                    cell.willDisplayCell(with:  lastPlayedSnapIndex!)
-                }else {
-                    cell.willDisplayCell(with:  0)
+                let s = stories.stories?[nStoryIndex]
+                if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
+                    cell.willDisplayCell(with: lastPlayedSnapIndex)
                 }
             }
         }

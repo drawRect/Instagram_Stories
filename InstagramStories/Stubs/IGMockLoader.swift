@@ -22,7 +22,7 @@ enum MockLoaderError:Error {
 }
 
 struct IGMockLoader {
-    //XCTestCase will go for differnt set of bundle
+    //@Note:XCTestCase will go for differnt set of bundle
     static func loadMockFile(named fileName:String,bundle:Bundle = .main) throws -> IGStories {
         guard let url = bundle.url(forResource: fileName, withExtension: nil) else {throw MockLoaderError.invalidFileName(fileName)}
         do {

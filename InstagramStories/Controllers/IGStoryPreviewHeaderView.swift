@@ -95,7 +95,7 @@ final class IGStoryPreviewHeaderView: UIView {
         progressView.heightAnchor.constraint(equalToConstant: 10)])
         
         //Setting constraints for snapperImageView
-         NSLayoutConstraint.activate([snaperImageView.widthAnchor.constraint(equalToConstant: 40),
+     NSLayoutConstraint.activate([snaperImageView.widthAnchor.constraint(equalToConstant: 40),
         snaperImageView.heightAnchor.constraint(equalToConstant: 40),
         snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
         snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
@@ -111,7 +111,6 @@ final class IGStoryPreviewHeaderView: UIView {
         closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
         closeButton.widthAnchor.constraint(equalToConstant: 60),
         closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
-        
         
         //Setting constraints for snapperNameLabel
         NSLayoutConstraint.activate([snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
