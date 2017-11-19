@@ -145,7 +145,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             if story_copy == nil {
                 cell.willDisplayAtZerothIndex()
             }else {
-                let s = stories.stories?[nStoryIndex]
+                let s = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
                     cell.willDisplayCell(with: lastPlayedSnapIndex)
                 }
@@ -153,40 +153,70 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         }
     }
     
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    /*func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        print("Execution time didEndDisplaying:\(Date().timeIntervalSince1970)")
         if let cell = cell as? IGStoryPreviewCell {
             cell.didEndDisplayingCell()
         }else {fatalError()}
-    }
+    }*/
     
     //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
-        story_copy = stories.stories?[nStoryIndex]
-        story_copy?.lastPlayedSnapIndex = visibleCell.snapIndex
-        visibleCell.willBeginDragging(with: story_copy?.lastPlayedSnapIndex ?? 0)
+        story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
+        visibleCell.willBeginDragging(with: visibleCell.snapIndex)
+        print("scrollViewWillBeginDragging: \(String(describing: story_copy?.user?.name!)):\(Date().timeIntervalSince1970)")
     }
     
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+       /* print("Execution time scrollViewDidEndDecelerating:\(Date().timeIntervalSince1970)")
         if let story_copy = story_copy {
             if let index = stories.stories?.index(of: story_copy) {
                 guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
                 let story = visibleCell.story
                 if story_copy == story {
                     visibleCell.didEndDecelerating(with: story_copy.lastPlayedSnapIndex)
-                    nStoryIndex = index
+                    nStoryIndex = index - handPickedStoryIndex
                 }else {
                     let visibleCell = snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
                     visibleCell.isCompletelyVisible = true
-                    visibleCell.didEndDecelerating(with: 0)
+                    visibleCell.didEndDecelerating(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
                 }
             }
         }else {
             guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
             visibleCell.isCompletelyVisible = true
-        }
+        }*/
+        self._scrollViewDidEndDecelerating()
     }
     
+    private func _scrollViewDidEndDecelerating() {
+        let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell
+        if let story_copy = story_copy {
+            if story_copy == cell?.story {
+                if let index = stories.stories?.index(of: story_copy) {
+                    cell?.startPlayBlindly(with: cell?.story?.lastPlayedSnapIndex ?? 0)
+                    nStoryIndex = index - handPickedStoryIndex
+                }
+            }
+            else {
+                //cell?.startPlayBlindly(with: cell?.story?.lastPlayedSnapIndex ?? 0)
+                cell?.isCompletelyVisible = true
+                cell?.snapIndex = (cell?.story?.lastPlayedSnapIndex)!
+                let neighbor_indexPlus = nStoryIndex+handPickedStoryIndex+1
+                let neighbor_indexMinus = nStoryIndex+handPickedStoryIndex-1
+                if let count = stories.count {
+                    if neighbor_indexPlus <= count-1 {
+                        let s = stories.stories?[neighbor_indexPlus]
+                        cell?.pausingNeighbourAlphaValues(s?.lastPlayedSnapIndex ?? 0)
+                    }else if neighbor_indexMinus>0{
+                        let s = stories.stories?[neighbor_indexMinus]
+                        cell?.pausingNeighbourAlphaValues(s?.lastPlayedSnapIndex ?? 0)
+                    }
+                }
+            }
+        }
+    }
 }
 
 extension IGStoryPreviewController:StoryPreviewProtocol {
@@ -195,7 +225,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         if let count = stories.count {
             if n < count {
                 //Move to next story
-                story_copy = stories.stories?[nStoryIndex]
+                story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
                 snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)

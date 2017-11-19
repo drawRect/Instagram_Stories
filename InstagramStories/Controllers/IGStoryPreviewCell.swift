@@ -230,13 +230,13 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
-    public func didEndDisplayingCell() {
+    /*public func didEndDisplayingCell() {
         isCompletelyVisible = false
         if let lastPlayedIndex = story?.lastPlayedSnapIndex {
             self.storyHeaderView.clearTheProgressorViews(for: lastPlayedIndex)
         }
         NotificationCenter.default.removeObserver(self)
-    }
+    }*/
     private func clearScrollViewGarbages() {
         scrollview.contentOffset = CGPoint(x: 0, y: 0)
         if scrollview.subviews.count > 0 {
@@ -259,8 +259,18 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public func willBeginDragging(with index:Int) {
         getProgressView(with: index)?.pause()
     }
-    public func didEndDecelerating(with index:Int) {
+   /* public func didEndDecelerating(with index:Int) {
         getProgressView(with: index)?.resume()
+    }*/
+    
+    public func startPlayBlindly(with index:Int) {
+        self.isCompletelyVisible = true
+        getProgressView(with: index)?.resume()
+    }
+    
+    public func pausingNeighbourAlphaValues(_ index:Int) {
+        isCompletelyVisible = false
+        getProgressView(with: index)?.pause()
     }
     
 }
