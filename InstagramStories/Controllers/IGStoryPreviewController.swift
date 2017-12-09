@@ -59,7 +59,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         return flowLayout
     }()
     private lazy var snapsCollectionView: UICollectionView = {
-        let cv:UICollectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        let cv = IGSnapCollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
