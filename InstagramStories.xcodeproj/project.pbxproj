@@ -28,7 +28,6 @@
 		1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */; };
 		1024C9FF1FAA0D5F00237538 /* IGHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024C9FE1FAA0D5F00237538 /* IGHomeView.swift */; };
 		1024CA011FAA102200237538 /* IGHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024CA001FAA102200237538 /* IGHomeViewModel.swift */; };
-		1052C2171FDC09500096D126 /* IGSnapCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1052C2161FDC09500096D126 /* IGSnapCollectionView.swift */; };
 		109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */; };
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
@@ -71,7 +70,6 @@
 		1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryListCell.swift; path = Modules/Home/IGStoryListCell.swift; sourceTree = "<group>"; };
 		1024C9FE1FAA0D5F00237538 /* IGHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGHomeView.swift; path = Modules/Home/IGHomeView.swift; sourceTree = "<group>"; };
 		1024CA001FAA102200237538 /* IGHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGHomeViewModel.swift; path = Modules/Home/IGHomeViewModel.swift; sourceTree = "<group>"; };
-		1052C2161FDC09500096D126 /* IGSnapCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGSnapCollectionView.swift; path = Controllers/IGSnapCollectionView.swift; sourceTree = "<group>"; };
 		1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewCell.swift; path = Controllers/IGStoryPreviewCell.swift; sourceTree = "<group>"; };
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
@@ -189,7 +187,6 @@
 			isa = PBXGroup;
 			children = (
 				109966101F6053DA005292CF /* IGStoryPreviewController.swift */,
-				1052C2161FDC09500096D126 /* IGSnapCollectionView.swift */,
 				1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */,
 				1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */,
 				0774D5191F7641AF0089791B /* IGSnapProgressView.swift */,
@@ -422,7 +419,6 @@
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
-				1052C2171FDC09500096D126 /* IGSnapCollectionView.swift in Sources */,
 				0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */,
 				1024C9FF1FAA0D5F00237538 /* IGHomeView.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,

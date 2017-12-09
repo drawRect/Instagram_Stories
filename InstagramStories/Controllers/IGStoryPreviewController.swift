@@ -48,25 +48,24 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         gesture.direction = .down
         return gesture
     }()
-    private lazy var layout:AnimatedCollectionViewLayout = {
+     lazy var snapsCollectionView: UICollectionView! = {
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.itemSize = CGSize(width: 100, height: 100)
-        flowLayout.minimumLineSpacing = 0
-        flowLayout.minimumInteritemSpacing = 0
-        flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         flowLayout.animator = layoutAnimator.0
-        return flowLayout
-    }()
-    private lazy var snapsCollectionView: UICollectionView = {
-        let cv = IGSnapCollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        
+         let cv = UICollectionView.init(frame: CGRect(x:0,y:0,width:UIScreen.main.bounds.width,height:UIScreen.main.bounds.height), collectionViewLayout: flowLayout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
+        cv.delegate = self
+        cv.dataSource = self
         cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier())
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
+        dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
+        cv.addGestureRecognizer(dismissGesture)
+        cv.collectionViewLayout = flowLayout
         return cv
     }()
     
@@ -95,10 +94,6 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     //MARK: - Private functions
     private func loadUIElements(){
         view.backgroundColor = .white
-        dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
-        snapsCollectionView.addGestureRecognizer(dismissGesture)
-        snapsCollectionView.delegate = self
-        snapsCollectionView.dataSource = self
         view.addSubview(snapsCollectionView)
     }
     private func installLayoutConstraints(){
