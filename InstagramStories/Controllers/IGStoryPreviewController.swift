@@ -52,7 +52,8 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.animator = layoutAnimator.0
-        
+        flowLayout.minimumLineSpacing = 0.0
+        flowLayout.minimumInteritemSpacing = 0.0
          let cv = UICollectionView.init(frame: CGRect(x:0,y:0,width:UIScreen.main.bounds.width,height:UIScreen.main.bounds.height), collectionViewLayout: flowLayout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false

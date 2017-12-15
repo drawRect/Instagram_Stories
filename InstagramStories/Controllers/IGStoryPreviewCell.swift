@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AnimatedCollectionViewLayout
 
 protocol StoryPreviewProtocol:class {
     func didCompletePreview()
@@ -100,8 +101,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     private func loadUIElements(){
         scrollview.delegate = self
         scrollview.isPagingEnabled = true
-        addSubview(scrollview)
-        addSubview(storyHeaderView)
+        self.contentView.addSubview(scrollview)
+        self.contentView.addSubview(storyHeaderView)
         scrollview.addGestureRecognizer(longPress_gesture)
     }
     private func installLayoutConstraints(){
