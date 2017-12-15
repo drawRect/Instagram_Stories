@@ -101,8 +101,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     private func loadUIElements(){
         scrollview.delegate = self
         scrollview.isPagingEnabled = true
-        self.contentView.addSubview(scrollview)
-        self.contentView.addSubview(storyHeaderView)
+        contentView.addSubview(scrollview)
+        contentView.addSubview(storyHeaderView)
         scrollview.addGestureRecognizer(longPress_gesture)
     }
     private func installLayoutConstraints(){
@@ -265,12 +265,11 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }*/
     
     public func startPlayBlindly(with index:Int) {
-        self.isCompletelyVisible = true
         getProgressView(with: index)?.resume()
     }
     
     public func pausingNeighbourAlphaValues(_ index:Int) {
-        isCompletelyVisible = false
+        //isCompletelyVisible = false
         getProgressView(with: index)?.pause()
     }
     

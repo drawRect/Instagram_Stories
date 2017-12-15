@@ -196,16 +196,16 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                 }
             }
             else {
-                //cell?.startPlayBlindly(with: cell?.story?.lastPlayedSnapIndex ?? 0)
-                cell?.isCompletelyVisible = true
                 cell?.snapIndex = (cell?.story?.lastPlayedSnapIndex)!
+                cell?.isCompletelyVisible = true
                 let neighbor_indexPlus = nStoryIndex+handPickedStoryIndex+1
                 let neighbor_indexMinus = nStoryIndex+handPickedStoryIndex-1
                 if let count = stories.count {
                     if neighbor_indexPlus <= count-1 {
                         let s = stories.stories?[neighbor_indexPlus]
                         cell?.pausingNeighbourAlphaValues(s?.lastPlayedSnapIndex ?? 0)
-                    }else if neighbor_indexMinus>0{
+                    }
+                    if neighbor_indexMinus >= 0{
                         let s = stories.stories?[neighbor_indexMinus]
                         cell?.pausingNeighbourAlphaValues(s?.lastPlayedSnapIndex ?? 0)
                     }
