@@ -9,7 +9,7 @@
                 "name": "Terasa",
                 "picture": "https://randomuser.me/api/portraits/med/women/1.jpg"
                 },
-                "snaps_count": 4,
+                "snaps_count": 2,
                 "snaps": [
                           {
                           "id": "c1",
@@ -22,18 +22,6 @@
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20590257_1239496969506135_6559055998961582080_n.jpg",
                           "last_updated": "7h"
-                          },
-                          {
-                          "id": "c3",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21480417_1983365338606190_7309382168482938880_n.jpg",
-                          "last_updated": "20m"
-                          },
-                          {
-                          "id": "c4",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21224188_171957900038647_5755342965044150272_n.jpg",
-                          "last_updated": "5h"
                           }
                           ]
                 },
@@ -45,7 +33,7 @@
                 "name": "Nicky",
                 "picture": "https://randomuser.me/api/portraits/med/women/2.jpg"
                 },
-                "snaps_count": 7,
+                "snaps_count": 2,
                 "snaps": [
                           {
                           "id": "c4",
@@ -58,36 +46,6 @@
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21294299_1614875928544421_3676205427978141696_n.jpg",
                           "last_updated": "2m"
-                          },
-                          {
-                          "id": "c6",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21434113_115828119102860_8785064323580952576_n.jpg",
-                          "last_updated": "3m"
-                          },
-                          {
-                          "id": "c7",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21224188_171957900038647_5755342965044150272_n.jpg",
-                          "last_updated": "4m"
-                          },
-                          {
-                          "id": "c8",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21434169_692022447659663_6822837183586500608_n.jpg",
-                          "last_updated": "5m"
-                          },
-                          {
-                          "id": "c9",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21434169_692022447659663_6822837183586500608_n.jpg",
-                          "last_updated": "6m"
-                          },
-                          {
-                          "id": "c10",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21480417_1983365338606190_7309382168482938880_n.jpg",
-                          "last_updated": "7m"
                           }
                           ]
                 },
@@ -99,7 +57,7 @@
                 "name": "Lara",
                 "picture": "https://randomuser.me/api/portraits/med/women/3.jpg"
                 },
-                "snaps_count": 5,
+                "snaps_count": 2,
                 "snaps": [
                           {
                           "id": "c11",
@@ -112,24 +70,6 @@
                           "type": "image",
                           "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/17334102_1853945801554235_292167778830385152_n.jpg",
                           "last_updated": "9m"
-                          },
-                          {
-                          "id": "c13",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21480417_1983365338606190_7309382168482938880_n.jpg",
-                          "last_updated": "10m"
-                          },
-                          {
-                          "id": "c14",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/21434169_692022447659663_6822837183586500608_n.jpg",
-                          "last_updated": "11m"
-                          },
-                          {
-                          "id": "c15",
-                          "type": "image",
-                          "url": "https://scontent-bom1-1.cdninstagram.com/t51.2885-15/e35/20686442_313543462441470_7519913257650356224_n.jpg",
-                          "last_updated": "12m"
                           }
                           ]
                 },

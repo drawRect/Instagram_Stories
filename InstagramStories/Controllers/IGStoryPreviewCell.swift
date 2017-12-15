@@ -86,7 +86,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     override func prepareForReuse() {
         super.prepareForReuse()
+        isCompletelyVisible = false
         clearScrollViewGarbages()
+        storyHeaderView.clearTheProgressorSubviews()
     }
     
     required init?(coder aDecoder: NSCoder) {
