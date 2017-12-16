@@ -56,6 +56,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
+                    print(snap.url!)
                     if let url = snap.url {
                         let snapView = createSnapView()
                         startRequest(snapView: snapView, with: url)
@@ -124,12 +125,15 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     private func startRequest(snapView:UIImageView,with url:String) {
-        snapView.setImage(url: url, style: .squared, completion: { (result, error) in
+        snapView.setImage(url: url, style: .squared, completion: {[weak self]
+            (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                if self.isCompletelyVisible {
-                    self.gearupTheProgressors()
+                if let visible = self?.isCompletelyVisible {
+                    if (visible) {
+                        self?.gearupTheProgressors()
+                    }
                 }
             }
         })
@@ -149,7 +153,12 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     @objc private func didEnterForeground() {
         if let indicatorView = getProgressIndicatorView(with: snapIndex),
             let pv = getProgressView(with: snapIndex) {
-            pv.start(with: 5.0, width: indicatorView.frame.width, completion: {
+            /*pv.start(with: 5.0, width: indicatorView.frame.width, identifier: (self.story?.internalIdentifier)!, completion: {(identifier)[weak self] in
+                print(identifier)
+                self?.didCompleteProgress()
+            })*/
+            pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier) in
+                print(identifier)
                 self.didCompleteProgress()
             })
         }
@@ -163,7 +172,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x:x,y:0)
                 scrollview.setContentOffset(offset, animated: false)
-                story?.lastPlayedSnapIndex = snapIndex
+                story?.lastPlayedSnapIndex = n
                 snapIndex = n
             }else {
                 delegate?.didCompletePreview()
@@ -212,7 +221,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     private func gearupTheProgressors() {
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
-            progressView.start(with: 5.0, width: holderView.frame.width, completion: {
+            progressView.story_identifier = self.story?.internalIdentifier
+            progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier) in
+                print(identifier)
                 self.didCompleteProgress()
             })
         }
@@ -260,6 +271,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     public func willBeginDragging(with index:Int) {
+        self.isCompletelyVisible = false
         getProgressView(with: index)?.pause()
     }
    /* public func didEndDecelerating(with index:Int) {

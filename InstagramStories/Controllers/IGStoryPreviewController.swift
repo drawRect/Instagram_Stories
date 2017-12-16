@@ -43,6 +43,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private(set) lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
     private var story_copy:IGStory?
+    private var lastContentOffset:CGFloat?
     private let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
         gesture.direction = .down
@@ -158,12 +159,19 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
     
     //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        lastContentOffset = scrollView.contentOffset.x
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
         story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
+        print(nStoryIndex,handPickedStoryIndex)
         visibleCell.willBeginDragging(with: visibleCell.snapIndex)
         print("scrollViewWillBeginDragging: \(String(describing: story_copy?.user?.name!)):\(Date().timeIntervalSince1970)")
     }
-    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        /*if nStoryIndex == 0 || nStoryIndex+handPickedStoryIndex == (stories.stories?.count)!-1 {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }*/
+    }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
        /* print("Execution time scrollViewDidEndDecelerating:\(Date().timeIntervalSince1970)")
         if let story_copy = story_copy {
@@ -183,22 +191,28 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
             visibleCell.isCompletelyVisible = true
         }*/
+        let pageWidth = snapsCollectionView.frame.width;
+        let currentPage = snapsCollectionView.contentOffset.x / pageWidth;
+        if lastContentOffset! == scrollView.contentOffset.x && (currentPage == 0 || currentPage+CGFloat(handPickedStoryIndex) == CGFloat((stories.stories?.count)!)-1) {
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
         self._scrollViewDidEndDecelerating()
     }
-    
     private func _scrollViewDidEndDecelerating() {
+        print(#function)
         let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell
         if let story_copy = story_copy {
-            if story_copy == cell?.story {
+            if story_copy == cell?.story{
                 if let index = stories.stories?.index(of: story_copy) {
                     cell?.startPlayBlindly(with: cell?.story?.lastPlayedSnapIndex ?? 0)
                     nStoryIndex = index - handPickedStoryIndex
                 }
             }
             else {
-                cell?.snapIndex = (cell?.story?.lastPlayedSnapIndex)!
+                //cell?.snapIndex = (cell?.story?.lastPlayedSnapIndex)!
                 cell?.isCompletelyVisible = true
-                let neighbor_indexPlus = nStoryIndex+handPickedStoryIndex+1
+                /*let neighbor_indexPlus = nStoryIndex+handPickedStoryIndex+1
                 let neighbor_indexMinus = nStoryIndex+handPickedStoryIndex-1
                 if let count = stories.count {
                     if neighbor_indexPlus <= count-1 {
@@ -209,7 +223,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
                         let s = stories.stories?[neighbor_indexMinus]
                         cell?.pausingNeighbourAlphaValues(s?.lastPlayedSnapIndex ?? 0)
                     }
-                }
+                }*/
             }
         }
     }
