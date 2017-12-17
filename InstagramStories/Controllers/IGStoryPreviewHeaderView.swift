@@ -148,7 +148,14 @@ final class IGStoryPreviewHeaderView: UIView {
     public func clearTheProgressorViews(for snapIndex:Int) {
         let progressor = progressView.subviews[snapIndex] as? IGSnapProgressView
         progressor?.stop()
-        progressView.subviews.forEach { v in v.removeFromSuperview()}
+        clearTheProgressorSubviews()
+    }
+    public func clearTheProgressorSubviews() {
+        progressView.subviews.forEach { v in
+            v.subviews.forEach{v in (v as! IGSnapProgressView).stop()}
+            v.removeFromSuperview()
+        }
+        print(#function)
     }
     public func getProgressView()->UIView {
         return progressView
