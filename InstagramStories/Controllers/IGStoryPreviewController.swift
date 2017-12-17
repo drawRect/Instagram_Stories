@@ -150,21 +150,22 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         }
     }
     
-    /*func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        print("Execution time didEndDisplaying:\(Date().timeIntervalSince1970)")
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        //print("Execution time didEndDisplaying:\(Date().timeIntervalSince1970)")
         if let cell = cell as? IGStoryPreviewCell {
             cell.didEndDisplayingCell()
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2, execute: {
+                self._scrollViewDidEndDecelerating()
+            })
         }else {fatalError()}
-    }*/
+    }
     
     //MARK: - UIScrollView Delegates
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         lastContentOffset = scrollView.contentOffset.x
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else{return}
         story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
-        print(nStoryIndex,handPickedStoryIndex)
         visibleCell.willBeginDragging(with: visibleCell.snapIndex)
-        print("scrollViewWillBeginDragging: \(String(describing: story_copy?.user?.name!)):\(Date().timeIntervalSince1970)")
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         /*if nStoryIndex == 0 || nStoryIndex+handPickedStoryIndex == (stories.stories?.count)!-1 {
@@ -197,7 +198,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             self.dismiss(animated: true, completion: nil)
             return
         }
-        self._scrollViewDidEndDecelerating()
+        //self._scrollViewDidEndDecelerating()
     }
     private func _scrollViewDidEndDecelerating() {
         print(#function)
@@ -211,7 +212,10 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             }
             else {
                 //cell?.snapIndex = (cell?.story?.lastPlayedSnapIndex)!
-                cell?.isCompletelyVisible = true
+                DispatchQueue.main.async{
+                    cell?.isCompletelyVisible = true
+                    cell?.startProgressors()
+                }
                 /*let neighbor_indexPlus = nStoryIndex+handPickedStoryIndex+1
                 let neighbor_indexMinus = nStoryIndex+handPickedStoryIndex-1
                 if let count = stories.count {
@@ -245,6 +249,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
                     let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell
                     cell?.isCompletelyVisible = true
+                    cell?.startProgressors()
                 }
             }else {
                 self.dismiss(animated: true, completion: nil)

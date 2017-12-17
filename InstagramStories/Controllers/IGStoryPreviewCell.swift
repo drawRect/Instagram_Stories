@@ -41,22 +41,16 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         return lp
     }()
     
-    public var isCompletelyVisible:Bool = false{
+    public var isCompletelyVisible:Bool = false/*{
         didSet{
-            if scrollview.subviews.count > 0 {
-                let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-                if imageView?.image != nil && isCompletelyVisible == true{
-                    gearupTheProgressors()
-                }
-            }
+            print("IsCompletelyVisible Outside scrollview")
         }
-    }
+    }*/
     
     public var snapIndex:Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    print(snap.url!)
                     if let url = snap.url {
                         let snapView = createSnapView()
                         startRequest(snapView: snapView, with: url)
@@ -89,7 +83,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         super.prepareForReuse()
         isCompletelyVisible = false
         clearScrollViewGarbages()
-        storyHeaderView.clearTheProgressorSubviews()
+        //storyHeaderView.clearTheProgressorSubviews()
+        //storyHeaderView.getProgressView().removeFromSuperview()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -123,18 +118,19 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         scrollview.addSubview(snapView)
         return snapView
     }
-    
     private func startRequest(snapView:UIImageView,with url:String) {
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
             (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
             }else {
-                if let visible = self?.isCompletelyVisible {
+                /*if let visible = self?.isCompletelyVisible {
                     if (visible) {
+                        print("Call StartRequest")
                         self?.gearupTheProgressors()
                     }
-                }
+                }*/
+                self?.startProgressors()
             }
         })
     }
@@ -158,7 +154,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 self?.didCompleteProgress()
             })*/
             pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier) in
-                print(identifier)
                 self.didCompleteProgress()
             })
         }
@@ -218,25 +213,39 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    private func gearupTheProgressors() {
+    @objc private func gearupTheProgressors() {
+        print(#function,"\n")
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
             progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier) in
-                print(identifier)
                 self.didCompleteProgress()
             })
         }
     }
-    
+    //MARK:- Internal functions
+    internal func startProgressors() {
+        print(#function)
+        if scrollview.subviews.count > 0 {
+            let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
+            print("IsCompletelyVisible Inside scrollview")
+            if imageView?.image != nil && isCompletelyVisible == true{
+                print("IsCompletelyVisible Inside condition")
+                    self.gearupTheProgressors()
+               // self.perform(#selector(self.gearupTheProgressors), with: nil, afterDelay: 0.1)
+            }
+        }
+    }
     //MARK: - Public functions
     public func willDisplayAtZerothIndex() {
         isCompletelyVisible = true
         willDisplayCell(with: 0)
+        //self.startProgressors()
     }
     
     public func willDisplayCell(with sIndex:Int) {
         //Todo:Make sure to move filling part and creating at one place
+        print(#function ,":\(sIndex)")
         storyHeaderView.createSnapProgressors()
         fillUpMissingImageViews(sIndex)
         fillupLastPlayedSnaps(sIndex)
@@ -244,13 +253,14 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
     }
     
-    /*public func didEndDisplayingCell() {
-        isCompletelyVisible = false
+    public func didEndDisplayingCell() {
+        /*isCompletelyVisible = false
         if let lastPlayedIndex = story?.lastPlayedSnapIndex {
             self.storyHeaderView.clearTheProgressorViews(for: lastPlayedIndex)
-        }
+        }*/
+        self.storyHeaderView.clearTheProgressorSubviews()
         NotificationCenter.default.removeObserver(self)
-    }*/
+    }
     private func clearScrollViewGarbages() {
         scrollview.contentOffset = CGPoint(x: 0, y: 0)
         if scrollview.subviews.count > 0 {
@@ -271,6 +281,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     public func willBeginDragging(with index:Int) {
+        print(#function)
         self.isCompletelyVisible = false
         getProgressView(with: index)?.pause()
     }
