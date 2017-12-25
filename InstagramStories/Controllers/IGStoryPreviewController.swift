@@ -246,11 +246,11 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 /**@Note:
                  Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
                  */
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
+                /*DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
                     let cell = self.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell
                     cell?.isCompletelyVisible = true
                     cell?.startProgressors()
-                }
+                }*/
             }else {
                 self.dismiss(animated: true, completion: nil)
             }

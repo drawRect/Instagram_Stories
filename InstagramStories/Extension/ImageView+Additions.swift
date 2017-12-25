@@ -7,8 +7,9 @@ enum ImageStyle:Int {
 }
 
 extension UIImageView {
- 
-    func setImage(url:String,style:ImageStyle = .rounded,
+    
+    func setImage(url:String,
+                  style:ImageStyle = .rounded,
                   completion:((_ result:Bool,_ error:Error?)->Void)?=nil) {
         
         image = nil
@@ -28,11 +29,19 @@ extension UIImageView {
         
         if SDWebImageManager.shared().cachedImageExists(for: URL.init(string: url) ) {
             backgroundColor = .clear
-            sd_setImage(with: URL.init(string: url))
-            clipsToBounds = true
-            if let completion = completion {
-                 completion(true,nil)
-            }
+            //            sd_setImage(with: URL.init(string: url))
+            sd_setImage(with: URL.init(string: url), completed: { (image, error, _, _) in
+                DispatchQueue.main.async { [weak self] in
+                    self?.clipsToBounds = true
+                    if let completion = completion {
+                        if (self?.image != nil) && error == nil {
+                            completion(true,nil)
+                        }else {
+                            completion(false,error)
+                        }
+                    }
+                }
+            })
         }
         else {
             self.sd_setImage(with: URL.init(string: url), placeholderImage:nil, options: [.avoidAutoSetImage,.highPriority,.retryFailed,.delayPlaceholder,.continueInBackground], completed: { (image, error, cacheType, url) in
@@ -46,13 +55,13 @@ extension UIImageView {
                             self.alpha = 1
                         }, completion: { (done) in
                             if let completion = completion {
-                                 completion(true,error)
+                                completion(true,error)
                             }
                         })
                     }
                 }else {
                     if let completion = completion {
-                         completion(false,error)
+                        completion(false,error)
                     }
                 }
             })

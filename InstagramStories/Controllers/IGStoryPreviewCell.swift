@@ -229,7 +229,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
             print("IsCompletelyVisible Inside scrollview")
-            if imageView?.image != nil && isCompletelyVisible == true{
+            if imageView?.image != nil && isCompletelyVisible == true {
                 print("IsCompletelyVisible Inside condition")
                     self.gearupTheProgressors()
                // self.perform(#selector(self.gearupTheProgressors), with: nil, afterDelay: 0.1)
