@@ -14,15 +14,17 @@ protocol CellConfigurer:class {
     static func reuseIdentifier()->String
 }
 
-extension UICollectionViewCell:CellConfigurer {
+extension CellConfigurer {
     static func nib() -> UINib {
         return UINib.init(nibName: self.reuseIdentifier(), bundle: nil)
     }
-    
     static func reuseIdentifier()->String{
         return String(describing: self)
     }
 }
+
+extension UICollectionViewCell:CellConfigurer {}
+extension UITableViewCell:CellConfigurer {}
 
 extension UINib {
     class func nib(with name:String)->UINib {
