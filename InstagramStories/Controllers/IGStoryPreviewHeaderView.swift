@@ -8,7 +8,9 @@
 
 import UIKit
 
-protocol StoryPreviewHeaderProtocol:class {func didTapCloseButton()}
+protocol StoryPreviewHeaderProtocol: class {
+    func didTapCloseButton()
+}
 
 fileprivate let maxSnaps = 30
 
@@ -35,7 +37,7 @@ final class IGStoryPreviewHeaderView: UIView {
     fileprivate var snapsPerStory:Int = 0
     public var story:IGStory? {
         didSet {
-            snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
+            snapsPerStory = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
         }
     }
     fileprivate var progressView:UIView?
@@ -133,7 +135,9 @@ final class IGStoryPreviewHeaderView: UIView {
         layer.shadowOffset = CGSize(width: -1, height: 1)
         layer.shadowRadius = 1
     }
-    private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
+    private func applyProperties<T: UIView>(_ view: T,
+                                            with tag: Int,
+                                            alpha: CGFloat = 1.0) -> T {
         view.layer.cornerRadius = 1
         view.layer.masksToBounds = true
         view.backgroundColor = UIColor.white.withAlphaComponent(alpha)
@@ -162,22 +166,23 @@ final class IGStoryPreviewHeaderView: UIView {
             v.subviews.forEach{v in (v as! IGSnapProgressView).stop()}
             v.removeFromSuperview()
         }
-        print(#function)
     }
-    public func getProgressView()->UIView {
+    public func getProgressView() -> UIView {
         return pr_getProgressView()
     }
-    public func createSnapProgressors(){
-        let padding:CGFloat = 8 //GUI-Padding
-        let height:CGFloat = 3
-        var x:CGFloat = padding
-        let y:CGFloat = (self.pr_getProgressView().frame.height/2)-height
+    public func createSnapProgressors() {
+        let padding: CGFloat = 8 //GUI-Padding
+        let height: CGFloat = 3
+        var x: CGFloat = padding
+        let y: CGFloat = (self.pr_getProgressView().frame.height/2)-height
         let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
-        for i in 0..<snapsPerStory{
+        for i in 0..<snapsPerStory {
             let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
-            pr_getProgressView().addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))
+            pr_getProgressView().addSubview(
+                applyProperties(pvIndicator, with: i+progressIndicatorViewTag, alpha: 0.2))
             let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
-            pr_getProgressView().addSubview(applyProperties(pv,with: i+progressViewTag))
+            pr_getProgressView().addSubview(
+                applyProperties(pv, with: i+progressViewTag))
             x = x + width + padding
         }
         snaperNameLabel.text = story?.user?.name

@@ -1,7 +1,7 @@
 import UIKit
 import SDWebImage
 
-enum ImageLoaderError:Error {
+enum ImageLoaderError: Error {
     case invalidURL(String)
 }
 
@@ -10,7 +10,7 @@ enum Result<T> {
     case failure(Error?)
 }
 
-enum ImageStyle:Int {
+enum ImageStyle: Int {
     case squared
     case rounded
 }
@@ -59,7 +59,7 @@ extension UIImageView {
                                         }, completion: { (done) in
                                             if let c = completion { return c(Result.success(true)) }
                                         })
-                                    }} else{
+                                    }}else{
                                     if let c = completion {
                                         c(Result.failure(error))
                                     }

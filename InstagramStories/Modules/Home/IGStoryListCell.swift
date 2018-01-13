@@ -42,22 +42,25 @@ final class IGStoryListCell: UICollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
+
     private let profileNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
         return label
     }()
+
     private func loadUIElements() {
         self.addSubview(profileImageView)
         self.addSubview(profileNameLabel)
     }
+    
     private func installLayoutConstraints() {
-    NSLayoutConstraint.activate([
-        profileImageView.widthAnchor.constraint(equalToConstant: 60),
-        profileImageView.heightAnchor.constraint(equalToConstant: 60),
-        profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+        NSLayoutConstraint.activate([
+            profileImageView.widthAnchor.constraint(equalToConstant: 60),
+            profileImageView.heightAnchor.constraint(equalToConstant: 60),
+            profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
         
         NSLayoutConstraint.activate([
             profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),

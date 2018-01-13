@@ -36,6 +36,7 @@ final class IGAddStoryCell: UICollectionViewCell {
     private func loadUIElements() {
         self.addSubview(addStoryLabel)
     }
+    
     private func installLayoutConstraints() {
         NSLayoutConstraint.activate([
             addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),

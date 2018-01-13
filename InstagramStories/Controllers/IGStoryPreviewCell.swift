@@ -22,7 +22,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public weak var delegate:StoryPreviewProtocol? {
         didSet { storyHeaderView.delegate = self }
     }
-    
     private let scrollview: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
@@ -30,7 +29,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         sv.isScrollEnabled = false
         return sv
     }()
-    
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
         let v = IGStoryPreviewHeaderView.init(frame: CGRect(x:0,y:0,width:frame.width,height:80))
         return v
@@ -40,13 +38,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         lp.minimumPressDuration = 0.2
         return lp
     }()
-    
-    public var isCompletelyVisible:Bool = false/*{
-     didSet{
-     print("IsCompletelyVisible Outside scrollview")
-     }
-     }*/
-    
+    public var isCompletelyVisible:Bool = false
     public var snapIndex:Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
@@ -83,10 +75,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         super.prepareForReuse()
         isCompletelyVisible = false
         clearScrollViewGarbages()
-        //storyHeaderView.clearTheProgressorSubviews()
-        //storyHeaderView.getProgressView().removeFromSuperview()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
@@ -103,6 +92,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         contentView.addSubview(storyHeaderView)
         scrollview.addGestureRecognizer(longPress_gesture)
     }
+    
     private func installLayoutConstraints(){
         //Setting constraints for scrollview
         NSLayoutConstraint.activate([scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor),
@@ -110,6 +100,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                                      scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
                                      scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
+
     private func createSnapView()->UIImageView {
         let previousSnapIndex = snapIndex - 1
         let x_value = (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
@@ -118,6 +109,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         scrollview.addSubview(snapView)
         return snapView
     }
+
     private func startRequest(snapView:UIImageView,with url:String) {
         snapView.lookImagefor(url: url, style: .squared) { [weak self](result) in
             switch result {
@@ -214,9 +206,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     internal func startProgressors() {
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            print("IsCompletelyVisible Inside scrollview")
             if imageView?.image != nil && isCompletelyVisible == true {
-                print("IsCompletelyVisible Inside condition")
                 self.gearupTheProgressors()
             }
         }
@@ -229,7 +219,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
 
     public func willDisplayCell(with sIndex:Int) {
         //Todo:Make sure to move filling part and creating at one place
-        print(#function ,":\(sIndex)")
         storyHeaderView.createSnapProgressors()
         fillUpMissingImageViews(sIndex)
         fillupLastPlayedSnaps(sIndex)
@@ -261,7 +250,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
 
     public func willBeginDragging(with index:Int) {
-        print(#function)
         self.isCompletelyVisible = false
         getProgressView(with: index)?.pause()
     }
