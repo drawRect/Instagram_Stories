@@ -9,34 +9,21 @@
 import Foundation
 import UIKit
 
-protocol CellConfigurer:class {
-    static func nib()->UINib
-    static func reuseIdentifier()->String
+protocol CellConfigurer: class {
+    static func nib() -> UINib
+    static func reuseIdentifier() -> String
 }
 
 extension CellConfigurer {
     static func nib() -> UINib {
         return UINib.init(nibName: self.reuseIdentifier(), bundle: nil)
     }
-    static func reuseIdentifier()->String{
+    static func reuseIdentifier() -> String {
         return String(describing: self)
     }
 }
 
-extension UICollectionViewCell:CellConfigurer {}
-extension UITableViewCell:CellConfigurer {}
+extension UICollectionViewCell: CellConfigurer {}
 
-extension UINib {
-    class func nib(with name:String)->UINib {
-        return UINib.init(nibName: name, bundle: nil)
-    }
-}
+extension UITableViewCell: CellConfigurer {}
 
-extension Bundle {
-    static func loadView<T>(with type: T.Type) -> T {
-        if let view = Bundle.main.loadNibNamed(String(describing: T.self), owner: nil, options: nil)?.first as? T {
-            return view
-        }
-        fatalError("Could not load view with type " + String(describing: type))
-    }
-}

@@ -11,8 +11,8 @@ import UIKit
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
-    private var _view:IGHomeView{return view as! IGHomeView}
-    private var viewModel:IGHomeViewModel = IGHomeViewModel()
+    private var _view: IGHomeView{return view as! IGHomeView}
+    private var viewModel: IGHomeViewModel = IGHomeViewModel()
     
     //MARK: - Overridden functions
     override func loadView() {
@@ -28,8 +28,10 @@ final class IGHomeController: UIViewController {
     }
 }
 
-extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,
-UICollectionViewDelegateFlowLayout {
+typealias CollectionViewProtocols = UICollectionViewDelegate & UICollectionViewDataSource &
+UICollectionViewDelegateFlowLayout
+
+extension IGHomeController: CollectionViewProtocols {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
     }
@@ -61,6 +63,7 @@ UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return indexPath.row == 0 ? CGSize(width: 100, height: 100) : CGSize(width: 80, height: 100)
+        return indexPath.row == 0 ? CGSize(width: 100, height: 100) : 
+            CGSize(width: 80, height: 100)
     }
 }

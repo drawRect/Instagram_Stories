@@ -8,23 +8,24 @@
 
 import Foundation
 
-enum MockLoaderError:Error {
+enum MockLoaderError: Error {
     case invalidFileName(String)
     case invalidFileURL(URL)
     case invalidJSON(String)
-    func desc(){
+    func desc() -> String {
         switch self {
-        case .invalidFileName(let name): debugPrint("\(name) FileName is incorrect")
-        case .invalidFileURL(let url): debugPrint("\(url) FilePath is incorrect")
-        case .invalidJSON(let name): debugPrint("\(name) has Invalid JSON")
+        case .invalidFileName(let name): return "\(name) FileName is incorrect"
+        case .invalidFileURL(let url): return "\(url) FilePath is incorrect"
+        case .invalidJSON(let name): return "\(name) has Invalid JSON"
         }
     }
 }
 
 struct IGMockLoader {
     //@Note:XCTestCase will go for differnt set of bundle
-    static func loadMockFile(named fileName:String,bundle:Bundle = .main) throws -> IGStories {
-        guard let url = bundle.url(forResource: fileName, withExtension: nil) else {throw MockLoaderError.invalidFileName(fileName)}
+    static func loadMockFile(named fileName: String, bundle: Bundle = .main) throws -> IGStories {
+        guard let url = bundle.url(forResource: fileName, withExtension: nil) else {
+            throw MockLoaderError.invalidFileName(fileName)}
         do {
             let data = try Data.init(contentsOf: url)
             if let wrapped = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String:Any] {

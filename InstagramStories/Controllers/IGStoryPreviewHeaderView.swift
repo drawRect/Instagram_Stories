@@ -85,38 +85,44 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     private func installLayoutConstraints(){
         //Setting constraints for progressView
-        NSLayoutConstraint.activate([pr_getProgressView().leftAnchor.constraint(equalTo: self.leftAnchor),
-                                     pr_getProgressView().topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-                                     pr_getProgressView().rightAnchor.constraint(equalTo: self.rightAnchor),
-                                     pr_getProgressView().heightAnchor.constraint(equalToConstant: 10)])
+        NSLayoutConstraint.activate([
+            pr_getProgressView().leftAnchor.constraint(equalTo: self.leftAnchor),
+            pr_getProgressView().topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            pr_getProgressView().rightAnchor.constraint(equalTo: self.rightAnchor),
+            pr_getProgressView().heightAnchor.constraint(equalToConstant: 10)])
         
         //Setting constraints for snapperImageView
-        NSLayoutConstraint.activate([snaperImageView.widthAnchor.constraint(equalToConstant: 40),
-                                     snaperImageView.heightAnchor.constraint(equalToConstant: 40),
-                                     snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
-                                     snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
+        NSLayoutConstraint.activate([
+            snaperImageView.widthAnchor.constraint(equalToConstant: 40),
+            snaperImageView.heightAnchor.constraint(equalToConstant: 40),
+            snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
+            snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
         
         //Setting constraints for detailView
-        NSLayoutConstraint.activate([detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                                     detailView.heightAnchor.constraint(equalToConstant: 40),
-                                     detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
-                                     detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10)])
+        NSLayoutConstraint.activate([
+            detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            detailView.heightAnchor.constraint(equalToConstant: 40),
+            detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
+            detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10)])
         
         //Setting constraints for closeButton
-        NSLayoutConstraint.activate([closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                                     closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
-                                     closeButton.widthAnchor.constraint(equalToConstant: 60),
-                                     closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
+        NSLayoutConstraint.activate([
+            closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
+            closeButton.widthAnchor.constraint(equalToConstant: 60),
+            closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
         
         //Setting constraints for snapperNameLabel
-        NSLayoutConstraint.activate([snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
-                                     snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
-                                     snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
-                                     snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
+        NSLayoutConstraint.activate([
+            snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
+            snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
+            snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
+            snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
         
         //Setting constraints for lastUpdatedLabel
-        NSLayoutConstraint.activate([lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
-                                     lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0)])
+        NSLayoutConstraint.activate([
+            lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
+            lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0)])
         
         layoutIfNeeded()
     }
@@ -151,11 +157,6 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Public functions
-    /*public func clearTheProgressorViews(for snapIndex:Int) {
-     let progressor = progressView.subviews[snapIndex] as? IGSnapProgressView
-     progressor?.stop()
-     clearTheProgressorSubviews()
-     }*/
     public func clearTheProgressorSubviews() {
         getProgressView().subviews.forEach { v in
             v.subviews.forEach{v in (v as! IGSnapProgressView).stop()}
@@ -167,8 +168,6 @@ final class IGStoryPreviewHeaderView: UIView {
         return pr_getProgressView()
     }
     public func createSnapProgressors(){
-        //clearTheProgressorSubviews()
-//        self.pr_getProgressView().removeFromSuperview()
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding

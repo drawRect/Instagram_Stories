@@ -11,18 +11,18 @@ import UIKit
 final class IGStoryListCell: UICollectionViewCell {
     
     //MARK: - iVars
-    public var story:IGStory? {
+    public var story: IGStory? {
         didSet {
             self.profileNameLabel.text = story?.user?.name
             if let picture = story?.user?.picture {
-                self.profileImageView.setImage(url: picture)
+                self.profileImageView.lookImagefor(url: picture)
             }
         }
     }
     
     //MARK: - Overriden functions
-    override init(frame:CGRect) {
-        super.init(frame:frame)
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         loadUIElements()
         installLayoutConstraints()
     }
@@ -32,17 +32,17 @@ final class IGStoryListCell: UICollectionViewCell {
     }
     
     //MARK: - Private functions
-    private let profileImageView:UIImageView = {
+    private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.frame = CGRect.zero
         imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.clipsToBounds = true
         imageView.layer.borderWidth = 3.0
         imageView.layer.borderColor = UIColor.rgb(from: 0xC91F37).cgColor
+        imageView.clipsToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    private let profileNameLabel:UILabel = {
+    private let profileNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
@@ -52,17 +52,19 @@ final class IGStoryListCell: UICollectionViewCell {
         self.addSubview(profileImageView)
         self.addSubview(profileNameLabel)
     }
-    private func installLayoutConstraints(){
-        NSLayoutConstraint.activate([profileImageView.widthAnchor.constraint(equalToConstant: 60),
-                                     profileImageView.heightAnchor.constraint(equalToConstant: 60),
-                                     profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-                                     profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+    private func installLayoutConstraints() {
+    NSLayoutConstraint.activate([
+        profileImageView.widthAnchor.constraint(equalToConstant: 60),
+        profileImageView.heightAnchor.constraint(equalToConstant: 60),
+        profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+        profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
         
-        NSLayoutConstraint.activate([profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
-                                     profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-                                     profileNameLabel.heightAnchor.constraint(equalToConstant: 21),
-                                     profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
-                                     profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+        NSLayoutConstraint.activate([
+            profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+            profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
+            profileNameLabel.heightAnchor.constraint(equalToConstant: 21),
+            profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
+            profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
         
         layoutIfNeeded()
     }

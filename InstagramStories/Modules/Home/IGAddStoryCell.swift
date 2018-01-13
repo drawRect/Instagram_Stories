@@ -12,7 +12,7 @@ final class IGAddStoryCell: UICollectionViewCell {
     
     //MARK: - Overriden functions
     override init(frame: CGRect) {
-        super.init(frame:frame)
+        super.init(frame: frame)
         loadUIElements()
         installLayoutConstraints()
     }
@@ -37,7 +37,8 @@ final class IGAddStoryCell: UICollectionViewCell {
         self.addSubview(addStoryLabel)
     }
     private func installLayoutConstraints() {
-        NSLayoutConstraint.activate([addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                                     addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)])
+        NSLayoutConstraint.activate([
+            addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            addStoryLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor)])
     }
 }
