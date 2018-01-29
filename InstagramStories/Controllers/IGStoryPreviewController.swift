@@ -11,7 +11,7 @@ import AnimatedCollectionViewLayout
 
 public enum layoutType {
     case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
-    var animator:LayoutAttributesAnimator {
+    var animator: LayoutAttributesAnimator {
         switch self {
         case .crossFade:return CrossFadeAttributesAnimator()
         case .cubic:return CubeAttributesAnimator()
@@ -33,17 +33,17 @@ public enum layoutType {
 final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelegate {
     
     //MARK: - iVars
-    private(set) var stories:IGStories
+    private(set) var stories: IGStories
     /** This index will tell you which Story, user has picked*/
-    private(set) var handPickedStoryIndex:Int //starts with(i)
+    private(set) var handPickedStoryIndex: Int //starts with(i)
     /** This index will help you simply iterate the story one by one*/
-    private var nStoryIndex:Int = 0 //iteration(i+1)
+    private var nStoryIndex: Int = 0 //iteration(i+1)
     //public weak var storyPreviewHelperDelegate:pastStoryClearer?
-    private(set) var layoutType:layoutType
+    private(set) var layoutType: layoutType
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     private(set) lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType.animator, true, 1, 1)
-    private var story_copy:IGStory?
-    private var lastContentOffset:CGFloat?
+    private var story_copy: IGStory?
+    private var lastContentOffset: CGFloat?
     private let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
         gesture.direction = .down
@@ -55,7 +55,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         flowLayout.animator = layoutAnimator.0
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
-         let cv = UICollectionView.init(frame: CGRect(x:0,y:0,width:UIScreen.main.bounds.width,height:UIScreen.main.bounds.height), collectionViewLayout: flowLayout)
+        let cv = UICollectionView.init(frame: CGRect(x: 0,y: 0,width: UIScreen.main.bounds.width,height:  UIScreen.main.bounds.height), collectionViewLayout: flowLayout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
@@ -77,7 +77,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         loadUIElements()
         installLayoutConstraints()
     }
-    init(layout:layoutType = .cubic,stories:IGStories,handPickedStoryIndex:Int) {
+    init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
@@ -100,14 +100,15 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     }
     private func installLayoutConstraints(){
         //Setting constraints for snapsCollectionview
-        NSLayoutConstraint.activate([snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
-        snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
-        snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
-        snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        NSLayoutConstraint.activate([
+            snapsCollectionView.leftAnchor.constraint(equalTo: view.leftAnchor),
+            snapsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor),
+            snapsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            snapsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
     }
 }
 
-//MARK:- CollectionView DataSource functions
+//MARK:- Extension|UICollectionViewDataSource
 extension IGStoryPreviewController:UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = stories.count {
@@ -132,8 +133,8 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
     }
 }
 
-//MARK:- CollectionView Delegate functions
-extension IGStoryPreviewController:UICollectionViewDelegate {
+//MARK:- Extension|UICollectionViewDelegate
+extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
         //Start: Taking Previous(Visible) cell to stop progressors
@@ -142,8 +143,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate {
             story_copy = cell.story
             cell.stopPreviousProgressors(with: cell.story?.lastPlayedSnapIndex ?? 0)
         }
-        //End:
-        //Prepare the setup for first time story launch
+        //End:Prepare the setup for first time story launch
         if story_copy == nil {
             cell.isCompletelyVisible = true
             cell.willDisplayCell(with: cell.story?.lastPlayedSnapIndex ?? 0)
@@ -154,7 +154,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate {
             if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
                 cell.willDisplayCell(with: lastPlayedSnapIndex)
             }
-            return
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -162,6 +161,7 @@ extension IGStoryPreviewController:UICollectionViewDelegate {
         let visibleCell = self.snapsCollectionView.visibleCells.first
         guard let cell = visibleCell as? IGStoryPreviewCell else {return}
         guard let indexPath = self.snapsCollectionView.indexPath(for: cell) else {return}
+        
         cell.isCompletelyVisible = true
         cell.story == story_copy ? cell.resumePreviousSnapProgress(with: (cell.story?.lastPlayedSnapIndex)!) : cell.startProgressors()
         if indexPath.item == nStoryIndex {
@@ -170,14 +170,14 @@ extension IGStoryPreviewController:UICollectionViewDelegate {
     }
 }
 
-//MARK:- CollectionView Delegate Flow Layout function
+//MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
 }
 
-//MARK:- ScrollView Delegate functions
+//MARK:- Extension|UIScrollViewDelegate<CollectionView>
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let translation = scrollView.panGestureRecognizer.translation(in: snapsCollectionView)
@@ -192,11 +192,11 @@ extension IGStoryPreviewController {
             }
         } else {
             //Scrolling right side
-            if indexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
+            let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1
+            if indexPath?.item == numberOfItems {
                 story_copy = visibleCell.story //Need to check this otherwise while scrolling to last cell, didEndDragging method will automatically dismiss the cell.
                 visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
             }
-            
         }
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {

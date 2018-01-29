@@ -11,8 +11,8 @@ import UIKit
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
-    private var _view:IGHomeView{return view as! IGHomeView}
-    private var viewModel:IGHomeViewModel = IGHomeViewModel()
+    private var _view: IGHomeView{return view as! IGHomeView}
+    private var viewModel: IGHomeViewModel = IGHomeViewModel()
     
     //MARK: - Overridden functions
     override func loadView() {
@@ -28,7 +28,8 @@ final class IGHomeController: UIViewController {
     }
 }
 
-extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,
+//MARK: - Extension|UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
+extension IGHomeController: UICollectionViewDelegate,UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
@@ -52,7 +53,7 @@ UICollectionViewDelegateFlowLayout {
         }else{
             if let stories = viewModel.getStories() {
                 let stories_copy = stories.copy() as! IGStories
-                let storyPreviewScene = IGStoryPreviewController.init(stories:stories_copy, handPickedStoryIndex: indexPath.row-1)
+                let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
                 present(storyPreviewScene, animated: true, completion: nil)
             }
         }
