@@ -12,7 +12,7 @@ import UIKit
 class IGHomeView: UIView {
     
     //MARK: - iVars
-    lazy var layout:UICollectionViewFlowLayout = {
+    lazy var layout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.itemSize = CGSize(width: 100, height: 100)
@@ -46,9 +46,10 @@ class IGHomeView: UIView {
         addSubview(collectionView)
     }
     private func installLayoutConstraints(){
-        NSLayoutConstraint.activate([collectionView.leftAnchor.constraint(equalTo: leftAnchor),
-                                     collectionView.rightAnchor.constraint(equalTo: rightAnchor),
-                                     collectionView.topAnchor.constraint(equalTo: topAnchor),
-                                     collectionView.heightAnchor.constraint(equalToConstant: 100)])
+        NSLayoutConstraint.activate([
+            collectionView.leftAnchor.constraint(equalTo: leftAnchor),
+            collectionView.rightAnchor.constraint(equalTo: rightAnchor),
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 100)])
     }
 }
