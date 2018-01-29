@@ -183,30 +183,30 @@ extension IGStoryPreviewController {
         let translation = scrollView.panGestureRecognizer.translation(in: snapsCollectionView)
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
         let indexPath = snapsCollectionView.indexPath(for: visibleCell)
-        if translation.x >= 0 {
-            //Scrolling left side
-            if indexPath?.item == 0 {
-                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
-            }else if indexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0) {
+        let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)
+        
+        if indexPath?.item == 0 {
+            if translation.x >= 0 {
+                //Scrolling left side
                 visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
             }
-        } else {
-            //Scrolling right side
-            let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1
-            if indexPath?.item == numberOfItems {
-                story_copy = visibleCell.story //Need to check this otherwise while scrolling to last cell, didEndDragging method will automatically dismiss the cell.
+        }else if indexPath?.item == numberOfItems {
+            if translation.x < 0 {
+                //Scrolling right side
                 visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
             }
         }
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        let indexPath = snapsCollectionView.indexPath(for: visibleCell)
-        if indexPath?.item == 0 {
+        guard let f_Cell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
+        guard let l_Cell = snapsCollectionView.visibleCells.last as? IGStoryPreviewCell else {return}
+        let f_IndexPath = snapsCollectionView.indexPath(for: f_Cell)
+        let l_IndexPath = snapsCollectionView.indexPath(for: l_Cell)
+        if f_IndexPath?.item == 0 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
-        }else if indexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 && visibleCell.story == story_copy {
+        }else if l_IndexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
