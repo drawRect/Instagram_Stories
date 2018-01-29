@@ -151,24 +151,16 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Public functions
-    /*public func clearTheProgressorViews(for snapIndex:Int) {
-     let progressor = progressView.subviews[snapIndex] as? IGSnapProgressView
-     progressor?.stop()
-     clearTheProgressorSubviews()
-     }*/
     public func clearTheProgressorSubviews() {
         getProgressView().subviews.forEach { v in
             v.subviews.forEach{v in (v as! IGSnapProgressView).stop()}
             v.removeFromSuperview()
         }
-        print(#function)
     }
     public func getProgressView()->UIView {
         return pr_getProgressView()
     }
     public func createSnapProgressors(){
-        //clearTheProgressorSubviews()
-//        self.pr_getProgressView().removeFromSuperview()
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding

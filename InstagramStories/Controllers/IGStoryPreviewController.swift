@@ -115,7 +115,6 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         }
         return 0
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
         let counted = handPickedStoryIndex+indexPath.item
@@ -131,14 +130,8 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         nStoryIndex = indexPath.item
         return cell
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
-        
         //Start: Taking Previous(Visible) cell to stop progressors
         let visibleCell = collectionView.visibleCells.first as? IGStoryPreviewCell
         if let cell = visibleCell {
@@ -146,14 +139,12 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             cell.stopPreviousProgressors(with: cell.story?.lastPlayedSnapIndex ?? 0)
         }
         //End:
-        
-        //Load the first indexPath of cell
-        if story_copy == nil && indexPath.item == 0 { //Need optimisation
+        //Prepare the setup for first time story launch
+        if story_copy == nil {
             cell.isCompletelyVisible = true
             cell.willDisplayCell(with: cell.story?.lastPlayedSnapIndex ?? 0)
             return
         }
-        
         if indexPath.item == nStoryIndex {
             let s = stories.stories?[nStoryIndex+handPickedStoryIndex]
             if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
@@ -172,6 +163,9 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         if indexPath.item == nStoryIndex {
             cell.didEndDisplayingCell()
         }
+    }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: view.frame.width, height: view.frame.height)
     }
 }
 extension IGStoryPreviewController {
