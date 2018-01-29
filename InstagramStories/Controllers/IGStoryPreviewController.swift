@@ -174,7 +174,41 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         }
     }
 }
-
+extension IGStoryPreviewController {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let translation = scrollView.panGestureRecognizer.translation(in: snapsCollectionView)
+        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
+        let indexPath = snapsCollectionView.indexPath(for: visibleCell)
+        if translation.x >= 0 {
+            //Scrolling left side
+            if indexPath?.item == 0 {
+                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
+            }else if indexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0) {
+                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
+            }
+        } else {
+            //Scrolling right side
+            if indexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
+                story_copy = visibleCell.story //Need to check this otherwise while scrolling to last cell, didEndDragging method will automatically dismiss the cell.
+                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
+            }
+            
+        }
+    }
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
+        let indexPath = snapsCollectionView.indexPath(for: visibleCell)
+        if indexPath?.item == 0 {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }else if indexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 && visibleCell.story == story_copy {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+}
 extension IGStoryPreviewController:StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
