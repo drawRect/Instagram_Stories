@@ -107,8 +107,8 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
     }
 }
 
-extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
-    
+//MARK:- CollectionView DataSource functions
+extension IGStoryPreviewController:UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = stories.count {
             return count-handPickedStoryIndex
@@ -130,6 +130,10 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
         nStoryIndex = indexPath.item
         return cell
     }
+}
+
+//MARK:- CollectionView Delegate functions
+extension IGStoryPreviewController:UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
         //Start: Taking Previous(Visible) cell to stop progressors
@@ -164,10 +168,16 @@ extension IGStoryPreviewController:UICollectionViewDelegate,UICollectionViewData
             cell.didEndDisplayingCell()
         }
     }
+}
+
+//MARK:- CollectionView Delegate Flow Layout function
+extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: view.frame.height)
     }
 }
+
+//MARK:- ScrollView Delegate functions
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         let translation = scrollView.panGestureRecognizer.translation(in: snapsCollectionView)
@@ -203,6 +213,8 @@ extension IGStoryPreviewController {
         }
     }
 }
+
+//MARK:- StoryPreview Protocol implementation
 extension IGStoryPreviewController:StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
