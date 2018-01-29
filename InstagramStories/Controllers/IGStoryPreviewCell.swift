@@ -41,11 +41,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         return lp
     }()
     
-    public var isCompletelyVisible:Bool = false/*{
-        didSet{
-            print("IsCompletelyVisible Outside scrollview")
-        }
-    }*/
+    public var isCompletelyVisible:Bool = false
     
     public var snapIndex:Int = 0 {
         didSet {
@@ -83,8 +79,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         super.prepareForReuse()
         isCompletelyVisible = false
         clearScrollViewGarbages()
-        //storyHeaderView.clearTheProgressorSubviews()
-        //storyHeaderView.getProgressView().removeFromSuperview()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -149,10 +143,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     @objc private func didEnterForeground() {
         if let indicatorView = getProgressIndicatorView(with: snapIndex),
             let pv = getProgressView(with: snapIndex) {
-            /*pv.start(with: 5.0, width: indicatorView.frame.width, identifier: (self.story?.internalIdentifier)!, completion: {(identifier)[weak self] in
-                print(identifier)
-                self?.didCompleteProgress()
-            })*/
             pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier) in
                 self.didCompleteProgress()
             })
@@ -214,7 +204,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         }
     }
     @objc private func gearupTheProgressors() {
-        print(#function,"\n")
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
@@ -225,41 +214,39 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     //MARK:- Internal functions
     internal func startProgressors() {
-        print(#function)
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            print("IsCompletelyVisible Inside scrollview")
             if imageView?.image != nil && isCompletelyVisible == true {
-                print("IsCompletelyVisible Inside condition")
                     self.gearupTheProgressors()
-               // self.perform(#selector(self.gearupTheProgressors), with: nil, afterDelay: 0.1)
             }
         }
     }
     //MARK: - Public functions
-    public func willDisplayAtZerothIndex() {
-        isCompletelyVisible = true
-        willDisplayCell(with: 0)
-        //self.startProgressors()
-    }
     
     public func willDisplayCell(with sIndex:Int) {
         //Todo:Make sure to move filling part and creating at one place
-        print(#function ,":\(sIndex)")
+        //Clear the progressor subviews before the creating new set of progressors.
+        storyHeaderView.clearTheProgressorSubviews()
         storyHeaderView.createSnapProgressors()
         fillUpMissingImageViews(sIndex)
         fillupLastPlayedSnaps(sIndex)
         snapIndex = sIndex
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        
+        //Remove the previous observors
+        NotificationCenter.default.removeObserver(self)
+    }
+    public func stopPreviousProgressors(with sIndex:Int) {
+        self.isCompletelyVisible = false
+        getProgressView(with: sIndex)?.pause()
     }
     
     public func didEndDisplayingCell() {
-        /*isCompletelyVisible = false
-        if let lastPlayedIndex = story?.lastPlayedSnapIndex {
-            self.storyHeaderView.clearTheProgressorViews(for: lastPlayedIndex)
-        }*/
-        self.storyHeaderView.clearTheProgressorSubviews()
-        NotificationCenter.default.removeObserver(self)
+        //Here only the cell is completely visible. So this is the right place to add the observer.
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+    }
+    public func resumePreviousSnapProgress(with sIndex:Int) {
+        getProgressView(with: sIndex)?.resume()
+        didEndDisplayingCell()
     }
     private func clearScrollViewGarbages() {
         scrollview.contentOffset = CGPoint(x: 0, y: 0)
@@ -279,25 +266,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    
-    public func willBeginDragging(with index:Int) {
-        print(#function)
-        self.isCompletelyVisible = false
-        getProgressView(with: index)?.pause()
-    }
-   /* public func didEndDecelerating(with index:Int) {
-        getProgressView(with: index)?.resume()
-    }*/
-    
-    public func startPlayBlindly(with index:Int) {
-        getProgressView(with: index)?.resume()
-    }
-    
-    public func pausingNeighbourAlphaValues(_ index:Int) {
-        //isCompletelyVisible = false
-        getProgressView(with: index)?.pause()
-    }
-    
 }
 //MARK: - Extension/StoryPreviewHeaderProtocol
 extension IGStoryPreviewCell:StoryPreviewHeaderProtocol {
