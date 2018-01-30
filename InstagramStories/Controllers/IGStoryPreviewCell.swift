@@ -42,7 +42,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }()
     
     //MARK:- Public iVars
-    public var isCompletelyVisible: Bool = false
     public var snapIndex: Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
@@ -77,7 +76,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     override func prepareForReuse() {
         super.prepareForReuse()
-        isCompletelyVisible = false
         clearScrollViewGarbages()
     }
     required init?(coder aDecoder: NSCoder) {
@@ -223,13 +221,17 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     internal func startProgressors() {
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            if imageView?.image != nil && isCompletelyVisible == true {
+            if imageView?.image != nil && self.story?.isCompletelyVisible == true {
                     self.gearupTheProgressors()
             }
         }
     }
     
     //MARK: - Public functions
+    public func willDisplayCellForZerothIndex(with sIndex: Int) {
+        self.story?.isCompletelyVisible = true
+        willDisplayCell(with: sIndex)
+    }
     public func willDisplayCell(with sIndex: Int) {
         //Todo:Make sure to move filling part and creating at one place
         //Clear the progressor subviews before the creating new set of progressors.
@@ -243,7 +245,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     public func stopPreviousProgressors(with sIndex: Int) {
-        self.isCompletelyVisible = false
+        self.story?.isCompletelyVisible = false
         getProgressView(with: sIndex)?.pause()
     }
     public func didEndDisplayingCell() {
@@ -252,7 +254,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     public func resumePreviousSnapProgress(with sIndex: Int) {
         getProgressView(with: sIndex)?.resume()
-        didEndDisplayingCell()
     }
     //Used the below function for image retry option
     public func imageRequest(snapView:UIImageView, with url: String) {

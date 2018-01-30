@@ -145,8 +145,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
         //Prepare the setup for first time story launch
         if story_copy == nil {
-            cell.isCompletelyVisible = true
-            cell.willDisplayCell(with: cell.story?.lastPlayedSnapIndex ?? 0)
+            cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0)
             return
         }
         if indexPath.item == nStoryIndex {
@@ -162,7 +161,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         guard let cell = visibleCell as? IGStoryPreviewCell else {return}
         guard let indexPath = self.snapsCollectionView.indexPath(for: cell) else {return}
         
-        cell.isCompletelyVisible = true
+        cell.story?.isCompletelyVisible = true
         cell.story == story_copy ? cell.resumePreviousSnapProgress(with: (cell.story?.lastPlayedSnapIndex)!) : cell.startProgressors()
         if indexPath.item == nStoryIndex {
             cell.didEndDisplayingCell()
