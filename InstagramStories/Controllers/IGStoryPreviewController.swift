@@ -24,7 +24,6 @@ public enum layoutType {
         }
     }
 }
-
 /**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
  If Story.Starts -> Snap.Index(Captured|StartsWith.0)
  While Snap.done->Next.snap(continues)->done
@@ -138,11 +137,13 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
         //Taking Previous(Visible) cell to stop progressors
-        let visibleCell = collectionView.visibleCells.first as? IGStoryPreviewCell
-        if let cell = visibleCell {
-            story_copy = cell.story
-            cell.stopPreviousProgressors(with: cell.story?.lastPlayedSnapIndex ?? 0)
+        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+        let visibleCell = visibleCells.first as? IGStoryPreviewCell
+        if let vCell = visibleCell {
+            vCell.story?.isCompletelyVisible = false
+            story_copy = vCell.story
         }
+        
         //Prepare the setup for first time story launch
         if story_copy == nil {
             cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0)
@@ -150,27 +151,25 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
         if indexPath.item == nStoryIndex {
             let s = stories.stories?[nStoryIndex+handPickedStoryIndex]
-            if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
-                cell.willDisplayCell(with: lastPlayedSnapIndex)
-            }
+            cell.willDisplayCell(with: (s?.lastPlayedSnapIndex)!)
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        let visibleCell = self.snapsCollectionView.visibleCells.first
-        guard let cell = visibleCell as? IGStoryPreviewCell else {return}
-        guard let indexPath = self.snapsCollectionView.indexPath(for: cell) else {return}
+        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+        let visibleCell = visibleCells.first as? IGStoryPreviewCell
+        guard let vCell = visibleCell else {return}
+        guard let indexPath = self.snapsCollectionView.indexPath(for: vCell) else {return}
         
-        cell.story?.isCompletelyVisible = true
-        
-        if cell.story == story_copy {
+        vCell.story?.isCompletelyVisible = true
+        if vCell.story == story_copy {
             nStoryIndex -= 1
-            cell.resumePreviousSnapProgress(with: (cell.story?.lastPlayedSnapIndex)!)
-        }else{
-            cell.startProgressors()
+            vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+        }else {
+            vCell.startProgressors()
         }
         if indexPath.item == nStoryIndex {
-            cell.didEndDisplayingCell()
+            vCell.didEndDisplayingCell()
         }
     }
 }

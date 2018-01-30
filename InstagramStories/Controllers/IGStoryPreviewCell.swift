@@ -221,7 +221,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     internal func startProgressors() {
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            if imageView?.image != nil && self.story?.isCompletelyVisible == true {
+            if imageView?.image != nil && story?.isCompletelyVisible == true {
                     self.gearupTheProgressors()
             }
         }
@@ -229,7 +229,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     
     //MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
-        self.story?.isCompletelyVisible = true
+        story?.isCompletelyVisible = true
         willDisplayCell(with: sIndex)
     }
     public func willDisplayCell(with sIndex: Int) {
@@ -245,7 +245,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     public func stopPreviousProgressors(with sIndex: Int) {
-        self.story?.isCompletelyVisible = false
+        story?.isCompletelyVisible = false
         getProgressView(with: sIndex)?.pause()
     }
     public func didEndDisplayingCell() {
