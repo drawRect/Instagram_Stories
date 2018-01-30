@@ -159,16 +159,16 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
-        guard let indexPath = self.snapsCollectionView.indexPath(for: vCell) else {return}
+        guard let vCellIndexPath = self.snapsCollectionView.indexPath(for: vCell) else {return}
         
         vCell.story?.isCompletelyVisible = true
         if vCell.story == story_copy {
-            nStoryIndex -= 1
+            nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
         }else {
             vCell.startProgressors()
         }
-        if indexPath.item == nStoryIndex {
+        if vCellIndexPath.item == nStoryIndex {
             vCell.didEndDisplayingCell()
         }
     }
@@ -184,22 +184,8 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 //MARK:- Extension|UIScrollViewDelegate<CollectionView>
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let translation = scrollView.panGestureRecognizer.translation(in: snapsCollectionView)
         guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        let indexPath = snapsCollectionView.indexPath(for: visibleCell)
-        let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)
-        
-        if indexPath?.item == 0 {
-            if translation.x >= 0 {
-                //Scrolling left side
-                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
-            }
-        }else if indexPath?.item == numberOfItems {
-            if translation.x < 0 {
-                //Scrolling right side
-                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
-            }
-        }
+        visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVisibleCells = snapsCollectionView.visibleCells.sortedArrayByPosition()
@@ -207,12 +193,12 @@ extension IGStoryPreviewController {
         guard let l_Cell = sortedVisibleCells.last as? IGStoryPreviewCell else {return}
         let f_IndexPath = snapsCollectionView.indexPath(for: f_Cell)
         let l_IndexPath = snapsCollectionView.indexPath(for: l_Cell)
-
+        let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1
         if l_IndexPath?.item == 0 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
-        }else if f_IndexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
+        }else if f_IndexPath?.item == numberOfItems {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
