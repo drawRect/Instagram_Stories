@@ -112,11 +112,12 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         scrollview.addSubview(snapView)
         return snapView
     }
-    private func startRequest(snapView: UIImageView,with url: String) {
+    private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
             (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
+                snapView.addRetryButton(self!, url)
             }else {
                 self?.startProgressors()
             }
@@ -190,6 +191,24 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
+    private func clearScrollViewGarbages() {
+        scrollview.contentOffset = CGPoint(x: 0, y: 0)
+        if scrollview.subviews.count > 0 {
+            var i = 0 + snapViewTagIndicator
+            var snapViews = [UIView]()
+            scrollview.subviews.forEach({ (imageView) in
+                if imageView.tag == i {
+                    snapViews.append(imageView)
+                    i += 1
+                }
+            })
+            if snapViews.count > 0 {
+                snapViews.forEach({ (view) in
+                    view.removeFromSuperview()
+                })
+            }
+        }
+    }
     @objc private func gearupTheProgressors() {
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
@@ -235,23 +254,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         getProgressView(with: sIndex)?.resume()
         didEndDisplayingCell()
     }
-    private func clearScrollViewGarbages() {
-        scrollview.contentOffset = CGPoint(x: 0, y: 0)
-        if scrollview.subviews.count > 0 {
-            var i = 0 + snapViewTagIndicator
-            var snapViews = [UIView]()
-            scrollview.subviews.forEach({ (imageView) in
-                if imageView.tag == i {
-                    snapViews.append(imageView)
-                    i += 1
-                }
-            })
-            if snapViews.count > 0 {
-                snapViews.forEach({ (view) in
-                    view.removeFromSuperview()
-                })
-            }
-        }
+    //Used the below function for image retry option
+    public func imageRequest(snapView:UIImageView, with url: String) {
+        snapView.removeRetryButton()
+        self.startRequest(snapView: snapView, with: url)
     }
 }
 

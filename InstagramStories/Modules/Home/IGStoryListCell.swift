@@ -10,7 +10,7 @@ import UIKit
 
 final class IGStoryListCell: UICollectionViewCell {
     
-    //MARK: - iVars
+    //MARK: - Public iVars
     public var story: IGStory? {
         didSet {
             self.profileNameLabel.text = story?.user?.name
@@ -19,19 +19,14 @@ final class IGStoryListCell: UICollectionViewCell {
             }
         }
     }
+    public var userDetails:(String,String)? {didSet{
+        if let details = userDetails {
+            self.profileNameLabel.text = details.0
+            self.profileImageView.setImage(url: details.1)
+        }
+        }}
     
-    //MARK: - Overriden functions
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        loadUIElements()
-        installLayoutConstraints()
-    }
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    //MARK: - Private functions
+    //MARK: - Private iVars
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.frame = CGRect.zero
@@ -48,6 +43,19 @@ final class IGStoryListCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
+    
+    //MARK: - Overriden functions
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        loadUIElements()
+        installLayoutConstraints()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK:- Private functions
     private func loadUIElements() {
         self.addSubview(profileImageView)
         self.addSubview(profileNameLabel)
