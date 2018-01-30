@@ -76,7 +76,7 @@ final class IGStoryPreviewHeaderView: UIView {
     //MARK: - Private functions
     private func loadUIElements(){
         backgroundColor = .clear
-        addSubview(pr_getProgressView())
+        addSubview(getProgressView())
         addSubview(snaperImageView)
         addSubview(detailView)
         detailView.addSubview(snaperNameLabel)
@@ -85,34 +85,40 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     private func installLayoutConstraints(){
         //Setting constraints for progressView
-        NSLayoutConstraint.activate([pr_getProgressView().leftAnchor.constraint(equalTo: self.leftAnchor),
-                                     pr_getProgressView().topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-                                     pr_getProgressView().rightAnchor.constraint(equalTo: self.rightAnchor),
-                                     pr_getProgressView().heightAnchor.constraint(equalToConstant: 10)])
+        let pv = getProgressView()
+        NSLayoutConstraint.activate([
+            pv.leftAnchor.constraint(equalTo: self.leftAnchor),
+            pv.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            pv.rightAnchor.constraint(equalTo: self.rightAnchor),
+            pv.heightAnchor.constraint(equalToConstant: 10)])
         
         //Setting constraints for snapperImageView
-        NSLayoutConstraint.activate([snaperImageView.widthAnchor.constraint(equalToConstant: 40),
-                                     snaperImageView.heightAnchor.constraint(equalToConstant: 40),
-                                     snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
-                                     snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
+        NSLayoutConstraint.activate([
+            snaperImageView.widthAnchor.constraint(equalToConstant: 40),
+            snaperImageView.heightAnchor.constraint(equalToConstant: 40),
+            snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
+            snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
         
         //Setting constraints for detailView
-        NSLayoutConstraint.activate([detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                                     detailView.heightAnchor.constraint(equalToConstant: 40),
-                                     detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
-                                     detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10)])
+        NSLayoutConstraint.activate([
+            detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            detailView.heightAnchor.constraint(equalToConstant: 40),
+            detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
+            detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10)])
         
         //Setting constraints for closeButton
-        NSLayoutConstraint.activate([closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-                                     closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
-                                     closeButton.widthAnchor.constraint(equalToConstant: 60),
-                                     closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
+        NSLayoutConstraint.activate([
+            closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
+            closeButton.widthAnchor.constraint(equalToConstant: 60),
+            closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
         
         //Setting constraints for snapperNameLabel
-        NSLayoutConstraint.activate([snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
-                                     snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
-                                     snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
-                                     snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
+        NSLayoutConstraint.activate([
+            snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
+            snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
+            snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
+            snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
         
         //Setting constraints for lastUpdatedLabel
         NSLayoutConstraint.activate([lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
@@ -134,16 +140,6 @@ final class IGStoryPreviewHeaderView: UIView {
         view.tag = tag
         return view
     }
-    private func pr_getProgressView() -> UIView {
-        if let progressView = self.progressView {
-            return progressView
-        }
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        self.progressView = v
-        self.addSubview(self.pr_getProgressView())
-        return v
-    }
     
     //MARK: - Selectors
     @objc func didTapClose(_ sender: UIButton) {
@@ -158,19 +154,26 @@ final class IGStoryPreviewHeaderView: UIView {
         }
     }
     public func getProgressView()->UIView {
-        return pr_getProgressView()
+        if let progressView = self.progressView {
+            return progressView
+        }
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        self.progressView = v
+        self.addSubview(self.getProgressView())
+        return v
     }
     public func createSnapProgressors(){
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding
-        let y:CGFloat = (self.pr_getProgressView().frame.height/2)-height
+        let y:CGFloat = (self.getProgressView().frame.height/2)-height
         let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
             let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
-            pr_getProgressView().addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))
+            getProgressView().addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))
             let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
-            pr_getProgressView().addSubview(applyProperties(pv,with: i+progressViewTag))
+            getProgressView().addSubview(applyProperties(pv,with: i+progressViewTag))
             x = x + width + padding
         }
         snaperNameLabel.text = story?.user?.name

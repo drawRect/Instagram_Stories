@@ -2,8 +2,7 @@ import UIKit
 import SDWebImage
 
 enum ImageStyle: Int {
-    case squared
-    case rounded
+    case squared,rounded
 }
 
 extension UIImageView {
@@ -66,19 +65,22 @@ extension UIImageView {
         }
     }
 }
-class retryButton: UIButton {
-    var imageURL: String?
+
+/*************************** IGRetryLoader<MISC> ************************************************/
+
+class IGRetryLoaderButton: UIButton {
+    var contentURL: String?
     var cell: IGStoryPreviewCell?
     deinit {debugPrint("Retry button removed")}
 }
 extension UIImageView {
     func addRetryButton(_ cell: UICollectionViewCell, _ url: String) {
         self.isUserInteractionEnabled = true
-        let button = retryButton.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+        let button = IGRetryLoaderButton.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         button.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
         button.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
-        button.addTarget(self, action: #selector(retryAct(sender:)), for: .touchUpInside)
-        button.imageURL = url
+        button.addTarget(self, action: #selector(didTapRetryBtn), for: .touchUpInside)
+        button.contentURL = url
         button.cell = cell as? IGStoryPreviewCell
         button.tag = 100
         self.addSubview(button)
@@ -89,7 +91,7 @@ extension UIImageView {
             if(v.tag == 100){v.removeFromSuperview()}
         })
     }
-    @objc func retryAct(sender:retryButton) {
-        sender.cell?.imageRequest(snapView: self, with: sender.imageURL!)
+    @objc func didTapRetryBtn(sender:IGRetryLoaderButton) {
+        sender.cell?.imageRequest(snapView: self, with: sender.contentURL!)
     }
 }

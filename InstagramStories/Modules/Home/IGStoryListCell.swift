@@ -19,12 +19,14 @@ final class IGStoryListCell: UICollectionViewCell {
             }
         }
     }
-    public var userDetails:(String,String)? {didSet{
-        if let details = userDetails {
-            self.profileNameLabel.text = details.0
-            self.profileImageView.setImage(url: details.1)
+    public var userDetails: (String,String)? {
+        didSet {
+            if let details = userDetails {
+                self.profileNameLabel.text = details.0
+                self.profileImageView.setImage(url: details.1)
+            }
         }
-        }}
+    }
     
     //MARK: - Private iVars
     private let profileImageView: UIImageView = {
@@ -32,8 +34,8 @@ final class IGStoryListCell: UICollectionViewCell {
         imageView.frame = CGRect.zero
         imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.clipsToBounds = true
-        imageView.layer.borderWidth = 3.0
-        imageView.layer.borderColor = UIColor.rgb(from: 0xC91F37).cgColor
+        imageView.layer.borderWidth = 2.0
+        imageView.layer.borderColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0).cgColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()

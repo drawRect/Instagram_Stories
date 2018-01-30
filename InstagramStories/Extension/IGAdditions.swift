@@ -10,10 +10,11 @@ import Foundation
 import UIKit
 
 extension Int {
-    func toFloat()->CGFloat {
+    func toFloat() -> CGFloat {
         return CGFloat(self)
     }
 }
+
 extension Array {
      func sortedArrayByPosition() -> [Element] {
         return sorted(by: { (obj1 : Element, obj2 : Element) -> Bool in

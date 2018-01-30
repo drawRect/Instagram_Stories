@@ -115,7 +115,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
-                snapView.addRetryButton(self!, url)
+                if let _self = self {
+                    snapView.addRetryButton(_self, url)
+                }
             }else {
                 self?.startProgressors()
             }

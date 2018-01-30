@@ -136,7 +136,8 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
 extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
-        //Taking Previous(Visible) cell to stop progressors
+        
+        //Taking Previous(Visible) cell to store previous story
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         if let vCell = visibleCell {
