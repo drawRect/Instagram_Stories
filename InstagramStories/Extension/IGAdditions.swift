@@ -15,7 +15,7 @@ extension Int {
     }
 }
 extension Array {
-    internal func sortedArrayByPosition() -> [Element] {
+     func sortedArrayByPosition() -> [Element] {
         return sorted(by: { (obj1 : Element, obj2 : Element) -> Bool in
             
             let view1 = obj1 as! UIView
