@@ -198,15 +198,17 @@ extension IGStoryPreviewController {
         }
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        guard let f_Cell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        guard let l_Cell = snapsCollectionView.visibleCells.last as? IGStoryPreviewCell else {return}
+        let sortedVisibleCells = snapsCollectionView.visibleCells.sortedArrayByPosition()
+        guard let f_Cell = sortedVisibleCells.first as? IGStoryPreviewCell else {return}
+        guard let l_Cell = sortedVisibleCells.last as? IGStoryPreviewCell else {return}
         let f_IndexPath = snapsCollectionView.indexPath(for: f_Cell)
         let l_IndexPath = snapsCollectionView.indexPath(for: l_Cell)
-        if f_IndexPath?.item == 0 {
+
+        if l_IndexPath?.item == 0 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
-        }else if l_IndexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
+        }else if f_IndexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
