@@ -162,7 +162,13 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         guard let indexPath = self.snapsCollectionView.indexPath(for: cell) else {return}
         
         cell.story?.isCompletelyVisible = true
-        cell.story == story_copy ? cell.resumePreviousSnapProgress(with: (cell.story?.lastPlayedSnapIndex)!) : cell.startProgressors()
+        
+        if cell.story == story_copy {
+            nStoryIndex -= 1
+            cell.resumePreviousSnapProgress(with: (cell.story?.lastPlayedSnapIndex)!)
+        }else{
+            cell.startProgressors()
+        }
         if indexPath.item == nStoryIndex {
             cell.didEndDisplayingCell()
         }
