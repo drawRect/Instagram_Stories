@@ -137,13 +137,13 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
 extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
-        //Start: Taking Previous(Visible) cell to stop progressors
+        //Taking Previous(Visible) cell to stop progressors
         let visibleCell = collectionView.visibleCells.first as? IGStoryPreviewCell
         if let cell = visibleCell {
             story_copy = cell.story
             cell.stopPreviousProgressors(with: cell.story?.lastPlayedSnapIndex ?? 0)
         }
-        //End:Prepare the setup for first time story launch
+        //Prepare the setup for first time story launch
         if story_copy == nil {
             cell.isCompletelyVisible = true
             cell.willDisplayCell(with: cell.story?.lastPlayedSnapIndex ?? 0)

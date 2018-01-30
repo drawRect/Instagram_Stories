@@ -75,7 +75,7 @@ extension UIImageView {
         self.isUserInteractionEnabled = true
         let button = retryButton.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         button.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
-        button.center = self.center
+        button.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
         button.addTarget(self, action: #selector(retryAct(sender:)), for: .touchUpInside)
         button.imageURL = url
         button.cell = cell as? IGStoryPreviewCell
