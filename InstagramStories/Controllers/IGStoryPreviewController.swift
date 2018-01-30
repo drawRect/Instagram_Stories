@@ -69,7 +69,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         cv.collectionViewLayout = flowLayout
         return cv
     }()
-    
+
     //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -184,13 +184,13 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 //MARK:- Extension|UIScrollViewDelegate<CollectionView>
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
+        guard let vCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
+        vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let sortedVisibleCells = snapsCollectionView.visibleCells.sortedArrayByPosition()
-        guard let f_Cell = sortedVisibleCells.first as? IGStoryPreviewCell else {return}
-        guard let l_Cell = sortedVisibleCells.last as? IGStoryPreviewCell else {return}
+        let sortedVCells = snapsCollectionView.visibleCells.sortedArrayByPosition()
+        guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell else {return}
+        guard let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
         let f_IndexPath = snapsCollectionView.indexPath(for: f_Cell)
         let l_IndexPath = snapsCollectionView.indexPath(for: l_Cell)
         let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1

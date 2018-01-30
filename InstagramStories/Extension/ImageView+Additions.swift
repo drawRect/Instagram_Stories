@@ -66,12 +66,13 @@ extension UIImageView {
         }
     }
 }
-class retryButton:UIButton {
-    var imageURL:String?
-    var cell:IGStoryPreviewCell?
+class retryButton: UIButton {
+    var imageURL: String?
+    var cell: IGStoryPreviewCell?
+    deinit {debugPrint("Retry button removed")}
 }
 extension UIImageView {
-    func addRetryButton(_ cell:UICollectionViewCell, _ url:String) {
+    func addRetryButton(_ cell: UICollectionViewCell, _ url: String) {
         self.isUserInteractionEnabled = true
         let button = retryButton.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         button.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
