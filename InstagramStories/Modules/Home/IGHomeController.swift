@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 final class IGHomeController: UIViewController {
     
@@ -23,9 +24,29 @@ final class IGHomeController: UIViewController {
     }
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Home"
         automaticallyAdjustsScrollViewInsets = false
     }
+    
+    override var navigationItem: UINavigationItem {
+        let ni = UINavigationItem.init(title: "Home")
+        ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearSDWebCache))
+        ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
+        return ni
+    }
+    //MARK: - Private functions
+    @objc private func clearSDWebCache() {
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
+    }
+    private func showComingSoonAlert() {
+        let alertController = UIAlertController.init(title: "Coming Soon...", message: nil, preferredStyle: .alert)
+        present(alertController, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3){
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
 }
 
 //MARK: - Extension|UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
@@ -37,7 +58,8 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGAddStoryCell.reuseIdentifier(),for: indexPath) as? IGAddStoryCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
+            cell.userDetails = ("Add Story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
             return cell
         }else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
@@ -49,7 +71,7 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            debugPrint("Need to implement!")
+            showComingSoonAlert()
         }else{
             if let stories = viewModel.getStories() {
                 let stories_copy = stories.copy() as! IGStories

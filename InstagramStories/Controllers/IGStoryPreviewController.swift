@@ -24,7 +24,6 @@ public enum layoutType {
         }
     }
 }
-
 /**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
  If Story.Starts -> Snap.Index(Captured|StartsWith.0)
  While Snap.done->Next.snap(continues)->done
@@ -70,7 +69,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         cv.collectionViewLayout = flowLayout
         return cv
     }()
-    
+
     //MARK: - Overriden functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -137,35 +136,41 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
 extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {return}
-        //Start: Taking Previous(Visible) cell to stop progressors
-        let visibleCell = collectionView.visibleCells.first as? IGStoryPreviewCell
-        if let cell = visibleCell {
-            story_copy = cell.story
-            cell.stopPreviousProgressors(with: cell.story?.lastPlayedSnapIndex ?? 0)
+        
+        //Taking Previous(Visible) cell to store previous story
+        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+        let visibleCell = visibleCells.first as? IGStoryPreviewCell
+        if let vCell = visibleCell {
+            vCell.story?.isCompletelyVisible = false
+            story_copy = vCell.story
         }
-        //End:Prepare the setup for first time story launch
+        
+        //Prepare the setup for first time story launch
         if story_copy == nil {
-            cell.isCompletelyVisible = true
-            cell.willDisplayCell(with: cell.story?.lastPlayedSnapIndex ?? 0)
+            cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0)
             return
         }
         if indexPath.item == nStoryIndex {
             let s = stories.stories?[nStoryIndex+handPickedStoryIndex]
-            if let lastPlayedSnapIndex = s?.lastPlayedSnapIndex {
-                cell.willDisplayCell(with: lastPlayedSnapIndex)
-            }
+            cell.willDisplayCell(with: (s?.lastPlayedSnapIndex)!)
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         
-        let visibleCell = self.snapsCollectionView.visibleCells.first
-        guard let cell = visibleCell as? IGStoryPreviewCell else {return}
-        guard let indexPath = self.snapsCollectionView.indexPath(for: cell) else {return}
+        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+        let visibleCell = visibleCells.first as? IGStoryPreviewCell
+        guard let vCell = visibleCell else {return}
+        guard let vCellIndexPath = self.snapsCollectionView.indexPath(for: vCell) else {return}
         
-        cell.isCompletelyVisible = true
-        cell.story == story_copy ? cell.resumePreviousSnapProgress(with: (cell.story?.lastPlayedSnapIndex)!) : cell.startProgressors()
-        if indexPath.item == nStoryIndex {
-            cell.didEndDisplayingCell()
+        vCell.story?.isCompletelyVisible = true
+        if vCell.story == story_copy {
+            nStoryIndex = vCellIndexPath.item
+            vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+        }else {
+            vCell.startProgressors()
+        }
+        if vCellIndexPath.item == nStoryIndex {
+            vCell.didEndDisplayingCell()
         }
     }
 }
@@ -180,33 +185,21 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 //MARK:- Extension|UIScrollViewDelegate<CollectionView>
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let translation = scrollView.panGestureRecognizer.translation(in: snapsCollectionView)
-        guard let visibleCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        let indexPath = snapsCollectionView.indexPath(for: visibleCell)
-        let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)
-        
-        if indexPath?.item == 0 {
-            if translation.x >= 0 {
-                //Scrolling left side
-                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
-            }
-        }else if indexPath?.item == numberOfItems {
-            if translation.x < 0 {
-                //Scrolling right side
-                visibleCell.stopPreviousProgressors(with: visibleCell.story?.lastPlayedSnapIndex ?? 0)
-            }
-        }
+        guard let vCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
+        vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        guard let f_Cell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        guard let l_Cell = snapsCollectionView.visibleCells.last as? IGStoryPreviewCell else {return}
+        let sortedVCells = snapsCollectionView.visibleCells.sortedArrayByPosition()
+        guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell else {return}
+        guard let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
         let f_IndexPath = snapsCollectionView.indexPath(for: f_Cell)
         let l_IndexPath = snapsCollectionView.indexPath(for: l_Cell)
-        if f_IndexPath?.item == 0 {
+        let numberOfItems = collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1
+        if l_IndexPath?.item == 0 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
-        }else if l_IndexPath?.item == collectionView(snapsCollectionView, numberOfItemsInSection: 0)-1 {
+        }else if f_IndexPath?.item == numberOfItems {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }

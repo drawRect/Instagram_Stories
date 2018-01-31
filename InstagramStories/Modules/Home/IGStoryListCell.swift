@@ -10,7 +10,7 @@ import UIKit
 
 final class IGStoryListCell: UICollectionViewCell {
     
-    //MARK: - iVars
+    //MARK: - Public iVars
     public var story: IGStory? {
         didSet {
             self.profileNameLabel.text = story?.user?.name
@@ -19,6 +19,32 @@ final class IGStoryListCell: UICollectionViewCell {
             }
         }
     }
+    public var userDetails: (String,String)? {
+        didSet {
+            if let details = userDetails {
+                self.profileNameLabel.text = details.0
+                self.profileImageView.setImage(url: details.1)
+            }
+        }
+    }
+    
+    //MARK: - Private iVars
+    private let profileImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.frame = CGRect.zero
+        imageView.layer.cornerRadius = imageView.frame.width/2
+        imageView.clipsToBounds = true
+        imageView.layer.borderWidth = 2.0
+        imageView.layer.borderColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0).cgColor
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        return imageView
+    }()
+    private let profileNameLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .center
+        return label
+    }()
     
     //MARK: - Overriden functions
     override init(frame: CGRect) {
@@ -31,23 +57,7 @@ final class IGStoryListCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - Private functions
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.frame = CGRect.zero
-        imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.clipsToBounds = true
-        imageView.layer.borderWidth = 3.0
-        imageView.layer.borderColor = UIColor.rgb(from: 0xC91F37).cgColor
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
-    }()
-    private let profileNameLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        return label
-    }()
+    //MARK:- Private functions
     private func loadUIElements() {
         self.addSubview(profileImageView)
         self.addSubview(profileNameLabel)

@@ -24,7 +24,7 @@ public class IGStory:NSObject {
     public var lastUpdated: Int?
     public var user:IGUser?
     var lastPlayedSnapIndex:Int = 0
-
+    var isCompletelyVisible = false
     public override init() {
         super.init()
     }

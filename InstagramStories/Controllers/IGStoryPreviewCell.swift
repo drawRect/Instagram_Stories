@@ -42,7 +42,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }()
     
     //MARK:- Public iVars
-    public var isCompletelyVisible: Bool = false
     public var snapIndex: Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
@@ -77,7 +76,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     override func prepareForReuse() {
         super.prepareForReuse()
-        isCompletelyVisible = false
         clearScrollViewGarbages()
     }
     required init?(coder aDecoder: NSCoder) {
@@ -112,11 +110,14 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         scrollview.addSubview(snapView)
         return snapView
     }
-    private func startRequest(snapView: UIImageView,with url: String) {
+    private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
             (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
+                if let _self = self {
+                    snapView.addRetryButton(_self, url)
+                }
             }else {
                 self?.startProgressors()
             }
@@ -190,51 +191,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    @objc private func gearupTheProgressors() {
-        if let holderView = getProgressIndicatorView(with: snapIndex),
-            let progressView = getProgressView(with: snapIndex){
-            progressView.story_identifier = self.story?.internalIdentifier
-            progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier) in
-                self.didCompleteProgress()
-            })
-        }
-    }
-    
-    //MARK:- Internal functions
-    internal func startProgressors() {
-        if scrollview.subviews.count > 0 {
-            let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            if imageView?.image != nil && isCompletelyVisible == true {
-                    self.gearupTheProgressors()
-            }
-        }
-    }
-    
-    //MARK: - Public functions
-    public func willDisplayCell(with sIndex: Int) {
-        //Todo:Make sure to move filling part and creating at one place
-        //Clear the progressor subviews before the creating new set of progressors.
-        storyHeaderView.clearTheProgressorSubviews()
-        storyHeaderView.createSnapProgressors()
-        fillUpMissingImageViews(sIndex)
-        fillupLastPlayedSnaps(sIndex)
-        snapIndex = sIndex
-        
-        //Remove the previous observors
-        NotificationCenter.default.removeObserver(self)
-    }
-    public func stopPreviousProgressors(with sIndex: Int) {
-        self.isCompletelyVisible = false
-        getProgressView(with: sIndex)?.pause()
-    }
-    public func didEndDisplayingCell() {
-        //Here only the cell is completely visible. So this is the right place to add the observer.
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
-    }
-    public func resumePreviousSnapProgress(with sIndex: Int) {
-        getProgressView(with: sIndex)?.resume()
-        didEndDisplayingCell()
-    }
     private func clearScrollViewGarbages() {
         scrollview.contentOffset = CGPoint(x: 0, y: 0)
         if scrollview.subviews.count > 0 {
@@ -252,6 +208,59 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 })
             }
         }
+    }
+    @objc private func gearupTheProgressors() {
+        if let holderView = getProgressIndicatorView(with: snapIndex),
+            let progressView = getProgressView(with: snapIndex){
+            progressView.story_identifier = self.story?.internalIdentifier
+            progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier) in
+                self.didCompleteProgress()
+            })
+        }
+    }
+    
+    //MARK:- Internal functions
+    internal func startProgressors() {
+        if scrollview.subviews.count > 0 {
+            let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
+            if imageView?.image != nil && story?.isCompletelyVisible == true {
+                    self.gearupTheProgressors()
+            }
+        }
+    }
+    
+    //MARK: - Public functions
+    public func willDisplayCellForZerothIndex(with sIndex: Int) {
+        story?.isCompletelyVisible = true
+        willDisplayCell(with: sIndex)
+    }
+    public func willDisplayCell(with sIndex: Int) {
+        //Todo:Make sure to move filling part and creating at one place
+        //Clear the progressor subviews before the creating new set of progressors.
+        storyHeaderView.clearTheProgressorSubviews()
+        storyHeaderView.createSnapProgressors()
+        fillUpMissingImageViews(sIndex)
+        fillupLastPlayedSnaps(sIndex)
+        snapIndex = sIndex
+        
+        //Remove the previous observors
+        NotificationCenter.default.removeObserver(self)
+    }
+    public func stopPreviousProgressors(with sIndex: Int) {
+        story?.isCompletelyVisible = false
+        getProgressView(with: sIndex)?.pause()
+    }
+    public func didEndDisplayingCell() {
+        //Here only the cell is completely visible. So this is the right place to add the observer.
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+    }
+    public func resumePreviousSnapProgress(with sIndex: Int) {
+        getProgressView(with: sIndex)?.resume()
+    }
+    //Used the below function for image retry option
+    public func imageRequest(snapView:UIImageView, with url: String) {
+        snapView.removeRetryButton()
+        self.startRequest(snapView: snapView, with: url)
     }
 }
 
