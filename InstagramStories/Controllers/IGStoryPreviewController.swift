@@ -140,7 +140,6 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         //Taking Previous(Visible) cell to store previous story
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
-        debugPrint(#function + "Cell:" + "\(cell.story!.user!.name.debugDescription)")
         if let vCell = visibleCell {
             debugPrint(#function + "Visible Cell" + "\(visibleCell!.story!.user!.name.debugDescription)")
             vCell.story?.isCompletelyVisible = false
@@ -163,14 +162,11 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
         guard let vCellIndexPath = self.snapsCollectionView.indexPath(for: vCell) else {return}
-        debugPrint(#function + "\(vCell.story!.user!.name.debugDescription)")
         vCell.story?.isCompletelyVisible = true
         if vCell.story == story_copy {
-            print("If Condition")
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
         }else {
-            print("Else Condition")
             vCell.startProgressors()
         }
         if vCellIndexPath.item == nStoryIndex {
@@ -190,11 +186,9 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        debugPrint(#function + "\(vCell.story!.user!.name.debugDescription)")
         vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        print(#function)
         let sortedVCells = snapsCollectionView.visibleCells.sortedArrayByPosition()
         guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell else {return}
         guard let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
