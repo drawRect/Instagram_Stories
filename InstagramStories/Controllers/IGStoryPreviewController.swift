@@ -141,7 +141,9 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         if let vCell = visibleCell {
+            debugPrint(#function + "Visible Cell" + "\(visibleCell!.story!.user!.name.debugDescription)")
             vCell.story?.isCompletelyVisible = false
+            vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
             story_copy = vCell.story
         }
         
@@ -156,12 +158,10 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
         guard let vCellIndexPath = self.snapsCollectionView.indexPath(for: vCell) else {return}
-        
         vCell.story?.isCompletelyVisible = true
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
