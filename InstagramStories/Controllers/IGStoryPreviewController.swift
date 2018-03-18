@@ -102,9 +102,8 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         
         //Taking Previous(Visible) cell to store previous story
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
-        let visibleCell = visibleCells.first as? IGStoryPreviewCell
-        if let vCell = visibleCell {
-            debugPrint(#function + "Visible Cell" + "\(visibleCell!.story!.user!.name.debugDescription)")
+        if let vCell = visibleCells.first as? IGStoryPreviewCell {
+            debugPrint(#function + "Visible Cell" + "\(vCell.story!.user!.name.debugDescription)")
             vCell.story?.isCompletelyVisible = false
             vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
             story_copy = vCell.story
@@ -122,16 +121,19 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
-        let visibleCell = visibleCells.first as? IGStoryPreviewCell
-        guard let vCell = visibleCell else {return}
-        guard let vCellIndexPath = _view.snapsCollectionView.indexPath(for: vCell) else {return}
+        guard let vCell = visibleCells.first as? IGStoryPreviewCell,
+            let vCellIndexPath = _view.snapsCollectionView.indexPath(for: vCell) else {return}
+        
         vCell.story?.isCompletelyVisible = true
+        
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
-        }else {
+        } else {
             vCell.startProgressors()
         }
+        
+        //Additional condition to enable to App foreground observor if only vCellIndexPath.item == nStoryIndex
         if vCellIndexPath.item == nStoryIndex {
             vCell.didEndDisplayingCell()
         }
@@ -153,16 +155,17 @@ extension IGStoryPreviewController {
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
-        guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell else {return}
-        guard let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
+        guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell, let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
+        
         let f_IndexPath = _view.snapsCollectionView.indexPath(for: f_Cell)
         let l_IndexPath = _view.snapsCollectionView.indexPath(for: l_Cell)
         let numberOfItems = collectionView(_view.snapsCollectionView, numberOfItemsInSection: 0)-1
+        
         if l_IndexPath?.item == 0 {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
-        }else if f_IndexPath?.item == numberOfItems {
+        } else if f_IndexPath?.item == numberOfItems {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
                 self.dismiss(animated: true, completion: nil)
             }
@@ -171,7 +174,7 @@ extension IGStoryPreviewController {
 }
 
 //MARK:- StoryPreview Protocol implementation
-extension IGStoryPreviewController:StoryPreviewProtocol {
+extension IGStoryPreviewController: StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
@@ -184,7 +187,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                 /**@Note:
                  Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
                  */
-            }else {
+            } else {
                 self.dismiss(animated: true, completion: nil)
             }
         }
