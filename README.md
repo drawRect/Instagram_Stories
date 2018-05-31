@@ -2,7 +2,7 @@ Instagram Stories
 =================
 
 ## We
-* Hi! We are three people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built as our assumption.
+* Hi! We are three people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
 * Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash), Shantha Kumar(https://github.com/shantharsk)
 * That's all you need to know.
 
