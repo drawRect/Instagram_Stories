@@ -9,19 +9,18 @@
 import UIKit
 
 protocol ViewAnimator:class {
-    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->())
+    func start(with duration:TimeInterval,width:CGFloat, completion:@escaping (String)->())
     func resume()
     func pause()
     func stop()
 }
-
 extension ViewAnimator where Self:IGSnapProgressView {
-    func start(with duration:TimeInterval,width:CGFloat,completion:@escaping ()->()){
-        UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {
-            self.frame.size.width = width
+    func start(with duration:TimeInterval,width:CGFloat, completion: @escaping (String)->()){
+        UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
+            self?.frame.size.width = width
         }) { (finished) in
             if finished == true {
-                completion()
+                completion(self.story_identifier!)
             }
         }
     }
@@ -44,4 +43,6 @@ extension ViewAnimator where Self:IGSnapProgressView {
     }
 }
 
-final class IGSnapProgressView:UIView,ViewAnimator{}
+final class IGSnapProgressView:UIView,ViewAnimator{
+    public var story_identifier:String?
+}

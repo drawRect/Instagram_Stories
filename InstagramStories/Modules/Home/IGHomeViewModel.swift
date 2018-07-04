@@ -8,12 +8,13 @@
 
 import Foundation
 
-class IGHomeViewModel:NSObject{
+class IGHomeViewModel: NSObject{
     
+    //MARK: - iVars
     //Keep it Immutable! don't get Dirty :P
-    private let stories:IGStories? = {
+    private let stories: IGStories? = {
         do {
-            return try IGMockLoader.loadMockFile(named: "stories.json",bundle:.main)
+            return try IGMockLoader.loadMockFile(named: "stories.json",bundle: .main)
         } catch let e as MockLoaderError{
             e.desc()
         }catch{
@@ -21,17 +22,18 @@ class IGHomeViewModel:NSObject{
         }
         return nil
     }()
-    public func getStories()->IGStories? {
+    
+    //MARK: - Public functions
+    public func getStories() -> IGStories? {
         return stories
     }
-    
-    public func numberOfItemsInSection(_ section:Int)->Int {
+    public func numberOfItemsInSection(_ section:Int) -> Int {
         if let count = stories?.count {
             return count + 1 // Add Story cell
         }
         return 1
     }
-    public func cellForItemAt(indexPath:IndexPath)->IGStory? {
+    public func cellForItemAt(indexPath:IndexPath) -> IGStory? {
         return stories?.stories?[indexPath.row-1]
     }
     

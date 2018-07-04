@@ -7,33 +7,50 @@
 //
 
 import UIKit
+import SDWebImage
 
 final class IGHomeController: UIViewController {
     
-    private var _view:IGHomeView{return view as! IGHomeView}
-    private var viewModel:IGHomeViewModel = IGHomeViewModel()
+    //MARK: - iVars
+    private var _view: IGHomeView{return view as! IGHomeView}
+    private var viewModel: IGHomeViewModel = IGHomeViewModel()
     
+    //MARK: - Overridden functions
     override func loadView() {
         super.loadView()
         view = IGHomeView.init(frame: UIScreen.main.bounds)
         _view.collectionView.delegate = self
         _view.collectionView.dataSource = self
     }
-    
-    private func setupNavigationBar(){
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.barStyle = .blackTranslucent
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Home"
-        setupNavigationBar()
         automaticallyAdjustsScrollViewInsets = false
     }
+    
+    override var navigationItem: UINavigationItem {
+        let ni = UINavigationItem.init(title: "Home")
+        ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearSDWebCache))
+        ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
+        return ni
+    }
+    //MARK: - Private functions
+    @objc private func clearSDWebCache() {
+        SDImageCache.shared().clearMemory()
+        SDImageCache.shared().clearDisk()
+    }
+    private func showComingSoonAlert() {
+        let alertController = UIAlertController.init(title: "Coming Soon...", message: nil, preferredStyle: .alert)
+        present(alertController, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3){
+                alertController.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    
 }
 
-extension IGHomeController:UICollectionViewDelegate,UICollectionViewDataSource,
+//MARK: - Extension|UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
+extension IGHomeController: UICollectionViewDelegate,UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.numberOfItemsInSection(section)
@@ -41,7 +58,8 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGAddStoryCell.reuseIdentifier(),for: indexPath) as? IGAddStoryCell else { return UICollectionViewCell() }
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
+            cell.userDetails = ("Add Story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
             return cell
         }else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier(),for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
@@ -53,10 +71,13 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            debugPrint("Need to implement!")
+            showComingSoonAlert()
         }else{
-            let storyPreviewScene = IGStoryPreviewController.init(stories: viewModel.getStories()!, handPickedStoryIndex: indexPath.row-1)
-            present(storyPreviewScene, animated: true, completion: nil)
+            if let stories = viewModel.getStories() {
+                let stories_copy = stories.copy() as! IGStories
+                let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
+                present(storyPreviewScene, animated: true, completion: nil)
+            }
         }
     }
     

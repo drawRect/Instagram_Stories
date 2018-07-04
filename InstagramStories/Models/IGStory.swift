@@ -24,7 +24,10 @@ public class IGStory:NSObject {
     public var lastUpdated: Int?
     public var user:IGUser?
     var lastPlayedSnapIndex:Int = 0
-
+    var isCompletelyVisible = false
+    public override init() {
+        super.init()
+    }
     // MARK: SwiftyJSON Initalizers
     /**
      Initates the instance based on the object
@@ -61,7 +64,17 @@ public class IGStory:NSObject {
         if let value = user {dictionary[kIGStoryUserKey] = value}
         return dictionary
     }
-    
 }
 
-
+extension IGStory:NSCopying {
+    public func copy(with zone: NSZone? = nil) -> Any {
+        let copy = IGStory()
+        copy.snapsCount = snapsCount
+        copy.snaps = snaps
+        copy.internalIdentifier = internalIdentifier
+        copy.lastUpdated = lastUpdated
+        copy.user = user
+        copy.lastPlayedSnapIndex = lastPlayedSnapIndex
+        return copy
+    }
+}

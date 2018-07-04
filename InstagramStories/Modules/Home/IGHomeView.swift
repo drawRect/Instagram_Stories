@@ -11,13 +11,13 @@ import UIKit
 
 class IGHomeView: UIView {
     
-    lazy var layout:UICollectionViewFlowLayout = {
+    //MARK: - iVars
+    lazy var layout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.itemSize = CGSize(width: 100, height: 100)
         return flowLayout
     }()
-    
     lazy var collectionView: UICollectionView = {
         let cv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
@@ -29,23 +29,27 @@ class IGHomeView: UIView {
         return cv
     }()
     
+    //MARK: - Overridden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = UIColor.rgb(from: 0xEFEFF4)
         createUIElements()
         installLayoutConstraints()
     }
     required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: - Private functions
     private func createUIElements(){
         addSubview(collectionView)
     }
     private func installLayoutConstraints(){
-        collectionView.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
-        collectionView.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        collectionView.heightAnchor.constraint(equalToConstant: 100).isActive = true
+        NSLayoutConstraint.activate([
+            collectionView.leftAnchor.constraint(equalTo: leftAnchor),
+            collectionView.rightAnchor.constraint(equalTo: rightAnchor),
+            collectionView.topAnchor.constraint(equalTo: topAnchor),
+            collectionView.heightAnchor.constraint(equalToConstant: 100)])
     }
 }

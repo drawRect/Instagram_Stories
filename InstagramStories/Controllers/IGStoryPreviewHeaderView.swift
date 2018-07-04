@@ -17,26 +17,29 @@ public let progressIndicatorViewTag = 88
 public let progressViewTag = 99
 
 final class IGStoryPreviewHeaderView: UIView {
+    
     //MARK: - Overriden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.frame = frame
+        applyShadowOffset()
         loadUIElements()
         installLayoutConstraints()
     }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
     //MARK: - iVars
-    let progressView:UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    let snaperImageView:UIImageView = {
+    public weak var delegate:StoryPreviewHeaderProtocol?
+    fileprivate var snapsPerStory:Int = 0
+    public var story:IGStory? {
+        didSet {
+            snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
+        }
+    }
+    fileprivate var progressView:UIView?
+    internal let snaperImageView:UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = imageView.frame.height/2
         imageView.clipsToBounds = true
@@ -45,27 +48,24 @@ final class IGStoryPreviewHeaderView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    let detailView:UIView = {
+    private let detailView:UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    let snaperNameLabel:UILabel = {
+    private let snaperNameLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         return label
     }()
-    
-    let lastUpdatedLabel:UILabel = {
+    internal let lastUpdatedLabel:UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         return label
     }()
-   
-    lazy var closeButton:UIButton = {
+    private lazy var closeButton:UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(#imageLiteral(resourceName: "ic_close"), for: .normal)
@@ -73,68 +73,72 @@ final class IGStoryPreviewHeaderView: UIView {
         return button
     }()
     
-    func loadUIElements(){
-        self.addSubview(progressView)
-        self.addSubview(snaperImageView)
-        self.addSubview(detailView)
+    //MARK: - Private functions
+    private func loadUIElements(){
+        backgroundColor = .clear
+        addSubview(getProgressView())
+        addSubview(snaperImageView)
+        addSubview(detailView)
         detailView.addSubview(snaperNameLabel)
         detailView.addSubview(lastUpdatedLabel)
-        self.addSubview(closeButton)
+        addSubview(closeButton)
     }
-    
-    public func getProgressView()->UIView {
-        return progressView
-    }
-    
-   private func installLayoutConstraints(){
+    private func installLayoutConstraints(){
         //Setting constraints for progressView
-
-        progressView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        progressView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8).isActive = true
-        progressView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        progressView.heightAnchor.constraint(equalToConstant: 10)
+        let pv = getProgressView()
+        NSLayoutConstraint.activate([
+            pv.leftAnchor.constraint(equalTo: self.leftAnchor),
+            pv.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
+            pv.rightAnchor.constraint(equalTo: self.rightAnchor),
+            pv.heightAnchor.constraint(equalToConstant: 10)])
         
         //Setting constraints for snapperImageView
-        
-        snaperImageView.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        snaperImageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10).isActive = true
-        snaperImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0.0)
-        snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0).isActive = true
+        NSLayoutConstraint.activate([
+            snaperImageView.widthAnchor.constraint(equalToConstant: 40),
+            snaperImageView.heightAnchor.constraint(equalToConstant: 40),
+            snaperImageView.leftAnchor.constraint(equalTo: leftAnchor, constant: 10),
+            snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor, constant: 0.0)])
         
         //Setting constraints for detailView
-        detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        detailView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10).isActive = true
-        detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10).isActive = true
+        NSLayoutConstraint.activate([
+            detailView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            detailView.heightAnchor.constraint(equalToConstant: 40),
+            detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
+            detailView.rightAnchor.constraint(equalTo: closeButton.leftAnchor, constant: 10)])
         
         //Setting constraints for closeButton
-        closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        closeButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        closeButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        closeButton.heightAnchor.constraint(equalToConstant:
-            self.frame.height).isActive = true
-        
+        NSLayoutConstraint.activate([
+            closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
+            closeButton.widthAnchor.constraint(equalToConstant: 60),
+            closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
         
         //Setting constraints for snapperNameLabel
-        snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor).isActive = true
-        snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0).isActive = true
-        snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
-        snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor).isActive = true
+        NSLayoutConstraint.activate([
+            snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
+            snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
+            snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
+            snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
         
         //Setting constraints for lastUpdatedLabel
-        lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor).isActive = true
-        lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0).isActive = true
-
+        NSLayoutConstraint.activate([lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
+                                     lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0)])
+        
         layoutIfNeeded()
     }
-
-    public weak var delegate:StoryPreviewHeaderProtocol?
-    fileprivate var snapsPerStory:Int = 0
-    public var story:IGStory? {
-        didSet {
-            snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
-        }
+    private func applyShadowOffset() {
+        layer.masksToBounds = false
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.5
+        layer.shadowOffset = CGSize(width: -1, height: 1)
+        layer.shadowRadius = 1
+    }
+    private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
+        view.layer.cornerRadius = 1
+        view.layer.masksToBounds = true
+        view.backgroundColor = UIColor.white.withAlphaComponent(alpha)
+        view.tag = tag
+        return view
     }
     
     //MARK: - Selectors
@@ -143,38 +147,35 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     //MARK: - Public functions
-    public func clearTheProgressorViews(for snapIndex:Int) {
-        let progressor = progressView.subviews[snapIndex] as? IGSnapProgressView
-        progressor?.stop()
-        progressView.subviews.forEach { v in v.removeFromSuperview()}
+    public func clearTheProgressorSubviews() {
+        getProgressView().subviews.forEach { v in
+            v.subviews.forEach{v in (v as! IGSnapProgressView).stop()}
+            v.removeFromSuperview()
+        }
+    }
+    public func getProgressView()->UIView {
+        if let progressView = self.progressView {
+            return progressView
+        }
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        self.progressView = v
+        self.addSubview(self.getProgressView())
+        return v
     }
     public func createSnapProgressors(){
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding
-        let y:CGFloat = (self.progressView.frame.height/2)-height
+        let y:CGFloat = (self.getProgressView().frame.height/2)-height
         let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
             let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
-            progressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.5))
+            getProgressView().addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))
             let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
-            progressView.addSubview(applyProperties(pv,with: i+progressViewTag))
+            getProgressView().addSubview(applyProperties(pv,with: i+progressViewTag))
             x = x + width + padding
         }
         snaperNameLabel.text = story?.user?.name
-    }
-    
-    private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
-        view.layer.cornerRadius = 1
-        view.layer.masksToBounds = true
-        view.backgroundColor = UIColor.white.withAlphaComponent(alpha)
-        view.tag = tag
-        return view
-    }
-}
-
-extension Int {
-    func toFloat()->CGFloat {
-        return CGFloat(self)
     }
 }

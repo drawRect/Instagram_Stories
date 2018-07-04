@@ -9,27 +9,32 @@
 import Foundation
 import UIKit
 
+/******** UITableViewCell&UICollectionViewCell<Extension> *******************************/
 protocol CellConfigurer:class {
     static func nib()->UINib
     static func reuseIdentifier()->String
 }
 
-extension UICollectionViewCell:CellConfigurer {
+extension CellConfigurer {
     static func nib() -> UINib {
         return UINib.init(nibName: self.reuseIdentifier(), bundle: nil)
     }
-    
-    static func reuseIdentifier()->String{
+    static func reuseIdentifier() -> String{
         return String(describing: self)
     }
 }
 
+extension UICollectionViewCell:CellConfigurer {}
+extension UITableViewCell:CellConfigurer {}
+
+/*************************** UINIB<Extension> ************************************************/
 extension UINib {
-    class func nib(with name:String)->UINib {
+    class func nib(with name:String) -> UINib {
         return UINib.init(nibName: name, bundle: nil)
     }
 }
 
+/*************************** Bundle<Extension> ************************************************/
 extension Bundle {
     static func loadView<T>(with type: T.Type) -> T {
         if let view = Bundle.main.loadNibNamed(String(describing: T.self), owner: nil, options: nil)?.first as? T {
