@@ -65,33 +65,3 @@ extension UIImageView {
         }
     }
 }
-
-/*************************** IGRetryLoader<MISC> ************************************************/
-
-class IGRetryLoaderButton: UIButton {
-    var contentURL: String?
-    var cell: IGStoryPreviewCell?
-    deinit {debugPrint("Retry button removed")}
-}
-extension UIImageView {
-    func addRetryButton(_ cell: UICollectionViewCell, _ url: String) {
-        self.isUserInteractionEnabled = true
-        let button = IGRetryLoaderButton.init(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        button.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
-        button.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
-        button.addTarget(self, action: #selector(didTapRetryBtn), for: .touchUpInside)
-        button.contentURL = url
-        button.cell = cell as? IGStoryPreviewCell
-        button.tag = 100
-        self.addSubview(button)
-    }
-    func removeRetryButton() {
-        self.isUserInteractionEnabled = false
-        self.subviews.forEach({v in
-            if(v.tag == 100){v.removeFromSuperview()}
-        })
-    }
-    @objc func didTapRetryBtn(sender:IGRetryLoaderButton) {
-        sender.cell?.imageRequest(snapView: self, with: sender.contentURL!)
-    }
-}

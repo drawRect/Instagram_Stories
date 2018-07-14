@@ -51,18 +51,18 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    if snap.type == "image" {
+                    if snap.type != "video" {
                         if let url = snap.url {
                             let snapView = createSnapView()
                             startRequest(snapView: snapView, with: url)
                         }
-                        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-                    }else if snap.type == "video" {
+                    }else {
                         if let url = snap.url {
                             let videoView = createVideoView()
                             startPlayer(videoView: videoView, with: url)
                         }
                     }
+                    storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                 }
             }
         }
@@ -132,7 +132,11 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if let error = error {
                 debugPrint(error.localizedDescription)
                 if let _self = self {
-                    snapView.addRetryButton(_self, url)
+                    let retryBtn = IGRetryLoaderButton.init(withURL: url)
+                    retryBtn.center = CGPoint(x: _self.bounds.width/2, y: _self.bounds.height/2)
+                    retryBtn.delegate = self
+                    snapView.isUserInteractionEnabled = true
+                    snapView.addSubview(retryBtn)
                 }
             }else {
                 self?.startProgressors()
@@ -289,4 +293,14 @@ extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
     func didTapCloseButton() {
         delegate?.didTapCloseButton()
     }
+}
+
+//MARK: - Extension|RetryBtnDelegate
+extension IGStoryPreviewCell: RetryBtnDelegate {
+    func retryImageRequest(sender: IGRetryLoaderButton, withURL url: String) {
+        guard let iv = sender.superview as? UIImageView else {return}
+        self.imageRequest(snapView: iv, with: url)
+    }
+    
+    
 }
