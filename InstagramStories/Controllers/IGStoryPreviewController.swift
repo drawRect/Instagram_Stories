@@ -193,3 +193,16 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
         self.dismiss(animated: true, completion:nil)
     }
 }
+
+//MARK:- IGPlayerObserver Protocol implementation
+extension IGStoryPreviewController: IGPlayerObserver {
+    func didCompletePlay(){
+        //        let nextIndex = snapIndex+1
+        //let nextSnap = stories[nextIndex]
+        //videoURL ===> nextSnap.videoURL
+//        let videoURL = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+//        let playerResource = VideoResource.init(filePath: videoURL)
+//        player.play(with: playerResource)
+    }
+    func didTrack(progress:Float){}
+}

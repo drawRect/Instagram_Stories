@@ -12,8 +12,8 @@
 		0748617B1F9D4D0900C1AC1F /* InstagramStoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */; };
 		074D01C120ED577A00628C48 /* IGPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C020ED577A00628C48 /* IGPlayerController.swift */; };
 		074D01C220ED577A00628C48 /* IGPlayerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C020ED577A00628C48 /* IGPlayerController.swift */; };
-		074D01C420ED578D00628C48 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C320ED578D00628C48 /* IGPlayerView.swift */; };
-		074D01C520ED578D00628C48 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C320ED578D00628C48 /* IGPlayerView.swift */; };
+		074D01C420ED578D00628C48 /* IGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C320ED578D00628C48 /* IGPlayer.swift */; };
+		074D01C520ED578D00628C48 /* IGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C320ED578D00628C48 /* IGPlayer.swift */; };
 		0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774D5191F7641AF0089791B /* IGSnapProgressView.swift */; };
 		078E413A1F61E83200222191 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41381F61E83200222191 /* IGSnap.swift */; };
 		078E413B1F61E83200222191 /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41391F61E83200222191 /* IGStory.swift */; };
@@ -36,6 +36,7 @@
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
+		4C37FC4820FA13DF00F898DD /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */; };
 		7E30D4BA2020883600469BEB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E30D4B92020883600469BEB /* Reachability.swift */; };
 		7E58B1C1205EAD15002B3C84 /* IGStoryPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58B1C0205EAD15002B3C84 /* IGStoryPreviewView.swift */; };
 		7E58B1C3205EB2D3002B3C84 /* IGStoryPreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58B1C2205EB2D3002B3C84 /* IGStoryPreviewModel.swift */; };
@@ -58,7 +59,7 @@
 		0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramStoriesTests.swift; sourceTree = "<group>"; };
 		0748617C1F9D4D0900C1AC1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		074D01C020ED577A00628C48 /* IGPlayerController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGPlayerController.swift; path = Modules/Home/Video/IGPlayerController.swift; sourceTree = "<group>"; };
-		074D01C320ED578D00628C48 /* IGPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGPlayerView.swift; path = Modules/Home/Video/IGPlayerView.swift; sourceTree = "<group>"; };
+		074D01C320ED578D00628C48 /* IGPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGPlayer.swift; path = Modules/Home/Video/IGPlayer.swift; sourceTree = "<group>"; };
 		0774D5191F7641AF0089791B /* IGSnapProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnapProgressView.swift; path = Controllers/IGSnapProgressView.swift; sourceTree = "<group>"; };
 		078E41381F61E83200222191 /* IGSnap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnap.swift; path = Models/IGSnap.swift; sourceTree = "<group>"; };
 		078E41391F61E83200222191 /* IGStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStory.swift; path = Models/IGStory.swift; sourceTree = "<group>"; };
@@ -83,6 +84,7 @@
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
+		4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGPlayerView.swift; sourceTree = "<group>"; };
 		7E30D4B92020883600469BEB /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		7E58B1C0205EAD15002B3C84 /* IGStoryPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewView.swift; path = Controllers/IGStoryPreviewView.swift; sourceTree = "<group>"; };
 		7E58B1C2205EB2D3002B3C84 /* IGStoryPreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewModel.swift; sourceTree = "<group>"; };
@@ -122,7 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				074D01C020ED577A00628C48 /* IGPlayerController.swift */,
-				074D01C320ED578D00628C48 /* IGPlayerView.swift */,
+				074D01C320ED578D00628C48 /* IGPlayer.swift */,
+				4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */,
 			);
 			name = Video;
 			sourceTree = "<group>";
@@ -320,7 +323,7 @@
 			attributes = {
 				CLASSPREFIX = IG;
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Dash;
 				TargetAttributes = {
 					074861771F9D4D0900C1AC1F = {
@@ -438,7 +441,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				074D01C220ED577A00628C48 /* IGPlayerController.swift in Sources */,
-				074D01C520ED578D00628C48 /* IGPlayerView.swift in Sources */,
+				074D01C520ED578D00628C48 /* IGPlayer.swift in Sources */,
 				0748617B1F9D4D0900C1AC1F /* InstagramStoriesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,7 +453,7 @@
 				1024C9FB1FAA0D4400237538 /* IGAddStoryCell.swift in Sources */,
 				1024CA011FAA102200237538 /* IGHomeViewModel.swift in Sources */,
 				074861711F9D431A00C1AC1F /* IGMockLoader.swift in Sources */,
-				074D01C420ED578D00628C48 /* IGPlayerView.swift in Sources */,
+				074D01C420ED578D00628C48 /* IGPlayer.swift in Sources */,
 				7E58B1C3205EB2D3002B3C84 /* IGStoryPreviewModel.swift in Sources */,
 				078E41481F62140000222191 /* Color+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,
@@ -470,6 +473,7 @@
 				101422F51FB89147004D3D4F /* IGAdditions.swift in Sources */,
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
+				4C37FC4820FA13DF00F898DD /* IGPlayerView.swift in Sources */,
 				1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */,
 				07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */,
 			);
@@ -553,6 +557,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -560,6 +565,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -609,6 +615,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -616,6 +623,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;

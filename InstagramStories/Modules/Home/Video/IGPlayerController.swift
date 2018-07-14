@@ -67,7 +67,7 @@ class IGPlayerController: UIViewController {
     }
 
 
-    func payVideo() {
+    func playVideo() {
         self.view.addSubview(progressView)
 
         // let interval = CMTimeMake(, 5)

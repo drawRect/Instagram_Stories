@@ -9,7 +9,7 @@
                 "name": "Terasa",
                 "picture": "https://randomuser.me/api/portraits/med/women/1.jpg"
                 },
-                "snaps_count": 3,
+                "snaps_count": 4,
                 "snaps": [
                           {
                           "id": "c1",
@@ -28,6 +28,12 @@
                           "type": "image",
                           "url": "https://wallpaper-house.com/data/out/12/wallpaper2you_575638.jpg",
                           "last_updated": "6h"
+                          },
+                          {
+                          "id": "c4",
+                          "type": "video",
+                          "url": "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                          "last_updated": "6h"
                           }
                           ]
                 },
@@ -42,25 +48,25 @@
                 "snaps_count": 4,
                 "snaps": [
                           {
-                          "id": "c4",
+                          "id": "c5",
                           "type": "image",
                           "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643b980e4b0eaf052b84a23/5643b983e4b00c09aadce12d/1447278987246/Apple-iPhone-5-5s-Wallpaper-Good-Dino-3.jpg",
                           "last_updated": "1m"
                           },
                           {
-                          "id": "c5",
+                          "id": "c6",
                           "type": "image",
                           "url": "https://i.pinimg.com/736x/62/32/ef/6232ef50dd5b94cb97960e22c7c6dafb--galaxy-wallpaper-iphone-iphone-.jpg",
                           "last_updated": "2m"
                           },
                           {
-                          "id": "c6",
+                          "id": "c7",
                           "type": "image",
                           "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643bc81e4b021eb442c7b72/5643bddee4b07810c0b2f749/1447280129681/Samsung-Galaxy-S5-Android-Wallpaper-Good-Dino-2.jpg",
                           "last_updated": "2m"
                           },
                           {
-                          "id": "c7",
+                          "id": "c8",
                           "type": "image",
                           "url": "http://aslania.com/wp-content/uploads/2018/03/best-iphone-7-wallpapers-2.jpg",
                           "last_updated": "2m"

@@ -47,15 +47,14 @@ class VideoPlayer: PlayerControls {
         player.replaceCurrentItem(with: playerItem)
         player.play()
     }
-    
-    
     func pause() {
         //control the player
         player.pause()
     }
     func stop() {
         //control the player
-        //player?.stop()
+        player.pause()
+        player.replaceCurrentItem(with: nil)
     }
     var playerStatus: PlayerStatus {
         switch player.status {
@@ -63,7 +62,6 @@ class VideoPlayer: PlayerControls {
         case .readyToPlay: return .readyToPlay
         case .failed: return .failed
         }
-        return player.rate == 0.0 ? .paused : .playing
     }
 
 }

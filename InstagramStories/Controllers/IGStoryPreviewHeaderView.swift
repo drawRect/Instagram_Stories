@@ -72,11 +72,21 @@ final class IGStoryPreviewHeaderView: UIView {
         button.addTarget(self, action: #selector(didTapClose(_:)), for: .touchUpInside)
         return button
     }()
+    public var getProgressView: UIView {
+        if let progressView = self.progressView {
+            return progressView
+        }
+        let v = UIView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        self.progressView = v
+        self.addSubview(self.getProgressView)
+        return v
+    }
     
     //MARK: - Private functions
     private func loadUIElements(){
         backgroundColor = .clear
-        addSubview(getProgressView())
+        addSubview(getProgressView)
         addSubview(snaperImageView)
         addSubview(detailView)
         detailView.addSubview(snaperNameLabel)
@@ -85,7 +95,7 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     private func installLayoutConstraints(){
         //Setting constraints for progressView
-        let pv = getProgressView()
+        let pv = getProgressView
         NSLayoutConstraint.activate([
             pv.leftAnchor.constraint(equalTo: self.leftAnchor),
             pv.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
@@ -116,13 +126,13 @@ final class IGStoryPreviewHeaderView: UIView {
         //Setting constraints for snapperNameLabel
         NSLayoutConstraint.activate([
             snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
-            snaperNameLabel.trailingAnchor.constraint(equalTo: lastUpdatedLabel.leadingAnchor, constant: -10.0),
+            lastUpdatedLabel.leftAnchor.constraint(equalTo: snaperNameLabel.rightAnchor, constant: 10.0),
             snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
             snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)])
         
         //Setting constraints for lastUpdatedLabel
         NSLayoutConstraint.activate([lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
-                                     lastUpdatedLabel.leadingAnchor.constraint(equalTo: snaperNameLabel.trailingAnchor,constant:10.0)])
+                                     lastUpdatedLabel.leftAnchor.constraint(equalTo: snaperNameLabel.rightAnchor, constant:10.0)])
         
         layoutIfNeeded()
     }
@@ -148,32 +158,23 @@ final class IGStoryPreviewHeaderView: UIView {
     
     //MARK: - Public functions
     public func clearTheProgressorSubviews() {
-        getProgressView().subviews.forEach { v in
+        getProgressView.subviews.forEach { v in
             v.subviews.forEach{v in (v as! IGSnapProgressView).stop()}
             v.removeFromSuperview()
         }
     }
-    public func getProgressView()->UIView {
-        if let progressView = self.progressView {
-            return progressView
-        }
-        let v = UIView()
-        v.translatesAutoresizingMaskIntoConstraints = false
-        self.progressView = v
-        self.addSubview(self.getProgressView())
-        return v
-    }
+    
     public func createSnapProgressors(){
         let padding:CGFloat = 8 //GUI-Padding
         let height:CGFloat = 3
         var x:CGFloat = padding
-        let y:CGFloat = (self.getProgressView().frame.height/2)-height
+        let y:CGFloat = (self.getProgressView.frame.height/2)-height
         let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
         for i in 0..<snapsPerStory{
             let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
-            getProgressView().addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))
+            getProgressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))
             let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
-            getProgressView().addSubview(applyProperties(pv,with: i+progressViewTag))
+            getProgressView.addSubview(applyProperties(pv,with: i+progressViewTag))
             x = x + width + padding
         }
         snaperNameLabel.text = story?.user?.name

@@ -40,17 +40,29 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         lp.minimumPressDuration = 0.2
         return lp
     }()
-    
+    private var previousSnapIndex: Int {
+        return snapIndex - 1
+    }
+    private var snapViewXPos: CGFloat {
+        return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
+    }
     //MARK:- Public iVars
     public var snapIndex: Int = 0 {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    if let url = snap.url {
-                        let snapView = createSnapView()
-                        startRequest(snapView: snapView, with: url)
+                    if snap.type == "image" {
+                        if let url = snap.url {
+                            let snapView = createSnapView()
+                            startRequest(snapView: snapView, with: url)
+                        }
+                        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
+                    }else if snap.type == "video" {
+                        if let url = snap.url {
+                            let videoView = createVideoView()
+                            startPlayer(videoView: videoView, with: url)
+                        }
                     }
-                    storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                 }
             }
         }
@@ -103,12 +115,16 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
     private func createSnapView() -> UIImageView {
-        let previousSnapIndex = snapIndex - 1
-        let x_value = (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
-        let snapView = UIImageView.init(frame: CGRect(x: x_value, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let snapView = UIImageView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
         return snapView
+    }
+    private func createVideoView() -> IGPlayerView {
+        let videoView = IGPlayerView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        videoView.tag = snapIndex + snapViewTagIndicator
+        scrollview.addSubview(videoView)
+        return videoView
     }
     private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
@@ -122,6 +138,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 self?.startProgressors()
             }
         })
+    }
+    private func startPlayer(videoView: IGPlayerView, with url: String) {
+        let videoResource = VideoResource(filePath: url)
+        videoView.startPlayer(withResource: videoResource)
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
@@ -157,14 +177,14 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         }
     }
     private func getProgressView(with index: Int) -> IGSnapProgressView? {
-        let progressView = storyHeaderView.getProgressView()
+        let progressView = storyHeaderView.getProgressView
         if progressView.subviews.count>0 {
             return progressView.subviews.filter({v in v.tag == index+progressViewTag}).first as? IGSnapProgressView
         }
         return nil
     }
     private func getProgressIndicatorView(with index: Int) -> UIView? {
-        let progressView = storyHeaderView.getProgressView()
+        let progressView = storyHeaderView.getProgressView
         if progressView.subviews.count>0 {
             return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first
         }else{
@@ -220,7 +240,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     
     //MARK:- Internal functions
-    internal func startProgressors() {
+    func startProgressors() {
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
             if imageView?.image != nil && story?.isCompletelyVisible == true {
