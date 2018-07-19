@@ -9,6 +9,35 @@
 import Foundation
 import UIKit
 
+precedencegroup AppendingElements {
+    associativity: left
+}
+infix operator ++: AppendingElements
+func ++ <A,B>(x: A, f: (A) -> B) -> B {
+    return f(x)
+}
+protocol Anchors {
+    func leftAnchor(equalTo constraint: NSLayoutXAxisAnchor, constant: CGFloat) -> NSLayoutConstraint
+    func rightAnchor(equalTo constraint: NSLayoutXAxisAnchor, constant: CGFloat) -> NSLayoutConstraint
+    func topAnchor(equalTo constraint: NSLayoutYAxisAnchor, constant: CGFloat) -> NSLayoutConstraint
+    func bottomAnchor(equalTo constraint: NSLayoutYAxisAnchor, constant: CGFloat) -> NSLayoutConstraint
+}
+extension Anchors where Self: UIView {
+    func leftAnchor(equalTo constraint: NSLayoutXAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
+         self.leftAnchor.constraint(equalTo: constraint, constant: constant)
+    }
+    func rightAnchor(equalTo constraint: NSLayoutXAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
+        self.rightAnchor.constraint(equalTo: constraint, constant: constant)
+    }
+    func topAnchor(equalTo constraint: NSLayoutYAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
+        self.topAnchor.constraint(equalTo: constraint, constant: constant)
+    }
+    func bottomAnchor(equalTo constraint: NSLayoutYAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
+        self.bottomAnchor.constraint(equalTo: constraint, constant: constant)
+    }
+}
+extension UIView: Anchors {}
+
 class IGHomeView: UIView {
     
     //MARK: - iVars
@@ -46,10 +75,20 @@ class IGHomeView: UIView {
         addSubview(collectionView)
     }
     private func installLayoutConstraints(){
-        NSLayoutConstraint.activate([
+        //New way
+        var layoutConstraints: [NSLayoutConstraint] = {
+            let lConstraint = [NSLayoutConstraint]()
+        lConstraint
+            ++ Array(collectionView.leftAnchor(equalTo: self.leftAnchor, constant: 8))
+            ++ Array(collectionView.rightAnchor(equalTo: self.rightAnchor))
+            return lConstraint
+        }()
+        
+        //Old way
+        /*NSLayoutConstraint.activate([
             collectionView.leftAnchor.constraint(equalTo: leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: rightAnchor),
             collectionView.topAnchor.constraint(equalTo: topAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 100)])
+            collectionView.heightAnchor.constraint(equalToConstant: 100)])*/
     }
 }
