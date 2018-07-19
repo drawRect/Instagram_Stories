@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol RetryBtnDelegate: class {
-    func retryImageRequest(sender: IGRetryLoaderButton, withURL url: String)
+    func retryBtnAction(sender: IGRetryLoaderButton, withURL url: String)
 }
 
 public class IGRetryLoaderButton: UIButton {
@@ -19,6 +19,7 @@ public class IGRetryLoaderButton: UIButton {
     deinit {debugPrint("Retry button removed")}
     convenience init(withURL url: String) {
         self.init()
+        self.backgroundColor = .white
         self.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         self.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
         self.addTarget(self, action: #selector(didTapRetryBtn(sender:)), for: .touchUpInside)
@@ -26,7 +27,7 @@ public class IGRetryLoaderButton: UIButton {
         self.tag = 100
     }
     @objc func didTapRetryBtn(sender: IGRetryLoaderButton) {
-        delegate?.retryImageRequest(sender: sender, withURL: sender.contentURL!)
+        delegate?.retryBtnAction(sender: sender, withURL: sender.contentURL!)
     }
 }
 

@@ -13,14 +13,14 @@
                 "snaps": [
                           {
                           "id": "c1",
-                          "type": "image",
-                          "url": "https://mk0valuewalkgcar7lmc.kinstacdn.com/wp-content/uploads/2017/10/iPhone-X-presentation-wallpaper-ar72014-576x1024-576x1024.jpg",
+                          "type": "video",
+                          "url": "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
                           "last_updated": "12h"
                           },
                           {
                           "id": "c2",
                           "type": "image",
-                          "url": "http://gadgetwallpicture.com/wp-content/uploads/2018/03/Epic-Good-Wallpapers-For-Iphone-6-51-For-Your-Interior-Design-For-Home-Remodeling-with-Good-Wallpapers-For-Iphone-6.jpg",
+                          "url": "https://i.pinimg.com/736x/a1/d4/ea/a1d4ea964c62603ec20acd16eb0e5c85.jpg",
                           "last_updated": "7h"
                           },
                           {
@@ -31,8 +31,8 @@
                           },
                           {
                           "id": "c4",
-                          "type": "video",
-                          "url": "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                          "type": "image",
+                          "url": "https://r1.ilikewallpaper.net/iphone-8-wallpapers/download/35756/Sunset-Nature-Mountain-Wood-Red-Sky-Lake-iphone-8-wallpaper-ilikewallpaper_com.jpg",
                           "last_updated": "6h"
                           }
                           ]

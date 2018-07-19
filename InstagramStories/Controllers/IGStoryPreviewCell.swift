@@ -9,6 +9,11 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
+enum SnapType {
+    case image
+    case video
+}
+
 protocol StoryPreviewProtocol: class {
     func didCompletePreview()
     func didTapCloseButton()
@@ -144,16 +149,40 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         })
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
+        
         let videoResource = VideoResource(filePath: url)
         videoView.startPlayer(withResource: videoResource)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {[weak self] in
+            if videoView.player.player.error == nil {
+                self?.startProgressors()
+            }else {
+                let retryBtn = IGRetryLoaderButton.init(withURL: url)
+                retryBtn.center = CGPoint(x: videoView.bounds.width/2, y: videoView.bounds.height/2)
+                retryBtn.delegate = self
+                videoView.isUserInteractionEnabled = true
+                videoView.addSubview(retryBtn)
+            }
+        }
+        
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
             let v = getProgressView(with: snapIndex)
+            let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if sender.state == .began {
-                v?.pause()
+                if videoView != nil {
+                    v?.pause()
+                    videoView?.player.pause()
+                }else {
+                    v?.pause()
+                }
             }else {
-                v?.resume()
+                if videoView != nil {
+                    v?.resume()
+                    videoView?.player.player.play()
+                }else {
+                    v?.resume()
+                }
             }
         }
     }
@@ -233,13 +262,21 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    @objc private func gearupTheProgressors() {
+    private func gearupTheProgressors(type: SnapType, playerView: IGPlayerView? = nil) {
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
-            progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier) in
-                self.didCompleteProgress()
-            })
+            if type == .image {
+                progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier) in
+                    self.didCompleteProgress()
+                })
+            }else {
+                if let duration = playerView?.player.player.currentItem?.asset.duration {
+                    progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier) in
+                        self.didCompleteProgress()
+                    })
+                }
+            }
         }
     }
     
@@ -248,7 +285,14 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         if scrollview.subviews.count > 0 {
             let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
             if imageView?.image != nil && story?.isCompletelyVisible == true {
-                    self.gearupTheProgressors()
+                self.gearupTheProgressors(type: .image)
+            } else {
+                if story?.isCompletelyVisible == true {
+                    let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+                    if videoView?.player.error == nil && story?.isCompletelyVisible == true {
+                        self.gearupTheProgressors(type: .video, playerView: videoView)
+                    }
+                }
             }
         }
     }
@@ -282,9 +326,14 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         getProgressView(with: sIndex)?.resume()
     }
     //Used the below function for image retry option
-    public func imageRequest(snapView:UIImageView, with url: String) {
-        snapView.removeRetryButton()
-        self.startRequest(snapView: snapView, with: url)
+    public func retryRequest(view: UIView, with url: String) {
+        if let v = view as? UIImageView {
+            v.removeRetryButton()
+            self.startRequest(snapView: v, with: url)
+        }else if let v = view as? IGPlayerView {
+            v.removeRetryButton()
+            self.startPlayer(videoView: v, with: url)
+        }
     }
 }
 
@@ -297,10 +346,8 @@ extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
 
 //MARK: - Extension|RetryBtnDelegate
 extension IGStoryPreviewCell: RetryBtnDelegate {
-    func retryImageRequest(sender: IGRetryLoaderButton, withURL url: String) {
-        guard let iv = sender.superview as? UIImageView else {return}
-        self.imageRequest(snapView: iv, with: url)
+    func retryBtnAction(sender: IGRetryLoaderButton, withURL url: String) {
+        guard let v = sender.superview else {return}
+        self.retryRequest(view: v, with: url)
     }
-    
-    
 }
