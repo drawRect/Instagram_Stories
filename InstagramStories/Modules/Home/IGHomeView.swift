@@ -24,16 +24,16 @@ protocol Anchors {
 }
 extension Anchors where Self: UIView {
     func leftAnchor(equalTo constraint: NSLayoutXAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
-         self.leftAnchor.constraint(equalTo: constraint, constant: constant)
+        return self.leftAnchor.constraint(equalTo: constraint, constant: constant)
     }
     func rightAnchor(equalTo constraint: NSLayoutXAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
-        self.rightAnchor.constraint(equalTo: constraint, constant: constant)
+        return self.rightAnchor.constraint(equalTo: constraint, constant: constant)
     }
     func topAnchor(equalTo constraint: NSLayoutYAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
-        self.topAnchor.constraint(equalTo: constraint, constant: constant)
+        return self.topAnchor.constraint(equalTo: constraint, constant: constant)
     }
     func bottomAnchor(equalTo constraint: NSLayoutYAxisAnchor, constant: CGFloat = 8) -> NSLayoutConstraint {
-        self.bottomAnchor.constraint(equalTo: constraint, constant: constant)
+        return self.bottomAnchor.constraint(equalTo: constraint, constant: constant)
     }
 }
 extension UIView: Anchors {}
