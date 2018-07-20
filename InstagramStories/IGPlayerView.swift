@@ -27,7 +27,9 @@ class IGPlayerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    deinit {
+        print("IGPlayerview got deallocated")
+    }
     //MARK:- Public methods
     public func startPlayer(withResource resource: VideoResource) {
         player.play(with: resource)

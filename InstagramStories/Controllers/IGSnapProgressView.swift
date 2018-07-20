@@ -9,18 +9,20 @@
 import UIKit
 
 protocol ViewAnimator:class {
-    func start(with duration:TimeInterval,width:CGFloat, completion:@escaping (String)->())
+    func start(with duration:TimeInterval,width:CGFloat, completion:@escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void)
     func resume()
     func pause()
     func stop()
+    func reset()
 }
 extension ViewAnimator where Self:IGSnapProgressView {
-    func start(with duration:TimeInterval,width:CGFloat, completion: @escaping (String)->()){
+    func start(with duration:TimeInterval,width:CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void){
+        //self.isCancelledAbruptly = false
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
             self?.frame.size.width = width
         }) { (finished) in
             if finished == true {
-                completion(self.story_identifier!)
+                completion(self.story_identifier!, self.isCancelledAbruptly)
             }
         }
     }
@@ -41,8 +43,13 @@ extension ViewAnimator where Self:IGSnapProgressView {
         resume()
         layer.removeAllAnimations()
     }
+    func reset() {
+        self.isCancelledAbruptly = true
+        self.frame.size.width = 0
+    }
 }
 
 final class IGSnapProgressView:UIView,ViewAnimator{
     public var story_identifier:String?
+    public var isCancelledAbruptly: Bool = false
 }
