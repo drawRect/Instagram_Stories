@@ -9,11 +9,6 @@
 import UIKit
 import AnimatedCollectionViewLayout
 
-enum SnapType {
-    case image
-    case video
-}
-
 protocol StoryPreviewProtocol: class {
     func didCompletePreview()
     func didTapCloseButton()
@@ -56,7 +51,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         didSet {
             if snapIndex < story?.snapsCount ?? 0 {
                 if let snap = story?.snaps?[snapIndex] {
-                    if snap.type != "video" {
+                    if snap.kind != MimeType.video {
                         if let url = snap.url {
                             let snapView = createSnapView()
                             startRequest(snapView: snapView, with: url)
@@ -120,7 +115,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
     private func createSnapView() -> UIImageView {
-        let snapView = UIImageView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
         return snapView
@@ -131,17 +126,19 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         scrollview.addSubview(videoView)
         return videoView
     }
+    var retryBtn: IGRetryLoaderButton!
+
     private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
             (result, error) in
             if let error = error {
                 debugPrint(error.localizedDescription)
                 if let _self = self {
-                    let retryBtn = IGRetryLoaderButton.init(withURL: url)
-                    retryBtn.center = CGPoint(x: _self.bounds.width/2, y: _self.bounds.height/2)
-                    retryBtn.delegate = self
+                     _self.retryBtn = IGRetryLoaderButton.init(withURL: url)
+                    _self.retryBtn.center = CGPoint(x: _self.bounds.width/2, y: _self.bounds.height/2)
+                    _self.retryBtn.delegate = self
                     snapView.isUserInteractionEnabled = true
-                    snapView.addSubview(retryBtn)
+                    snapView.addSubview(_self.retryBtn)
                 }
             }else {
                 self?.startProgressors()
@@ -153,15 +150,20 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         let videoResource = VideoResource(filePath: url)
         videoView.startPlayer(withResource: videoResource)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {[weak self] in
-            if videoView.player.player.error == nil {
+
+//            if videoView.player.player.status == .failed {
+//                debugPrint("Something is happend!")
+//                return
+//            }
+//            if videoView.player.player.status == .unknown {
                 self?.startProgressors()
-            }else {
-                let retryBtn = IGRetryLoaderButton.init(withURL: url)
-                retryBtn.center = CGPoint(x: videoView.bounds.width/2, y: videoView.bounds.height/2)
-                retryBtn.delegate = self
-                videoView.isUserInteractionEnabled = true
-                videoView.addSubview(retryBtn)
-            }
+//            }else {
+//                let retryBtn = IGRetryLoaderButton.init(withURL: url)
+//                retryBtn.center = CGPoint(x: videoView.bounds.width/2, y: videoView.bounds.height/2)
+//                retryBtn.delegate = self
+//                videoView.isUserInteractionEnabled = true
+//                videoView.addSubview(retryBtn)
+//            }
         }
         
     }
@@ -262,7 +264,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    private func gearupTheProgressors(type: SnapType, playerView: IGPlayerView? = nil) {
+    private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
@@ -346,8 +348,7 @@ extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
 
 //MARK: - Extension|RetryBtnDelegate
 extension IGStoryPreviewCell: RetryBtnDelegate {
-    func retryBtnAction(sender: IGRetryLoaderButton, withURL url: String) {
-        guard let v = sender.superview else {return}
-        self.retryRequest(view: v, with: url)
+    func retryButtonTapped() {
+        self.retryRequest(view: retryBtn.superview!, with: retryBtn.contentURL!)
     }
 }

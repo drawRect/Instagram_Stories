@@ -10,7 +10,7 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    lazy var window: UIWindow? = { let w =  UIWindow()
+    let window: UIWindow = { let w =  UIWindow()
         w.backgroundColor = .white
         w.makeKeyAndVisible()
         return w }()
@@ -25,6 +25,6 @@ extension AppDelegate {
      func rootSceneSetup() {
         let nc:UINavigationController = UINavigationController(rootViewController: IGHomeController())
         nc.navigationBar.isTranslucent = false
-        window?.rootViewController = nc
+        window.rootViewController = nc
     }
 }

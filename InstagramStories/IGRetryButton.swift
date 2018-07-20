@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 protocol RetryBtnDelegate: class {
-    func retryBtnAction(sender: IGRetryLoaderButton, withURL url: String)
+    func retryButtonTapped()
 }
 
 public class IGRetryLoaderButton: UIButton {
@@ -22,12 +22,12 @@ public class IGRetryLoaderButton: UIButton {
         self.backgroundColor = .white
         self.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         self.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
-        self.addTarget(self, action: #selector(didTapRetryBtn(sender:)), for: .touchUpInside)
+        self.addTarget(self, action: #selector(didTapRetryBtn), for: .touchUpInside)
         self.contentURL = url
         self.tag = 100
     }
-    @objc func didTapRetryBtn(sender: IGRetryLoaderButton) {
-        delegate?.retryBtnAction(sender: sender, withURL: sender.contentURL!)
+    @objc func didTapRetryBtn() {
+        delegate?.retryButtonTapped()
     }
 }
 

@@ -13,25 +13,25 @@
                 "snaps": [
                           {
                           "id": "c1",
-                          "type": "video",
+                          "mime_type": "video",
                           "url": "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
                           "last_updated": "12h"
                           },
                           {
                           "id": "c2",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://i.pinimg.com/736x/a1/d4/ea/a1d4ea964c62603ec20acd16eb0e5c85.jpg",
                           "last_updated": "7h"
                           },
                           {
                           "id": "c3",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://wallpaper-house.com/data/out/12/wallpaper2you_575638.jpg",
                           "last_updated": "6h"
                           },
                           {
                           "id": "c4",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://r1.ilikewallpaper.net/iphone-8-wallpapers/download/35756/Sunset-Nature-Mountain-Wood-Red-Sky-Lake-iphone-8-wallpaper-ilikewallpaper_com.jpg",
                           "last_updated": "6h"
                           }
@@ -49,25 +49,25 @@
                 "snaps": [
                           {
                           "id": "c5",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643b980e4b0eaf052b84a23/5643b983e4b00c09aadce12d/1447278987246/Apple-iPhone-5-5s-Wallpaper-Good-Dino-3.jpg",
                           "last_updated": "1m"
                           },
                           {
                           "id": "c6",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://i.pinimg.com/736x/62/32/ef/6232ef50dd5b94cb97960e22c7c6dafb--galaxy-wallpaper-iphone-iphone-.jpg",
                           "last_updated": "2m"
                           },
                           {
                           "id": "c7",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643bc81e4b021eb442c7b72/5643bddee4b07810c0b2f749/1447280129681/Samsung-Galaxy-S5-Android-Wallpaper-Good-Dino-2.jpg",
                           "last_updated": "2m"
                           },
                           {
                           "id": "c8",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "http://aslania.com/wp-content/uploads/2018/03/best-iphone-7-wallpapers-2.jpg",
                           "last_updated": "2m"
                           }
@@ -85,31 +85,31 @@
                 "snaps": [
                           {
                           "id": "c11",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "http://www.appleplans.co.uk/wp-content/uploads/2017/03/If-it-looks-good-and-all.jpg",
                           "last_updated": "8m"
                           },
                           {
                           "id": "c12",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://theultralinx.com/.image/t_share/MTQxOTUxNzg4ODkwNDAwNDUy/212iphoneiphone-wallpaperswallpapers1jpg.jpg",
                           "last_updated": "9m"
                           },
                           {
                           "id": "c13",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://hdqwalls.com/download/8-bit-pixel-art-city-2o-1280x2120.jpg",
                           "last_updated": "10m"
                           },
                           {
                           "id": "c14",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://i-cdn.phonearena.com/images/articles/257597-image/boom.jpg",
                           "last_updated": "11m"
                           },
                           {
                           "id": "c15",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "http://www.designbolts.com/wp-content/uploads/2017/04/paris-iPhone-7-Wallpaper-HD.jpg",
                           "last_updated": "12m"
                           }
@@ -128,19 +128,19 @@
                 "snaps": [
                           {
                           "id": "c16",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "http://aslania.com/wp-content/uploads/2018/03/best-iphone-7-wallpapers-9.jpg",
                           "last_updated": "14m"
                           },
                           {
                           "id": "c17",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://www.droidviews.com/wp-content/uploads/2016/09/iOS10_wall_droidviews_021.jpg",
                           "last_updated": "15m"
                           },
                           {
                           "id": "c18",
-                          "type": "image",
+                          "mime_type": "image",
                           "url": "https://boygeniusreport.files.wordpress.com/2016/11/papers-co-ni07-night-drive-car-light-red-dark-34-iphone6-plus-wallpaper.jpg",
                           "last_updated": "16m"
                           }
