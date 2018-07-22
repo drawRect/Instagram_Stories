@@ -17,12 +17,17 @@ protocol ViewAnimator:class {
 }
 extension ViewAnimator where Self:IGSnapProgressView {
     func start(with duration:TimeInterval,width:CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void){
-        //self.isCancelledAbruptly = false
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
-            self?.frame.size.width = width
-        }) { (finished) in
+            if let _self = self {
+                _self.frame.size.width = width
+            }
+        }) { [weak self](finished) in
             if finished == true {
-                completion(self.story_identifier!, self.isCancelledAbruptly)
+                if let _self = self {
+                    let cancelledAbruptly = _self.isCancelledAbruptly
+                    _self.isCancelledAbruptly = false
+                    completion(_self.story_identifier!, cancelledAbruptly)
+                }
             }
         }
     }
