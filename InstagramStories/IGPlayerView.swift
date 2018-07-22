@@ -48,13 +48,22 @@ class IGPlayerView: UIView {
     var error: Error? {
         return player.currentItem?.error
     }
-
+    var activityIndicator: UIActivityIndicatorView
+    
     //MARK:- Init methods
     override init(frame: CGRect) {
         playerLayer = AVPlayerLayer(player: player)
+        activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+        activityIndicator.hidesWhenStopped = true
         super.init(frame: frame)
+        playerLayer.videoGravity = .resize
+        backgroundColor = UIColor.rgb(from: 0xEDF0F1)
+        activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
+        
+        //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
         playerLayer.frame = self.bounds
         self.layer.addSublayer(playerLayer)
+        self.addSubview(activityIndicator)
         player.addPeriodicTimeObserver(forInterval: CMTimeMake(1, 100), queue: DispatchQueue.main) {
             [weak self] time in
             let timeString = String(format: "%02.2f", CMTimeGetSeconds(time))
@@ -90,7 +99,8 @@ extension IGPlayerView: PlayerControls {
         let url = URL.init(string: resource.filePath)!
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
-        
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
         
         // Add observer for AVPlayer status and AVPlayerItem status
         self.player.addObserver(self, forKeyPath: "status", options: [.old, .new], context: nil)
@@ -133,6 +143,7 @@ extension IGPlayerView: PlayerControls {
                 if #available(iOS 10.0, *) {
                     if player.timeControlStatus == .playing {
                         print("Playing")
+                        activityIndicator.stopAnimating()
                         playerObserverDelegate?.didStartPlaying()
                     } else {
                         //

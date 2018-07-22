@@ -85,7 +85,16 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                     }
                 }
-            case .backward: return
+            case .backward:
+                if let snap = story?.snaps?[snapIndex] {
+                    if snap.kind != MimeType.video {
+                        if let url = snap.url {
+                            let videoView = self.createVideoView()
+                            self.startPlayer(videoView: videoView, with: url)
+                        }
+                    }
+                }
+                return
             }
             
         }
@@ -222,6 +231,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 }
             }
             if n != snapIndex {
+                if videoView != nil {
+                    videoView?.stop()
+                }
                 willMoveToNextSnap(n: n)
             }
         }
