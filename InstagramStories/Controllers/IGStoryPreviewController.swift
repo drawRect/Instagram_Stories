@@ -106,7 +106,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if let vCell = visibleCell {
             debugPrint(#function + "Visible Cell" + "\(visibleCell!.story!.user!.name.debugDescription)")
             vCell.story?.isCompletelyVisible = false
-            vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+            vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
             story_copy = vCell.story
         }
         
@@ -129,6 +129,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            vCell.resumePlayer()
         }else {
             vCell.startProgressors()
         }
@@ -149,7 +150,8 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+        vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+        vCell.pausePlayer()
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
@@ -194,7 +196,7 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
     }
 }
 
-//MARK:- IGPlayerObserver Protocol implementation
+/*//MARK:- IGPlayerObserver Protocol implementation
 extension IGStoryPreviewController: IGPlayerObserver {
     func didCompletePlay(){
         //        let nextIndex = snapIndex+1
@@ -205,4 +207,4 @@ extension IGStoryPreviewController: IGPlayerObserver {
 //        player.play(with: playerResource)
     }
     func didTrack(progress:Float){}
-}
+}*/

@@ -23,10 +23,10 @@ extension ViewAnimator where Self:IGSnapProgressView {
             }
         }) { [weak self](finished) in
             if finished == true {
-                if let _self = self {
-                    let cancelledAbruptly = _self.isCancelledAbruptly
-                    _self.isCancelledAbruptly = false
-                    completion(_self.story_identifier!, cancelledAbruptly)
+                if let strongSelf = self {
+                    let cancelledAbruptly = strongSelf.isCancelledAbruptly
+                    strongSelf.isCancelledAbruptly = false
+                    completion(strongSelf.story_identifier!, cancelledAbruptly)
                 }
             }
         }

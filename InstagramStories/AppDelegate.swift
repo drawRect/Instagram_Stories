@@ -10,10 +10,12 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-    let window: UIWindow = { let w =  UIWindow()
+    let window: UIWindow = {
+        let w = UIWindow()
         w.backgroundColor = .white
         w.makeKeyAndVisible()
-        return w }()
+        return w
+    }()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         rootSceneSetup()

@@ -10,8 +10,6 @@
 		0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0743496C1F782FFD00F02228 /* IGConstants.swift */; };
 		074861711F9D431A00C1AC1F /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074861701F9D431A00C1AC1F /* IGMockLoader.swift */; };
 		0748617B1F9D4D0900C1AC1F /* InstagramStoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */; };
-		074D01C420ED578D00628C48 /* IGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C320ED578D00628C48 /* IGPlayer.swift */; };
-		074D01C520ED578D00628C48 /* IGPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 074D01C320ED578D00628C48 /* IGPlayer.swift */; };
 		0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0774D5191F7641AF0089791B /* IGSnapProgressView.swift */; };
 		078E413A1F61E83200222191 /* IGSnap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41381F61E83200222191 /* IGSnap.swift */; };
 		078E413B1F61E83200222191 /* IGStory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 078E41391F61E83200222191 /* IGStory.swift */; };
@@ -57,7 +55,6 @@
 		074861781F9D4D0900C1AC1F /* InstagramStoriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramStoriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramStoriesTests.swift; sourceTree = "<group>"; };
 		0748617C1F9D4D0900C1AC1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		074D01C320ED578D00628C48 /* IGPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGPlayer.swift; path = Modules/Home/Video/IGPlayer.swift; sourceTree = "<group>"; };
 		0774D5191F7641AF0089791B /* IGSnapProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnapProgressView.swift; path = Controllers/IGSnapProgressView.swift; sourceTree = "<group>"; };
 		078E41381F61E83200222191 /* IGSnap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGSnap.swift; path = Models/IGSnap.swift; sourceTree = "<group>"; };
 		078E41391F61E83200222191 /* IGStory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStory.swift; path = Models/IGStory.swift; sourceTree = "<group>"; };
@@ -119,13 +116,12 @@
 			path = InstagramStoriesTests;
 			sourceTree = "<group>";
 		};
-		074D01BF20ED575500628C48 /* Video */ = {
+		074D01BF20ED575500628C48 /* IGPlayerView */ = {
 			isa = PBXGroup;
 			children = (
-				074D01C320ED578D00628C48 /* IGPlayer.swift */,
 				4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */,
 			);
-			name = Video;
+			name = IGPlayerView;
 			sourceTree = "<group>";
 		};
 		078E41231F61A3E000222191 /* Stubs */ = {
@@ -202,7 +198,7 @@
 				1024CA001FAA102200237538 /* IGHomeViewModel.swift */,
 				1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */,
 				1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */,
-				074D01BF20ED575500628C48 /* Video */,
+				074D01BF20ED575500628C48 /* IGPlayerView */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -439,7 +435,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				074D01C520ED578D00628C48 /* IGPlayer.swift in Sources */,
 				0748617B1F9D4D0900C1AC1F /* InstagramStoriesTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -451,7 +446,6 @@
 				1024C9FB1FAA0D4400237538 /* IGAddStoryCell.swift in Sources */,
 				1024CA011FAA102200237538 /* IGHomeViewModel.swift in Sources */,
 				074861711F9D431A00C1AC1F /* IGMockLoader.swift in Sources */,
-				074D01C420ED578D00628C48 /* IGPlayer.swift in Sources */,
 				7E58B1C3205EB2D3002B3C84 /* IGStoryPreviewModel.swift in Sources */,
 				078E41481F62140000222191 /* Color+Additions.swift in Sources */,
 				109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */,

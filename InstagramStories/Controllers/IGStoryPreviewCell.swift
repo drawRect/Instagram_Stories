@@ -54,8 +54,13 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     private var snapViewXPos: CGFloat {
         return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
     }
+    private var videoView: IGPlayerView?
+    
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
+    public var isPlayerExist: Bool {
+        return videoView != nil ? true : false
+    }
     public var snapIndex: Int = 0 {
         didSet {
             switch direction {
@@ -69,8 +74,12 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                             }
                         }else {
                             if let url = snap.url {
-                                let videoView = createVideoView()
-                                startPlayer(videoView: videoView, with: url)
+                                DispatchQueue.main.async {[weak self] in
+                                    if let strongSelf = self {
+                                        let videoView = strongSelf.createVideoView()
+                                        strongSelf.startPlayer(videoView: videoView, with: url)
+                                    }
+                                }
                             }
                         }
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
@@ -138,6 +147,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     private func createVideoView() -> IGPlayerView {
         let videoView = IGPlayerView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         videoView.tag = snapIndex + snapViewTagIndicator
+        self.videoView = videoView
+        self.videoView?.playerObserverDelegate = self
         scrollview.addSubview(videoView)
         return videoView
     }
@@ -149,7 +160,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if let error = error {
                 debugPrint(error.localizedDescription)
                 if let _self = self {
-                     _self.retryBtn = IGRetryLoaderButton.init(withURL: url)
+                    _self.retryBtn = IGRetryLoaderButton.init(withURL: url)
                     _self.retryBtn.center = CGPoint(x: _self.bounds.width/2, y: _self.bounds.height/2)
                     _self.retryBtn.delegate = self
                     snapView.isUserInteractionEnabled = true
@@ -161,26 +172,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         })
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
-        
         let videoResource = VideoResource(filePath: url)
-        videoView.startPlayer(withResource: videoResource)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5) {[weak self] in
-
-//            if videoView.player.player.status == .failed {
-//                debugPrint("Something is happend!")
-//                return
-//            }
-//            if videoView.player.player.status == .unknown {
-                self?.startProgressors()
-//            }else {
-//                let retryBtn = IGRetryLoaderButton.init(withURL: url)
-//                retryBtn.center = CGPoint(x: videoView.bounds.width/2, y: videoView.bounds.height/2)
-//                retryBtn.delegate = self
-//                videoView.isUserInteractionEnabled = true
-//                videoView.addSubview(retryBtn)
-//            }
-        }
-        
+        videoView.play(with: videoResource)
+        self.startProgressors()
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
@@ -189,14 +183,14 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             if sender.state == .began {
                 if videoView != nil {
                     v?.pause()
-                    videoView?.player.pause()
+                    videoView?.pause()
                 }else {
                     v?.pause()
                 }
             }else {
                 if videoView != nil {
                     v?.resume()
-                    videoView?.player.player.play()
+                    videoView?.play()
                 }else {
                     v?.resume()
                 }
@@ -336,13 +330,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                     }
                 })
             }else {
-                if let duration = playerView?.player.player.currentItem?.asset.duration {
-                    progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier, isCancelledAbruptly) in
-                        if isCancelledAbruptly == false {
-                            self.didCompleteProgress()
-                        }
-                    })
-                }
+                //Handled in delegate methods for videos
             }
         }
     }
@@ -356,7 +344,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             } else {
                 if story?.isCompletelyVisible == true {
                     let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-                    if videoView?.player.error == nil && story?.isCompletelyVisible == true {
+                    if videoView?.error == nil && (story?.isCompletelyVisible)! == true {
                         self.gearupTheProgressors(type: .video, playerView: videoView)
                     }
                 }
@@ -381,16 +369,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         //Remove the previous observors
         NotificationCenter.default.removeObserver(self)
     }
-    public func stopPreviousProgressors(with sIndex: Int) {
-        story?.isCompletelyVisible = false
-        getProgressView(with: sIndex)?.pause()
-    }
-    public func stopSnapProgressors(with sIndex: Int) {
-        getProgressView(with: sIndex)?.stop()
-    }
-    public func resetSnapProgressors(with sIndex: Int) {
-        getProgressView(with: sIndex)?.reset()
-    }
     public func startSnapProgress(with sIndex: Int) {
         if let indicatorView = getProgressIndicatorView(with: sIndex),
             let pv = getProgressView(with: sIndex) {
@@ -401,6 +379,25 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 }
             })
         }
+    }
+    public func pauseSnapProgressors(with sIndex: Int) {
+        story?.isCompletelyVisible = false
+        getProgressView(with: sIndex)?.pause()
+    }
+    public func stopSnapProgressors(with sIndex: Int) {
+        getProgressView(with: sIndex)?.stop()
+    }
+    public func resetSnapProgressors(with sIndex: Int) {
+        getProgressView(with: sIndex)?.reset()
+    }
+    public func pausePlayer() {
+        videoView?.pause()
+    }
+    public func stopPlayer() {
+        videoView?.stop()
+    }
+    public func resumePlayer() {
+        videoView?.play()
     }
     public func didEndDisplayingCell() {
         //Here only the cell is completely visible. So this is the right place to add the observer.
@@ -432,5 +429,41 @@ extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
 extension IGStoryPreviewCell: RetryBtnDelegate {
     func retryButtonTapped() {
         self.retryRequest(view: retryBtn.superview!, with: retryBtn.contentURL!)
+    }
+}
+
+//MARK: - Extension|IGPlayerObserverDelegate
+extension IGStoryPreviewCell: IGPlayerObserver {
+    func didStartPlaying() {
+        if (videoView?.currentTime)! <= 0 {
+            if story?.isCompletelyVisible == true {
+                let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+                if videoView?.error == nil && (story?.isCompletelyVisible)! == true {
+                    if let holderView = getProgressIndicatorView(with: snapIndex),
+                        let progressView = getProgressView(with: snapIndex){
+                        progressView.story_identifier = self.story?.internalIdentifier
+                        if let duration = videoView?.currentItem?.asset.duration {
+                            if Float(duration.value) > 0 {
+                                progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier, isCancelledAbruptly) in
+                                    if isCancelledAbruptly == false {
+                                        self.didCompleteProgress()
+                                    }
+                                })
+                            }else {
+                                debugPrint("Player error: Unable to play the video")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func didCompletePlay() {
+        print("Video completed")
+    }
+    
+    func didTrack(progress: Float) {
+        //Delegate already handled. If we just print progress, it will print the player current running time
     }
 }
