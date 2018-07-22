@@ -45,7 +45,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         return lp
     }()
     private lazy var tap_gesture: UITapGestureRecognizer = {
-        let tg = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
+        let tg = UITapGestureRecognizer(target: self, action: #selector(didTapSnap(_:)))
         return tg
     }()
     private var previousSnapIndex: Int {
@@ -203,13 +203,9 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
             }
         }
     }
-    @objc private func didTap(_ sender: UITapGestureRecognizer) {
+    @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
         let touchLocation = sender.location(ofTouch: 0, in: self.scrollview)
-        print(touchLocation)
-        print("IGScreen width: \(IGScreen.width)")
-        print("Scrollview width: \(scrollview.frame.width)")
-        //(Int(scrollview.frame.width) * snapIndex) / 2
-
+        
         if let snapCount = story?.snapsCount {
             var n:Int = snapIndex
             /*!
