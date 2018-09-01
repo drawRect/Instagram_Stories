@@ -119,9 +119,8 @@ extension IGPlayerView: PlayerControls {
     }
     func stop() {
         //control the player
+        player.seek(to: kCMTimeZero)
         player.pause()
-        NotificationCenter.default.removeObserver(self)
-        player.replaceCurrentItem(with: nil)
     }
     var playerStatus: PlayerStatus {
         switch player.status {
