@@ -32,7 +32,6 @@
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
-		4C37FC4820FA13DF00F898DD /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */; };
 		4C37FC6C20FA7CDA00F898DD /* IGRetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */; };
 		7E30D4BA2020883600469BEB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E30D4B92020883600469BEB /* Reachability.swift */; };
 		7E58B1C1205EAD15002B3C84 /* IGStoryPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58B1C0205EAD15002B3C84 /* IGStoryPreviewView.swift */; };
@@ -79,7 +78,6 @@
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
-		4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGPlayerView.swift; sourceTree = "<group>"; };
 		4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGRetryButton.swift; sourceTree = "<group>"; };
 		7E30D4B92020883600469BEB /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		7E58B1C0205EAD15002B3C84 /* IGStoryPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewView.swift; path = Controllers/IGStoryPreviewView.swift; sourceTree = "<group>"; };
@@ -114,14 +112,6 @@
 				0748617C1F9D4D0900C1AC1F /* Info.plist */,
 			);
 			path = InstagramStoriesTests;
-			sourceTree = "<group>";
-		};
-		074D01BF20ED575500628C48 /* IGPlayerView */ = {
-			isa = PBXGroup;
-			children = (
-				4C37FC4720FA13DF00F898DD /* IGPlayerView.swift */,
-			);
-			name = IGPlayerView;
 			sourceTree = "<group>";
 		};
 		078E41231F61A3E000222191 /* Stubs */ = {
@@ -198,7 +188,6 @@
 				1024CA001FAA102200237538 /* IGHomeViewModel.swift */,
 				1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */,
 				1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */,
-				074D01BF20ED575500628C48 /* IGPlayerView */,
 			);
 			name = Home;
 			sourceTree = "<group>";
@@ -465,7 +454,6 @@
 				101422F51FB89147004D3D4F /* IGAdditions.swift in Sources */,
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
-				4C37FC4820FA13DF00F898DD /* IGPlayerView.swift in Sources */,
 				1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */,
 				07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */,
 			);
