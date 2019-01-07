@@ -8,25 +8,30 @@
 
 import UIKit
 
-protocol ViewAnimator:class {
-    func start(with duration:TimeInterval,width:CGFloat, completion:@escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void)
+protocol ViewAnimator: class {
+    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void)
     func resume()
     func pause()
     func stop()
     func reset()
 }
-extension ViewAnimator where Self:IGSnapProgressView {
-    func start(with duration:TimeInterval,width:CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void){
+extension ViewAnimator where Self: IGSnapProgressView {
+    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void) {
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
             if let _self = self {
                 _self.frame.size.width = width
             }
-        }) { [weak self](finished) in
+        }) { [weak self] (finished) in
+            print("Finished Value: \(finished)")
+            self?.story.isCancelledAbruptly = !finished
             if finished == true {
                 if let strongSelf = self {
-                    let cancelledAbruptly = strongSelf.isCancelledAbruptly
-                    strongSelf.isCancelledAbruptly = false
-                    completion(strongSelf.story_identifier!, cancelledAbruptly)
+//                    print("Frame width: \(strongSelf.frame.width)")
+//                    print("Cancelled Abruptly: \(strongSelf.story.isCancelledAbruptly)")
+                    /*if !strongSelf.story.isCancelledAbruptly {
+                        strongSelf.story.isCancelledAbruptly = false
+                    }*/
+                    return completion(strongSelf.story_identifier!, strongSelf.story.isCancelledAbruptly)
                 }
             }
         }
@@ -49,12 +54,14 @@ extension ViewAnimator where Self:IGSnapProgressView {
         layer.removeAllAnimations()
     }
     func reset() {
-        self.isCancelledAbruptly = true
+        self.story.isCancelledAbruptly = true
         self.frame.size.width = 0
+       // stop()
     }
 }
 
-final class IGSnapProgressView:UIView,ViewAnimator{
-    public var story_identifier:String?
-    public var isCancelledAbruptly: Bool = false
+final class IGSnapProgressView: UIView, ViewAnimator {
+    public var story_identifier: String?
+    //public var isCancelledAbruptly = false
+    public var story: IGStory!
 }

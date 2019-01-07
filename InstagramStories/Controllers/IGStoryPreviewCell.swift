@@ -71,17 +71,17 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                     }
                 }
             case .backward:
-                //                if snapIndex < story?.snapsCount ?? 0 {
-                //                    if let snap = story?.snaps?[snapIndex] {
-                //                        if let url = snap.url {
-                //                            if let snapView = getSnapview() {
-                //                                startRequest(snapView: snapView, with: url)
-                //                            }
-                //                        }
-                //                        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-                //                    }
-                //                }
-                return
+                if snapIndex < story?.snapsCount ?? 0 {
+                    if let snap = story?.snaps?[snapIndex] {
+                        if let url = snap.url {
+                            if let snapView = getSnapview() {
+                                startRequest(snapView: snapView, with: url)
+                            }
+                        }
+                        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
+                    }
+                }
+                print("Backward")
             }
         }
     }
@@ -157,7 +157,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 strongSelf.retryBtn.delegate = self
                 snapView.isUserInteractionEnabled = true
                 snapView.addSubview(strongSelf.retryBtn)
-            }else {
+            } else {
                 self?.startProgressors()
             }
         })
@@ -182,17 +182,17 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
              */
             if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
                 if snapIndex >= 1 && snapIndex <= snapCount {
-                    resetSnapProgressors(with: n)
+                    direction = .backward
                     clearLastPlayedSnaps(n)
-                    //direction = .backward
                     n -= 1
+                    resetSnapProgressors(with: n)
                     willMoveToPreviousOrNextSnap(n: n)
                 }
             }else {
                 if snapIndex >= 0 && snapIndex <= snapCount {
                     //Stopping the current running progressors
                     stopSnapProgressors(with: n)
-                    //direction = .forward
+                    direction = .forward
                     n += 1
                     willMoveToPreviousOrNextSnap(n: n)
                 }
@@ -205,14 +205,19 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     private func willMoveToPreviousOrNextSnap(n: Int) {
         if let count = story?.snapsCount {
             if n < count {
-                //Move to next snap
+                //Move to next or previous snap based on index n
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x: x,y: 0)
-                scrollview.setContentOffset(offset, animated: false)
-                debugPrint("Content Offset: \(scrollview.contentOffset)")
+                DispatchQueue.main.async {
+                    UIView.animate(withDuration: 2, delay: 0, options: .curveLinear, animations: {
+                        self.scrollview.contentOffset = offset
+                        debugPrint("Content Offset: \(self.scrollview.contentOffset)")
+                    }, completion: nil)
+                }
+                //scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
                 snapIndex = n
-            }else {
+            } else {
                 delegate?.didCompletePreview()
             }
         }
@@ -235,8 +240,13 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     private func getProgressView(with index: Int) -> IGSnapProgressView? {
         let progressView = storyHeaderView.getProgressView
-        if progressView.subviews.count>0 {
-            return progressView.subviews.filter({v in v.tag == index+progressViewTag}).first as? IGSnapProgressView
+        if progressView.subviews.count > 0 {
+            let pv = progressView.subviews.filter({v in v.tag == index+progressViewTag}).first as? IGSnapProgressView
+            guard let currentStory = self.story else {
+                fatalError("story not found")
+            }
+            pv?.story = currentStory
+            return pv
         }
         return nil
     }

@@ -22,9 +22,11 @@ public class IGStory:NSObject {
     public var snaps: [IGSnap]?
     public var internalIdentifier: String?
     public var lastUpdated: Int?
-    public var user:IGUser?
-    var lastPlayedSnapIndex:Int = 0
+    public var user: IGUser?
+    var lastPlayedSnapIndex: Int = 0
     var isCompletelyVisible = false
+    var isCancelledAbruptly = false
+    
     public override init() {
         super.init()
     }
