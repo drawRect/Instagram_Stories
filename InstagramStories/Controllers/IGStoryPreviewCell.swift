@@ -75,7 +75,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                     if let snap = story?.snaps?[snapIndex] {
                         if let url = snap.url {
                             if let snapView = getSnapview() {
-                                startRequest(snapView: snapView, with: url)
+                                self.startRequest(snapView: snapView, with: url)
                             }
                         }
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
@@ -184,6 +184,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 if snapIndex >= 1 && snapIndex <= snapCount {
                     direction = .backward
                     clearLastPlayedSnaps(n)
+                    stopSnapProgressors(with: n)
                     n -= 1
                     resetSnapProgressors(with: n)
                     willMoveToPreviousOrNextSnap(n: n)
@@ -208,13 +209,13 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 //Move to next or previous snap based on index n
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x: x,y: 0)
-                DispatchQueue.main.async {
+                /*DispatchQueue.main.async {
                     UIView.animate(withDuration: 2, delay: 0, options: .curveLinear, animations: {
                         self.scrollview.contentOffset = offset
-                        debugPrint("Content Offset: \(self.scrollview.contentOffset)")
+                        //debugPrint("Content Offset: \(self.scrollview.contentOffset)")
                     }, completion: nil)
-                }
-                //scrollview.setContentOffset(offset, animated: false)
+                }*/
+                scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
                 snapIndex = n
             } else {
@@ -370,7 +371,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         getProgressView(with: sIndex)?.stop()
     }
     public func resetSnapProgressors(with sIndex: Int) {
-        getProgressView(with: sIndex)?.reset()
+            self.getProgressView(with: sIndex)?.reset()
     }
     public func didEndDisplayingCell() {
         //Here only the cell is completely visible. So this is the right place to add the observer.

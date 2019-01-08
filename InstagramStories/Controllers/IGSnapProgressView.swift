@@ -56,7 +56,6 @@ extension ViewAnimator where Self: IGSnapProgressView {
     func reset() {
         self.story.isCancelledAbruptly = true
         self.frame.size.width = 0
-       // stop()
     }
 }
 
