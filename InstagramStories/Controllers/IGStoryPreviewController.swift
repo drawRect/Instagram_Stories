@@ -171,7 +171,7 @@ extension IGStoryPreviewController {
 }
 
 //MARK:- StoryPreview Protocol implementation
-extension IGStoryPreviewController:StoryPreviewProtocol {
+extension IGStoryPreviewController: StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
@@ -185,6 +185,20 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
                  Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
                  */
             }else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
+    func moveToPreviousStory() {
+        let n = handPickedStoryIndex+nStoryIndex+1
+        if let count = stories.count {
+            if n < count || n > 0 {
+                //Move to next story
+                story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
+                nStoryIndex = nStoryIndex - 1
+                let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+                _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .left, animated: true)
+            } else {
                 self.dismiss(animated: true, completion: nil)
             }
         }

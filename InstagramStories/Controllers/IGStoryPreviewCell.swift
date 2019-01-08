@@ -11,6 +11,7 @@ import AnimatedCollectionViewLayout
 
 protocol StoryPreviewProtocol: class {
     func didCompletePreview()
+    func moveToPreviousStory()
     func didTapCloseButton()
 }
 enum SnapMovementDirectionState {
@@ -148,8 +149,10 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     var retryBtn: IGRetryLoaderButton!
     
     private func startRequest(snapView: UIImageView, with url: String) {
+        print("\(self.story!.user!.name) is requesting \(url)")
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
             (result, error) in
+            print("\(self!.story!.user!.name) is received \(url)")
             if let error = error, let strongSelf = self {
                 debugPrint(error.localizedDescription)
                 strongSelf.retryBtn = IGRetryLoaderButton.init(withURL: url)
@@ -188,6 +191,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                     n -= 1
                     resetSnapProgressors(with: n)
                     willMoveToPreviousOrNextSnap(n: n)
+                } else {
+                    delegate?.moveToPreviousStory()
                 }
             }else {
                 if snapIndex >= 0 && snapIndex <= snapCount {
@@ -209,12 +214,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 //Move to next or previous snap based on index n
                 let x = n.toFloat() * frame.width
                 let offset = CGPoint(x: x,y: 0)
-                /*DispatchQueue.main.async {
-                    UIView.animate(withDuration: 2, delay: 0, options: .curveLinear, animations: {
-                        self.scrollview.contentOffset = offset
-                        //debugPrint("Content Offset: \(self.scrollview.contentOffset)")
-                    }, completion: nil)
-                }*/
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
                 snapIndex = n
