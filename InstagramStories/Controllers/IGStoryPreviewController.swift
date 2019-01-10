@@ -106,7 +106,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if let vCell = visibleCell {
             debugPrint(#function + "Visible Cell" + "\(visibleCell!.story!.user!.name.debugDescription)")
             vCell.story?.isCompletelyVisible = false
-            vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+            vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
             story_copy = vCell.story
         }
         
@@ -149,7 +149,7 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
-        vCell.stopPreviousProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+        vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
@@ -171,7 +171,7 @@ extension IGStoryPreviewController {
 }
 
 //MARK:- StoryPreview Protocol implementation
-extension IGStoryPreviewController:StoryPreviewProtocol {
+extension IGStoryPreviewController: StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
@@ -189,7 +189,34 @@ extension IGStoryPreviewController:StoryPreviewProtocol {
             }
         }
     }
+    func moveToPreviousStory() {
+        let n = handPickedStoryIndex+nStoryIndex+1
+        if let count = stories.count {
+            if n < count || n > 0 {
+                //Move to next story
+                story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
+                nStoryIndex = nStoryIndex - 1
+                let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+                _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .left, animated: true)
+            } else {
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+    }
     func didTapCloseButton() {
         self.dismiss(animated: true, completion:nil)
     }
 }
+
+/*//MARK:- IGPlayerObserver Protocol implementation
+extension IGStoryPreviewController: IGPlayerObserver {
+    func didCompletePlay(){
+        //        let nextIndex = snapIndex+1
+        //let nextSnap = stories[nextIndex]
+        //videoURL ===> nextSnap.videoURL
+//        let videoURL = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+//        let playerResource = VideoResource.init(filePath: videoURL)
+//        player.play(with: playerResource)
+    }
+    func didTrack(progress:Float){}
+}*/

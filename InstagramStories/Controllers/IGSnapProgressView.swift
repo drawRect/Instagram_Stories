@@ -8,19 +8,31 @@
 
 import UIKit
 
-protocol ViewAnimator:class {
-    func start(with duration:TimeInterval,width:CGFloat, completion:@escaping (String)->())
+protocol ViewAnimator: class {
+    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void)
     func resume()
     func pause()
     func stop()
+    func reset()
 }
-extension ViewAnimator where Self:IGSnapProgressView {
-    func start(with duration:TimeInterval,width:CGFloat, completion: @escaping (String)->()){
+extension ViewAnimator where Self: IGSnapProgressView {
+    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void) {
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
-            self?.frame.size.width = width
-        }) { (finished) in
+            if let _self = self {
+                _self.frame.size.width = width
+            }
+        }) { [weak self] (finished) in
+            print("Finished Value: \(finished)")
+            self?.story.isCancelledAbruptly = !finished
             if finished == true {
-                completion(self.story_identifier!)
+                if let strongSelf = self {
+//                    print("Frame width: \(strongSelf.frame.width)")
+//                    print("Cancelled Abruptly: \(strongSelf.story.isCancelledAbruptly)")
+                    /*if !strongSelf.story.isCancelledAbruptly {
+                        strongSelf.story.isCancelledAbruptly = false
+                    }*/
+                    return completion(strongSelf.story_identifier!, strongSelf.story.isCancelledAbruptly)
+                }
             }
         }
     }
@@ -41,8 +53,14 @@ extension ViewAnimator where Self:IGSnapProgressView {
         resume()
         layer.removeAllAnimations()
     }
+    func reset() {
+        self.story.isCancelledAbruptly = true
+        self.frame.size.width = 0
+    }
 }
 
-final class IGSnapProgressView:UIView,ViewAnimator{
-    public var story_identifier:String?
+final class IGSnapProgressView: UIView, ViewAnimator {
+    public var story_identifier: String?
+    //public var isCancelledAbruptly = false
+    public var story: IGStory!
 }

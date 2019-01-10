@@ -6,7 +6,6 @@
 //  Copyright © 2017 Dash. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 extension Int {

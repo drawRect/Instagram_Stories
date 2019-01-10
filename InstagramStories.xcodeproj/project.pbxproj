@@ -32,6 +32,7 @@
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
+		4C37FC6C20FA7CDA00F898DD /* IGRetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */; };
 		7E30D4BA2020883600469BEB /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E30D4B92020883600469BEB /* Reachability.swift */; };
 		7E58B1C1205EAD15002B3C84 /* IGStoryPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58B1C0205EAD15002B3C84 /* IGStoryPreviewView.swift */; };
 		7E58B1C3205EB2D3002B3C84 /* IGStoryPreviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E58B1C2205EB2D3002B3C84 /* IGStoryPreviewModel.swift */; };
@@ -77,6 +78,7 @@
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
+		4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGRetryButton.swift; sourceTree = "<group>"; };
 		7E30D4B92020883600469BEB /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		7E58B1C0205EAD15002B3C84 /* IGStoryPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewView.swift; path = Controllers/IGStoryPreviewView.swift; sourceTree = "<group>"; };
 		7E58B1C2205EB2D3002B3C84 /* IGStoryPreviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewModel.swift; sourceTree = "<group>"; };
@@ -133,6 +135,7 @@
 		07EBE8EF1F67293F007BCF29 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */,
 				07EBE8F01F672951007BCF29 /* IGCommon.swift */,
 				0743496C1F782FFD00F02228 /* IGConstants.swift */,
 			);
@@ -285,7 +288,6 @@
 				07FDECD01F5FD9BA004BC833 /* Frameworks */,
 				07FDECD11F5FD9BA004BC833 /* Resources */,
 				03E791D7B060970A2EF6D286 /* [CP] Embed Pods Frameworks */,
-				3CFF0914175D08127AA8AB48 /* [CP] Copy Pods Resources */,
 				071EA86E1F79B5DE00FF06A0 /* ShellScript */,
 			);
 			buildRules = (
@@ -305,7 +307,7 @@
 			attributes = {
 				CLASSPREFIX = IG;
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = Dash;
 				TargetAttributes = {
 					074861771F9D4D0900C1AC1F = {
@@ -316,7 +318,7 @@
 					};
 					07FDECD21F5FD9BA004BC833 = {
 						CreatedOnToolsVersion = 8.3.3;
-						DevelopmentTeam = FLQ72JV77K;
+						DevelopmentTeam = 35P9S7STBV;
 						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
@@ -368,9 +370,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/AnimatedCollectionViewLayout/AnimatedCollectionViewLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/SDWebImage/SDWebImage.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AnimatedCollectionViewLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDWebImage.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -390,34 +399,22 @@
 			shellPath = /bin/sh;
 			shellScript = "TAGS=\"TODO:|FIXME:\"\necho \"searching ${SRCROOT} for ${TAGS}\"\nfind \"${SRCROOT}\" \\( -name \"*.swift\" \\) -print0 \\\n| xargs -0 egrep --with-filename --line-number --only-matching \"($TAGS).*\\$\" \\\n| perl -p -e \"s/($TAGS)/ warning: \\$1/\"";
 		};
-		3CFF0914175D08127AA8AB48 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		44E39ADDC5B6BC22AD6DE218 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-InstagramStories-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -450,6 +447,7 @@
 				7E58B1C1205EAD15002B3C84 /* IGStoryPreviewView.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,
+				4C37FC6C20FA7CDA00F898DD /* IGRetryButton.swift in Sources */,
 				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
 				7E30D4BA2020883600469BEB /* Reachability.swift in Sources */,
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,
@@ -539,6 +537,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -546,6 +545,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -595,6 +595,7 @@
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
@@ -602,6 +603,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
@@ -636,7 +638,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "";
-				DEVELOPMENT_TEAM = FLQ72JV77K;
+				DEVELOPMENT_TEAM = 35P9S7STBV;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -655,7 +657,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "";
-				DEVELOPMENT_TEAM = FLQ72JV77K;
+				DEVELOPMENT_TEAM = 35P9S7STBV;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				INFOPLIST_FILE = InstagramStories/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
