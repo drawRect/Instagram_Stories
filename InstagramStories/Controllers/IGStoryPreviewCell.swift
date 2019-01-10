@@ -353,7 +353,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         if let indicatorView = getProgressIndicatorView(with: sIndex),
             let pv = getProgressView(with: sIndex) {
             pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier, isCancelledAbruptly) in
-                print("Identifier \(identifier) called")
                 if isCancelledAbruptly == false {
                     self.didCompleteProgress()
                 }

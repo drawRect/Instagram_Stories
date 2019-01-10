@@ -108,7 +108,6 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         if let vCell = visibleCell {
-            debugPrint(#function + "Visible Cell" + "\(visibleCell!.story!.user!.name.debugDescription)")
             vCell.story?.isCompletelyVisible = false
             vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
             story_copy = vCell.story

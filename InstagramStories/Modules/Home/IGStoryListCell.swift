@@ -35,7 +35,7 @@ final class IGStoryListCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2.0
-        imageView.layer.borderColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0).cgColor
+        imageView.layer.borderColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0).cgColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -43,6 +43,7 @@ final class IGStoryListCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
+        label.textColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0)
         return label
     }()
     
