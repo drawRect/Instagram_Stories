@@ -82,7 +82,6 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                     }
                 }
-                print("Backward")
             }
         }
     }
@@ -107,6 +106,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     override func prepareForReuse() {
         super.prepareForReuse()
+        direction = .forward
         clearScrollViewGarbages()
     }
     required init?(coder aDecoder: NSCoder) {
