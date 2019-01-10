@@ -149,10 +149,8 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     var retryBtn: IGRetryLoaderButton!
     
     private func startRequest(snapView: UIImageView, with url: String) {
-        print("\(self.story!.user!.name) is requesting \(url)")
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
             (result, error) in
-            print("\(self!.story!.user!.name) is received \(url)")
             if let error = error, let strongSelf = self {
                 debugPrint(error.localizedDescription)
                 strongSelf.retryBtn = IGRetryLoaderButton.init(withURL: url)
@@ -374,7 +372,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }
     public func didEndDisplayingCell() {
         //Here only the cell is completely visible. So this is the right place to add the observer.
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     public func resumePreviousSnapProgress(with sIndex: Int) {
         getProgressView(with: sIndex)?.resume()

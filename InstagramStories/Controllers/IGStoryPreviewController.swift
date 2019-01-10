@@ -86,7 +86,9 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         return model.numberOfItemsInSection(section)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier(), for: indexPath) as? IGStoryPreviewCell else{return UICollectionViewCell()}
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
+            fatalError("Incompatible cell")
+        }
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
         cell.story = story
         cell.delegate = self
@@ -98,7 +100,9 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
 //MARK:- Extension|UICollectionViewDelegate
 extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? IGStoryPreviewCell else {return}
+        guard let cell = cell as? IGStoryPreviewCell else {
+            return
+        }
         
         //Taking Previous(Visible) cell to store previous story
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
@@ -124,7 +128,9 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
-        guard let vCellIndexPath = _view.snapsCollectionView.indexPath(for: vCell) else {return}
+        guard let vCellIndexPath = _view.snapsCollectionView.indexPath(for: vCell) else {
+            return
+        }
         vCell.story?.isCompletelyVisible = true
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item

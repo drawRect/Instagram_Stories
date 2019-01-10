@@ -11,35 +11,25 @@ import UIKit
 
 /******** UITableViewCell&UICollectionViewCell<Extension> *******************************/
 protocol CellConfigurer:class {
-    static func nib()->UINib
-    static func reuseIdentifier()->String
+    static var nib: UINib {get}
+    static var reuseIdentifier: String {get}
 }
 
 extension CellConfigurer {
-    static func nib() -> UINib {
-        return UINib.init(nibName: self.reuseIdentifier(), bundle: nil)
+    static var nib: UINib {
+        return UINib(nibName: reuseIdentifier, bundle: nil)
     }
-    static func reuseIdentifier() -> String{
+    static var reuseIdentifier: String{
         return String(describing: self)
     }
 }
 
-extension UICollectionViewCell:CellConfigurer {}
-extension UITableViewCell:CellConfigurer {}
+extension UICollectionViewCell: CellConfigurer {}
+extension UITableViewCell: CellConfigurer {}
 
 /*************************** UINIB<Extension> ************************************************/
 extension UINib {
-    class func nib(with name:String) -> UINib {
-        return UINib.init(nibName: name, bundle: nil)
-    }
-}
-
-/*************************** Bundle<Extension> ************************************************/
-extension Bundle {
-    static func loadView<T>(with type: T.Type) -> T {
-        if let view = Bundle.main.loadNibNamed(String(describing: T.self), owner: nil, options: nil)?.first as? T {
-            return view
-        }
-        fatalError("Could not load view with type " + String(describing: type))
+    class func nib(with name: String) -> UINib {
+        return UINib(nibName: name, bundle: nil)
     }
 }

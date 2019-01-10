@@ -1,5 +1,5 @@
 PODS:
-  - AnimatedCollectionViewLayout (0.3.0)
+  - AnimatedCollectionViewLayout (0.5.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
@@ -17,7 +17,7 @@ SPEC REPOS:
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  AnimatedCollectionViewLayout: 504b992a4258eb39d2dd2b2b48e84b4b95860fd7
+  AnimatedCollectionViewLayout: 8b660a623d85001f76f00f0d2302a7b043c72bda
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
