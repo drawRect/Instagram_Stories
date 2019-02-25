@@ -14,7 +14,7 @@ public enum layoutType {
     var animator: LayoutAttributesAnimator {
         switch self {
         case .crossFade:return CrossFadeAttributesAnimator()
-        case .cubic:return CubeAttributesAnimator()
+        case .cubic:return CubeAttributesAnimator(perspective: -1/100, totalAngle: .pi/12)
         case .linearCard:return LinearCardAttributesAnimator()
         case .page:return PageAttributesAnimator()
         case .parallax:return ParallaxAttributesAnimator()
@@ -56,6 +56,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
         _view.snapsCollectionView.delegate = self
         _view.snapsCollectionView.dataSource = self
+        _view.snapsCollectionView.decelerationRate = .fast
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
         _view.snapsCollectionView.addGestureRecognizer(dismissGesture)
     }
@@ -185,6 +186,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
                 story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 nStoryIndex = nStoryIndex + 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+                //_view.snapsCollectionView.layer.speed = 0;
                 _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
                 /**@Note:
                  Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
@@ -197,7 +199,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
     func moveToPreviousStory() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
-            if n < count || n > 0 {
+            if n < count && n > 1 {
                 //Move to next story
                 story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 nStoryIndex = nStoryIndex - 1
