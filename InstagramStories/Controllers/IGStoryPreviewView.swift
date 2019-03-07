@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AnimatedCollectionViewLayout
 
 class IGStoryPreviewView: UIView {
     

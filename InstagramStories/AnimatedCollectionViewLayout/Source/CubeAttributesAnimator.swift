@@ -31,16 +31,38 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
             var transform = CATransform3DIdentity
             transform.m34 = perspective
             transform = CATransform3DRotate(transform, rotateAngle, 0, 1, 0)
-            
-            attributes.contentView?.layer.transform = transform
+            /* Handling collectionView's contentView transform animation
+             * Setting contentView's subview's first which is scrollView UserInteractionEnabled = false
+             * Then checking the completion status. If false then again setting UserInteractionEnabled = false
+             * Otherwise setting UserInteractionEnabled = true.
+             * Until animation completes, UIView Animation completion block will be called continuously.
+             * If animation completed will get status value as true otherwise false
+             */
+            UIView.animate(withDuration: 0.2, animations: {
+                attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
+                attributes.contentView?.layer.transform = transform
+            }) {
+                attributes.contentView?.subviews.first?.isUserInteractionEnabled = $0
+            }
             attributes.contentView?.keepCenterAndApplyAnchorPoint(CGPoint(x: position > 0 ? 0 : 1, y: 0.5))
         } else {
             let rotateAngle = totalAngle * position
             var transform = CATransform3DIdentity
             transform.m34 = perspective
             transform = CATransform3DRotate(transform, rotateAngle, -1, 0, 0)
-            
-            attributes.contentView?.layer.transform = transform
+            /* Handling collectionView's contentView transform animation
+             * Setting contentView's subview's first which is scrollView UserInteractionEnabled = false
+             * Then checking the completion status. If false then again setting UserInteractionEnabled = false
+             * Otherwise setting UserInteractionEnabled = true.
+             * Until animation completes, UIView Animation completion block will be called continuously.
+             * If animation completed will get status value as true otherwise false
+             */
+            UIView.animate(withDuration: 0.2, animations: {
+                attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
+                attributes.contentView?.layer.transform = transform
+            }) {
+                attributes.contentView?.subviews.first?.isUserInteractionEnabled = $0
+            }
             attributes.contentView?.keepCenterAndApplyAnchorPoint(CGPoint(x: 0.5, y: position > 0 ? 0 : 1))
         }
     }

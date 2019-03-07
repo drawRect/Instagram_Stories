@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AnimatedCollectionViewLayout
 
 protocol StoryPreviewProtocol: class {
     func didCompletePreview()
@@ -21,7 +20,7 @@ enum SnapMovementDirectionState {
 //Identifiers
 fileprivate let snapViewTagIndicator: Int = 8
 
-final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
+final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     
     //MARK: - Delegate
     public weak var delegate: StoryPreviewProtocol? {
@@ -47,6 +46,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     }()
     private lazy var tap_gesture: UITapGestureRecognizer = {
         let tg = UITapGestureRecognizer(target: self, action: #selector(didTapSnap(_:)))
+        tg.numberOfTapsRequired = 1
         return tg
     }()
     private var previousSnapIndex: Int {
@@ -60,6 +60,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
     public var direction: SnapMovementDirectionState = .forward
     public var snapIndex: Int = 0 {
         didSet {
+            scrollview.isUserInteractionEnabled = true
             switch direction {
             case .forward:
                 if snapIndex < story?.snapsCount ?? 0 {
@@ -177,7 +178,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         let touchLocation = sender.location(ofTouch: 0, in: self.scrollview)
         
         if let snapCount = story?.snapsCount {
-            var n:Int = snapIndex
+            var n = snapIndex
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
@@ -192,7 +193,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 } else {
                     delegate?.moveToPreviousStory()
                 }
-            }else {
+            } else {
                 if snapIndex >= 0 && snapIndex <= snapCount {
                     //Stopping the current running progressors
                     stopSnapProgressors(with: n)
@@ -349,7 +350,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
         //Remove the previous observors
         NotificationCenter.default.removeObserver(self)
     }
-    public func startSnapProgress(with sIndex: Int) {
+    /*public func startSnapProgress(with sIndex: Int) {
         if let indicatorView = getProgressIndicatorView(with: sIndex),
             let pv = getProgressView(with: sIndex) {
             pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier, isCancelledAbruptly) in
@@ -358,7 +359,7 @@ final class IGStoryPreviewCell: UICollectionViewCell,UIScrollViewDelegate {
                 }
             })
         }
-    }
+    }*/
     public func pauseSnapProgressors(with sIndex: Int) {
         story?.isCompletelyVisible = false
         getProgressView(with: sIndex)?.pause()
@@ -398,3 +399,19 @@ extension IGStoryPreviewCell: RetryBtnDelegate {
         self.retryRequest(view: retryBtn.superview!, with: retryBtn.contentURL!)
     }
 }
+
+/*extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        if gestureRecognizer.isKind(of: UITapGestureRecognizer.self) {
+            if touch.tapCount > 1, let story = self.story, let snaps = story.snaps {
+                if snapIndex == snaps.count-1 {
+                    scrollview.isUserInteractionEnabled = false
+                }
+                return false
+            }
+            return true
+        }
+        return false
+    }
+}*/
+

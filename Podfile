@@ -7,8 +7,10 @@ target 'InstagramStories' do
     
     # Pods for InstagramStories
     
-    pod 'AnimatedCollectionViewLayout'
+    #pod 'AnimatedCollectionViewLayout'
     pod 'SwiftyJSON', '~> 3.1'
     pod 'SDWebImage', '~>3.7'
+    #pod 'STCubeTransition'
+    #pod 'Xross'
 
 end
