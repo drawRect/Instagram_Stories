@@ -36,7 +36,7 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
              * Then checking the completion status. If false then again setting UserInteractionEnabled = false
              * Otherwise setting UserInteractionEnabled = true.
              * Until animation completes UIView Animation completion blocks gets called.
-             *  But once completes will get status value as true otherwise false
+             * Once completes will get status value as true otherwise false
              */
             UIView.animate(withDuration: 0.2, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
@@ -59,7 +59,7 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
              * Then checking the completion status. If false then again setting UserInteractionEnabled = false
              * Otherwise setting UserInteractionEnabled = true.
              * Until animation completes UIView Animation completion blocks gets called.
-             *  But once completes will get status value as true otherwise false
+             * Once completes will get status value as true otherwise false
              */
             UIView.animate(withDuration: 0.2, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
