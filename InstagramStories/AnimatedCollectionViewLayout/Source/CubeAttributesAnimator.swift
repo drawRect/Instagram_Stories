@@ -35,8 +35,8 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
              * Setting contentView's subview's first which is scrollView UserInteractionEnabled = false
              * Then checking the completion status. If false then again setting UserInteractionEnabled = false
              * Otherwise setting UserInteractionEnabled = true.
-             * Until animation completes UIView Animation completion blocks gets called.
-             * Once completes will get status value as true otherwise false
+             * Until animation completes, UIView Animation completion block will be called continuously.
+             * If animation completed will get status value as true otherwise false
              */
             UIView.animate(withDuration: 0.2, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
@@ -58,8 +58,8 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
              * Setting contentView's subview's first which is scrollView UserInteractionEnabled = false
              * Then checking the completion status. If false then again setting UserInteractionEnabled = false
              * Otherwise setting UserInteractionEnabled = true.
-             * Until animation completes UIView Animation completion blocks gets called.
-             * Once completes will get status value as true otherwise false
+             * Until animation completes, UIView Animation completion block will be called continuously.
+             * If animation completed will get status value as true otherwise false
              */
             UIView.animate(withDuration: 0.2, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
