@@ -1,26 +1,22 @@
 PODS:
-  - AnimatedCollectionViewLayout (0.5.0)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - SwiftyJSON (3.1.4)
 
 DEPENDENCIES:
-  - AnimatedCollectionViewLayout
   - SDWebImage (~> 3.7)
   - SwiftyJSON (~> 3.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - AnimatedCollectionViewLayout
     - SDWebImage
     - SwiftyJSON
 
 SPEC CHECKSUMS:
-  AnimatedCollectionViewLayout: 8b660a623d85001f76f00f0d2302a7b043c72bda
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
 
-PODFILE CHECKSUM: bfed17f5c6e37e3be909f5b8c1d656aaca86a9db
+PODFILE CHECKSUM: 00d1a3c46ce7435ab75558d3a9912769540869d5
 
 COCOAPODS: 1.5.3

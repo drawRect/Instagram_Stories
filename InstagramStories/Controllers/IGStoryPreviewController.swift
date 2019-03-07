@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AnimatedCollectionViewLayout
 
 public enum layoutType {
     case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut

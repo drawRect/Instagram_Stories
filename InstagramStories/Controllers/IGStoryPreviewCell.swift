@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AnimatedCollectionViewLayout
 
 protocol StoryPreviewProtocol: class {
     func didCompletePreview()
@@ -177,6 +176,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
         let touchLocation = sender.location(ofTouch: 0, in: self.scrollview)
+        
         if let snapCount = story?.snapsCount {
             var n = snapIndex
             /*!
@@ -350,7 +350,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         //Remove the previous observors
         NotificationCenter.default.removeObserver(self)
     }
-    public func startSnapProgress(with sIndex: Int) {
+    /*public func startSnapProgress(with sIndex: Int) {
         if let indicatorView = getProgressIndicatorView(with: sIndex),
             let pv = getProgressView(with: sIndex) {
             pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier, isCancelledAbruptly) in
@@ -359,7 +359,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 }
             })
         }
-    }
+    }*/
     public func pauseSnapProgressors(with sIndex: Int) {
         story?.isCompletelyVisible = false
         getProgressView(with: sIndex)?.pause()
