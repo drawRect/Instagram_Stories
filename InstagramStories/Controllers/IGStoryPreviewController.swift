@@ -146,11 +146,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if #available(iOS 11.0, *) {
-            return CGSize(width: view.safeAreaLayoutGuide.layoutFrame.width, height: view.safeAreaLayoutGuide.layoutFrame.height)
-        } else {
-            return CGSize(width: view.frame.width, height: view.frame.height)
-        }
+        return CGSize(width: view.width, height: view.height)
     }
 }
 

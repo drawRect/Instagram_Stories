@@ -47,9 +47,9 @@ class IGHomeView: UIView {
     }
     private func installLayoutConstraints(){
         NSLayoutConstraint.activate([
-            lAnchor.constraint(equalTo: collectionView.leftAnchor),
-            tAnchor.constraint(equalTo: collectionView.topAnchor),
-            collectionView.rightAnchor.constraint(equalTo: rAnchor),
+            leftAnchor.constraint(equalTo: collectionView.leftAnchor),
+            topAnchor.constraint(equalTo: collectionView.topAnchor),
+            collectionView.rightAnchor.constraint(equalTo: rightAnchor),
             collectionView.heightAnchor.constraint(equalToConstant: 100)])
     }
 }
