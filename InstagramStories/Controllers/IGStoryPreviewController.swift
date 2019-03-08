@@ -134,6 +134,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            vCell.resumePlayer()
         }else {
             vCell.startProgressors()
         }
@@ -155,6 +156,7 @@ extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
         vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+        vCell.pausePlayer()
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
@@ -199,7 +201,6 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
             if n < count && n > 1 {
-                //Move to next story
                 story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 nStoryIndex = nStoryIndex - 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
