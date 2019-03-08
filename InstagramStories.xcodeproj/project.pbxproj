@@ -32,6 +32,7 @@
 		1099661A1F6053DA005292CF /* IGStoryPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 109966101F6053DA005292CF /* IGStoryPreviewController.swift */; };
 		109966201F6057FB005292CF /* IGStoryPreviewHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */; };
 		1BFEE8405F8F82FD47FB2942 /* Pods_InstagramStories.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ADA43F7946E12BD10112B34C /* Pods_InstagramStories.framework */; };
+		4C1825192232DE9A00728DDB /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1825182232DE9A00728DDB /* UIView+Extension.swift */; };
 		4C1E29CB22316F6F0070FD27 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E29BD22316F6F0070FD27 /* LICENSE */; };
 		4C1E29CC22316F6F0070FD27 /* CubeAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */; };
 		4C1E29CD22316F6F0070FD27 /* AnimatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */; };
@@ -91,6 +92,7 @@
 		109966101F6053DA005292CF /* IGStoryPreviewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewController.swift; path = Controllers/IGStoryPreviewController.swift; sourceTree = "<group>"; };
 		1099661F1F6057FB005292CF /* IGStoryPreviewHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = IGStoryPreviewHeaderView.swift; path = Controllers/IGStoryPreviewHeaderView.swift; sourceTree = "<group>"; };
 		13011EC9428D95B8AF4C68A9 /* Pods-InstagramStories.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InstagramStories.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InstagramStories/Pods-InstagramStories.debug.xcconfig"; sourceTree = "<group>"; };
+		4C1825182232DE9A00728DDB /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		4C1E29BD22316F6F0070FD27 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -154,6 +156,7 @@
 				078E41451F62137E00222191 /* ImageView+Additions.swift */,
 				078E41471F6213FF00222191 /* Color+Additions.swift */,
 				101422F41FB89147004D3D4F /* IGAdditions.swift */,
+				4C1825182232DE9A00728DDB /* UIView+Extension.swift */,
 			);
 			name = Extension;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				4C1E29CE22316F6F0070FD27 /* CrossFadeAttributesAnimator.swift in Sources */,
 				101422F51FB89147004D3D4F /* IGAdditions.swift in Sources */,
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
+				4C1825192232DE9A00728DDB /* UIView+Extension.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
 				4C1E29D522316F6F0070FD27 /* SnapInAttributesAnimator.swift in Sources */,
 				1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */,
