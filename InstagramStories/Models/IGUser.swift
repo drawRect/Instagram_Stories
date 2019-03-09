@@ -8,9 +8,9 @@
 import Foundation
 
 public struct IGUser: Decodable {
-    public var internalIdentifier: String
-    public var name: String
-    public var picture: String
+    public let internalIdentifier: String
+    public let name: String
+    public let picture: String
     
     enum CodingKeys: String, CodingKey {
         case internalIdentifier = "id"

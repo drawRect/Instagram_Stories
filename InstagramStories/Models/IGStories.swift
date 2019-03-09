@@ -9,8 +9,8 @@
 import Foundation
 
 public struct IGStories: Decodable {
-    public var count: Int
-    public var stories: [IGStory]
+    public let count: Int
+    public let stories: [IGStory]
     
     enum CodingKeys: String, CodingKey {
         case count = "count"

@@ -9,11 +9,11 @@ import Foundation
 
 public class IGStory: Decodable {
     // Note: To retain lastPlayedSnapIndex value for each story making this type as class
-    public var snapsCount: Int
-    public var snaps: [IGSnap]
-    public var internalIdentifier: String
-    public var lastUpdated: Int
-    public var user: IGUser
+    public let snapsCount: Int
+    public let snaps: [IGSnap]
+    public let internalIdentifier: String
+    public let lastUpdated: Int
+    public let user: IGUser
     var lastPlayedSnapIndex = 0
     var isCompletelyVisible = false
     var isCancelledAbruptly = false

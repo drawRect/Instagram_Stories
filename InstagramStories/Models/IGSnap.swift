@@ -13,10 +13,10 @@ public enum MimeType: String {
     case unknown
 }
 public struct IGSnap: Decodable {
-    public var internalIdentifier: String
-    public var mimeType: String
-    public var lastUpdated: String
-    public var url: String
+    public let internalIdentifier: String
+    public let mimeType: String
+    public let lastUpdated: String
+    public let url: String
     public var kind: MimeType {
         switch mimeType {
         case MimeType.image.rawValue:
