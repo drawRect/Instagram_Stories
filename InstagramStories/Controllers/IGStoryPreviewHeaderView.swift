@@ -177,6 +177,6 @@ final class IGStoryPreviewHeaderView: UIView {
             getProgressView.addSubview(applyProperties(pv,with: i+progressViewTag))
             x = x + width + padding
         }
-        snaperNameLabel.text = story?.user?.name
+        snaperNameLabel.text = story?.user.name
     }
 }

@@ -31,7 +31,7 @@ class IGStoryPreviewModel: NSObject {
         guard let handPickedIndex = handPickedStoryIndex, let count = stories?.count else {return nil}
         let counted = handPickedIndex+indexPath.item
         if counted < count {
-            return stories?.stories?[counted]
+            return stories?.stories[counted]
         }else {
             fatalError("Stories Index mis-matched :(")
         }

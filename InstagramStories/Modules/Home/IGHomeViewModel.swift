@@ -34,7 +34,7 @@ class IGHomeViewModel: NSObject{
         return 1
     }
     public func cellForItemAt(indexPath:IndexPath) -> IGStory? {
-        return stories?.stories?[indexPath.row-1]
+        return stories?.stories[indexPath.row-1]
     }
     
 }

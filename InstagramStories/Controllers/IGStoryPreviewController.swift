@@ -114,8 +114,8 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             return
         }
         if indexPath.item == nStoryIndex {
-            let s = stories.stories?[nStoryIndex+handPickedStoryIndex]
-            cell.willDisplayCell(with: (s?.lastPlayedSnapIndex)!)
+            let s = stories.stories[nStoryIndex+handPickedStoryIndex]
+            cell.willDisplayCell(with: s.lastPlayedSnapIndex)
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
@@ -129,7 +129,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
-            if (vCell.story?.snaps?[vCell.story?.lastPlayedSnapIndex ?? 0 ])?.kind == .video {
+            if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0 ])?.kind == .video {
                 vCell.resumePlayer()
             }
         }else {
@@ -178,33 +178,29 @@ extension IGStoryPreviewController {
 extension IGStoryPreviewController: StoryPreviewProtocol {
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
-        if let count = stories.count {
-            if n < count {
-                //Move to next story
-                story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
-                nStoryIndex = nStoryIndex + 1
-                let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
-                //_view.snapsCollectionView.layer.speed = 0;
-                _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
-                /**@Note:
-                 Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
-                 */
-            }else {
-                self.dismiss(animated: true, completion: nil)
-            }
+        if n < stories.count {
+            //Move to next story
+            story_copy = stories.stories[nStoryIndex+handPickedStoryIndex]
+            nStoryIndex = nStoryIndex + 1
+            let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+            //_view.snapsCollectionView.layer.speed = 0;
+            _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
+            /**@Note:
+             Here we are navigating to next snap explictly, So we need to handle the isCompletelyVisible. With help of this Bool variable we are requesting snap. Otherwise cell wont get Image as well as the Progress move :P
+             */
+        }else {
+            self.dismiss(animated: true, completion: nil)
         }
     }
     func moveToPreviousStory() {
         let n = handPickedStoryIndex+nStoryIndex+1
-        if let count = stories.count {
-            if n <= count && n > 1 {
-                story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
-                nStoryIndex = nStoryIndex - 1
-                let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
-                _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .left, animated: true)
-            } else {
-                self.dismiss(animated: true, completion: nil)
-            }
+        if n <= stories.count && n > 1 {
+            story_copy = stories.stories[nStoryIndex+handPickedStoryIndex]
+            nStoryIndex = nStoryIndex - 1
+            let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+            _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .left, animated: true)
+        } else {
+            self.dismiss(animated: true, completion: nil)
         }
     }
     func didTapCloseButton() {
