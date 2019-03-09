@@ -12,7 +12,7 @@ public enum MimeType: String {
     case video
     case unknown
 }
-public struct IGSnap: Decodable {
+public class IGSnap: Codable {
     public let internalIdentifier: String
     public let mimeType: String
     public let lastUpdated: String

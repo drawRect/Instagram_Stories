@@ -244,7 +244,9 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            videoSnapIndex = n
+            if story?.snaps[n].kind == .video {
+                videoSnapIndex = n
+            }
             stopPlayer()
             if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
                 direction = .backward
@@ -481,7 +483,7 @@ extension IGStoryPreviewCell: RetryBtnDelegate {
 //MARK: - Extension|IGPlayerObserverDelegate
 extension IGStoryPreviewCell: IGPlayerObserver {
     func didStartPlaying() {
-        if (getVideoView(with: snapIndex)?.currentTime)! <= 0 {
+        if let videoView = getVideoView(with: snapIndex), videoView.currentTime <= 0 {
             let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if videoView?.error == nil && (story?.isCompletelyVisible)! == true {
                 if let holderView = getProgressIndicatorView(with: snapIndex),
