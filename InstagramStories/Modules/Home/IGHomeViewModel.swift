@@ -8,13 +8,13 @@
 
 import Foundation
 
-class IGHomeViewModel: NSObject{
+struct IGHomeViewModel {
     
     //MARK: - iVars
     //Keep it Immutable! don't get Dirty :P
     private let stories: IGStories? = {
         do {
-            return try IGMockLoader.loadMockFile(named: "stories.json",bundle: .main)
+            return try IGMockLoader.loadMockFile(named: "stories.json", bundle: .main)
         } catch let e as MockLoaderError{
             e.desc()
         }catch{

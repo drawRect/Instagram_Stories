@@ -79,6 +79,7 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         return model.numberOfItemsInSection(section)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        // Creating different reuse identifier for each cell to avoid issues because of cell reuse
         let reuseIdentifier = "Identifier_\(indexPath.section)-\(indexPath.row)-\(indexPath.item)"
         collectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {

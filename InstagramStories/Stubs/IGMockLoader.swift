@@ -28,9 +28,7 @@ struct IGMockLoader {
         do {
             let data = try Data.init(contentsOf: url)
             if let _ = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String:Any] {
-                //return IGStories.init(object: wrapped)
                 let stories = try JSONDecoder().decode(IGStories.self, from: data)
-                print(stories)
                 return stories
             }else {
                 throw MockLoaderError.invalidFileURL(url)
