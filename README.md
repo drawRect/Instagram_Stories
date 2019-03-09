@@ -7,9 +7,7 @@ Instagram Stories
 * That's all you need to know.
 
 ## Sample Screenshots
-<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="437" height="900" title="Home Screen">
-
-<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="437" height="900" title="Story Snaps Screen">
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="437" height="900" title="Home Screen"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="437" height="900" title="Story Snaps Screen">
 
 ## Help
 
