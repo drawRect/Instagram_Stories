@@ -27,7 +27,7 @@ class IGStoryPreviewView: UIView {
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
-        cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
+        //cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
@@ -57,9 +57,9 @@ class IGStoryPreviewView: UIView {
     private func installLayoutConstraints(){
         //Setting constraints for snapsCollectionview
         NSLayoutConstraint.activate([
-            snapsCollectionView.leftAnchor.constraint(equalTo: leftAnchor),
+            leftAnchor.constraint(equalTo: snapsCollectionView.leftAnchor),
+            topAnchor.constraint(equalTo: snapsCollectionView.topAnchor),
             snapsCollectionView.rightAnchor.constraint(equalTo: rightAnchor),
-            snapsCollectionView.topAnchor.constraint(equalTo: topAnchor),
             snapsCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)])
     }
 }

@@ -9,17 +9,10 @@
 import UIKit
 
 public enum layoutType {
-    case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
+    case cubic
     var animator: LayoutAttributesAnimator {
         switch self {
-        case .crossFade:return CrossFadeAttributesAnimator()
         case .cubic:return CubeAttributesAnimator(perspective: -1/100, totalAngle: .pi/12)
-        case .linearCard:return LinearCardAttributesAnimator()
-        case .page:return PageAttributesAnimator()
-        case .parallax:return ParallaxAttributesAnimator()
-        case .rotateInOut:return RotateInOutAttributesAnimator()
-        case .snapIn:return SnapInAttributesAnimator()
-        case .zoomInOut:return ZoomInOutAttributesAnimator()
         }
     }
 }
@@ -47,7 +40,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         gesture.direction = .down
         return gesture
     }()
-
+    
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
@@ -72,7 +65,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         fatalError("init(coder:) has not been implemented")
     }
     override var prefersStatusBarHidden: Bool { return true }
-
+    
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -86,7 +79,9 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         return model.numberOfItemsInSection(section)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
+        let reuseIdentifier = "Identifier_\(indexPath.section)-\(indexPath.row)-\(indexPath.item)"
+        collectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
             fatalError("Incompatible cell")
         }
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
@@ -134,6 +129,9 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            if (vCell.story?.snaps?[vCell.story?.lastPlayedSnapIndex ?? 0 ])?.kind == .video {
+                vCell.resumePlayer()
+            }
         }else {
             vCell.startProgressors()
         }
@@ -146,7 +144,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: view.width, height: view.height)
     }
 }
 
@@ -155,6 +153,7 @@ extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
         vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
+        vCell.pausePlayer()
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
@@ -198,8 +197,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
     func moveToPreviousStory() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
-            if n < count && n > 1 {
-                //Move to next story
+            if n <= count && n > 1 {
                 story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 nStoryIndex = nStoryIndex - 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
@@ -213,16 +211,3 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         self.dismiss(animated: true, completion:nil)
     }
 }
-
-/*//MARK:- IGPlayerObserver Protocol implementation
-extension IGStoryPreviewController: IGPlayerObserver {
-    func didCompletePlay(){
-        //        let nextIndex = snapIndex+1
-        //let nextSnap = stories[nextIndex]
-        //videoURL ===> nextSnap.videoURL
-//        let videoURL = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-//        let playerResource = VideoResource.init(filePath: videoURL)
-//        player.play(with: playerResource)
-    }
-    func didTrack(progress:Float){}
-}*/
