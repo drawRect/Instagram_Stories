@@ -36,14 +36,7 @@
 		4C1E29CB22316F6F0070FD27 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E29BD22316F6F0070FD27 /* LICENSE */; };
 		4C1E29CC22316F6F0070FD27 /* CubeAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */; };
 		4C1E29CD22316F6F0070FD27 /* AnimatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */; };
-		4C1E29CE22316F6F0070FD27 /* CrossFadeAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C122316F6F0070FD27 /* CrossFadeAttributesAnimator.swift */; };
-		4C1E29CF22316F6F0070FD27 /* LinearCardAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C222316F6F0070FD27 /* LinearCardAttributesAnimator.swift */; };
-		4C1E29D022316F6F0070FD27 /* ParallaxAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C322316F6F0070FD27 /* ParallaxAttributesAnimator.swift */; };
 		4C1E29D122316F6F0070FD27 /* UIView+Anchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C422316F6F0070FD27 /* UIView+Anchor.swift */; };
-		4C1E29D222316F6F0070FD27 /* ZoomInOutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C522316F6F0070FD27 /* ZoomInOutAttributesAnimator.swift */; };
-		4C1E29D322316F6F0070FD27 /* RotateInOutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C622316F6F0070FD27 /* RotateInOutAttributesAnimator.swift */; };
-		4C1E29D422316F6F0070FD27 /* PageAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C722316F6F0070FD27 /* PageAttributesAnimator.swift */; };
-		4C1E29D522316F6F0070FD27 /* SnapInAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C822316F6F0070FD27 /* SnapInAttributesAnimator.swift */; };
 		4C1E29D622316F6F0070FD27 /* LayoutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C922316F6F0070FD27 /* LayoutAttributesAnimator.swift */; };
 		4C1E29D722316F6F0070FD27 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E29CA22316F6F0070FD27 /* README.md */; };
 		4C37FC6C20FA7CDA00F898DD /* IGRetryButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */; };
@@ -96,14 +89,7 @@
 		4C1E29BD22316F6F0070FD27 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedCollectionViewLayout.swift; sourceTree = "<group>"; };
-		4C1E29C122316F6F0070FD27 /* CrossFadeAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossFadeAttributesAnimator.swift; sourceTree = "<group>"; };
-		4C1E29C222316F6F0070FD27 /* LinearCardAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinearCardAttributesAnimator.swift; sourceTree = "<group>"; };
-		4C1E29C322316F6F0070FD27 /* ParallaxAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ParallaxAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29C422316F6F0070FD27 /* UIView+Anchor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Anchor.swift"; sourceTree = "<group>"; };
-		4C1E29C522316F6F0070FD27 /* ZoomInOutAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZoomInOutAttributesAnimator.swift; sourceTree = "<group>"; };
-		4C1E29C622316F6F0070FD27 /* RotateInOutAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RotateInOutAttributesAnimator.swift; sourceTree = "<group>"; };
-		4C1E29C722316F6F0070FD27 /* PageAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageAttributesAnimator.swift; sourceTree = "<group>"; };
-		4C1E29C822316F6F0070FD27 /* SnapInAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SnapInAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29C922316F6F0070FD27 /* LayoutAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29CA22316F6F0070FD27 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4C37FC6B20FA7CDA00F898DD /* IGRetryButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGRetryButton.swift; sourceTree = "<group>"; };
@@ -267,14 +253,7 @@
 			children = (
 				4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */,
 				4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */,
-				4C1E29C122316F6F0070FD27 /* CrossFadeAttributesAnimator.swift */,
-				4C1E29C222316F6F0070FD27 /* LinearCardAttributesAnimator.swift */,
-				4C1E29C322316F6F0070FD27 /* ParallaxAttributesAnimator.swift */,
 				4C1E29C422316F6F0070FD27 /* UIView+Anchor.swift */,
-				4C1E29C522316F6F0070FD27 /* ZoomInOutAttributesAnimator.swift */,
-				4C1E29C622316F6F0070FD27 /* RotateInOutAttributesAnimator.swift */,
-				4C1E29C722316F6F0070FD27 /* PageAttributesAnimator.swift */,
-				4C1E29C822316F6F0070FD27 /* SnapInAttributesAnimator.swift */,
 				4C1E29C922316F6F0070FD27 /* LayoutAttributesAnimator.swift */,
 			);
 			path = Source;
@@ -501,29 +480,22 @@
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,
 				078E41461F62137E00222191 /* ImageView+Additions.swift in Sources */,
-				4C1E29D022316F6F0070FD27 /* ParallaxAttributesAnimator.swift in Sources */,
 				0743496D1F782FFD00F02228 /* IGConstants.swift in Sources */,
 				1024C9FF1FAA0D5F00237538 /* IGHomeView.swift in Sources */,
-				4C1E29CF22316F6F0070FD27 /* LinearCardAttributesAnimator.swift in Sources */,
-				4C1E29D322316F6F0070FD27 /* RotateInOutAttributesAnimator.swift in Sources */,
-				4C1E29D422316F6F0070FD27 /* PageAttributesAnimator.swift in Sources */,
 				7E58B1C1205EAD15002B3C84 /* IGStoryPreviewView.swift in Sources */,
 				4C1E29D622316F6F0070FD27 /* LayoutAttributesAnimator.swift in Sources */,
 				4C1E29CD22316F6F0070FD27 /* AnimatedCollectionViewLayout.swift in Sources */,
 				078E413B1F61E83200222191 /* IGStory.swift in Sources */,
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,
-				4C1E29D222316F6F0070FD27 /* ZoomInOutAttributesAnimator.swift in Sources */,
 				4C37FC6C20FA7CDA00F898DD /* IGRetryButton.swift in Sources */,
 				4C1E29CC22316F6F0070FD27 /* CubeAttributesAnimator.swift in Sources */,
 				078E413A1F61E83200222191 /* IGSnap.swift in Sources */,
 				7E30D4BA2020883600469BEB /* Reachability.swift in Sources */,
 				078E413F1F61EA2A00222191 /* IGStories.swift in Sources */,
-				4C1E29CE22316F6F0070FD27 /* CrossFadeAttributesAnimator.swift in Sources */,
 				101422F51FB89147004D3D4F /* IGAdditions.swift in Sources */,
 				0774D51A1F7641AF0089791B /* IGSnapProgressView.swift in Sources */,
 				4C1825192232DE9A00728DDB /* UIView+Extension.swift in Sources */,
 				078E41431F62092C00222191 /* IGUser.swift in Sources */,
-				4C1E29D522316F6F0070FD27 /* SnapInAttributesAnimator.swift in Sources */,
 				1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */,
 				07EBE8F11F672951007BCF29 /* IGCommon.swift in Sources */,
 				4C1E29D122316F6F0070FD27 /* UIView+Anchor.swift in Sources */,
