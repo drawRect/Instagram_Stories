@@ -81,7 +81,7 @@ class IGPlayerView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     deinit {
-        print("IGPlayerview got deallocated")
+        debugPrint("IGPlayerview got deallocated")
     }
     
     var currentItem: AVPlayerItem? {
@@ -90,7 +90,7 @@ class IGPlayerView: UIView {
     var currentTime: Float {
         return Float(self.player.currentTime().value)
     }
-
+    
 }
 
 extension IGPlayerView: PlayerControls {
@@ -141,7 +141,7 @@ extension IGPlayerView: PlayerControls {
             } else if keyPath == "timeControlStatus" {
                 if #available(iOS 10.0, *) {
                     if player.timeControlStatus == .playing {
-                        print("Playing")
+                        //Started Playing
                         activityIndicator.stopAnimating()
                         playerObserverDelegate?.didStartPlaying()
                     } else {

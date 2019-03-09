@@ -47,7 +47,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         gesture.direction = .down
         return gesture
     }()
-
+    
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
@@ -72,7 +72,7 @@ final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelega
         fatalError("init(coder:) has not been implemented")
     }
     override var prefersStatusBarHidden: Bool { return true }
-
+    
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -216,14 +216,14 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
 }
 
 /*//MARK:- IGPlayerObserver Protocol implementation
-extension IGStoryPreviewController: IGPlayerObserver {
-    func didCompletePlay(){
-        //        let nextIndex = snapIndex+1
-        //let nextSnap = stories[nextIndex]
-        //videoURL ===> nextSnap.videoURL
-//        let videoURL = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
-//        let playerResource = VideoResource.init(filePath: videoURL)
-//        player.play(with: playerResource)
-    }
-    func didTrack(progress:Float){}
-}*/
+ extension IGStoryPreviewController: IGPlayerObserver {
+ func didCompletePlay(){
+ //        let nextIndex = snapIndex+1
+ //let nextSnap = stories[nextIndex]
+ //videoURL ===> nextSnap.videoURL
+ //        let videoURL = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
+ //        let playerResource = VideoResource.init(filePath: videoURL)
+ //        player.play(with: playerResource)
+ }
+ func didTrack(progress:Float){}
+ }*/
