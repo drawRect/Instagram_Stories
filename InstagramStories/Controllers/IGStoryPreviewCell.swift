@@ -189,9 +189,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)
-        /*self.videoView = videoView
-         self.videoView?.playerObserverDelegate = self
-         scrollview.addSubview(self.videoView!)*/
         return videoView
     }
     private func getVideoView(with index: Int) -> IGPlayerView? {
