@@ -6,7 +6,7 @@ Instagram Stories
 * Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
 * That's all you need to know.
 
-<img src="https://github.com/boominadhaprakash/AnalogClock/blob/master/AnalogClock/clock.png" title="Home Screen">
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" title="Home Screen">
 
 <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" title="Story Snaps Screen">
 
