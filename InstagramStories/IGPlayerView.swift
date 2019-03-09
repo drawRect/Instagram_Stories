@@ -49,7 +49,7 @@ class IGPlayerView: UIView {
         return player.currentItem?.error
     }
     var activityIndicator: UIActivityIndicatorView
-    
+
     //MARK:- Init methods
     override init(frame: CGRect) {
         playerLayer = AVPlayerLayer(player: player)

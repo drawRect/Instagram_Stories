@@ -86,7 +86,9 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         return model.numberOfItemsInSection(section)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
+        let reuseIdentifier = "Identifier_\(indexPath.section)-\(indexPath.row)-\(indexPath.item)"
+        collectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
             fatalError("Incompatible cell")
         }
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
@@ -134,7 +136,9 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
-            vCell.resumePlayer()
+            if (vCell.story?.snaps?[vCell.story?.lastPlayedSnapIndex ?? 0 ])?.kind == .video {
+                vCell.resumePlayer()
+            }
         }else {
             vCell.startProgressors()
         }
@@ -200,7 +204,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
     func moveToPreviousStory() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if let count = stories.count {
-            if n < count && n > 1 {
+            if n <= count && n > 1 {
                 story_copy = stories.stories?[nStoryIndex+handPickedStoryIndex]
                 nStoryIndex = nStoryIndex - 1
                 let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
@@ -214,16 +218,3 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         self.dismiss(animated: true, completion:nil)
     }
 }
-
-/*//MARK:- IGPlayerObserver Protocol implementation
- extension IGStoryPreviewController: IGPlayerObserver {
- func didCompletePlay(){
- //        let nextIndex = snapIndex+1
- //let nextSnap = stories[nextIndex]
- //videoURL ===> nextSnap.videoURL
- //        let videoURL = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"
- //        let playerResource = VideoResource.init(filePath: videoURL)
- //        player.play(with: playerResource)
- }
- func didTrack(progress:Float){}
- }*/

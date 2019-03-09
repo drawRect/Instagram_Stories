@@ -58,11 +58,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private var videoSnapIndex: Int = 0
     //private var videoView: IGPlayerView?
     
+    var retryBtn: IGRetryLoaderButton!
+    
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
-    /*public var isPlayerExist: Bool {
-     return videoView != nil ? true : false
-     }*/
+
     public var snapIndex: Int = 0 {
         didSet {
             scrollview.isUserInteractionEnabled = true
@@ -77,15 +77,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                             }
                         }else {
                             if let url = snap.url {
-                                DispatchQueue.main.async {[weak self] in
-                                    if let strongSelf = self {
-                                        if let videoView = strongSelf.getVideoView(with: strongSelf.snapIndex) {
-                                            videoView.play()
-                                        }else {
-                                            let videoView = strongSelf.createVideoView()
-                                            strongSelf.startPlayer(videoView: videoView, with: url)
-                                        }
+                                if let videoView = getVideoView(with: snapIndex) {
+                                    if videoView.currentItem != nil {
+                                        videoView.play()
+                                    } else {
+                                        startPlayer(videoView: videoView, with: url)
                                     }
+                                }else {
+                                    let videoView = createVideoView()
+                                    startPlayer(videoView: videoView, with: url)
                                 }
                             }                        
                         }
@@ -104,7 +104,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                         }else {
                             if let url = snap.url {
                                 if let videoView = getVideoView(with: snapIndex) {
-                                    videoView.play()
+                                    if videoView.currentItem != nil {
+                                        videoView.play()
+                                    } else {
+                                        startPlayer(videoView: videoView, with: url)
+                                    }
                                 }
                                 else {
                                     let videoView = self.createVideoView()
@@ -195,7 +199,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
         return nil
     }
-    var retryBtn: IGRetryLoaderButton!
     
     private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared, completion: {[weak self]
@@ -213,9 +216,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         })
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
-        let videoResource = VideoResource(filePath: url)
-        videoView.play(with: videoResource)
-        self.startProgressors()
+        if scrollview.subviews.count > 0 {
+            if story?.isCompletelyVisible == true {
+                let videoResource = VideoResource(filePath: url)
+                videoView.play(with: videoResource)
+                self.startProgressors()
+            }
+        }
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
@@ -250,8 +257,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             videoSnapIndex = n
             stopPlayer()
             if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
+                direction = .backward
                 if snapIndex >= 1 && snapIndex <= snapCount {
-                    direction = .backward
                     clearLastPlayedSnaps(n)
                     stopSnapProgressors(with: n)
                     n -= 1
