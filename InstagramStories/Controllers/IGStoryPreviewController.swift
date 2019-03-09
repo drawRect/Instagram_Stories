@@ -9,17 +9,10 @@
 import UIKit
 
 public enum layoutType {
-    case crossFade,cubic,linearCard,page,parallax,rotateInOut,snapIn,zoomInOut
+    case cubic
     var animator: LayoutAttributesAnimator {
         switch self {
-        case .crossFade:return CrossFadeAttributesAnimator()
         case .cubic:return CubeAttributesAnimator(perspective: -1/100, totalAngle: .pi/12)
-        case .linearCard:return LinearCardAttributesAnimator()
-        case .page:return PageAttributesAnimator()
-        case .parallax:return ParallaxAttributesAnimator()
-        case .rotateInOut:return RotateInOutAttributesAnimator()
-        case .snapIn:return SnapInAttributesAnimator()
-        case .zoomInOut:return ZoomInOutAttributesAnimator()
         }
     }
 }
@@ -151,7 +144,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
+        return CGSize(width: view.width, height: view.height)
     }
 }
 

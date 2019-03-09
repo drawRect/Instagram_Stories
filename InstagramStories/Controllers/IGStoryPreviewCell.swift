@@ -33,6 +33,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         sv.showsVerticalScrollIndicator = false
         sv.showsHorizontalScrollIndicator = false
         sv.isScrollEnabled = false
+        sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
     }()
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {

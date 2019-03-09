@@ -57,9 +57,9 @@ class IGStoryPreviewView: UIView {
     private func installLayoutConstraints(){
         //Setting constraints for snapsCollectionview
         NSLayoutConstraint.activate([
-            snapsCollectionView.leftAnchor.constraint(equalTo: leftAnchor),
+            leftAnchor.constraint(equalTo: snapsCollectionView.leftAnchor),
+            topAnchor.constraint(equalTo: snapsCollectionView.topAnchor),
             snapsCollectionView.rightAnchor.constraint(equalTo: rightAnchor),
-            snapsCollectionView.topAnchor.constraint(equalTo: topAnchor),
             snapsCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)])
     }
 }
