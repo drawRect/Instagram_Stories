@@ -73,8 +73,8 @@ UICollectionViewDelegateFlowLayout {
         if indexPath.row == 0 {
             showComingSoonAlert()
         }else{
-            if let stories = viewModel.getStories() {
-                let storyPreviewScene = IGStoryPreviewController.init(stories: stories, handPickedStoryIndex:  indexPath.row-1)
+            if let stories = viewModel.getStories(), let stories_copy = try? stories.copy() {
+                let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
                 present(storyPreviewScene, animated: true, completion: nil)
             }
         }
