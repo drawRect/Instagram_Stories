@@ -70,51 +70,43 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             switch direction {
             case .forward:
                 if snapIndex < story?.snapsCount ?? 0 {
-                    if let snap = story?.snaps?[snapIndex] {
+                    if let snap = story?.snaps[snapIndex] {
                         if snap.kind != MimeType.video {
-                            if let url = snap.url {
-                                let snapView = createSnapView()
-                                startRequest(snapView: snapView, with: url)
-                            }
+                            let snapView = createSnapView()
+                            startRequest(snapView: snapView, with: snap.url)
                         }else {
-                            if let url = snap.url {
-                                if let videoView = getVideoView(with: snapIndex) {
-                                    if videoView.currentItem != nil {
-                                        videoView.play()
-                                    } else {
-                                        startPlayer(videoView: videoView, with: url)
-                                    }
-                                }else {
-                                    let videoView = createVideoView()
-                                    startPlayer(videoView: videoView, with: url)
+                            if let videoView = getVideoView(with: snapIndex) {
+                                if videoView.currentItem != nil {
+                                    videoView.play()
+                                } else {
+                                    startPlayer(videoView: videoView, with: snap.url)
                                 }
-                            }                        
+                            }else {
+                                let videoView = createVideoView()
+                                startPlayer(videoView: videoView, with: snap.url)
+                            }
                         }
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                     }
                 }
             case .backward:
                 if snapIndex < story?.snapsCount ?? 0 {
-                    if let snap = story?.snaps?[snapIndex] {
+                    if let snap = story?.snaps[snapIndex] {
                         if snap.kind != MimeType.video {
-                            if let url = snap.url {
-                                if let snapView = getSnapview() {
-                                    self.startRequest(snapView: snapView, with: url)
-                                }
+                            if let snapView = getSnapview() {
+                                self.startRequest(snapView: snapView, with: snap.url)
                             }
                         }else {
-                            if let url = snap.url {
-                                if let videoView = getVideoView(with: snapIndex) {
-                                    if videoView.currentItem != nil {
-                                        videoView.play()
-                                    } else {
-                                        startPlayer(videoView: videoView, with: url)
-                                    }
+                            if let videoView = getVideoView(with: snapIndex) {
+                                if videoView.currentItem != nil {
+                                    videoView.play()
+                                } else {
+                                    startPlayer(videoView: videoView, with: snap.url)
                                 }
-                                else {
-                                    let videoView = self.createVideoView()
-                                    self.startPlayer(videoView: videoView, with: url)
-                                }
+                            }
+                            else {
+                                let videoView = self.createVideoView()
+                                self.startPlayer(videoView: videoView, with: snap.url)
                             }
                         }
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
@@ -126,10 +118,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     public var story: IGStory? {
         didSet {
             storyHeaderView.story = story
-            if let picture = story?.user?.picture {
+            if let picture = story?.user.picture {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
-            if let count = story?.snaps?.count {
+            if let count = story?.snaps.count {
                 scrollview.contentSize = CGSize(width: IGScreen.width * CGFloat(count), height: IGScreen.height)
             }
         }
