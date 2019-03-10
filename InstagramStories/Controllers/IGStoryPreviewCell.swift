@@ -246,8 +246,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
              */
             if story?.snaps[n].kind == .video {
                 videoSnapIndex = n
+                stopPlayer()
             }
-            stopPlayer()
             if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
                 direction = .backward
                 if snapIndex >= 1 && snapIndex <= snapCount {
@@ -443,6 +443,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     public func stopPlayer() {
         getVideoView(with: videoSnapIndex)?.stop()
+        getVideoView(with: videoSnapIndex)?.player.replaceCurrentItem(with: nil)
     }
     public func resumePlayer() {
         getVideoView(with: videoSnapIndex)?.play()

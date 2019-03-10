@@ -38,7 +38,7 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
              * Until animation completes, UIView Animation completion block will be called continuously.
              * If animation completed will get status value as true otherwise false
              */
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
                 attributes.contentView?.layer.transform = transform
             }) {
@@ -57,7 +57,7 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
              * Until animation completes, UIView Animation completion block will be called continuously.
              * If animation completed will get status value as true otherwise false
              */
-            UIView.animate(withDuration: 0.2, animations: {
+            UIView.animate(withDuration: 0.3, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
                 attributes.contentView?.layer.transform = transform
             }) {
