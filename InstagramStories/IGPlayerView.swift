@@ -43,10 +43,10 @@ class IGPlayerView: UIView {
     //MARK:- iVars
     public weak var playerObserverDelegate: IGPlayerObserver?
     
-    let player: AVPlayer = AVPlayer()
+    let player: AVPlayer? = AVPlayer()
     private let playerLayer: AVPlayerLayer
     var error: Error? {
-        return player.currentItem?.error
+        return player?.currentItem?.error
     }
     var activityIndicator: UIActivityIndicatorView
 
@@ -64,10 +64,10 @@ class IGPlayerView: UIView {
         playerLayer.frame = self.bounds
         self.layer.addSublayer(playerLayer)
         self.addSubview(activityIndicator)
-        player.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
+        player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
             [weak self] time in
             let timeString = String(format: "%02.2f", CMTimeGetSeconds(time))
-            if let currentItem = self?.player.currentItem {
+            if let currentItem = self?.player?.currentItem {
                 let totalTimeString =  String(format: "%02.2f", CMTimeGetSeconds(currentItem.asset.duration))
                 if timeString == totalTimeString {
                     self?.playerObserverDelegate?.didCompletePlay()
@@ -85,10 +85,10 @@ class IGPlayerView: UIView {
     }
     
     var currentItem: AVPlayerItem? {
-        return player.currentItem
+        return player?.currentItem
     }
     var currentTime: Float {
-        return Float(self.player.currentTime().value)
+        return Float(self.player?.currentTime().value ?? 0)
     }
     
 }
@@ -98,36 +98,39 @@ extension IGPlayerView: PlayerControls {
     func play(with resource: VideoResource) {
         let url = URL.init(string: resource.filePath)!
         let playerItem = AVPlayerItem(url: url)
-        player.replaceCurrentItem(with: playerItem)
+        player?.replaceCurrentItem(with: playerItem)
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         
         // Add observer for AVPlayer status and AVPlayerItem status
-        self.player.addObserver(self, forKeyPath: "status", options: [.old, .new], context: nil)
+        self.player?.addObserver(self, forKeyPath: "status", options: [.old, .new], context: nil)
         if #available(iOS 10.0, *) {
-            self.player.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
+            self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
         } else {
-            self.player.addObserver(self, forKeyPath: "rate", options: [.old, .new], context: nil)
+            self.player?.addObserver(self, forKeyPath: "rate", options: [.old, .new], context: nil)
         }
     }
     func play() {
-        player.play()
+        player?.play()
     }
     func pause() {
         //control the player
-        player.pause()
+        player?.pause()
     }
     func stop() {
         //control the player
-        player.seek(to: CMTime.zero)
-        player.pause()
+        player?.seek(to: CMTime.zero)
+        player?.pause()
     }
     var playerStatus: PlayerStatus {
-        switch player.status {
-        case .unknown: return .unknown
-        case .readyToPlay: return .readyToPlay
-        case .failed: return .failed
+        if let p = player {
+            switch p.status {
+            case .unknown: return .unknown
+            case .readyToPlay: return .readyToPlay
+            case .failed: return .failed
+            }
         }
+        return .unknown
     }
     
     // Observe If AVPlayerItem.status Changed to Fail
@@ -136,7 +139,7 @@ extension IGPlayerView: PlayerControls {
         if let player = object as? AVPlayer {
             if keyPath == "status" {
                 if player.status == .readyToPlay {
-                    self.player.play()
+                    self.player?.play()
                 }
             } else if keyPath == "timeControlStatus" {
                 if #available(iOS 10.0, *) {

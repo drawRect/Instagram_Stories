@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 protocol StoryPreviewProtocol: class {
     func didCompletePreview()
@@ -244,9 +245,12 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if story?.snaps[n].kind == .video {
-                videoSnapIndex = n
-                stopPlayer()
+            if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
+                fillupLastPlayedSnap(n)
+            }else {
+                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
+                    fillupLastPlayedSnap(n)
+                }
             }
             if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
                 direction = .backward
@@ -332,6 +336,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollview.contentOffset = CGPoint(x: xValue, y: 0)
         }
     }
+    //Before progress view starts we have to fill the progressView
+    private func fillupLastPlayedSnap(_ sIndex: Int) {
+        if let snap = story?.snaps[sIndex], snap.kind == .video {
+            videoSnapIndex = sIndex
+            stopPlayer()
+        }
+        if let holderView = self.getProgressIndicatorView(with: sIndex),
+            let progressView = self.getProgressView(with: sIndex){
+            progressView.frame.size.width = holderView.frame.width
+        }
+    }
     private func fillupLastPlayedSnaps(_ sIndex: Int) {
         //Coz, we are ignoring the first.snap
         if sIndex != 0 {
@@ -371,8 +386,9 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
+            progressView.snapIndex = snapIndex
             if type == .image {
-                progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, isCancelledAbruptly) in
+                progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
                     if isCancelledAbruptly == false {
                         self.didCompleteProgress()
                     }
@@ -421,7 +437,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     public func startSnapProgress(with sIndex: Int) {
         if let indicatorView = getProgressIndicatorView(with: sIndex),
             let pv = getProgressView(with: sIndex) {
-            pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier, isCancelledAbruptly) in
+            pv.start(with: 5.0, width: indicatorView.frame.width, completion: { (identifier, snapIndex, isCancelledAbruptly) in
                 if isCancelledAbruptly == false {
                     self.didCompleteProgress()
                 }
@@ -442,8 +458,12 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         getVideoView(with: videoSnapIndex)?.pause()
     }
     public func stopPlayer() {
-        getVideoView(with: videoSnapIndex)?.stop()
-        getVideoView(with: videoSnapIndex)?.player.replaceCurrentItem(with: nil)
+        let videoView = getVideoView(with: videoSnapIndex)
+        if videoView?.player?.timeControlStatus != .playing {
+            getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
+        }
+        videoView?.stop()
+        //getVideoView(with: videoSnapIndex)?.player = nil
     }
     public func resumePlayer() {
         getVideoView(with: videoSnapIndex)?.play()
@@ -488,13 +508,19 @@ extension IGStoryPreviewCell: IGPlayerObserver {
             let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if videoView?.error == nil && (story?.isCompletelyVisible)! == true {
                 if let holderView = getProgressIndicatorView(with: snapIndex),
-                    let progressView = getProgressView(with: snapIndex){
+                    let progressView = getProgressView(with: snapIndex) {
                     progressView.story_identifier = self.story?.internalIdentifier
+                    progressView.snapIndex = snapIndex
                     if let duration = videoView?.currentItem?.asset.duration {
                         if Float(duration.value) > 0 {
-                            progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier, isCancelledAbruptly) in
+                            progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
                                 if isCancelledAbruptly == false {
+                                    self.videoSnapIndex = snapIndex
+                                    self.stopPlayer()
                                     self.didCompleteProgress()
+                                } else {
+                                    self.videoSnapIndex = snapIndex
+                                    self.stopPlayer()
                                 }
                             })
                         }else {
