@@ -43,7 +43,7 @@ class IGPlayerView: UIView {
     //MARK:- iVars
     public weak var playerObserverDelegate: IGPlayerObserver?
     
-    private let player: AVPlayer = AVPlayer()
+    let player: AVPlayer = AVPlayer()
     private let playerLayer: AVPlayerLayer
     var error: Error? {
         return player.currentItem?.error
