@@ -77,11 +77,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                             startRequest(snapView: snapView, with: snap.url)
                         }else {
                             if let videoView = getVideoView(with: snapIndex) {
-                                if videoView.currentItem != nil {
-                                    videoView.play()
-                                } else {
-                                    startPlayer(videoView: videoView, with: snap.url)
-                                }
+                                startPlayer(videoView: videoView, with: snap.url)
                             }else {
                                 let videoView = createVideoView()
                                 startPlayer(videoView: videoView, with: snap.url)

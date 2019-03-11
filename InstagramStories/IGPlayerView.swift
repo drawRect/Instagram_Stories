@@ -43,8 +43,8 @@ class IGPlayerView: UIView {
     //MARK:- iVars
     public weak var playerObserverDelegate: IGPlayerObserver?
     
-    let player: AVPlayer? = AVPlayer()
-    private let playerLayer: AVPlayerLayer
+    var player: AVPlayer?
+    private var playerLayer: AVPlayerLayer?
     var error: Error? {
         return player?.currentItem?.error
     }
@@ -52,17 +52,17 @@ class IGPlayerView: UIView {
 
     //MARK:- Init methods
     override init(frame: CGRect) {
-        playerLayer = AVPlayerLayer(player: player)
+        //playerLayer = AVPlayerLayer(player: player)
         activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.hidesWhenStopped = true
         super.init(frame: frame)
-        playerLayer.videoGravity = .resize
+        //playerLayer.videoGravity = .resize
         backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
         
         //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
-        playerLayer.frame = self.bounds
-        self.layer.addSublayer(playerLayer)
+        //playerLayer.frame = self.bounds
+        //self.layer.addSublayer(playerLayer)
         self.addSubview(activityIndicator)
         player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
             [weak self] time in
@@ -96,14 +96,32 @@ class IGPlayerView: UIView {
 extension IGPlayerView: PlayerControls {
     
     func play(with resource: VideoResource) {
-        let url = URL.init(string: resource.filePath)!
-        let playerItem = AVPlayerItem(url: url)
-        player?.replaceCurrentItem(with: playerItem)
+        //Removing observer before creating it.
+        //self.player?.removeObserver(self, forKeyPath: "status")
+        self.player?.removeObserver(self, forKeyPath: "timeControlStatus")
+        self.player?.removeObserver(self, forKeyPath: "rate")
+        
+        let url = URL(string: resource.filePath)!
+        //let playerItem = AVPlayerItem(url: url)
+        //player?.replaceCurrentItem(with: playerItem)
+        if let play = player {
+            print("playing")
+            play.play()
+        } else {
+            print("player allocated")
+            player = AVPlayer(url: url)
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer!.videoGravity = .resize
+            playerLayer!.frame = self.bounds
+            self.layer.addSublayer(playerLayer!)
+            print("playing")
+            player!.play()
+        }
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         
         // Add observer for AVPlayer status and AVPlayerItem status
-        self.player?.addObserver(self, forKeyPath: "status", options: [.old, .new], context: nil)
+        //self.player?.addObserver(self, forKeyPath: "status", options: [.old, .new], context: nil)
         if #available(iOS 10.0, *) {
             self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
         } else {
@@ -119,8 +137,15 @@ extension IGPlayerView: PlayerControls {
     }
     func stop() {
         //control the player
-        player?.seek(to: CMTime.zero)
-        player?.pause()
+        if let play = player {
+            print("stopped")
+            play.pause()
+            player = nil
+            self.playerLayer?.removeFromSuperlayer()
+            print("player deallocated")
+        } else {
+            print("player was already deallocated")
+        }
     }
     var playerStatus: PlayerStatus {
         if let p = player {
@@ -137,11 +162,11 @@ extension IGPlayerView: PlayerControls {
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if let player = object as? AVPlayer {
-            if keyPath == "status" {
+            /*if keyPath == "status" {
                 if player.status == .readyToPlay {
                     self.player?.play()
                 }
-            } else if keyPath == "timeControlStatus" {
+            } else*/ if keyPath == "timeControlStatus" {
                 if #available(iOS 10.0, *) {
                     if player.timeControlStatus == .playing {
                         //Started Playing
