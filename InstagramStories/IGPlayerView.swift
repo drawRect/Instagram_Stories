@@ -52,17 +52,13 @@ class IGPlayerView: UIView {
 
     //MARK:- Init methods
     override init(frame: CGRect) {
-        //playerLayer = AVPlayerLayer(player: player)
         activityIndicator = UIActivityIndicatorView(style: .gray)
         activityIndicator.hidesWhenStopped = true
         super.init(frame: frame)
-        //playerLayer.videoGravity = .resize
         backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
         
         //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
-        //playerLayer.frame = self.bounds
-        //self.layer.addSublayer(playerLayer)
         self.addSubview(activityIndicator)
         player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
             [weak self] time in
@@ -80,9 +76,6 @@ class IGPlayerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    deinit {
-        debugPrint("IGPlayerview got deallocated")
-    }
     
     var currentItem: AVPlayerItem? {
         return player?.currentItem
@@ -97,24 +90,23 @@ extension IGPlayerView: PlayerControls {
     
     func play(with resource: VideoResource) {
         //Removing observer before creating it.
+        /* Adding removeObserver here.
+         * If player not nil removeObserver will call otherwise it will not call.
+         * If we add removeObserver without adding Observer, app will crash. We can avoid crash in this way.
+         */
         //self.player?.removeObserver(self, forKeyPath: "status")
         self.player?.removeObserver(self, forKeyPath: "timeControlStatus")
         self.player?.removeObserver(self, forKeyPath: "rate")
         
         let url = URL(string: resource.filePath)!
-        //let playerItem = AVPlayerItem(url: url)
-        //player?.replaceCurrentItem(with: playerItem)
         if let play = player {
-            print("playing")
             play.play()
         } else {
-            print("player allocated")
             player = AVPlayer(url: url)
             playerLayer = AVPlayerLayer(player: player)
             playerLayer!.videoGravity = .resize
             playerLayer!.frame = self.bounds
             self.layer.addSublayer(playerLayer!)
-            print("playing")
             player!.play()
         }
         activityIndicator.isHidden = false
@@ -138,13 +130,12 @@ extension IGPlayerView: PlayerControls {
     func stop() {
         //control the player
         if let play = player {
-            print("stopped")
             play.pause()
             player = nil
             self.playerLayer?.removeFromSuperlayer()
-            print("player deallocated")
+            //player got deallocated
         } else {
-            print("player was already deallocated")
+            //player was already deallocated
         }
     }
     var playerStatus: PlayerStatus {
@@ -159,7 +150,6 @@ extension IGPlayerView: PlayerControls {
     }
     
     // Observe If AVPlayerItem.status Changed to Fail
-    
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         if let player = object as? AVPlayer {
             /*if keyPath == "status" {

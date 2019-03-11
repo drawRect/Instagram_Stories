@@ -134,7 +134,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         direction = .forward
-        clearScrollViewGarbages()
+        //clearScrollViewGarbages()
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
