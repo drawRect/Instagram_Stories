@@ -73,8 +73,12 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 if snapIndex < story?.snapsCount ?? 0 {
                     if let snap = story?.snaps[snapIndex] {
                         if snap.kind != MimeType.video {
-                            let snapView = createSnapView()
-                            startRequest(snapView: snapView, with: snap.url)
+                            if let snapView = getSnapview() {
+                                startRequest(snapView: snapView, with: snap.url)
+                            } else {
+                                let snapView = createSnapView()
+                                startRequest(snapView: snapView, with: snap.url)
+                            }
                         }else {
                             if let videoView = getVideoView(with: snapIndex) {
                                 startPlayer(videoView: videoView, with: snap.url)
