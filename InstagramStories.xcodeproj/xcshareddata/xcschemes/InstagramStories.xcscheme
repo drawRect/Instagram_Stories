@@ -38,6 +38,16 @@
                ReferencedContainer = "container:InstagramStories.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "D6BEA4AE223913D00024E565"
+               BuildableName = "InstagramStoriesUITests.xctest"
+               BlueprintName = "InstagramStoriesUITests"
+               ReferencedContainer = "container:InstagramStories.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

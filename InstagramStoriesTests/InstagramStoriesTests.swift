@@ -15,11 +15,12 @@ class InstagramStoriesTests: XCTestCase {
         do {
             let bundle = Bundle.init(for: type(of: self))
             let stories = try IGMockLoader.loadMockFile(named: "stories.json",bundle:bundle)
-            XCTAssertFalse((stories.internalIdentifier?.isEmpty)!)
-        } catch let e as MockLoaderError{
+            XCTAssertFalse((stories.stories.isEmpty))
+//            XCTAssertFalse((stories.internalIdentifier?.isEmpty)!)
+        }catch let e as MockLoaderError{
             e.desc()
             XCTFail()
-        }catch{
+        }catch {
             XCTFail()
         }
     }
