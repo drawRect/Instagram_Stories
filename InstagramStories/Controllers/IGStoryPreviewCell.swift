@@ -99,11 +99,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                             }
                         }else {
                             if let videoView = getVideoView(with: snapIndex) {
-                                if videoView.currentItem != nil {
-                                    videoView.play()
-                                } else {
-                                    startPlayer(videoView: videoView, with: snap.url)
-                                }
+                                startPlayer(videoView: videoView, with: snap.url)
                             }
                             else {
                                 let videoView = self.createVideoView()
@@ -152,6 +148,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func loadUIElements() {
         scrollview.delegate = self
         scrollview.isPagingEnabled = true
+        scrollview.backgroundColor = .black
         contentView.addSubview(scrollview)
         contentView.addSubview(storyHeaderView)
         scrollview.addGestureRecognizer(longPress_gesture)
@@ -211,7 +208,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             if story?.isCompletelyVisible == true {
                 let videoResource = VideoResource(filePath: url)
                 videoView.play(with: videoResource)
-                self.startProgressors()
             }
         }
     }
@@ -406,13 +402,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             if imageView?.image != nil && story?.isCompletelyVisible == true {
                 self.gearupTheProgressors(type: .image)
             } else {
-                //Handled in delegate methods for videos
-                /*if story?.isCompletelyVisible == true {
-                 let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-                 if videoView?.error == nil && (story?.isCompletelyVisible)! == true {
-                 self.gearupTheProgressors(type: .video, playerView: videoView)
-                 }
-                 }*/
+                // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
+                if story?.isCompletelyVisible == true {
+                    let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+                    let snap = story?.snaps[snapIndex]
+                    if let vv = videoView, story?.isCompletelyVisible == true {
+                        self.startPlayer(videoView: vv, with: snap!.url)
+                    }
+                }
             }
         }
     }

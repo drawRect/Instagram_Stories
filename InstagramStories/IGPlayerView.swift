@@ -52,10 +52,11 @@ class IGPlayerView: UIView {
 
     //MARK:- Init methods
     override init(frame: CGRect) {
-        activityIndicator = UIActivityIndicatorView(style: .gray)
+        activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicator.hidesWhenStopped = true
         super.init(frame: frame)
-        backgroundColor = UIColor.rgb(from: 0xEDF0F1)
+        //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
+        backgroundColor = .black
         activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
         
         //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
@@ -104,7 +105,7 @@ extension IGPlayerView: PlayerControls {
         } else {
             player = AVPlayer(url: url)
             playerLayer = AVPlayerLayer(player: player)
-            playerLayer!.videoGravity = .resize
+            playerLayer!.videoGravity = .resizeAspect
             playerLayer!.frame = self.bounds
             self.layer.addSublayer(playerLayer!)
             player!.play()
