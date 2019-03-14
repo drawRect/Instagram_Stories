@@ -242,8 +242,16 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
             if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
+                //Remove retry button if tap forward or backward if it exists
+                if let snapView = getSnapview(), snapView.subviews.contains(retryBtn) {
+                    snapView.removeRetryButton()
+                }
                 fillupLastPlayedSnap(n)
             }else {
+                //Remove retry button if tap forward or backward if it exists
+                if let videoView = getVideoView(with: n), videoView.subviews.contains(retryBtn) {
+                    videoView.removeRetryButton()
+                }
                 if getVideoView(with: n)?.player?.timeControlStatus != .playing {
                     fillupLastPlayedSnap(n)
                 }
@@ -500,15 +508,16 @@ extension IGStoryPreviewCell: RetryBtnDelegate {
 
 //MARK: - Extension|IGPlayerObserverDelegate
 extension IGStoryPreviewCell: IGPlayerObserver {
+    
     func didStartPlaying() {
         if let videoView = getVideoView(with: snapIndex), videoView.currentTime <= 0 {
-            let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-            if videoView?.error == nil && (story?.isCompletelyVisible)! == true {
+            //let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+            if videoView.error == nil && (story?.isCompletelyVisible)! == true {
                 if let holderView = getProgressIndicatorView(with: snapIndex),
                     let progressView = getProgressView(with: snapIndex) {
                     progressView.story_identifier = self.story?.internalIdentifier
                     progressView.snapIndex = snapIndex
-                    if let duration = videoView?.currentItem?.asset.duration {
+                    if let duration = videoView.currentItem?.asset.duration {
                         if Float(duration.value) > 0 {
                             progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
                                 if isCancelledAbruptly == false {
@@ -528,9 +537,18 @@ extension IGStoryPreviewCell: IGPlayerObserver {
             }
         }
     }
-    
+    func didFailed(withError error: String, for url: URL?) {
+        debugPrint("Failed with error: \(error)")
+        if let videoView = getVideoView(with: snapIndex), let videoURL = url {
+            self.retryBtn = IGRetryLoaderButton(withURL: videoURL.absoluteString)
+            self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+            self.retryBtn.delegate = self
+            self.isUserInteractionEnabled = true
+            videoView.addSubview(self.retryBtn)
+        }
+    }
     func didCompletePlay() {
-        print("Video completed")
+        //Video completed
     }
     
     func didTrack(progress: Float) {

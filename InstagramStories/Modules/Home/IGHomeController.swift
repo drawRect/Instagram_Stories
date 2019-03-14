@@ -72,10 +72,12 @@ UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             showComingSoonAlert()
-        }else{
-            if let stories = viewModel.getStories(), let stories_copy = try? stories.copy() {
-                let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
-                present(storyPreviewScene, animated: true, completion: nil)
+        }else {
+            DispatchQueue.main.async {
+                if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {
+                    let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
+                    self.present(storyPreviewScene, animated: true, completion: nil)
+                }
             }
         }
     }

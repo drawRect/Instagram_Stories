@@ -15,7 +15,7 @@ struct IGHomeViewModel {
     private let stories: IGStories? = {
         do {
             return try IGMockLoader.loadMockFile(named: "stories.json", bundle: .main)
-        } catch let e as MockLoaderError{
+        }catch let e as MockLoaderError {
             e.desc()
         }catch{
             debugPrint("could not read Mock json file :(")

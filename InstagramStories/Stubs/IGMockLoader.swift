@@ -37,4 +37,13 @@ struct IGMockLoader {
             throw MockLoaderError.invalidJSON(fileName)
         }
     }
+    static func loadAPIResponse(response: [String: Any]) throws -> IGStories {
+        let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+        do {
+            let stories = try JSONDecoder().decode(IGStories.self, from: data)
+            return stories
+        } catch {
+            throw MockLoaderError.invalidJSON("Input Response")
+        }
+    }
 }

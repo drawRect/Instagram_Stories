@@ -27,6 +27,7 @@ protocol IGPlayerObserver: class {
     func didStartPlaying()
     func didCompletePlay()
     func didTrack(progress: Float)
+    func didFailed(withError error: String, for url: URL?)
 }
 
 protocol PlayerControls: class {
@@ -84,7 +85,6 @@ class IGPlayerView: UIView {
     var currentTime: Float {
         return Float(self.player?.currentTime().value ?? 0)
     }
-    
 }
 
 extension IGPlayerView: PlayerControls {
@@ -95,33 +95,32 @@ extension IGPlayerView: PlayerControls {
          * If player not nil removeObserver will call otherwise it will not call.
          * If we add removeObserver without adding Observer, app will crash. We can avoid crash in this way.
          */
-        //self.player?.removeObserver(self, forKeyPath: "status")
+        self.player?.removeObserver(self, forKeyPath: "player.currentItem.status")
         self.player?.removeObserver(self, forKeyPath: "timeControlStatus")
-        self.player?.removeObserver(self, forKeyPath: "rate")
         
         let url = URL(string: resource.filePath)!
-        if let play = player {
-            play.play()
+        if let existingPlayer = player {
+            self.player = existingPlayer
         } else {
-            player = AVPlayer(url: url)
+            //player = AVPlayer(url: url)
+            let asset = AVAsset(url: url)
+            let item = AVPlayerItem(asset: asset)
+            player = AVPlayer(playerItem: item)
             playerLayer = AVPlayerLayer(player: player)
             playerLayer!.videoGravity = .resizeAspect
             playerLayer!.frame = self.bounds
             self.layer.addSublayer(playerLayer!)
-            player!.play()
         }
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        
         // Add observer for AVPlayer status and AVPlayerItem status
-        //self.player?.addObserver(self, forKeyPath: "status", options: [.old, .new], context: nil)
-        if #available(iOS 10.0, *) {
-            self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
-        } else {
-            self.player?.addObserver(self, forKeyPath: "rate", options: [.old, .new], context: nil)
-        }
+        self.player?.addObserver(self, forKeyPath: "player.currentItem.status", options: [.new, .initial], context: nil)
+        self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.new, .initial], context: nil)
+
+        player?.play()
     }
     func play() {
+        //We have used this long press gesture
         player?.play()
     }
     func pause() {
@@ -152,27 +151,30 @@ extension IGPlayerView: PlayerControls {
     
     // Observe If AVPlayerItem.status Changed to Fail
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        if let player = object as? AVPlayer {
-            /*if keyPath == "status" {
-                if player.status == .readyToPlay {
-                    self.player?.play()
-                }
-            } else*/ if keyPath == "timeControlStatus" {
-                if #available(iOS 10.0, *) {
-                    if player.timeControlStatus == .playing {
-                        //Started Playing
-                        activityIndicator.stopAnimating()
-                        playerObserverDelegate?.didStartPlaying()
-                    } else {
-                        //
-                    }
-                }
-            } else if keyPath == "rate" {
-                if player.rate > 0 {
-                    //
+        guard let player = object as? AVPlayer else { fatalError("Player is nil")}
+        if keyPath == "player.currentItem.status" {
+            let newStatus: AVPlayerItem.Status
+            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
+                newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue)!
+            }
+            else {
+                newStatus = .unknown
+            }
+            if newStatus == .failed {
+                activityIndicator.stopAnimating()
+                if let item = player.currentItem, let error = item.error, let url = item.asset as? AVURLAsset {
+                    playerObserverDelegate?.didFailed(withError: error.localizedDescription, for: url.url)
                 } else {
-                    //
+                    playerObserverDelegate?.didFailed(withError: "Unknown error", for: nil)
                 }
+            }
+        } else if keyPath == "timeControlStatus" {
+            if player.timeControlStatus == .playing {
+                //Started Playing
+                activityIndicator.stopAnimating()
+                playerObserverDelegate?.didStartPlaying()
+            } else {
+                //
             }
         }
     }
