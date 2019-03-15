@@ -78,7 +78,13 @@ class IGPlayerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    deinit {
+        if let existingPlayer = player, existingPlayer.observationInfo != nil {
+            existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
+            existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+        }
+        debugPrint("Deinit called")
+    }
     var currentItem: AVPlayerItem? {
         return player?.currentItem
     }
@@ -95,12 +101,14 @@ extension IGPlayerView: PlayerControls {
          * If player not nil removeObserver will call otherwise it will not call.
          * If we add removeObserver without adding Observer, app will crash. We can avoid crash in this way.
          */
-        self.player?.removeObserver(self, forKeyPath: "player.currentItem.status")
-        self.player?.removeObserver(self, forKeyPath: "timeControlStatus")
         
         let url = URL(string: resource.filePath)!
         if let existingPlayer = player {
             self.player = existingPlayer
+            if existingPlayer.observationInfo != nil {
+                existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
+                existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+            }
         } else {
             //player = AVPlayer(url: url)
             let asset = AVAsset(url: url)
@@ -115,22 +123,30 @@ extension IGPlayerView: PlayerControls {
         activityIndicator.startAnimating()
         // Add observer for AVPlayer status and AVPlayerItem status
         self.player?.addObserver(self, forKeyPath: "player.currentItem.status", options: [.new, .initial], context: nil)
-        self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.new, .initial], context: nil)
+        self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
 
         player?.play()
     }
     func play() {
         //We have used this long press gesture
-        player?.play()
+        if let existingPlayer = player {
+            existingPlayer.play()
+        }
     }
     func pause() {
         //control the player
-        player?.pause()
+        if let existingPlayer = player {
+            existingPlayer.pause()
+        }
     }
     func stop() {
         //control the player
-        if let play = player {
-            play.pause()
+        if let existingPlayer = player {
+            existingPlayer.pause()
+            if existingPlayer.observationInfo != nil {
+                existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
+                existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+            }
             player = nil
             self.playerLayer?.removeFromSuperlayer()
             //player got deallocated

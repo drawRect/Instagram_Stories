@@ -63,34 +63,40 @@
                 "name": "Nicky",
                 "picture": "https://randomuser.me/api/portraits/med/women/2.jpg"
             },
-            "snaps_count": 5,
+            "snaps_count": 6,
             "snaps": [
                 {
-                    "id": "c5",
+                    "id": "c8",
+                    "mime_type": "video",
+                    "url": "http://funnymp4.net/files/download/id/4598",
+                    "last_updated": "1m"
+                },
+                {
+                    "id": "c9",
                     "mime_type": "image",
                     "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643b980e4b0eaf052b84a23/5643b983e4b00c09aadce12d/1447278987246/Apple-iPhone-5-5s-Wallpaper-Good-Dino-3.jpg",
                     "last_updated": "1m"
                 },
                 {
-                    "id": "c6",
+                    "id": "c10",
                     "mime_type": "video",
                     "url": "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4",
                     "last_updated": "6h"
                 },
                 {
-                    "id": "c7",
+                    "id": "c11",
                     "mime_type": "image",
                     "url": "https://i.pinimg.com/736x/62/32/ef/6232ef50dd5b94cb97960e22c7c6dafb--galaxy-wallpaper-iphone-iphone-.jpg",
                     "last_updated": "2m"
                 },
                 {
-                    "id": "c8",
+                    "id": "c12",
                     "mime_type": "image",
                     "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643bc81e4b021eb442c7b72/5643bddee4b07810c0b2f749/1447280129681/Samsung-Galaxy-S5-Android-Wallpaper-Good-Dino-2.jpg",
                     "last_updated": "2m"
                 },
                 {
-                    "id": "c9",
+                    "id": "c13",
                     "mime_type": "image",
                     "url": "https://images.bluethumb.com.au/uploads/listing/118572/brita-lee-tiger-in-bamboo-forest-bluethumb-647f.jpg?w=800&auto=compress&cs=tinysrgb&q=70&s=b50eb51ef394a44b0d38e6fbea955159",
                     "last_updated": "2m"

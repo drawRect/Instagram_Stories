@@ -134,7 +134,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     override func prepareForReuse() {
         super.prepareForReuse()
         direction = .forward
-        //clearScrollViewGarbages()
+        clearScrollViewGarbages()
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -243,13 +243,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
              */
             if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
                 //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapview(), snapView.subviews.contains(retryBtn) {
+                if let snapView = getSnapview(), let btn = retryBtn, snapView.subviews.contains(btn) {
                     snapView.removeRetryButton()
                 }
                 fillupLastPlayedSnap(n)
             }else {
                 //Remove retry button if tap forward or backward if it exists
-                if let videoView = getVideoView(with: n), videoView.subviews.contains(retryBtn) {
+                if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
                     videoView.removeRetryButton()
                 }
                 if getVideoView(with: n)?.player?.timeControlStatus != .playing {
@@ -459,8 +459,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     public func resetSnapProgressors(with sIndex: Int) {
         self.getProgressView(with: sIndex)?.reset()
     }
-    public func pausePlayer() {
-        getVideoView(with: videoSnapIndex)?.pause()
+    public func pausePlayer(with sIndex: Int) {
+        getVideoView(with: sIndex)?.pause()
     }
     public func stopPlayer() {
         let videoView = getVideoView(with: videoSnapIndex)
@@ -470,8 +470,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         videoView?.stop()
         //getVideoView(with: videoSnapIndex)?.player = nil
     }
-    public func resumePlayer() {
-        getVideoView(with: videoSnapIndex)?.play()
+    public func resumePlayer(with sIndex: Int) {
+        getVideoView(with: sIndex)?.play()
     }
     public func didEndDisplayingCell() {
         //Here only the cell is completely visible. So this is the right place to add the observer.

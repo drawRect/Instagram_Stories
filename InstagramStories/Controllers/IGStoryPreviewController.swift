@@ -80,9 +80,9 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         // Creating different reuse identifier for each cell to avoid issues because of cell reuse
-        let reuseIdentifier = "Identifier_\(indexPath.section)-\(indexPath.row)-\(indexPath.item)"
-        collectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
+        //let reuseIdentifier = "Identifier_\(indexPath.section)-\(indexPath.row)-\(indexPath.item)"
+        //collectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
             fatalError("Incompatible cell")
         }
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
@@ -130,10 +130,13 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
-            if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0 ])?.kind == .video {
-                vCell.resumePlayer()
+            if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
+                vCell.resumePlayer(with: vCell.story?.lastPlayedSnapIndex ?? 0)
             }
         }else {
+            if let cell = cell as? IGStoryPreviewCell {
+                cell.stopPlayer()
+            }
             vCell.startProgressors()
         }
         if vCellIndexPath.item == nStoryIndex {
@@ -154,7 +157,7 @@ extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
         vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
-        vCell.pausePlayer()
+        vCell.pausePlayer(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
