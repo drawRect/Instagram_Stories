@@ -3,7 +3,7 @@
 //  InstagramStories
 //
 //  Created by Boominadha Prakash on 08/03/19.
-//  Copyright © 2019 Dash. All rights reserved.
+//  Copyright © 2019 DrawRect. All rights reserved.
 //
 
 import Foundation

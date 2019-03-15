@@ -2,8 +2,8 @@
 //  IGAdditions.swift
 //  InstagramStories
 //
-//  Created by Srikanth Vellore on 12/11/17.
-//  Copyright © 2017 Dash. All rights reserved.
+//  Created by  Boominadha Prakash on 12/11/17.
+//  Copyright © 2017 DrawRect. All rights reserved.
 //
 
 import UIKit
