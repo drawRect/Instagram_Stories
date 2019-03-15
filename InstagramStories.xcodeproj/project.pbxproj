@@ -362,7 +362,7 @@
 				CLASSPREFIX = IG;
 				LastSwiftUpdateCheck = 0900;
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = Dash;
+				ORGANIZATIONNAME = DrawRect;
 				TargetAttributes = {
 					074861771F9D4D0900C1AC1F = {
 						CreatedOnToolsVersion = 9.0.1;

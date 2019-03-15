@@ -2,8 +2,8 @@
 //  IGHomeViewModel.swift
 //  InstagramStories
 //
-//  Created by Srikanth Vellore on 01/11/17.
-//  Copyright © 2017 Dash. All rights reserved.
+//  Created by  Boominadha Prakash on 01/11/17.
+//  Copyright © 2017 DrawRect. All rights reserved.
 //
 
 import Foundation
@@ -15,7 +15,7 @@ struct IGHomeViewModel {
     private let stories: IGStories? = {
         do {
             return try IGMockLoader.loadMockFile(named: "stories.json", bundle: .main)
-        } catch let e as MockLoaderError{
+        }catch let e as MockLoaderError {
             e.desc()
         }catch{
             debugPrint("could not read Mock json file :(")

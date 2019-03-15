@@ -15,15 +15,17 @@ extension UIImageView {
         if url.count < 1 {
             return
         }
-        backgroundColor = UIColor.rgb(from: 0xEDF0F1)
+        //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
+        backgroundColor = .black
         if(style == .rounded) {
             layer.cornerRadius = frame.height/2
+            setIndicatorStyle(.white)
         }else if(style == .squared){
             layer.cornerRadius = 0.0
+            setIndicatorStyle(.whiteLarge)
         }
         
         setShowActivityIndicator(true)
-        setIndicatorStyle(.gray)
         
         if SDWebImageManager.shared().cachedImageExists(for: URL.init(string: url) ) {
             backgroundColor = .clear

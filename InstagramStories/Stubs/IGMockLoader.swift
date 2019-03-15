@@ -3,7 +3,7 @@
 //  InstagramStories
 //
 //  Created by Ranjith Kumar on 10/23/17.
-//  Copyright © 2017 Dash. All rights reserved.
+//  Copyright © 2017 DrawRect. All rights reserved.
 //
 
 import Foundation
@@ -35,6 +35,15 @@ struct IGMockLoader {
             }
         }catch {
             throw MockLoaderError.invalidJSON(fileName)
+        }
+    }
+    static func loadAPIResponse(response: [String: Any]) throws -> IGStories {
+        let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
+        do {
+            let stories = try JSONDecoder().decode(IGStories.self, from: data)
+            return stories
+        } catch {
+            throw MockLoaderError.invalidJSON("Input Response")
         }
     }
 }

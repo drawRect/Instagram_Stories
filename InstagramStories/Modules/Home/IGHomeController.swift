@@ -3,7 +3,7 @@
 //  InstagramStories
 //
 //  Created by Ranjith Kumar on 9/6/17.
-//  Copyright © 2017 Dash. All rights reserved.
+//  Copyright © 2017 DrawRect. All rights reserved.
 //
 
 import UIKit
@@ -28,8 +28,8 @@ final class IGHomeController: UIViewController {
     }
     override var navigationItem: UINavigationItem {
         let ni = UINavigationItem.init(title: "Home")
-        /*ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearSDWebCache))
-         ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)*/
+        ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearSDWebCache))
+         ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
         return ni
     }
     
@@ -72,10 +72,12 @@ UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             showComingSoonAlert()
-        }else{
-            if let stories = viewModel.getStories(), let stories_copy = try? stories.copy() {
-                let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
-                present(storyPreviewScene, animated: true, completion: nil)
+        }else {
+            DispatchQueue.main.async {
+                if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {
+                    let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
+                    self.present(storyPreviewScene, animated: true, completion: nil)
+                }
             }
         }
     }

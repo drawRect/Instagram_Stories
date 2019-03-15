@@ -3,20 +3,20 @@
 //  InstagramStories
 //
 //  Created by Ranjith Kumar on 9/15/17.
-//  Copyright © 2017 Dash. All rights reserved.
+//  Copyright © 2017 DrawRect. All rights reserved.
 //
 
 import UIKit
 
 protocol ViewAnimator: class {
-    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void)
+    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void)
     func resume()
     func pause()
     func stop()
     func reset()
 }
 extension ViewAnimator where Self: IGSnapProgressView {
-    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ isCancelledAbruptly: Bool) -> Void) {
+    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void) {
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
             if let _self = self {
                 _self.frame.size.width = width
@@ -25,8 +25,10 @@ extension ViewAnimator where Self: IGSnapProgressView {
             self?.story.isCancelledAbruptly = !finished
             if finished == true {
                 if let strongSelf = self {
-                    return completion(strongSelf.story_identifier!, strongSelf.story.isCancelledAbruptly)
+                    return completion(strongSelf.story_identifier!, strongSelf.snapIndex!, strongSelf.story.isCancelledAbruptly)
                 }
+            } else {
+                return completion(self?.story_identifier ?? "Unknowm", self?.snapIndex ?? 0, self?.story.isCancelledAbruptly ?? true)
             }
         }
     }
@@ -55,6 +57,7 @@ extension ViewAnimator where Self: IGSnapProgressView {
 
 final class IGSnapProgressView: UIView, ViewAnimator {
     public var story_identifier: String?
+    public var snapIndex: Int?
     //public var isCancelledAbruptly = false
     public var story: IGStory!
 }

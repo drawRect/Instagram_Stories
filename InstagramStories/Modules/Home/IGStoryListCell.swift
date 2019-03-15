@@ -3,7 +3,7 @@
 //  InstagramStories
 //
 //  Created by Ranjith Kumar on 9/6/17.
-//  Copyright © 2017 Dash. All rights reserved.
+//  Copyright © 2017 DrawRect. All rights reserved.
 //
 
 import UIKit
@@ -35,7 +35,8 @@ final class IGStoryListCell: UICollectionViewCell {
         imageView.layer.cornerRadius = imageView.frame.width/2
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2.0
-        imageView.layer.borderColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0).cgColor
+        //imageView.layer.borderColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0).cgColor
+        imageView.layer.borderColor = UIColor.black.cgColor
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
@@ -43,7 +44,8 @@ final class IGStoryListCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.textColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0)
+        //label.textColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0)
+        label.textColor = .black
         return label
     }()
     

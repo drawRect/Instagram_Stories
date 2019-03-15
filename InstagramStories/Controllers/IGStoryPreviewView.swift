@@ -3,7 +3,7 @@
 //  InstagramStories
 //
 //  Created by Boominadha Prakash on 18/03/18.
-//  Copyright © 2018 Dash. All rights reserved.
+//  Copyright © 2018 DrawRect. All rights reserved.
 //
 
 import UIKit
@@ -27,7 +27,7 @@ class IGStoryPreviewView: UIView {
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
-        //cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
+        cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
