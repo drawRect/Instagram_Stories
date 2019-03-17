@@ -2,8 +2,7 @@ Instagram Stories
 =================
 
 ## Sample Screenshots
-<a href="url"><img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/demo.gif" align="left" height="568" width="320" ></a>
-<img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="320" height="568" title="Home Screen"> <img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="320" height="568" title="Story Snaps Screen">
+<img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="280" height="480" title="Home Screen"> <a href="url"><img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/demo.gif" align="left" height="480" width="280" ></a> <img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="280" height="480" title="Story Snaps Screen">
 
 ## Features
 * Image Support
