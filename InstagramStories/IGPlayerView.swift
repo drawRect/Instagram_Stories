@@ -71,8 +71,9 @@ class IGPlayerView: UIView {
                     self?.playerObserverDelegate?.didCompletePlay()
                 }
             }
-            self?.playerObserverDelegate?.didTrack(progress: Float(timeString)!)
-            
+            if let time = Float(timeString) {
+                self?.playerObserverDelegate?.didTrack(progress: time)
+            }
         }
     }
     required init?(coder aDecoder: NSCoder) {
@@ -96,13 +97,8 @@ class IGPlayerView: UIView {
 extension IGPlayerView: PlayerControls {
     
     func play(with resource: VideoResource) {
-        //Removing observer before creating it.
-        /* Adding removeObserver here.
-         * If player not nil removeObserver will call otherwise it will not call.
-         * If we add removeObserver without adding Observer, app will crash. We can avoid crash in this way.
-         */
         
-        let url = URL(string: resource.filePath)!
+        guard let url = URL(string: resource.filePath) else {fatalError("Unable to form URL from resource")}
         if let existingPlayer = player {
             self.player = existingPlayer
             if existingPlayer.observationInfo != nil {
@@ -115,12 +111,15 @@ extension IGPlayerView: PlayerControls {
             let item = AVPlayerItem(asset: asset)
             player = AVPlayer(playerItem: item)
             playerLayer = AVPlayerLayer(player: player)
-            playerLayer!.videoGravity = .resizeAspect
-            playerLayer!.frame = self.bounds
-            self.layer.addSublayer(playerLayer!)
+            if let pLayer = playerLayer {
+                pLayer.videoGravity = .resizeAspect
+                pLayer.frame = self.bounds
+                self.layer.addSublayer(pLayer)
+            }
         }
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
+        
         // Add observer for AVPlayer status and AVPlayerItem status
         self.player?.addObserver(self, forKeyPath: "player.currentItem.status", options: [.new, .initial], context: nil)
         self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
@@ -143,6 +142,7 @@ extension IGPlayerView: PlayerControls {
         //control the player
         if let existingPlayer = player {
             existingPlayer.pause()
+            //Remove observer if observer presents before setting player to nil
             if existingPlayer.observationInfo != nil {
                 existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
                 existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
@@ -167,11 +167,11 @@ extension IGPlayerView: PlayerControls {
     
     // Observe If AVPlayerItem.status Changed to Fail
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let player = object as? AVPlayer else { fatalError("Player is nil")}
+        guard let player = object as? AVPlayer else { fatalError("Player is nil") }
         if keyPath == "player.currentItem.status" {
             let newStatus: AVPlayerItem.Status
-            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber {
-                newStatus = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue)!
+            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber, let status = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue) {
+                newStatus = status
             }
             else {
                 newStatus = .unknown
@@ -189,6 +189,8 @@ extension IGPlayerView: PlayerControls {
                 //Started Playing
                 activityIndicator.stopAnimating()
                 playerObserverDelegate?.didStartPlaying()
+            } else if player.timeControlStatus == .paused {
+                // player paused
             } else {
                 //
             }

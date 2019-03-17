@@ -307,6 +307,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 direction = .forward
                 snapIndex = n
             }else {
+                stopPlayer()
                 delegate?.didCompletePreview()
             }
         }
@@ -556,3 +557,8 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     }
 }
 
+extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
