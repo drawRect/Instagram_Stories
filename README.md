@@ -1,20 +1,22 @@
 Instagram Stories
 =================
 
-## We
-* Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
-* Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
-* That's all you need to know.
-
 ## Sample Screenshots
 <a href="url"><img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/demo.gif" align="left" height="700" width="340" ></a>
 <img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="340" height="700" title="Home Screen"> <img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="340" height="700" title="Story Snaps Screen">
 
-## Help
+## Features
+* Image Support
+* Video Support
+* Long Press pause and play
+* Manual swipe between stories
+* Left tap and Right tap gestures to switch betwen snaps and stories
 
-If you like what you see here, and want to support the work being done in this repository, you could:
-* Actually code, and issue pull requests
-* Spread the word
+## We
+* Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
+* Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
+* That's all you need to know.
+#Spread the word
 
 ## License
 
