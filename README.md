@@ -7,9 +7,8 @@ Instagram Stories
 * That's all you need to know.
 
 ## Sample Screenshots
-<img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="340" height="700" title="Home Screen"> <img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="340" height="700" title="Story Snaps Screen">
 <a href="url"><img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/demo.gif" align="left" height="700" width="340" ></a>
-
+<img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="340" height="700" title="Home Screen"> <img src="https://github.com/drawRect/Instagram_Stories/blob/Boomi/Optimisation/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="340" height="700" title="Story Snaps Screen">
 
 ## Help
 
