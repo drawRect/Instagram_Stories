@@ -10,7 +10,7 @@ Instagram Stories
 * Video Support
 * Long Press pause and play
 * Manual swipe between stories
-* Left tap and Right tap gestures to switch betwen snaps and stories
+* Left tap and Right tap gestures to switch between snaps and stories
 
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
