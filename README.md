@@ -10,6 +10,7 @@ Instagram Stories
 * Long Press pause and play
 * Manual swipe between stories
 * Left tap and Right tap gestures to switch between snaps and stories
+* If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
 
 ## Usage
 * Open the project(InstagramStories) folder. You can find the Source folder inside.
