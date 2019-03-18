@@ -10,6 +10,18 @@ Instagram Stories
 * Long Press pause and play
 * Manual swipe between stories
 * Left tap and Right tap gestures to switch between snaps and stories
+* If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
+
+## Usage
+* Open the project(InstagramStories) folder. You can find the Source folder inside.
+* Copy the Source folder and paste it on your project.
+* After paste and build, you will get error SDWebImage module not found.
+* Add this line **pod 'SDWebImage', '~>3.7'** in your Podfile and do pod install.
+* In your project use same IGStoryPreviewController.
+* But don't change default code what we wrote inside IGStoryPreviewController. You can add code on top of that.
+* Also don't change CollectionView's custom cell. Use the same IGStoryPreviewCell.
+* Because all the functionalities are handled in the IGStoryPreviewCell only.
+* If there is any issue or stuck somewhere on configuring Source folder on your project, please raise issues on github. We will reply back as soon as possible.
 
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.

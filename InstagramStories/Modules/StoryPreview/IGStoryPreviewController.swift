@@ -21,7 +21,7 @@ public enum layoutType {
  While Snap.done->Next.snap(continues)->done
  then Story Completed
  */
-final class IGStoryPreviewController: UIViewController,UIGestureRecognizerDelegate {
+final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - iVars
     private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
