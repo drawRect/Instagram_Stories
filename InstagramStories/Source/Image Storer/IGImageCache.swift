@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 fileprivate let imageCache = NSCache<AnyObject, AnyObject>()
+fileprivate typealias ImageDownloaderBlock = (UIImage?, Error?) -> Void
 
 class IGImageCache {
     static let shared = IGImageCache()
@@ -34,7 +35,8 @@ extension UIImageView: ImageStorer {
         static var style = [String: UIActivityIndicatorView.Style]()
         static var view = [String: UIActivityIndicatorView]()
     }
-    var showActivityIndicator: Bool {
+    //MARK: Vars
+    public var showActivityIndicator: Bool {
         get {
             return ActivityIndicator.value[self.debugDescription] ?? false
         }
@@ -42,7 +44,7 @@ extension UIImageView: ImageStorer {
             ActivityIndicator.value[self.debugDescription] = newValue
         }
     }
-    var activityIndicatorStyle: UIActivityIndicatorView.Style {
+    public var activityIndicatorStyle: UIActivityIndicatorView.Style {
         get{
             return ActivityIndicator.style[self.debugDescription] ?? .whiteLarge
         }
@@ -50,7 +52,7 @@ extension UIImageView: ImageStorer {
             ActivityIndicator.style[self.debugDescription] = newValue
         }
     }
-    var activityIndicator: UIActivityIndicatorView {
+    public var activityIndicator: UIActivityIndicatorView {
         get {
             return ActivityIndicator.view[self.debugDescription] ?? UIActivityIndicatorView(style: self.activityIndicatorStyle)
         }
@@ -77,6 +79,8 @@ extension UIImageView: ImageStorer {
             }
         }
     }
+    
+    //MARK: - Private methods
     private func presentActivityIndicator() {
         if showActivityIndicator {
             activityIndicator = UIActivityIndicatorView(style: activityIndicatorStyle)
@@ -92,7 +96,12 @@ extension UIImageView: ImageStorer {
             }
         }
     }
-    private func downloadImage(url: URL, completionBlock: @escaping (_ image: UIImage?, _ error: Error?) -> Void) {
+    private func downloadImage(urlString: String, completionBlock: @escaping (_ image: UIImage?, _ error: Error?) -> Void) {
+        guard let url = URL(string: urlString) else {
+            dismissActivityIndicator()
+            return completionBlock(nil, ImageError.invalidImageURL)
+        }
+        
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let result = data, let imageToCache = UIImage(data: result) {
                 imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
@@ -102,44 +111,33 @@ extension UIImageView: ImageStorer {
             }
             }.resume()
     }
-    func ig_setImage(urlString: String, completionBlock: ((UIImage?, Error?) -> Void)?) {
+    
+    //MARK: - Public Methods
+    public func ig_setImage(urlString: String, completionBlock: ((UIImage?, Error?) -> Void)?) {
         self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
     }
     
-    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ((UIImage?, Error?) -> Void)?) {
+    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ((UIImage?, Error?) -> Void)?) {
+        
+        self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         presentActivityIndicator()
-        guard let url = URL(string: urlString) else {
-            if completionBlock != nil {
-                return completionBlock!(nil, ImageError.invalidImageURL)
-            }
-            dismissActivityIndicator()
-            return
-        }
+        
         if let cachedImage = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+            self.dismissActivityIndicator()
             DispatchQueue.main.async {
-                self.dismissActivityIndicator()
                 self.image = cachedImage
             }
             if completionBlock != nil {
-                self.dismissActivityIndicator()
-                return completionBlock!(cachedImage, nil)
+                return completionBlock!(self.image, nil)
             }
             return
         }else {
-            downloadImage(url: url) {(image, error) in
-                guard let downloadImage = image, error == nil else {
-                    self.dismissActivityIndicator()
-                    if completionBlock != nil {
-                        return completionBlock!(image, error)
-                    }
-                    return
-                }
+            downloadImage(urlString: urlString) {(image, error) in
+                self.dismissActivityIndicator()
                 DispatchQueue.main.async {
-                    self.dismissActivityIndicator()
-                    self.image = downloadImage
+                    self.image = image
                 }
                 if completionBlock != nil {
-                    self.dismissActivityIndicator()
                     return completionBlock!(image, error)
                 }
                 return
