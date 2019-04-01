@@ -198,7 +198,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 strongSelf.retryBtn.delegate = self
                 snapView.isUserInteractionEnabled = true
                 snapView.addSubview(strongSelf.retryBtn)
-            } else {
+            }else if error == nil, result == false, let strongSelf = self {
+                strongSelf.retryBtn = IGRetryLoaderButton.init(withURL: url)
+                strongSelf.retryBtn.center = CGPoint(x: strongSelf.bounds.width/2, y: strongSelf.bounds.height/2)
+                strongSelf.retryBtn.delegate = self
+                snapView.isUserInteractionEnabled = true
+                snapView.addSubview(strongSelf.retryBtn)
+            }else {
                 self?.startProgressors()
             }
         })
@@ -392,31 +398,35 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
             progressView.snapIndex = snapIndex
-            if type == .image {
-                progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
-                    if isCancelledAbruptly == false {
-                        self.didCompleteProgress()
-                    }
-                })
-            }else {
-                //Handled in delegate methods for videos
+            DispatchQueue.main.async {
+                if type == .image {
+                    progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
+                        if isCancelledAbruptly == false {
+                            self.didCompleteProgress()
+                        }
+                    })
+                }else {
+                    //Handled in delegate methods for videos
+                }
             }
         }
     }
     
     //MARK:- Internal functions
     func startProgressors() {
-        if scrollview.subviews.count > 0 {
-            let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            if imageView?.image != nil && story?.isCompletelyVisible == true {
-                self.gearupTheProgressors(type: .image)
-            } else {
-                // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
-                if story?.isCompletelyVisible == true {
-                    let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-                    let snap = story?.snaps[snapIndex]
-                    if let vv = videoView, story?.isCompletelyVisible == true {
-                        self.startPlayer(videoView: vv, with: snap!.url)
+        DispatchQueue.main.async {
+            if self.scrollview.subviews.count > 0 {
+                let imageView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? UIImageView
+                if imageView?.image != nil && self.story?.isCompletelyVisible == true {
+                    self.gearupTheProgressors(type: .image)
+                } else {
+                    // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
+                    if self.story?.isCompletelyVisible == true {
+                        let videoView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+                        let snap = self.story?.snaps[self.snapIndex]
+                        if let vv = videoView, self.story?.isCompletelyVisible == true {
+                            self.startPlayer(videoView: vv, with: snap!.url)
+                        }
                     }
                 }
             }

@@ -1,5 +1,4 @@
 import UIKit
-import SDWebImage
 
 enum ImageStyle: Int {
     case squared,rounded
@@ -7,6 +6,35 @@ enum ImageStyle: Int {
 
 extension UIImageView {
     func setImage(url: String,
+                  style: ImageStyle = .rounded,
+                  completion: ((_ result:Bool, _ error:Error?)->Void)?=nil) {
+        image = nil
+        
+        self.showActivityIndicator = true
+        if style == .rounded {
+            layer.masksToBounds = false
+            layer.cornerRadius = frame.height/2
+            self.clipsToBounds = true
+            self.activityIndicatorStyle = .white
+        } else if style == .squared {
+            layer.masksToBounds = false
+            layer.cornerRadius = 0
+            self.clipsToBounds = true
+            self.activityIndicatorStyle = .whiteLarge
+        }
+        self.ig_setImage(urlString: url) { (image, error) in
+            if let completion = completion {
+                DispatchQueue.main.async {
+                    if self.image != nil && error == nil {
+                        completion(true, nil)
+                    }else {
+                        completion(false, error)
+                    }
+                }
+            }
+        }
+    }
+    /*func setImage(url: String,
                   style: ImageStyle = .rounded,
                   completion: ((_ result:Bool,_ error:Error?)->Void)?=nil) {
         
@@ -65,5 +93,5 @@ extension UIImageView {
                 }
             })
         }
-    }
+    }*/
 }
