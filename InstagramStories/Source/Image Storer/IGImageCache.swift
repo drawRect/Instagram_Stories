@@ -62,6 +62,9 @@ extension UIImageView: ImageStorer {
                 ActivityIndicator.view[self.debugDescription] = activityView
                 self.addSubview(activityView)
                 self.bringSubviewToFront(activityView)
+                if self.backgroundColor == .white && activityView.tintColor == .white {
+                    self.backgroundColor = .black
+                }
                 DispatchQueue.main.async {
                     activityView.startAnimating()
                 }
@@ -76,18 +79,16 @@ extension UIImageView: ImageStorer {
     }
     private func presentActivityIndicator() {
         if showActivityIndicator {
-            DispatchQueue.main.async {
-                let view = self.subviews.filter({$0 == ActivityIndicator.view[self.debugDescription]}).first
-                if let activityView = view as? UIActivityIndicatorView {
-                    activityView.stopAnimating()
-                }
-            }
+            activityIndicator = UIActivityIndicatorView(style: activityIndicatorStyle)
         }
     }
     private func dismissActivityIndicator() {
         if showActivityIndicator {
             DispatchQueue.main.async {
-                self.activityIndicator.stopAnimating()
+                let view = self.subviews.filter({$0 == ActivityIndicator.view[self.debugDescription]}).first
+                if let activityView = view as? UIActivityIndicatorView {
+                    activityView.stopAnimating()
+                }
             }
         }
     }
