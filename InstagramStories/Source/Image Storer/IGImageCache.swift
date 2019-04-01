@@ -85,7 +85,7 @@ extension UIImageView: ImageStorer {
     private func dismissActivityIndicator() {
         if showActivityIndicator {
             DispatchQueue.main.async {
-                let view = self.subviews.filter({$0 == ActivityIndicator.view[self.debugDescription]}).first
+                let view = self.subviews.filter({($0 as? UIActivityIndicatorView) != nil}).first
                 if let activityView = view as? UIActivityIndicatorView {
                     activityView.stopAnimating()
                 }
