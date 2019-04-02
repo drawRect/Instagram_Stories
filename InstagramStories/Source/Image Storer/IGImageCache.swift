@@ -9,19 +9,10 @@
 import Foundation
 import UIKit
 
-
 let ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100
 
 class IGCache: NSCache <AnyObject,AnyObject> {
     static let shared = IGCache()
-    public var imageDownloadDataTasks: [URLSessionDataTask] = []
-    public func cancelPendingTasks() {
-        imageDownloadDataTasks.forEach({
-            if $0.state != .completed {
-                $0.cancel()
-            }
-        })
-    }
 }
 
 public typealias ImageResponse = (Result<UIImage, Error>) -> Void
@@ -33,7 +24,9 @@ public enum Result<V, E> {
 public enum ImageError: String, Error {
     case invalidImageURL = "Invalid Image URL"
 }
-
+public enum DownloadError: String, Error {
+    case error = "Unable to download image"
+}
 private protocol ImageCache {
     func ig_setImage(urlString: String, completionBlock: ImageResponse?)
     func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?)
@@ -58,7 +51,7 @@ extension UIImageView: ImageCache {
             guard let completion = completionBlock else { return }
             return completion(.success(cachedImage))
         }else {
-            downloadImage(urlString: urlString) { [unowned self] (response) in
+            IGURLSession.default.downloadImageUsing(urlString: urlString) { [unowned self] (response) in
                 self.hideActivityIndicator()
                 switch response {
                 case .success(let image):
@@ -146,21 +139,35 @@ extension UIImageView {
             }
         }
     }
-    private func downloadImage(urlString: String, completionBlock: @escaping ImageResponse) {
+}
+
+class IGURLSession: URLSession {
+    static let `default` = IGURLSession()
+    private(set) var dataTasks: [URLSessionDataTask] = []
+}
+extension IGURLSession {
+    func cancelAllPendingTasks() {
+        dataTasks.forEach({
+            if $0.state != .completed {
+                $0.cancel()
+            }
+        })
+    }
+}
+
+extension IGURLSession {
+    func downloadImageUsing(urlString: String, completionBlock: @escaping ImageResponse) {
         guard let url = URL(string: urlString) else {
-            hideActivityIndicator()
             return completionBlock(.failure(ImageError.invalidImageURL))
         }
-        
-        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+        dataTasks.append(IGURLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
             if let result = data, error == nil, let imageToCache = UIImage(data: result) {
                 IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
-                return completionBlock(.success(imageToCache))
+                completionBlock(.success(imageToCache))
             } else {
-                return completionBlock(.failure(error!))
+                return completionBlock(.failure(error ?? DownloadError.error))
             }
-        }
-        IGCache.shared.imageDownloadDataTasks.append(task)
-        task.resume()
+        }))
+        dataTasks.last?.resume()
     }
 }

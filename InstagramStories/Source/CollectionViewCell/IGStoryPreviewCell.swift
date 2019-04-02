@@ -193,21 +193,24 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             (result, error) in
             if let error = error, let strongSelf = self {
                 debugPrint(error.localizedDescription)
-                strongSelf.retryBtn = IGRetryLoaderButton.init(withURL: url)
-                strongSelf.retryBtn.center = CGPoint(x: strongSelf.bounds.width/2, y: strongSelf.bounds.height/2)
-                strongSelf.retryBtn.delegate = self
-                snapView.isUserInteractionEnabled = true
-                snapView.addSubview(strongSelf.retryBtn)
+                DispatchQueue.main.async {
+                    strongSelf.showRetryButton(with: url, for: snapView)
+                }
             }else if error == nil, result == false, let strongSelf = self {
-                strongSelf.retryBtn = IGRetryLoaderButton.init(withURL: url)
-                strongSelf.retryBtn.center = CGPoint(x: strongSelf.bounds.width/2, y: strongSelf.bounds.height/2)
-                strongSelf.retryBtn.delegate = self
-                snapView.isUserInteractionEnabled = true
-                snapView.addSubview(strongSelf.retryBtn)
+                DispatchQueue.main.async {
+                    strongSelf.showRetryButton(with: url, for: snapView)
+                }
             }else {
                 self?.startProgressors()
             }
         })
+    }
+    private func showRetryButton(with url: String, for snapView: UIImageView) {
+        self.retryBtn = IGRetryLoaderButton.init(withURL: url)
+        self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+        self.retryBtn.delegate = self
+        self.isUserInteractionEnabled = true
+        snapView.addSubview(self.retryBtn)
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollview.subviews.count > 0 {
