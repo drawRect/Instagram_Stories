@@ -1,43 +1,20 @@
 //
-//  ImageCache.swift
+//  UIImageView+Extension.swift
 //  InstagramStories
 //
-//  Created by Boominadha Prakash on 01/04/19.
+//  Created by Sonata on 02/04/19.
 //  Copyright © 2019 DrawRect. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-let ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100
-
-class IGCache: NSCache <AnyObject,AnyObject> {
-    static let shared = IGCache()
-}
-
-public typealias ImageResponse = (Result<UIImage, Error>) -> Void
-
-public enum Result<V, E> {
-    case success(V)
-    case failure(E)
-}
-public enum ImageError: String, Error {
-    case invalidImageURL = "Invalid Image URL"
-}
-public enum DownloadError: String, Error {
-    case error = "Unable to download image"
-}
-private protocol ImageCache {
-    func ig_setImage(urlString: String, completionBlock: ImageResponse?)
-    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?)
-}
-
-extension UIImageView: ImageCache {
+extension UIImageView: IGSetImage {
+    
     //MARK: - Public Methods
     public func ig_setImage(urlString: String, completionBlock: ImageResponse?) {
         self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
     }
-    
     public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?) {
         
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
@@ -51,7 +28,7 @@ extension UIImageView: ImageCache {
             guard let completion = completionBlock else { return }
             return completion(.success(cachedImage))
         }else {
-            IGURLSession.default.downloadImageUsing(urlString: urlString) { [unowned self] (response) in
+            IGURLSession.default.downloadImage(using: urlString) { [unowned self] (response) in
                 self.hideActivityIndicator()
                 switch response {
                 case .success(let image):
@@ -71,11 +48,12 @@ extension UIImageView: ImageCache {
 
 extension UIImageView {
     struct ActivityIndicator {
-        static var isEnabled: Bool = false
-        static var style: UIActivityIndicatorView.Style = .whiteLarge
-        static var view: UIActivityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
+        static var isEnabled = false
+        static var style = UIActivityIndicatorView.Style.whiteLarge
+        static var view = UIActivityIndicatorView(style: .whiteLarge)
     }
-    //MARK: Vars
+    
+    //MARK: Public Vars
     public var isActivityEnabled: Bool {
         get {
             guard let value = objc_getAssociatedObject(self, &ActivityIndicator.isEnabled) as? Bool else {
@@ -138,36 +116,5 @@ extension UIImageView {
                 })
             }
         }
-    }
-}
-
-class IGURLSession: URLSession {
-    static let `default` = IGURLSession()
-    private(set) var dataTasks: [URLSessionDataTask] = []
-}
-extension IGURLSession {
-    func cancelAllPendingTasks() {
-        dataTasks.forEach({
-            if $0.state != .completed {
-                $0.cancel()
-            }
-        })
-    }
-}
-
-extension IGURLSession {
-    func downloadImageUsing(urlString: String, completionBlock: @escaping ImageResponse) {
-        guard let url = URL(string: urlString) else {
-            return completionBlock(.failure(ImageError.invalidImageURL))
-        }
-        dataTasks.append(IGURLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
-            if let result = data, error == nil, let imageToCache = UIImage(data: result) {
-                IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
-                completionBlock(.success(imageToCache))
-            } else {
-                return completionBlock(.failure(error ?? DownloadError.error))
-            }
-        }))
-        dataTasks.last?.resume()
     }
 }
