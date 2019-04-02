@@ -9,24 +9,13 @@
 import Foundation
 import UIKit
 
-public class IGImageCache {
-    //Default cache size limit is 100MB
-    static let shared = IGImageCache()
-    private init(){
-        setSizeLimit()
-    }
-    // MARK: iVars
-    let imageCache = NSCache<AnyObject, AnyObject>()
-    public typealias Response = (Result<UIImage, Error>) -> Void
-    
-    // MARK: Public methods
-    public func clearCache() {
-        imageCache.removeAllObjects()
-    }
-    public func setSizeLimit(defaultSize: Int = (1024 * 1024 * 100)) {
-        imageCache.totalCostLimit = defaultSize
-    }
+let ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100
+
+class IGCache: NSCache <AnyObject,AnyObject> {
+    static let shared = IGCache()
 }
+
+public typealias ImageRespone = (Result<UIImage, Error>) -> Void
 
 public enum Result<V, E> {
     case success(V)
@@ -37,22 +26,22 @@ public enum ImageError: String, Error {
 }
 
 private protocol ImageCache {
-    func ig_setImage(urlString: String, completionBlock: IGImageCache.Response?)
-    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: IGImageCache.Response?)
+    func ig_setImage(urlString: String, completionBlock: ImageRespone?)
+    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageRespone?)
 }
 
 extension UIImageView: ImageCache {
     //MARK: - Public Methods
-    public func ig_setImage(urlString: String, completionBlock: IGImageCache.Response?) {
+    public func ig_setImage(urlString: String, completionBlock: ImageRespone?) {
         self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
     }
     
-    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: IGImageCache.Response?) {
+    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageRespone?) {
         
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         self.showActivityIndicator()
         
-        if let cachedImage = IGImageCache.shared.imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+        if let cachedImage = IGCache.shared.object(forKey: urlString as AnyObject) as? UIImage {
             self.hideActivityIndicator()
             DispatchQueue.main.async {
                 self.image = cachedImage
@@ -148,7 +137,7 @@ extension UIImageView {
             }
         }
     }
-    private func downloadImage(urlString: String, completionBlock: @escaping IGImageCache.Response) {
+    private func downloadImage(urlString: String, completionBlock: @escaping ImageRespone) {
         guard let url = URL(string: urlString) else {
             hideActivityIndicator()
             return completionBlock(.failure(ImageError.invalidImageURL))
@@ -156,7 +145,7 @@ extension UIImageView {
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let result = data, error == nil, let imageToCache = UIImage(data: result) {
-                IGImageCache.shared.imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
+                IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
                 return completionBlock(.success(imageToCache))
             } else {
                 return completionBlock(.failure(error!))

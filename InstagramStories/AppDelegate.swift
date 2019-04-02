@@ -29,4 +29,7 @@ extension AppDelegate {
         nc.navigationBar.isTranslucent = false
         window.rootViewController = nc
     }
+    func cacheSetup() {
+        IGCache.shared.totalCostLimit = ONE_HUNDRED_MEGABYTES
+    }
 }

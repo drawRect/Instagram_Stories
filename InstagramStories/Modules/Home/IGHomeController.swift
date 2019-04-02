@@ -34,7 +34,8 @@ final class IGHomeController: UIViewController {
     
     //MARK: - Private functions
     @objc private func clearImageCache() {
-        IGImageCache.shared.clearCache()
+//        IGImageCache.shared.clearCache()
+        IGCache.shared.removeAllObjects()
     }
     private func showComingSoonAlert() {
         let alertController = UIAlertController.init(title: "Coming Soon...", message: nil, preferredStyle: .alert)
