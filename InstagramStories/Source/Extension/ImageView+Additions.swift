@@ -7,29 +7,28 @@ enum ImageStyle: Int {
 extension UIImageView {
     func setImage(url: String,
                   style: ImageStyle = .rounded,
-                  completion: ((_ result:Bool, _ error:Error?)->Void)?=nil) {
+                  completion: ((_ result:Bool, _ error:Error?) -> Void)? = nil) {
         image = nil
         
-        self.showActivityIndicator = true
+        self.isActivityEnabled = true
         if style == .rounded {
             layer.masksToBounds = false
             layer.cornerRadius = frame.height/2
             self.clipsToBounds = true
-            self.activityIndicatorStyle = .white
+            self.activityStyle = .white
         } else if style == .squared {
             layer.masksToBounds = false
             layer.cornerRadius = 0
             self.clipsToBounds = true
-            self.activityIndicatorStyle = .whiteLarge
+            self.activityStyle = .whiteLarge
         }
-        self.ig_setImage(urlString: url) { (image, error) in
+        self.ig_setImage(urlString: url) { (response) in
             if let completion = completion {
-                DispatchQueue.main.async {
-                    if self.image != nil && error == nil {
-                        completion(true, nil)
-                    }else {
-                        completion(false, error)
-                    }
+                switch response {
+                case .success(_):
+                    return completion (true, nil)
+                case .failure(let error):
+                    return completion(false, error)
                 }
             }
         }

@@ -27,8 +27,8 @@ final class IGHomeController: UIViewController {
     }
     override var navigationItem: UINavigationItem {
         let ni = UINavigationItem.init(title: "Home")
-//        ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
-//         ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
+        ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
+         ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
         return ni
     }
     

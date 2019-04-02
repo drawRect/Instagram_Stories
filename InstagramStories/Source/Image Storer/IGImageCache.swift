@@ -9,139 +9,158 @@
 import Foundation
 import UIKit
 
-fileprivate let imageCache = NSCache<AnyObject, AnyObject>()
-fileprivate typealias ImageDownloaderBlock = (UIImage?, Error?) -> Void
-
-class IGImageCache {
+public class IGImageCache {
+    //Default cache size limit is 100MB
     static let shared = IGImageCache()
-    private init(){}
-    func clearCache() {
+    private init(){
+        setSizeLimit()
+    }
+    // MARK: iVars
+    let imageCache = NSCache<AnyObject, AnyObject>()
+    public typealias Response = (Result<UIImage, Error>) -> Void
+    
+    // MARK: Public methods
+    public func clearCache() {
         imageCache.removeAllObjects()
     }
+    public func setSizeLimit(defaultSize: Int = (1024 * 1024 * 100)) {
+        imageCache.totalCostLimit = defaultSize
+    }
 }
 
-enum ImageError: String, Error {
-    case invalidImageURL = "Invalid ImageURL"
+public enum Result<V, E> {
+    case success(V)
+    case failure(E)
+}
+public enum ImageError: String, Error {
+    case invalidImageURL = "Invalid Image URL"
 }
 
-private protocol ImageStorer {
-    func ig_setImage(urlString: String, completionBlock: ((_ image: UIImage?, _ error: Error?) -> Void)?)
-    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ((_ image: UIImage?, _ error: Error?) -> Void)?)
+private protocol ImageCache {
+    func ig_setImage(urlString: String, completionBlock: IGImageCache.Response?)
+    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: IGImageCache.Response?)
 }
 
-extension UIImageView: ImageStorer {
+extension UIImageView: ImageCache {
+    //MARK: - Public Methods
+    public func ig_setImage(urlString: String, completionBlock: IGImageCache.Response?) {
+        self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
+    }
+    
+    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: IGImageCache.Response?) {
+        
+        self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
+        self.showActivityIndicator()
+        
+        if let cachedImage = IGImageCache.shared.imageCache.object(forKey: urlString as AnyObject) as? UIImage {
+            self.hideActivityIndicator()
+            DispatchQueue.main.async {
+                self.image = cachedImage
+            }
+            guard let completion = completionBlock else { return }
+            return completion(.success(cachedImage))
+        }else {
+            downloadImage(urlString: urlString) { [unowned self] (response) in
+                self.hideActivityIndicator()
+                switch response {
+                case .success(let image):
+                    DispatchQueue.main.async {
+                        self.image = image
+                    }
+                    guard let completion = completionBlock else { return }
+                    return completion(.success(image))
+                case .failure(let error):
+                    guard let completion = completionBlock else { return }
+                    return completion(.failure(error))
+                }
+            }
+        }
+    }
+}
+
+extension UIImageView {
     struct ActivityIndicator {
-        static var value = [String: Bool]()
-        static var style = [String: UIActivityIndicatorView.Style]()
-        static var view = [String: UIActivityIndicatorView]()
+        static var isEnabled: Bool = false
+        static var style: UIActivityIndicatorView.Style = .whiteLarge
+        static var view: UIActivityIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
     }
     //MARK: Vars
-    public var showActivityIndicator: Bool {
+    public var isActivityEnabled: Bool {
         get {
-            return ActivityIndicator.value[self.debugDescription] ?? false
+            guard let value = objc_getAssociatedObject(self, &ActivityIndicator.isEnabled) as? Bool else {
+                return false
+            }
+            return value
         }
         set(newValue) {
-            ActivityIndicator.value[self.debugDescription] = newValue
+            objc_setAssociatedObject(self, &ActivityIndicator.isEnabled, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
-    public var activityIndicatorStyle: UIActivityIndicatorView.Style {
+    public var activityStyle: UIActivityIndicatorView.Style {
         get{
-            return ActivityIndicator.style[self.debugDescription] ?? .whiteLarge
+            guard let value = objc_getAssociatedObject(self, &ActivityIndicator.style) as? UIActivityIndicatorView.Style else {
+                return .whiteLarge
+            }
+            return value
         }
         set(newValue) {
-            ActivityIndicator.style[self.debugDescription] = newValue
+            objc_setAssociatedObject(self, &ActivityIndicator.style, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     public var activityIndicator: UIActivityIndicatorView {
         get {
-            return ActivityIndicator.view[self.debugDescription] ?? UIActivityIndicatorView(style: self.activityIndicatorStyle)
+            guard let value = objc_getAssociatedObject(self, &ActivityIndicator.view) as? UIActivityIndicatorView else {
+                return UIActivityIndicatorView(style: .whiteLarge)
+            }
+            return value
         }
         set(newValue) {
-            if ActivityIndicator.view[self.debugDescription] == nil {
-                let activityView = newValue
-                activityView.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
-                activityView.hidesWhenStopped = true
-                ActivityIndicator.view[self.debugDescription] = activityView
-                self.addSubview(activityView)
-                self.bringSubviewToFront(activityView)
-                if self.backgroundColor == .white && activityView.tintColor == .white {
-                    self.backgroundColor = .black
-                }
-                DispatchQueue.main.async {
-                    activityView.startAnimating()
-                }
-            }else {
-                let activityView = ActivityIndicator.view[self.debugDescription]
-                self.bringSubviewToFront(activityView!)
-                DispatchQueue.main.async {
-                    activityView?.startAnimating()
-                }
-            }
+            let activityView = newValue
+            activityView.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
+            activityView.hidesWhenStopped = true
+            objc_setAssociatedObject(self, &ActivityIndicator.view, activityView, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
     }
     
     //MARK: - Private methods
-    private func presentActivityIndicator() {
-        if showActivityIndicator {
-            activityIndicator = UIActivityIndicatorView(style: activityIndicatorStyle)
-        }
-    }
-    private func dismissActivityIndicator() {
-        if showActivityIndicator {
+    private func showActivityIndicator() {
+        if isActivityEnabled {
             DispatchQueue.main.async {
-                let view = self.subviews.filter({($0 as? UIActivityIndicatorView) != nil}).first
-                if let activityView = view as? UIActivityIndicatorView {
-                    activityView.stopAnimating()
+                self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
+                if self.backgroundColor == .white || self.activityStyle == .white {
+                    self.backgroundColor = .black
                 }
+                if !self.subviews.contains(self.activityIndicator) {
+                    self.addSubview(self.activityIndicator)
+                }
+                self.activityIndicator.startAnimating()
             }
         }
     }
-    private func downloadImage(urlString: String, completionBlock: @escaping (_ image: UIImage?, _ error: Error?) -> Void) {
+    private func hideActivityIndicator() {
+        if isActivityEnabled {
+            DispatchQueue.main.async {
+                self.subviews.forEach({ (view) in
+                    if let av = view as? UIActivityIndicatorView {
+                        av.stopAnimating()
+                    }
+                })
+            }
+        }
+    }
+    private func downloadImage(urlString: String, completionBlock: @escaping IGImageCache.Response) {
         guard let url = URL(string: urlString) else {
-            dismissActivityIndicator()
-            return completionBlock(nil, ImageError.invalidImageURL)
+            hideActivityIndicator()
+            return completionBlock(.failure(ImageError.invalidImageURL))
         }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
-            if let result = data, let imageToCache = UIImage(data: result) {
-                imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
-                return completionBlock(imageToCache, nil)
+            if let result = data, error == nil, let imageToCache = UIImage(data: result) {
+                IGImageCache.shared.imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
+                return completionBlock(.success(imageToCache))
             } else {
-                return completionBlock(nil, error)
+                return completionBlock(.failure(error!))
             }
             }.resume()
-    }
-    
-    //MARK: - Public Methods
-    public func ig_setImage(urlString: String, completionBlock: ((UIImage?, Error?) -> Void)?) {
-        self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
-    }
-    
-    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ((UIImage?, Error?) -> Void)?) {
-        
-        self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
-        presentActivityIndicator()
-        
-        if let cachedImage = imageCache.object(forKey: urlString as AnyObject) as? UIImage {
-            self.dismissActivityIndicator()
-            DispatchQueue.main.async {
-                self.image = cachedImage
-            }
-            if completionBlock != nil {
-                return completionBlock!(self.image, nil)
-            }
-            return
-        }else {
-            downloadImage(urlString: urlString) {(image, error) in
-                self.dismissActivityIndicator()
-                DispatchQueue.main.async {
-                    self.image = image
-                }
-                if completionBlock != nil {
-                    return completionBlock!(image, error)
-                }
-                return
-            }
-        }
     }
 }
