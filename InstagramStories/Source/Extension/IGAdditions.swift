@@ -9,7 +9,7 @@
 import UIKit
 
 extension Int {
-    func toFloat() -> CGFloat {
+    var toFloat: CGFloat {
         return CGFloat(self)
     }
 }

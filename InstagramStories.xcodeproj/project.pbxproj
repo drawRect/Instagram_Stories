@@ -46,7 +46,7 @@
 		D65EC3F722539C08000D01B6 /* IGURLSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3F622539C08000D01B6 /* IGURLSession.swift */; };
 		D65EC3F922539C66000D01B6 /* IGError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3F822539C66000D01B6 /* IGError.swift */; };
 		D65EC3FB22539DD6000D01B6 /* IGResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FA22539DD6000D01B6 /* IGResult.swift */; };
-		D65EC3FD22539E65000D01B6 /* IGSetImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FC22539E65000D01B6 /* IGSetImage.swift */; };
+		D65EC3FD22539E65000D01B6 /* IGImageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */; };
 		D65EC3FF22539ED7000D01B6 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */; };
 		D6D240AA22520755008C0738 /* IGCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D240A922520755008C0738 /* IGCache.swift */; };
 /* End PBXBuildFile section */
@@ -105,7 +105,7 @@
 		D65EC3F622539C08000D01B6 /* IGURLSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGURLSession.swift; sourceTree = "<group>"; };
 		D65EC3F822539C66000D01B6 /* IGError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGError.swift; sourceTree = "<group>"; };
 		D65EC3FA22539DD6000D01B6 /* IGResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGResult.swift; sourceTree = "<group>"; };
-		D65EC3FC22539E65000D01B6 /* IGSetImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGSetImage.swift; sourceTree = "<group>"; };
+		D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGImageRequestable.swift; sourceTree = "<group>"; };
 		D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		D6D240A922520755008C0738 /* IGCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -328,7 +328,7 @@
 				D65EC3F622539C08000D01B6 /* IGURLSession.swift */,
 				D65EC3F822539C66000D01B6 /* IGError.swift */,
 				D65EC3FA22539DD6000D01B6 /* IGResult.swift */,
-				D65EC3FC22539E65000D01B6 /* IGSetImage.swift */,
+				D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */,
 				D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */,
 			);
 			path = "Image Storer";
@@ -487,7 +487,7 @@
 				D6287E3E223FC6420070E5FE /* IGMockLoader.swift in Sources */,
 				D6287E57223FC68F0070E5FE /* IGUser.swift in Sources */,
 				D6287E46223FC6660070E5FE /* Color+Additions.swift in Sources */,
-				D65EC3FD22539E65000D01B6 /* IGSetImage.swift in Sources */,
+				D65EC3FD22539E65000D01B6 /* IGImageRequestable.swift in Sources */,
 				D65EC3F922539C66000D01B6 /* IGError.swift in Sources */,
 				D6287E56223FC68F0070E5FE /* IGSnap.swift in Sources */,
 				D6287E47223FC6660070E5FE /* ImageView+Additions.swift in Sources */,

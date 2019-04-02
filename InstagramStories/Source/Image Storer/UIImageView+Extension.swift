@@ -9,44 +9,10 @@
 import Foundation
 import UIKit
 
-extension UIImageView: IGSetImage {
-    
-    //MARK: - Public Methods
-    public func ig_setImage(urlString: String, completionBlock: ImageResponse?) {
-        self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
-    }
-    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?) {
-        
-        self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
-        self.showActivityIndicator()
-        
-        if let cachedImage = IGCache.shared.object(forKey: urlString as AnyObject) as? UIImage {
-            self.hideActivityIndicator()
-            DispatchQueue.main.async {
-                self.image = cachedImage
-            }
-            guard let completion = completionBlock else { return }
-            return completion(.success(cachedImage))
-        }else {
-            IGURLSession.default.downloadImage(using: urlString) { [unowned self] (response) in
-                self.hideActivityIndicator()
-                switch response {
-                case .success(let image):
-                    DispatchQueue.main.async {
-                        self.image = image
-                    }
-                    guard let completion = completionBlock else { return }
-                    return completion(.success(image))
-                case .failure(let error):
-                    guard let completion = completionBlock else { return }
-                    return completion(.failure(error))
-                }
-            }
-        }
-    }
-}
-
 extension UIImageView {
+
+    //Responsiblity: to holds the List of Activity Indicator for ImageView
+    //DataSource: UI-Level
     struct ActivityIndicator {
         static var isEnabled = false
         static var style = UIActivityIndicatorView.Style.whiteLarge
@@ -92,7 +58,7 @@ extension UIImageView {
     }
     
     //MARK: - Private methods
-    private func showActivityIndicator() {
+    func showActivityIndicator() {
         if isActivityEnabled {
             DispatchQueue.main.async {
                 self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
@@ -106,7 +72,7 @@ extension UIImageView {
             }
         }
     }
-    private func hideActivityIndicator() {
+    func hideActivityIndicator() {
         if isActivityEnabled {
             DispatchQueue.main.async {
                 self.subviews.forEach({ (view) in

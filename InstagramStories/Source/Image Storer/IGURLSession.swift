@@ -21,8 +21,7 @@ extension IGURLSession {
             }
         })
     }
-}
-extension IGURLSession {
+
     func downloadImage(using urlString: String, completionBlock: @escaping ImageResponse) {
         guard let url = URL(string: urlString) else {
             return completionBlock(.failure(IGError.invalidImageURL))

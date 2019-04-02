@@ -189,22 +189,18 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     private func startRequest(snapView: UIImageView, with url: String) {
-        snapView.setImage(url: url, style: .squared, completion: {[weak self]
-            (result, error) in
-            if let error = error, let strongSelf = self {
-                debugPrint(error.localizedDescription)
-                DispatchQueue.main.async {
-                    strongSelf.showRetryButton(with: url, for: snapView)
+        snapView.setImage(url: url, style: .squared) {[unowned self] (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    self.startProgressors()
+                case .failure(_):
+                    self.showRetryButton(with: url, for: snapView)
                 }
-            }else if error == nil, result == false, let strongSelf = self {
-                DispatchQueue.main.async {
-                    strongSelf.showRetryButton(with: url, for: snapView)
-                }
-            }else {
-                self?.startProgressors()
             }
-        })
+        }
     }
+
     private func showRetryButton(with url: String, for snapView: UIImageView) {
         self.retryBtn = IGRetryLoaderButton.init(withURL: url)
         self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
@@ -294,7 +290,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next or previous snap based on index n
-                let x = n.toFloat() * frame.width
+                let x = n.toFloat * frame.width
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
@@ -309,7 +305,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next snap
-                let x = n.toFloat() * frame.width
+                let x = n.toFloat * frame.width
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
@@ -346,7 +342,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             for i in 0..<sIndex {
                 snapIndex = i
             }
-            let xValue = sIndex.toFloat() * scrollview.frame.width
+            let xValue = sIndex.toFloat * scrollview.frame.width
             scrollview.contentOffset = CGPoint(x: xValue, y: 0)
         }
     }

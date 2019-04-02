@@ -169,7 +169,7 @@ final class IGStoryPreviewHeaderView: UIView {
         let height:CGFloat = 3
         var x:CGFloat = padding
         let y:CGFloat = (self.getProgressView.frame.height/2)-height
-        let width = (IGScreen.width - ((snapsPerStory+1).toFloat() * padding))/snapsPerStory.toFloat()
+        let width = (IGScreen.width - ((snapsPerStory+1).toFloat * padding))/snapsPerStory.toFloat
         for i in 0..<snapsPerStory{
             let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
             getProgressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag,alpha:0.2))

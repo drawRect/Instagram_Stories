@@ -8,6 +8,8 @@
 
 import UIKit
 
+let DEL_CACHE_ENABLED = false
+
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
@@ -26,15 +28,16 @@ final class IGHomeController: UIViewController {
         automaticallyAdjustsScrollViewInsets = false
     }
     override var navigationItem: UINavigationItem {
-        let ni = UINavigationItem.init(title: "Home")
-        ni.rightBarButtonItem = UIBarButtonItem.init(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
-         ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
+        let ni = UINavigationItem(title: "Home")
+        if DEL_CACHE_ENABLED {
+            ni.rightBarButtonItem = UIBarButtonItem(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
+            ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
+        }
         return ni
     }
     
     //MARK: - Private functions
     @objc private func clearImageCache() {
-//        IGImageCache.shared.clearCache()
         IGCache.shared.removeAllObjects()
     }
     private func showComingSoonAlert() {
