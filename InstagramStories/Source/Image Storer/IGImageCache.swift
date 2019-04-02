@@ -9,10 +9,19 @@
 import Foundation
 import UIKit
 
+
 let ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100
 
 class IGCache: NSCache <AnyObject,AnyObject> {
     static let shared = IGCache()
+    public var imageDownloadDataTasks: [URLSessionDataTask] = []
+    public func cancelPendingTasks() {
+        imageDownloadDataTasks.forEach({
+            if $0.state != .completed {
+                $0.cancel()
+            }
+        })
+    }
 }
 
 public typealias ImageRespone = (Result<UIImage, Error>) -> Void
@@ -143,13 +152,15 @@ extension UIImageView {
             return completionBlock(.failure(ImageError.invalidImageURL))
         }
         
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let result = data, error == nil, let imageToCache = UIImage(data: result) {
                 IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
                 return completionBlock(.success(imageToCache))
             } else {
                 return completionBlock(.failure(error!))
             }
-            }.resume()
+        }
+        IGCache.shared.imageDownloadDataTasks.append(task)
+        task.resume()
     }
 }
