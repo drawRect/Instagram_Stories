@@ -24,7 +24,7 @@ class IGCache: NSCache <AnyObject,AnyObject> {
     }
 }
 
-public typealias ImageRespone = (Result<UIImage, Error>) -> Void
+public typealias ImageResponse = (Result<UIImage, Error>) -> Void
 
 public enum Result<V, E> {
     case success(V)
@@ -35,17 +35,17 @@ public enum ImageError: String, Error {
 }
 
 private protocol ImageCache {
-    func ig_setImage(urlString: String, completionBlock: ImageRespone?)
-    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageRespone?)
+    func ig_setImage(urlString: String, completionBlock: ImageResponse?)
+    func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?)
 }
 
 extension UIImageView: ImageCache {
     //MARK: - Public Methods
-    public func ig_setImage(urlString: String, completionBlock: ImageRespone?) {
+    public func ig_setImage(urlString: String, completionBlock: ImageResponse?) {
         self.ig_setImage(urlString: urlString, placeHolderImage: nil, completionBlock: completionBlock)
     }
     
-    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageRespone?) {
+    public func ig_setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?) {
         
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         self.showActivityIndicator()
@@ -146,7 +146,7 @@ extension UIImageView {
             }
         }
     }
-    private func downloadImage(urlString: String, completionBlock: @escaping ImageRespone) {
+    private func downloadImage(urlString: String, completionBlock: @escaping ImageResponse) {
         guard let url = URL(string: urlString) else {
             hideActivityIndicator()
             return completionBlock(.failure(ImageError.invalidImageURL))
