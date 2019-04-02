@@ -8,9 +8,15 @@
 
 import Foundation
 
-public enum IGImageError: String, Error {
-    case invalidImageURL = "Invalid Image URL"
-}
-public enum IGDownloadError: String, Error {
-    case error = "Unable to download image"
+public enum IGError: Error {
+    case invalidImageURL
+    case downloadError
+    var debugDescription: String {
+        switch self {
+        case .invalidImageURL:
+            return "Invalid Image URL"
+        case .downloadError:
+            return "Unable to download image"
+        }
+    }
 }
