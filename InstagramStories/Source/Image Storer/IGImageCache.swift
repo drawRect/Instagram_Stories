@@ -27,7 +27,7 @@ public class IGImageCache {
     public func setSizeLimit(defaultSize: Int = (1024 * 1024 * 100)) {
         imageCache.totalCostLimit = defaultSize
     }
-    public func cancelTasks() {
+    public func cancelPendingTasks() {
         imageDownloadDataTasks.forEach({
             if $0.state != .completed {
                 $0.cancel()
