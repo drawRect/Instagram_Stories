@@ -189,19 +189,24 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     private func startRequest(snapView: UIImageView, with url: String) {
-        snapView.setImage(url: url, style: .squared, completion: {[weak self]
-            (result, error) in
-            if let error = error, let strongSelf = self {
-                debugPrint(error.localizedDescription)
-                strongSelf.retryBtn = IGRetryLoaderButton.init(withURL: url)
-                strongSelf.retryBtn.center = CGPoint(x: strongSelf.bounds.width/2, y: strongSelf.bounds.height/2)
-                strongSelf.retryBtn.delegate = self
-                snapView.isUserInteractionEnabled = true
-                snapView.addSubview(strongSelf.retryBtn)
-            } else {
-                self?.startProgressors()
+        snapView.setImage(url: url, style: .squared) {[unowned self] (result) in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    self.startProgressors()
+                case .failure(_):
+                    self.showRetryButton(with: url, for: snapView)
+                }
             }
-        })
+        }
+    }
+
+    private func showRetryButton(with url: String, for snapView: UIImageView) {
+        self.retryBtn = IGRetryLoaderButton.init(withURL: url)
+        self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+        self.retryBtn.delegate = self
+        self.isUserInteractionEnabled = true
+        snapView.addSubview(self.retryBtn)
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollview.subviews.count > 0 {
@@ -285,7 +290,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next or previous snap based on index n
-                let x = n.toFloat() * frame.width
+                let x = n.toFloat * frame.width
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
@@ -300,7 +305,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next snap
-                let x = n.toFloat() * frame.width
+                let x = n.toFloat * frame.width
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
@@ -337,7 +342,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             for i in 0..<sIndex {
                 snapIndex = i
             }
-            let xValue = sIndex.toFloat() * scrollview.frame.width
+            let xValue = sIndex.toFloat * scrollview.frame.width
             scrollview.contentOffset = CGPoint(x: xValue, y: 0)
         }
     }
@@ -392,31 +397,35 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             let progressView = getProgressView(with: snapIndex){
             progressView.story_identifier = self.story?.internalIdentifier
             progressView.snapIndex = snapIndex
-            if type == .image {
-                progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
-                    if isCancelledAbruptly == false {
-                        self.didCompleteProgress()
-                    }
-                })
-            }else {
-                //Handled in delegate methods for videos
+            DispatchQueue.main.async {
+                if type == .image {
+                    progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
+                        if isCancelledAbruptly == false {
+                            self.didCompleteProgress()
+                        }
+                    })
+                }else {
+                    //Handled in delegate methods for videos
+                }
             }
         }
     }
     
     //MARK:- Internal functions
     func startProgressors() {
-        if scrollview.subviews.count > 0 {
-            let imageView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? UIImageView
-            if imageView?.image != nil && story?.isCompletelyVisible == true {
-                self.gearupTheProgressors(type: .image)
-            } else {
-                // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
-                if story?.isCompletelyVisible == true {
-                    let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-                    let snap = story?.snaps[snapIndex]
-                    if let vv = videoView, story?.isCompletelyVisible == true {
-                        self.startPlayer(videoView: vv, with: snap!.url)
+        DispatchQueue.main.async {
+            if self.scrollview.subviews.count > 0 {
+                let imageView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? UIImageView
+                if imageView?.image != nil && self.story?.isCompletelyVisible == true {
+                    self.gearupTheProgressors(type: .image)
+                } else {
+                    // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
+                    if self.story?.isCompletelyVisible == true {
+                        let videoView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+                        let snap = self.story?.snaps[self.snapIndex]
+                        if let vv = videoView, self.story?.isCompletelyVisible == true {
+                            self.startPlayer(videoView: vv, with: snap!.url)
+                        }
                     }
                 }
             }
