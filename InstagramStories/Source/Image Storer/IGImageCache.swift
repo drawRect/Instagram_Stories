@@ -18,6 +18,7 @@ public class IGImageCache {
     // MARK: iVars
     let imageCache = NSCache<AnyObject, AnyObject>()
     public typealias Response = (Result<UIImage, Error>) -> Void
+    public var imageDownloadDataTasks: [URLSessionDataTask] = []
     
     // MARK: Public methods
     public func clearCache() {
@@ -25,6 +26,13 @@ public class IGImageCache {
     }
     public func setSizeLimit(defaultSize: Int = (1024 * 1024 * 100)) {
         imageCache.totalCostLimit = defaultSize
+    }
+    public func cancelTasks() {
+        imageDownloadDataTasks.forEach({
+            if $0.state != .completed {
+                $0.cancel()
+            }
+        })
     }
 }
 
@@ -154,13 +162,15 @@ extension UIImageView {
             return completionBlock(.failure(ImageError.invalidImageURL))
         }
         
-        URLSession.shared.dataTask(with: url) { (data, response, error) in
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             if let result = data, error == nil, let imageToCache = UIImage(data: result) {
                 IGImageCache.shared.imageCache.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
                 return completionBlock(.success(imageToCache))
             } else {
                 return completionBlock(.failure(error!))
             }
-            }.resume()
+        }
+        IGImageCache.shared.imageDownloadDataTasks.append(task)
+        task.resume()
     }
 }
