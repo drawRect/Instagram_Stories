@@ -50,7 +50,8 @@ class IGPlayerView: UIView {
         return player?.currentItem?.error
     }
     var activityIndicator: UIActivityIndicatorView
-
+    var timeObserver: Any?
+    
     //MARK:- Init methods
     override init(frame: CGRect) {
         activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
@@ -62,7 +63,7 @@ class IGPlayerView: UIView {
         
         //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
         self.addSubview(activityIndicator)
-        player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
+        self.timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
             [weak self] time in
             let timeString = String(format: "%02.2f", CMTimeGetSeconds(time))
             if let currentItem = self?.player?.currentItem {
@@ -81,8 +82,7 @@ class IGPlayerView: UIView {
     }
     deinit {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
-            existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
-            existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+            removeObservers(for: existingPlayer)
         }
         debugPrint("Deinit called")
     }
@@ -91,6 +91,14 @@ class IGPlayerView: UIView {
     }
     var currentTime: Float {
         return Float(self.player?.currentTime().value ?? 0)
+    }
+    func removeObservers(for player: AVPlayer) {
+        player.removeObserver(self, forKeyPath: "player.currentItem.status")
+        player.removeObserver(self, forKeyPath: "timeControlStatus")
+        guard let observer = self.timeObserver else {
+            return
+        }
+        player.removeTimeObserver(observer)
     }
 }
 
@@ -102,8 +110,7 @@ extension IGPlayerView: PlayerControls {
         if let existingPlayer = player {
             self.player = existingPlayer
             if existingPlayer.observationInfo != nil {
-                existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
-                existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+                removeObservers(for: existingPlayer)
             }
         } else {
             //player = AVPlayer(url: url)
@@ -127,7 +134,7 @@ extension IGPlayerView: PlayerControls {
         player?.play()
     }
     func play() {
-        //We have used this long press gesture
+        //We have used this for long press gesture
         if let existingPlayer = player {
             existingPlayer.play()
         }
@@ -144,8 +151,7 @@ extension IGPlayerView: PlayerControls {
             existingPlayer.pause()
             //Remove observer if observer presents before setting player to nil
             if existingPlayer.observationInfo != nil {
-                existingPlayer.removeObserver(self, forKeyPath: "player.currentItem.status")
-                existingPlayer.removeObserver(self, forKeyPath: "timeControlStatus")
+                removeObservers(for: existingPlayer)
             }
             player = nil
             self.playerLayer?.removeFromSuperlayer()
