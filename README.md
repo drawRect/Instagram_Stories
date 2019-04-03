@@ -11,7 +11,6 @@ Instagram Stories
 * Manual swipe between stories
 * Left tap and Right tap gestures to switch between snaps and stories
 * If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
-* No third party libraries used.
 * Image caching handled using NSCache
 
 ## Usage
