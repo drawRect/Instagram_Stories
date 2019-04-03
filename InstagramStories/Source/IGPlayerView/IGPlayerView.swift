@@ -154,7 +154,7 @@ extension IGPlayerView: PlayerControls {
                 removeObservers(for: existingPlayer)
             }
             player = nil
-            self.playerLayer?.removeFromSuperlayer()
+            playerLayer?.removeFromSuperlayer()
             //player got deallocated
         } else {
             //player was already deallocated
