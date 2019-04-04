@@ -2,7 +2,7 @@ Instagram Stories
 =================
 
 ## Sample Screenshots
-<a href="https://raw.githubusercontent.com/drawRect/Instagram_Stories/master/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg"><img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width="240" height="480" title="Home Screen"></a> <a href="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif"><img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" height="480" width="240"></a> <a href="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg"><img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width="240" height="480" title="Story Snaps Screen"></a>
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg" width=240 height=480> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width=240 height=480> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg" width=240 height=480>
 
 ## Features
 * Image Support
