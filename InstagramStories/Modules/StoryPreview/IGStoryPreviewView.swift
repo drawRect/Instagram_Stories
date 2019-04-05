@@ -51,7 +51,7 @@ class IGStoryPreviewView: UIView {
     
     //MARK: - Private functions
     private func createUIElements(){
-        backgroundColor = .white
+        backgroundColor = .black
         addSubview(snapsCollectionView)
     }
     private func installLayoutConstraints(){
