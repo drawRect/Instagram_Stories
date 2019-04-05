@@ -117,7 +117,7 @@ class IGPlayerView: UIView {
     }
     deinit {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
-            removeObservers(for: existingPlayer)
+            removeObservers()
         }
         debugPrint("Deinit called")
     }
@@ -127,7 +127,7 @@ class IGPlayerView: UIView {
     var currentTime: Float {
         return Float(self.player?.currentTime().value ?? 0)
     }
-    func removeObservers(for player: AVPlayer) {
+    func removeObservers() {
         cleanUpPlayerPeriodicTimeObserver()
     }
     func cleanUpPlayerPeriodicTimeObserver() {
@@ -167,9 +167,9 @@ extension IGPlayerView: PlayerControls {
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.player = existingPlayer
-                if existingPlayer.observationInfo != nil {
+                /*if existingPlayer.observationInfo != nil {
                     strongSelf.removeObservers(for: existingPlayer)
-                }
+                }*/
             }
         } else {
             //player = AVPlayer(url: url)
@@ -209,7 +209,7 @@ extension IGPlayerView: PlayerControls {
                 
                 //Remove observer if observer presents before setting player to nil
                 if existingPlayer.observationInfo != nil {
-                    strongSelf.removeObservers(for: existingPlayer)
+                    strongSelf.removeObservers()
                 }
                 strongSelf.playerItem = nil
                 strongSelf.player = nil
