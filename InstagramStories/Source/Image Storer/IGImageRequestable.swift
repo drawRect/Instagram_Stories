@@ -31,12 +31,13 @@ extension IGImageRequestable where Self: UIImageView {
             guard let completion = completionBlock else { return }
             return completion(.success(cachedImage))
         }else {
-            IGURLSession.default.downloadImage(using: urlString) { [unowned self] (response) in
-                self.hideActivityIndicator()
+            IGURLSession.default.downloadImage(using: urlString) { [weak self] (response) in
+                guard let strongSelf = self else { return }
+                strongSelf.hideActivityIndicator()
                 switch response {
                 case .success(let image):
                     DispatchQueue.main.async {
-                        self.image = image
+                        strongSelf.image = image
                     }
                     guard let completion = completionBlock else { return }
                     return completion(.success(image))

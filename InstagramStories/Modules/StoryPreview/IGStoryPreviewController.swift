@@ -55,6 +55,9 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
         self.stories = stories

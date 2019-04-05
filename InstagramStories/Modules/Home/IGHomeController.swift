@@ -27,6 +27,9 @@ final class IGHomeController: UIViewController {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
     }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
     override var navigationItem: UINavigationItem {
         let ni = UINavigationItem(title: "Home")
         if DEL_CACHE_ENABLED {

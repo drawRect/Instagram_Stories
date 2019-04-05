@@ -189,13 +189,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     private func startRequest(snapView: UIImageView, with url: String) {
-        snapView.setImage(url: url, style: .squared) {[unowned self] (result) in
+        snapView.setImage(url: url, style: .squared) {[weak self] (result) in
+            guard let strongSelf = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(_):
-                    self.startProgressors()
+                    strongSelf.startProgressors()
                 case .failure(_):
-                    self.showRetryButton(with: url, for: snapView)
+                    strongSelf.showRetryButton(with: url, for: snapView)
                 }
             }
         }
