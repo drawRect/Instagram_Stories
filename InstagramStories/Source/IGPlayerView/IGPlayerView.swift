@@ -39,18 +39,35 @@ protocol PlayerControls: class {
     var playerStatus: PlayerStatus { get }
 }
 
+/*
+ KVO context used to differentiate KVO callbacks for this class versus other
+ classes in its class hierarchy.
+ */
+private var playerViewKVOContext = 0
+
 class IGPlayerView: UIView {
     
     //MARK:- iVars
     public weak var playerObserverDelegate: IGPlayerObserver?
+    private var timeObserverToken: AnyObject?
+    private var playerItemStatusObserver: NSKeyValueObservation?
     
     var player: AVPlayer?
     private var playerLayer: AVPlayerLayer?
+    private var playerItem: AVPlayerItem? = nil {
+        willSet {
+            /// Remove any previous KVO observer.
+            guard let playerItemStatusObserver = playerItemStatusObserver else { return }
+            playerItemStatusObserver.invalidate()
+        }
+        didSet {
+            player?.replaceCurrentItem(with: playerItem)
+        }
+    }
     var error: Error? {
         return player?.currentItem?.error
     }
     var activityIndicator: UIActivityIndicatorView
-    var timeObserver: Any?
     
     //MARK:- Init methods
     override init(frame: CGRect) {
@@ -63,19 +80,6 @@ class IGPlayerView: UIView {
         
         //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
         self.addSubview(activityIndicator)
-        self.timeObserver = player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
-            [weak self] time in
-            let timeString = String(format: "%02.2f", CMTimeGetSeconds(time))
-            if let currentItem = self?.player?.currentItem {
-                let totalTimeString =  String(format: "%02.2f", CMTimeGetSeconds(currentItem.asset.duration))
-                if timeString == totalTimeString {
-                    self?.playerObserverDelegate?.didCompletePlay()
-                }
-            }
-            if let time = Float(timeString) {
-                self?.playerObserverDelegate?.didTrack(progress: time)
-            }
-        }
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -93,12 +97,35 @@ class IGPlayerView: UIView {
         return Float(self.player?.currentTime().value ?? 0)
     }
     func removeObservers(for player: AVPlayer) {
-        player.removeObserver(self, forKeyPath: "player.currentItem.status")
-        player.removeObserver(self, forKeyPath: "timeControlStatus")
-        guard let observer = self.timeObserver else {
-            return
+        player.removeObserver(self, forKeyPath: "player.currentItem.status", context: &playerViewKVOContext)
+        player.removeObserver(self, forKeyPath: "timeControlStatus", context: &playerViewKVOContext)
+        cleanUpPlayerPeriodicTimeObserver()
+    }
+    func cleanUpPlayerPeriodicTimeObserver() {
+        if let timeObserverToken = timeObserverToken {
+            player?.removeTimeObserver(timeObserverToken)
+            self.timeObserverToken = nil
         }
-        player.removeTimeObserver(observer)
+    }
+    func setupPlayerPeriodicTimeObserver() {
+        // Only add the time observer if one hasn't been created yet.
+        guard timeObserverToken == nil else { return }
+        
+        // Use a weak self variable to avoid a retain cycle in the block.
+        timeObserverToken =
+            player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
+                [weak self] time in
+                let timeString = String(format: "%02.2f", CMTimeGetSeconds(time))
+                if let currentItem = self?.player?.currentItem {
+                    let totalTimeString =  String(format: "%02.2f", CMTimeGetSeconds(currentItem.asset.duration))
+                    if timeString == totalTimeString {
+                        self?.playerObserverDelegate?.didCompletePlay()
+                    }
+                }
+                if let time = Float(timeString) {
+                    self?.playerObserverDelegate?.didTrack(progress: time)
+                }
+            } as AnyObject
     }
 }
 
@@ -108,16 +135,20 @@ extension IGPlayerView: PlayerControls {
         
         guard let url = URL(string: resource.filePath) else {fatalError("Unable to form URL from resource")}
         if let existingPlayer = player {
-            self.player = existingPlayer
-            if existingPlayer.observationInfo != nil {
-                removeObservers(for: existingPlayer)
+            DispatchQueue.main.async { [weak self] in
+                guard let strongSelf = self else { return }
+                strongSelf.player = existingPlayer
+                if existingPlayer.observationInfo != nil {
+                    strongSelf.removeObservers(for: existingPlayer)
+                }
             }
         } else {
             //player = AVPlayer(url: url)
             let asset = AVAsset(url: url)
-            let item = AVPlayerItem(asset: asset)
-            player = AVPlayer(playerItem: item)
+            playerItem = AVPlayerItem(asset: asset)
+            player = AVPlayer(playerItem: playerItem)
             playerLayer = AVPlayerLayer(player: player)
+            setupPlayerPeriodicTimeObserver()
             if let pLayer = playerLayer {
                 pLayer.videoGravity = .resizeAspect
                 pLayer.frame = self.bounds
@@ -126,11 +157,12 @@ extension IGPlayerView: PlayerControls {
         }
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        
-        // Add observer for AVPlayer status and AVPlayerItem status
-        self.player?.addObserver(self, forKeyPath: "player.currentItem.status", options: [.new, .initial], context: nil)
-        self.player?.addObserver(self, forKeyPath: "timeControlStatus", options: [.old, .new], context: nil)
-
+        DispatchQueue.main.async { [weak self] in
+            // Add observer for AVPlayer status and AVPlayerItem status
+            guard let strongSelf = self else { return }
+            strongSelf.player?.addObserver(strongSelf, forKeyPath: "player.currentItem.status", options: [.new, .initial], context: &playerViewKVOContext)
+            strongSelf.player?.addObserver(strongSelf, forKeyPath: "timeControlStatus", options: [.new, .initial], context: &playerViewKVOContext)
+        }
         player?.play()
     }
     func play() {
@@ -148,13 +180,18 @@ extension IGPlayerView: PlayerControls {
     func stop() {
         //control the player
         if let existingPlayer = player {
-            existingPlayer.pause()
-            //Remove observer if observer presents before setting player to nil
-            if existingPlayer.observationInfo != nil {
-                removeObservers(for: existingPlayer)
+            DispatchQueue.main.async {[weak self] in
+                guard let strongSelf = self else { return }
+                existingPlayer.pause()
+                
+                //Remove observer if observer presents before setting player to nil
+                if existingPlayer.observationInfo != nil {
+                    strongSelf.removeObservers(for: existingPlayer)
+                }
+                strongSelf.playerItem = nil
+                strongSelf.player = nil
+                strongSelf.playerLayer?.removeFromSuperlayer()
             }
-            player = nil
-            playerLayer?.removeFromSuperlayer()
             //player got deallocated
         } else {
             //player was already deallocated
@@ -174,6 +211,10 @@ extension IGPlayerView: PlayerControls {
     // Observe If AVPlayerItem.status Changed to Fail
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
         guard let player = object as? AVPlayer else { fatalError("Player is nil") }
+        guard context == &playerViewKVOContext else {
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
         if keyPath == "player.currentItem.status" {
             let newStatus: AVPlayerItem.Status
             if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber, let status = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue) {
@@ -183,18 +224,18 @@ extension IGPlayerView: PlayerControls {
                 newStatus = .unknown
             }
             if newStatus == .failed {
-                activityIndicator.stopAnimating()
+                self.activityIndicator.stopAnimating()
                 if let item = player.currentItem, let error = item.error, let url = item.asset as? AVURLAsset {
-                    playerObserverDelegate?.didFailed(withError: error.localizedDescription, for: url.url)
+                    self.playerObserverDelegate?.didFailed(withError: error.localizedDescription, for: url.url)
                 } else {
-                    playerObserverDelegate?.didFailed(withError: "Unknown error", for: nil)
+                    self.playerObserverDelegate?.didFailed(withError: "Unknown error", for: nil)
                 }
             }
         } else if keyPath == "timeControlStatus" {
             if player.timeControlStatus == .playing {
                 //Started Playing
-                activityIndicator.stopAnimating()
-                playerObserverDelegate?.didStartPlaying()
+                self.activityIndicator.stopAnimating()
+                self.playerObserverDelegate?.didStartPlaying()
             } else if player.timeControlStatus == .paused {
                 // player paused
             } else {
