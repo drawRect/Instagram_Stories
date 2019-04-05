@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import AVFoundation
 
 struct VideoResource {
     let filePath: String
@@ -51,17 +52,49 @@ class IGPlayerView: UIView {
     public weak var playerObserverDelegate: IGPlayerObserver?
     private var timeObserverToken: AnyObject?
     private var playerItemStatusObserver: NSKeyValueObservation?
+    private var playerTimeControlStatusObserver: NSKeyValueObservation?
     
-    var player: AVPlayer?
+    var player: AVPlayer? {
+        willSet {
+            // Remove any previous KVO observer.
+            guard let playerTimeControlStatusObserver = playerTimeControlStatusObserver else { return }
+            playerTimeControlStatusObserver.invalidate()
+        }
+        didSet {
+            playerTimeControlStatusObserver = player?.observe(\AVPlayer.timeControlStatus, options: [.new, .initial], changeHandler: { [weak self] (player, _) in
+                guard let strongSelf = self else { return }
+                if player.timeControlStatus == .playing {
+                    //Started Playing
+                    strongSelf.activityIndicator.stopAnimating()
+                    strongSelf.playerObserverDelegate?.didStartPlaying()
+                } else if player.timeControlStatus == .paused {
+                    // player paused
+                } else {
+                    //
+                }
+            })
+        }
+    }
     private var playerLayer: AVPlayerLayer?
     private var playerItem: AVPlayerItem? = nil {
         willSet {
-            /// Remove any previous KVO observer.
+            // Remove any previous KVO observer.
             guard let playerItemStatusObserver = playerItemStatusObserver else { return }
             playerItemStatusObserver.invalidate()
         }
         didSet {
             player?.replaceCurrentItem(with: playerItem)
+            playerItemStatusObserver = playerItem?.observe(\AVPlayerItem.status, options: [.new, .initial], changeHandler: { [weak self] (item, _) in
+                guard let strongSelf = self else { return }
+                if item.status == .failed {
+                    strongSelf.activityIndicator.stopAnimating()
+                    if let item = strongSelf.player?.currentItem, let error = item.error, let url = item.asset as? AVURLAsset {
+                        strongSelf.playerObserverDelegate?.didFailed(withError: error.localizedDescription, for: url.url)
+                    } else {
+                        strongSelf.playerObserverDelegate?.didFailed(withError: "Unknown error", for: nil)
+                    }
+                }
+            })
         }
     }
     var error: Error? {
@@ -77,8 +110,6 @@ class IGPlayerView: UIView {
         //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         backgroundColor = .black
         activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
-        
-        //why we are using bounds here means (x,y) should be (0,0). If we use init frame, then it will take scrollView's content offset x values.
         self.addSubview(activityIndicator)
     }
     required init?(coder aDecoder: NSCoder) {
@@ -97,8 +128,6 @@ class IGPlayerView: UIView {
         return Float(self.player?.currentTime().value ?? 0)
     }
     func removeObservers(for player: AVPlayer) {
-        player.removeObserver(self, forKeyPath: "player.currentItem.status", context: &playerViewKVOContext)
-        player.removeObserver(self, forKeyPath: "timeControlStatus", context: &playerViewKVOContext)
         cleanUpPlayerPeriodicTimeObserver()
     }
     func cleanUpPlayerPeriodicTimeObserver() {
@@ -157,12 +186,6 @@ extension IGPlayerView: PlayerControls {
         }
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
-        DispatchQueue.main.async { [weak self] in
-            // Add observer for AVPlayer status and AVPlayerItem status
-            guard let strongSelf = self else { return }
-            strongSelf.player?.addObserver(strongSelf, forKeyPath: "player.currentItem.status", options: [.new, .initial], context: &playerViewKVOContext)
-            strongSelf.player?.addObserver(strongSelf, forKeyPath: "timeControlStatus", options: [.new, .initial], context: &playerViewKVOContext)
-        }
         player?.play()
     }
     func play() {
@@ -206,41 +229,5 @@ extension IGPlayerView: PlayerControls {
             }
         }
         return .unknown
-    }
-    
-    // Observe If AVPlayerItem.status Changed to Fail
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let player = object as? AVPlayer else { fatalError("Player is nil") }
-        guard context == &playerViewKVOContext else {
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-            return
-        }
-        if keyPath == "player.currentItem.status" {
-            let newStatus: AVPlayerItem.Status
-            if let newStatusAsNumber = change?[NSKeyValueChangeKey.newKey] as? NSNumber, let status = AVPlayerItem.Status(rawValue: newStatusAsNumber.intValue) {
-                newStatus = status
-            }
-            else {
-                newStatus = .unknown
-            }
-            if newStatus == .failed {
-                self.activityIndicator.stopAnimating()
-                if let item = player.currentItem, let error = item.error, let url = item.asset as? AVURLAsset {
-                    self.playerObserverDelegate?.didFailed(withError: error.localizedDescription, for: url.url)
-                } else {
-                    self.playerObserverDelegate?.didFailed(withError: "Unknown error", for: nil)
-                }
-            }
-        } else if keyPath == "timeControlStatus" {
-            if player.timeControlStatus == .playing {
-                //Started Playing
-                self.activityIndicator.stopAnimating()
-                self.playerObserverDelegate?.didStartPlaying()
-            } else if player.timeControlStatus == .paused {
-                // player paused
-            } else {
-                //
-            }
-        }
     }
 }

@@ -107,6 +107,7 @@
 		D65EC3FA22539DD6000D01B6 /* IGResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGResult.swift; sourceTree = "<group>"; };
 		D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGImageRequestable.swift; sourceTree = "<group>"; };
 		D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
+		D65EC40422573B7D000D01B6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D6D240A922520755008C0738 /* IGCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -215,6 +216,7 @@
 		9F57F37EDD8FC7D62F8C08A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D65EC40422573B7D000D01B6 /* AVFoundation.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -684,6 +686,7 @@
 		07FDECE61F5FD9BA004BC833 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -704,6 +707,7 @@
 		07FDECE71F5FD9BA004BC833 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
