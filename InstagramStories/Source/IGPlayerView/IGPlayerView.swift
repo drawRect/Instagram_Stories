@@ -32,7 +32,6 @@ protocol IGPlayerObserver: class {
 }
 
 protocol PlayerControls: class {
-    //This func should play as it is if player.playerItem is NIL, then if there is item(ie.AVPlayerItem) you should replace with current one.
     func play(with resource: VideoResource)
     func play()
     func pause()
@@ -40,41 +39,12 @@ protocol PlayerControls: class {
     var playerStatus: PlayerStatus { get }
 }
 
-/*
- KVO context used to differentiate KVO callbacks for this class versus other
- classes in its class hierarchy.
- */
-private var playerViewKVOContext = 0
-
 class IGPlayerView: UIView {
     
-    //MARK:- iVars
-    public weak var playerObserverDelegate: IGPlayerObserver?
+    //MARK: - Private Vars
     private var timeObserverToken: AnyObject?
     private var playerItemStatusObserver: NSKeyValueObservation?
     private var playerTimeControlStatusObserver: NSKeyValueObservation?
-    
-    var player: AVPlayer? {
-        willSet {
-            // Remove any previous KVO observer.
-            guard let playerTimeControlStatusObserver = playerTimeControlStatusObserver else { return }
-            playerTimeControlStatusObserver.invalidate()
-        }
-        didSet {
-            playerTimeControlStatusObserver = player?.observe(\AVPlayer.timeControlStatus, options: [.new, .initial], changeHandler: { [weak self] (player, _) in
-                guard let strongSelf = self else { return }
-                if player.timeControlStatus == .playing {
-                    //Started Playing
-                    strongSelf.activityIndicator.stopAnimating()
-                    strongSelf.playerObserverDelegate?.didStartPlaying()
-                } else if player.timeControlStatus == .paused {
-                    // player paused
-                } else {
-                    //
-                }
-            })
-        }
-    }
     private var playerLayer: AVPlayerLayer?
     private var playerItem: AVPlayerItem? = nil {
         willSet {
@@ -97,23 +67,54 @@ class IGPlayerView: UIView {
             })
         }
     }
+    
+    //MARK: - iVars
+    var player: AVPlayer? {
+        willSet {
+            // Remove any previous KVO observer.
+            guard let playerTimeControlStatusObserver = playerTimeControlStatusObserver else { return }
+            playerTimeControlStatusObserver.invalidate()
+        }
+        didSet {
+            playerTimeControlStatusObserver = player?.observe(\AVPlayer.timeControlStatus, options: [.new, .initial], changeHandler: { [weak self] (player, _) in
+                guard let strongSelf = self else { return }
+                if player.timeControlStatus == .playing {
+                    //Started Playing
+                    strongSelf.activityIndicator.stopAnimating()
+                    strongSelf.playerObserverDelegate?.didStartPlaying()
+                } else if player.timeControlStatus == .paused {
+                    // player paused
+                } else {
+                    //
+                }
+            })
+        }
+    }
     var error: Error? {
         return player?.currentItem?.error
     }
-    var activityIndicator: UIActivityIndicatorView
+    var activityIndicator: UIActivityIndicatorView!
+    
+    var currentItem: AVPlayerItem? {
+        return player?.currentItem
+    }
+    var currentTime: Float {
+        return Float(self.player?.currentTime().value ?? 0)
+    }
+    
+    //MARK: - Public Vars
+    public weak var playerObserverDelegate: IGPlayerObserver?
     
     //MARK:- Init methods
     override init(frame: CGRect) {
         activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-        activityIndicator.hidesWhenStopped = true
         super.init(frame: frame)
-        //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
-        backgroundColor = .black
-        activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
-        self.addSubview(activityIndicator)
+        setupActivityIndicator()
     }
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        super.init(coder: aDecoder)
+        setupActivityIndicator()
     }
     deinit {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
@@ -121,11 +122,14 @@ class IGPlayerView: UIView {
         }
         debugPrint("Deinit called")
     }
-    var currentItem: AVPlayerItem? {
-        return player?.currentItem
-    }
-    var currentTime: Float {
-        return Float(self.player?.currentTime().value ?? 0)
+    
+    // MARK: - Internal methods
+    func setupActivityIndicator() {
+        activityIndicator.hidesWhenStopped = true
+        //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
+        backgroundColor = .black
+        activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
+        self.addSubview(activityIndicator)
     }
     func removeObservers() {
         cleanUpPlayerPeriodicTimeObserver()
@@ -158,6 +162,7 @@ class IGPlayerView: UIView {
     }
 }
 
+// MARK: - Protocol | PlayerControls
 extension IGPlayerView: PlayerControls {
     
     func play(with resource: VideoResource) {
@@ -167,12 +172,8 @@ extension IGPlayerView: PlayerControls {
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.player = existingPlayer
-                /*if existingPlayer.observationInfo != nil {
-                    strongSelf.removeObservers(for: existingPlayer)
-                }*/
             }
         } else {
-            //player = AVPlayer(url: url)
             let asset = AVAsset(url: url)
             playerItem = AVPlayerItem(asset: asset)
             player = AVPlayer(playerItem: playerItem)
