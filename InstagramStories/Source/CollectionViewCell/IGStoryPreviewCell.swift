@@ -20,6 +20,7 @@ enum SnapMovementDirectionState {
 }
 //Identifiers
 fileprivate let snapViewTagIndicator: Int = 8
+fileprivate var passedSnapIndex = 0
 
 final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     
@@ -64,7 +65,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
-
+    
     public var snapIndex: Int = 0 {
         didSet {
             scrollview.isUserInteractionEnabled = true
@@ -189,19 +190,21 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     private func startRequest(snapView: UIImageView, with url: String) {
-        snapView.setImage(url: url, style: .squared) {[weak self] (result) in
-            guard let strongSelf = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(_):
-                    strongSelf.startProgressors()
-                case .failure(_):
-                    strongSelf.showRetryButton(with: url, for: snapView)
+        if snapIndex == passedSnapIndex {
+            snapView.setImage(url: url, style: .squared) {[weak self] (result) in
+                guard let strongSelf = self else { return }
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success(_):
+                        strongSelf.startProgressors()
+                    case .failure(_):
+                        strongSelf.showRetryButton(with: url, for: snapView)
+                    }
                 }
             }
         }
     }
-
+    
     private func showRetryButton(with url: String, for snapView: UIImageView) {
         self.retryBtn = IGRetryLoaderButton.init(withURL: url)
         self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
@@ -211,7 +214,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollview.subviews.count > 0 {
-            if story?.isCompletelyVisible == true {
+            if story?.isCompletelyVisible == true, self.snapIndex == passedSnapIndex {
                 let videoResource = VideoResource(filePath: url)
                 videoView.play(with: videoResource)
             }
@@ -295,6 +298,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
+                passedSnapIndex = n
                 snapIndex = n
             } else {
                 delegate?.didCompletePreview()
@@ -311,6 +315,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
                 direction = .forward
+                passedSnapIndex = n
                 snapIndex = n
             }else {
                 stopPlayer()
@@ -417,14 +422,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         DispatchQueue.main.async {
             if self.scrollview.subviews.count > 0 {
                 let imageView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? UIImageView
-                if imageView?.image != nil && self.story?.isCompletelyVisible == true {
+                if imageView?.image != nil && self.story?.isCompletelyVisible == true && self.snapIndex == passedSnapIndex {
                     self.gearupTheProgressors(type: .image)
                 } else {
                     // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
                     if self.story?.isCompletelyVisible == true {
                         let videoView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? IGPlayerView
                         let snap = self.story?.snaps[self.snapIndex]
-                        if let vv = videoView, self.story?.isCompletelyVisible == true {
+                        if let vv = videoView, self.story?.isCompletelyVisible == true, self.snapIndex == passedSnapIndex  {
                             self.startPlayer(videoView: vv, with: snap!.url)
                         }
                     }
@@ -441,6 +446,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     public func willDisplayCell(with sIndex: Int) {
         //Todo:Make sure to move filling part and creating at one place
         //Clear the progressor subviews before the creating new set of progressors.
+        passedSnapIndex = sIndex
         storyHeaderView.clearTheProgressorSubviews()
         storyHeaderView.createSnapProgressors()
         fillUpMissingImageViews(sIndex)
