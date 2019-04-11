@@ -44,6 +44,13 @@ final class IGStoryListCell: UICollectionViewCell {
         return label
     }()
     
+    lazy var addImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "ic_Add")
+        iv.translatesAutoresizingMaskIntoConstraints = false
+        return iv
+    }()
+    
     //MARK: - Overriden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,6 +66,7 @@ final class IGStoryListCell: UICollectionViewCell {
     private func loadUIElements() {
         addSubview(profileImageView)
         addSubview(profileNameLabel)
+        addSubview(addImageView)
     }
     private func installLayoutConstraints() {
         NSLayoutConstraint.activate([
@@ -74,6 +82,12 @@ final class IGStoryListCell: UICollectionViewCell {
             profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)])
         
+        NSLayoutConstraint.activate([
+            addImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -17),
+            addImageView.widthAnchor.constraint(equalToConstant: 20),
+            addImageView.heightAnchor.constraint(equalToConstant: 20),
+            addImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)])
+        
         layoutIfNeeded()
     }
 }
@@ -84,9 +98,11 @@ extension IGStoryListCell {
         if others == true {
             profileImageView.enableBorder()
             profileNameLabel.alpha = 1.0
+            addImageView.isHidden = true
         }else {
             profileImageView.enableBorder(enabled: false)
             profileNameLabel.alpha = 0.5
+            addImageView.isHidden = false
         }
     }
 }

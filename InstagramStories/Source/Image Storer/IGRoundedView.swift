@@ -26,13 +26,7 @@ class IGRoundedView: UIView {
         iv.clipsToBounds = true
         return iv
     }()
-    
-    lazy var addImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "ic_Add")
-        return iv
-    }()
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true
@@ -45,14 +39,12 @@ class IGRoundedView: UIView {
         clipsToBounds = true
         backgroundColor = attributes.backgroundColor
         addSubview(imageView)
-        addSubview(addImageView)
     }
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = frame.height/2
         imageView.frame = CGRect(x:1,y:1,width:(attributes.size.width)-2,height:attributes.size.height-2)
         imageView.layer.cornerRadius = imageView.frame.height/2
-        addImageView.frame = CGRect(x: 43, y: 43, width: 25, height: 25)
     }
 }
 
