@@ -21,8 +21,8 @@ final class IGAddStoryCell: StoryCell {
     }()
 
     override func addChildViews() {
-        addSubview(profileNameLabel)
-        addSubview(profileImageView)
+        super.addChildViews()
+
         addSubview(addImageView)
 
         profileNameLabel.alpha = 0.5
@@ -30,26 +30,27 @@ final class IGAddStoryCell: StoryCell {
         profileImageView.imageView.setImage(url: "https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
         profileImageView.enableBorder(false)
     }
+
     override func installConstraints() {
-        NSLayoutConstraint.activate([
-            profileImageView.widthAnchor.constraint(equalToConstant: 68),
-            profileImageView.heightAnchor.constraint(equalToConstant: 68),
-            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor)])
-        
-        NSLayoutConstraint.activate([
-            profileNameLabel.leftAnchor.constraint(equalTo: leftAnchor),
-            profileNameLabel.rightAnchor.constraint(equalTo: rightAnchor),
-            profileNameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 2),
-            profileNameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            profileNameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)])
-        
-        NSLayoutConstraint.activate([
-            addImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -17),
-            addImageView.widthAnchor.constraint(equalToConstant: 20),
-            addImageView.heightAnchor.constraint(equalToConstant: 20),
-            addImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -25)])
-        
-        layoutIfNeeded()
+        super.installConstraints()
+
+        NSLayoutConstraint.activate(
+            [
+            addImageView.rightAnchor.constraint(
+                equalTo: rightAnchor,
+                constant: -17
+                ),
+             addImageView.widthAnchor.constraint(
+                equalToConstant: 20
+                ),
+             addImageView.heightAnchor.constraint(
+                equalToConstant: 20
+                ),
+             addImageView.bottomAnchor.constraint(
+                equalTo: bottomAnchor,
+                constant: -25
+                )
+            ]
+        )
     }
 }

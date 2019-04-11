@@ -46,10 +46,21 @@ class IGHomeView: UIView {
         addSubview(collectionView)
     }
     private func installLayoutConstraints(){
-        NSLayoutConstraint.activate([
-            leftAnchor.constraint(equalTo: collectionView.leftAnchor),
-            topAnchor.constraint(equalTo: collectionView.topAnchor),
-            collectionView.rightAnchor.constraint(equalTo: rightAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 100)])
+        NSLayoutConstraint.activate(
+            [
+            leftAnchor.constraint(
+                equalTo: collectionView.leftAnchor
+                ),
+            topAnchor.constraint(
+                equalTo: collectionView.topAnchor
+                ),
+            collectionView.rightAnchor.constraint(
+                equalTo: rightAnchor
+                ),
+            collectionView.heightAnchor.constraint(
+                equalToConstant: 100
+                )
+            ]
+        )
     }
 }

@@ -37,7 +37,50 @@ class StoryCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func addChildViews() { fatalError() }
-    func installConstraints() { fatalError() }
+    func addChildViews() {
+        addSubview(profileNameLabel)
+        addSubview(profileImageView)
+    }
+    func installConstraints() {
+        NSLayoutConstraint.activate(
+            [
+            profileImageView.widthAnchor.constraint(
+                equalToConstant: 68
+                ),
+            profileImageView.heightAnchor.constraint(
+                equalToConstant: 68
+                ),
+            profileImageView.topAnchor.constraint(
+                equalTo: topAnchor,
+                constant: 8
+                ),
+            profileImageView.centerXAnchor.constraint(
+                equalTo: centerXAnchor
+                )
+            ]
+        )
+
+        NSLayoutConstraint.activate(
+            [
+            profileNameLabel.leftAnchor.constraint(
+                equalTo: leftAnchor
+                ),
+            profileNameLabel.rightAnchor.constraint(
+                equalTo: rightAnchor
+                ),
+            profileNameLabel.topAnchor.constraint(
+                equalTo: profileImageView.bottomAnchor,
+                constant: 2
+                ),
+            profileNameLabel.centerXAnchor.constraint(
+                equalTo: centerXAnchor
+                ),
+            profileNameLabel.bottomAnchor.constraint(
+                equalTo: bottomAnchor,
+                constant: -8
+                )
+            ]
+        )
+    }
 
 }

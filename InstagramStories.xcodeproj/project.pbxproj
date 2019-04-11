@@ -244,7 +244,7 @@
 				D6287E3F223FC6660070E5FE /* Extension */,
 				D6287E48223FC67B0070E5FE /* Common */,
 				D6287E4F223FC68F0070E5FE /* Models */,
-				D6287E58223FC69B0070E5FE /* StoryHeaderView & ProgressView */,
+				D6287E58223FC69B0070E5FE /* StoryHeaderView_&_ProgressView */,
 				D6287E37223FC2050070E5FE /* IGPlayerView */,
 				D65EC406225791D9000D01B6 /* StoryPreviewView */,
 				D6287E38223FC2440070E5FE /* CollectionViewCell */,
@@ -317,13 +317,13 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D6287E58223FC69B0070E5FE /* StoryHeaderView & ProgressView */ = {
+		D6287E58223FC69B0070E5FE /* StoryHeaderView_&_ProgressView */ = {
 			isa = PBXGroup;
 			children = (
 				D6287E59223FC69B0070E5FE /* IGSnapProgressView.swift */,
 				D6287E5A223FC69B0070E5FE /* IGStoryPreviewHeaderView.swift */,
 			);
-			path = "StoryHeaderView & ProgressView";
+			path = "StoryHeaderView_&_ProgressView";
 			sourceTree = "<group>";
 		};
 		D6287E5D223FC6BA0070E5FE /* StoryPreview */ = {
