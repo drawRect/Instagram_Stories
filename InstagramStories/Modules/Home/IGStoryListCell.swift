@@ -44,17 +44,6 @@ final class IGStoryListCell: UICollectionViewCell {
         return label
     }()
     
-    lazy var addImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.image = UIImage(named: "ic_Add")
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.layer.cornerRadius = 20/2
-        iv.layer.borderWidth = 2.0
-        iv.layer.borderColor = UIColor.white.cgColor
-        iv.clipsToBounds = true
-        return iv
-    }()
-    
     //MARK: - Overriden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -70,7 +59,6 @@ final class IGStoryListCell: UICollectionViewCell {
     private func loadUIElements() {
         addSubview(profileImageView)
         addSubview(profileNameLabel)
-        addSubview(addImageView)
     }
     private func installLayoutConstraints() {
         NSLayoutConstraint.activate([
@@ -86,28 +74,6 @@ final class IGStoryListCell: UICollectionViewCell {
             profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)])
         
-        NSLayoutConstraint.activate([
-            addImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -17),
-            addImageView.widthAnchor.constraint(equalToConstant: 20),
-            addImageView.heightAnchor.constraint(equalToConstant: 20),
-            addImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25)])
-        
         layoutIfNeeded()
     }
 }
-
-
-extension IGStoryListCell {
-    func applyCellForOthers(others: Bool = true) {
-        if others == true {
-            profileImageView.enableBorder()
-            profileNameLabel.alpha = 1.0
-            addImageView.isHidden = true
-        }else {
-            profileImageView.enableBorder(enabled: false)
-            profileNameLabel.alpha = 0.5
-            addImageView.isHidden = false
-        }
-    }
-}
-

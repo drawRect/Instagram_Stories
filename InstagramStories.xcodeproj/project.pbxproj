@@ -226,8 +226,8 @@
 		D6287E36223FC17E0070E5FE /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D6D240A8225206D5008C0738 /* Image Storer */,
 				4C1E29BC22316F6F0070FD27 /* AnimatedCollectionViewLayout */,
+				D6D240A8225206D5008C0738 /* ImageStorer */,
 				D6287E39223FC6320070E5FE /* Reachability */,
 				D6287E3C223FC6420070E5FE /* Stubs */,
 				D6287E3F223FC6660070E5FE /* Extension */,
@@ -333,7 +333,7 @@
 			path = StoryPreviewView;
 			sourceTree = "<group>";
 		};
-		D6D240A8225206D5008C0738 /* Image Storer */ = {
+		D6D240A8225206D5008C0738 /* ImageStorer */ = {
 			isa = PBXGroup;
 			children = (
 				D6D240A922520755008C0738 /* IGCache.swift */,
@@ -344,7 +344,7 @@
 				7951B194225F70F300DA5688 /* IGRoundedView.swift */,
 				D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */,
 			);
-			path = "Image Storer";
+			path = ImageStorer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

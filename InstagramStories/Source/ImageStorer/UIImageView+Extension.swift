@@ -62,9 +62,6 @@ extension UIImageView {
         if isActivityEnabled {
             DispatchQueue.main.async {
                 self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
-                if self.backgroundColor == .white || self.activityStyle == .white {
-                    self.backgroundColor = .black
-                }
                 if !self.subviews.contains(self.activityIndicator) {
                     self.addSubview(self.activityIndicator)
                 }
