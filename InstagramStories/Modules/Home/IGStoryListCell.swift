@@ -48,6 +48,10 @@ final class IGStoryListCell: UICollectionViewCell {
         let iv = UIImageView()
         iv.image = UIImage(named: "ic_Add")
         iv.translatesAutoresizingMaskIntoConstraints = false
+        iv.layer.cornerRadius = 20/2
+        iv.layer.borderWidth = 2.0
+        iv.layer.borderColor = UIColor.white.cgColor
+        iv.clipsToBounds = true
         return iv
     }()
     
@@ -86,7 +90,7 @@ final class IGStoryListCell: UICollectionViewCell {
             addImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -17),
             addImageView.widthAnchor.constraint(equalToConstant: 20),
             addImageView.heightAnchor.constraint(equalToConstant: 20),
-            addImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -20)])
+            addImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25)])
         
         layoutIfNeeded()
     }
