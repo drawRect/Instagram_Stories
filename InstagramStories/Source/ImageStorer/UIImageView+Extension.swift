@@ -61,6 +61,7 @@ extension UIImageView {
     func showActivityIndicator() {
         if isActivityEnabled {
             DispatchQueue.main.async {
+                self.backgroundColor = IGTheme.redOrange
                 self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
                 if !self.subviews.contains(self.activityIndicator) {
                     self.addSubview(self.activityIndicator)
@@ -69,9 +70,11 @@ extension UIImageView {
             }
         }
     }
+    
     func hideActivityIndicator() {
         if isActivityEnabled {
             DispatchQueue.main.async {
+                self.backgroundColor = UIColor.white
                 self.subviews.forEach({ (view) in
                     if let av = view as? UIActivityIndicatorView {
                         av.stopAnimating()

@@ -23,7 +23,6 @@ class IGRoundedView: UIView {
         let iv = UIImageView()
         iv.layer.borderWidth = (attributes.borderWidth)
         iv.layer.borderColor = attributes.borderColor.cgColor
-        iv.backgroundColor = IGTheme.redOrange
         iv.clipsToBounds = true
         return iv
     }()

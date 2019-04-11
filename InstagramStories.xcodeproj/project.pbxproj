@@ -131,6 +131,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		072E5AA6225FA71D005FF9D1 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				4C1E29BC22316F6F0070FD27 /* AnimatedCollectionViewLayout */,
+				D6287E39223FC6320070E5FE /* Reachability */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
 		074861791F9D4D0900C1AC1F /* InstagramStoriesTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -226,9 +235,8 @@
 		D6287E36223FC17E0070E5FE /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				4C1E29BC22316F6F0070FD27 /* AnimatedCollectionViewLayout */,
+				072E5AA6225FA71D005FF9D1 /* External */,
 				D6D240A8225206D5008C0738 /* ImageStorer */,
-				D6287E39223FC6320070E5FE /* Reachability */,
 				D6287E3C223FC6420070E5FE /* Stubs */,
 				D6287E3F223FC6660070E5FE /* Extension */,
 				D6287E48223FC67B0070E5FE /* Common */,
