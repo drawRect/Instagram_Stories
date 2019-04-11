@@ -25,6 +25,7 @@
 		4C1E29D622316F6F0070FD27 /* LayoutAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C922316F6F0070FD27 /* LayoutAttributesAnimator.swift */; };
 		4C1E29D722316F6F0070FD27 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E29CA22316F6F0070FD27 /* README.md */; };
 		4C1E29D9223206200070FD27 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29D8223206200070FD27 /* IGPlayerView.swift */; };
+		7951B195225F70F300DA5688 /* IGRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951B194225F70F300DA5688 /* IGRoundedView.swift */; };
 		D6287E3B223FC6320070E5FE /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E3A223FC6320070E5FE /* Reachability.swift */; };
 		D6287E3E223FC6420070E5FE /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E3D223FC6420070E5FE /* IGMockLoader.swift */; };
 		D6287E44223FC6660070E5FE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E40223FC6660070E5FE /* UIView+Extension.swift */; };
@@ -84,6 +85,7 @@
 		4C1E29C922316F6F0070FD27 /* LayoutAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29CA22316F6F0070FD27 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4C1E29D8223206200070FD27 /* IGPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGPlayerView.swift; sourceTree = "<group>"; };
+		7951B194225F70F300DA5688 /* IGRoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGRoundedView.swift; sourceTree = "<group>"; };
 		D6287E3A223FC6320070E5FE /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D6287E3D223FC6420070E5FE /* IGMockLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGMockLoader.swift; sourceTree = "<group>"; };
 		D6287E40223FC6660070E5FE /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -129,6 +131,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		072E5AA6225FA71D005FF9D1 /* External */ = {
+			isa = PBXGroup;
+			children = (
+				4C1E29BC22316F6F0070FD27 /* AnimatedCollectionViewLayout */,
+				D6287E39223FC6320070E5FE /* Reachability */,
+			);
+			path = External;
+			sourceTree = "<group>";
+		};
 		074861791F9D4D0900C1AC1F /* InstagramStoriesTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -224,9 +235,8 @@
 		D6287E36223FC17E0070E5FE /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				D6D240A8225206D5008C0738 /* Image Storer */,
-				4C1E29BC22316F6F0070FD27 /* AnimatedCollectionViewLayout */,
-				D6287E39223FC6320070E5FE /* Reachability */,
+				072E5AA6225FA71D005FF9D1 /* External */,
+				D6D240A8225206D5008C0738 /* ImageStorer */,
 				D6287E3C223FC6420070E5FE /* Stubs */,
 				D6287E3F223FC6660070E5FE /* Extension */,
 				D6287E48223FC67B0070E5FE /* Common */,
@@ -331,7 +341,7 @@
 			path = StoryPreviewView;
 			sourceTree = "<group>";
 		};
-		D6D240A8225206D5008C0738 /* Image Storer */ = {
+		D6D240A8225206D5008C0738 /* ImageStorer */ = {
 			isa = PBXGroup;
 			children = (
 				D6D240A922520755008C0738 /* IGCache.swift */,
@@ -339,9 +349,10 @@
 				D65EC3F822539C66000D01B6 /* IGError.swift */,
 				D65EC3FA22539DD6000D01B6 /* IGResult.swift */,
 				D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */,
+				7951B194225F70F300DA5688 /* IGRoundedView.swift */,
 				D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */,
 			);
-			path = "Image Storer";
+			path = ImageStorer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -510,6 +521,7 @@
 				D6D240AA22520755008C0738 /* IGCache.swift in Sources */,
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,
 				D65EC3FF22539ED7000D01B6 /* UIImageView+Extension.swift in Sources */,
+				7951B195225F70F300DA5688 /* IGRoundedView.swift in Sources */,
 				4C1E29CC22316F6F0070FD27 /* CubeAttributesAnimator.swift in Sources */,
 				4C1E29D9223206200070FD27 /* IGPlayerView.swift in Sources */,
 				1024C9FA1FAA0D4400237538 /* IGHomeController.swift in Sources */,
