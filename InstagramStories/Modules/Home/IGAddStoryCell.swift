@@ -27,7 +27,7 @@ final class IGAddStoryCell: UICollectionViewCell {
         label.textColor = .black
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Add Story"
+        label.text = "Your Story"
         label.font = UIFont(name: "Helvetica", size: 18.0)
         return label
     }()

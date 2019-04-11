@@ -38,6 +38,8 @@ extension IGImageRequestable where Self: UIImageView {
                 case .success(let image):
                     DispatchQueue.main.async {
                         strongSelf.image = image
+//                        let edgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+//                        strongSelf.image = image.imageWithInsets(insets: edgeInsets)
                     }
                     guard let completion = completionBlock else { return }
                     return completion(.success(image))
@@ -47,5 +49,20 @@ extension IGImageRequestable where Self: UIImageView {
                 }
             }
         }
+    }
+}
+
+
+extension UIImage {
+    func imageWithInsets(insets: UIEdgeInsets) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(
+            CGSize(width: self.size.width + insets.left + insets.right,
+                   height: self.size.height + insets.top + insets.bottom), false, self.scale)
+        let _ = UIGraphicsGetCurrentContext()
+        let origin = CGPoint(x: insets.left, y: insets.top)
+        self.draw(at: origin)
+        let imageWithInsets = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return imageWithInsets
     }
 }

@@ -31,7 +31,7 @@ final class IGHomeController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     override var navigationItem: UINavigationItem {
-        let ni = UINavigationItem(title: "Home")
+        let ni = UINavigationItem(title: "Instagram")
         if DEL_CACHE_ENABLED {
             ni.rightBarButtonItem = UIBarButtonItem(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
             ni.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
@@ -64,12 +64,14 @@ UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier, for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
-            cell.userDetails = ("Add Story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            cell.userDetails = ("Your Story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            cell.applyCellForOthers(others: false)
             return cell
         }else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier,for: indexPath) as? IGStoryListCell else { return UICollectionViewCell() }
             let story = viewModel.cellForItemAt(indexPath: indexPath)
             cell.story = story
+            cell.applyCellForOthers()
             return cell
         }
     }

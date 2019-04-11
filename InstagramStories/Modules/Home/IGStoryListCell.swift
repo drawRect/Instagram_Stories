@@ -15,7 +15,7 @@ final class IGStoryListCell: UICollectionViewCell {
         didSet {
             self.profileNameLabel.text = story?.user.name
             if let picture = story?.user.picture {
-                self.profileImageView.setImage(url: picture)
+                self.profileImageView.imageView.setImage(url: picture)
             }
         }
     }
@@ -23,29 +23,24 @@ final class IGStoryListCell: UICollectionViewCell {
         didSet {
             if let details = userDetails {
                 self.profileNameLabel.text = details.0
-                self.profileImageView.setImage(url: details.1)
+                self.profileImageView.imageView.setImage(url: details.1)
             }
         }
     }
     
-    //MARK: - Private iVars
-    private let profileImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.frame = CGRect.zero
-        imageView.layer.cornerRadius = imageView.frame.width/2
-        imageView.clipsToBounds = true
-        imageView.layer.borderWidth = 2.0
-        //imageView.layer.borderColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0).cgColor
-        imageView.layer.borderColor = UIColor.black.cgColor
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        return imageView
+    //MARK: -  Private ivars
+    private let profileImageView: IGRoundedView = {
+        let roundedView = IGRoundedView()
+        roundedView.translatesAutoresizingMaskIntoConstraints = false
+        return roundedView
     }()
+    
     private let profileNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        //label.textColor = UIColor.init(red: 50/255, green: 199/255, blue: 242/255, alpha: 1.0)
         label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
     
@@ -62,23 +57,37 @@ final class IGStoryListCell: UICollectionViewCell {
     
     //MARK:- Private functions
     private func loadUIElements() {
-        self.addSubview(profileImageView)
-        self.addSubview(profileNameLabel)
+        addSubview(profileImageView)
+        addSubview(profileNameLabel)
     }
     private func installLayoutConstraints() {
         NSLayoutConstraint.activate([
-            profileImageView.widthAnchor.constraint(equalToConstant: 60),
-            profileImageView.heightAnchor.constraint(equalToConstant: 60),
+            profileImageView.widthAnchor.constraint(equalToConstant: 68),
+            profileImageView.heightAnchor.constraint(equalToConstant: 68),
             profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
             profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
-        
+
         NSLayoutConstraint.activate([
             profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
             profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-            profileNameLabel.heightAnchor.constraint(equalToConstant: 21),
-            profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8),
-            profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+            profileNameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 2),
+            profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)])
         
         layoutIfNeeded()
     }
 }
+
+
+extension IGStoryListCell {
+    func applyCellForOthers(others: Bool = true) {
+        if others == true {
+            profileImageView.enableBorder()
+            profileNameLabel.alpha = 1.0
+        }else {
+            profileImageView.enableBorder(enabled: false)
+            profileNameLabel.alpha = 0.5
+        }
+    }
+}
+
