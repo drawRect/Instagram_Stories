@@ -165,6 +165,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func createSnapView() -> UIImageView {
         let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         snapView.tag = snapIndex + snapViewTagIndicator
+        snapView.backgroundColor = .black
         scrollview.addSubview(snapView)
         return snapView
     }
@@ -175,7 +176,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return nil
     }
     private func createVideoView() -> IGPlayerView {
-        let videoView = IGPlayerView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let videoView = IGPlayerView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)

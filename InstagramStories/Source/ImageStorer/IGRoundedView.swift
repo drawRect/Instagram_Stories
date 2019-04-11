@@ -11,18 +11,17 @@ import UIKit
 
 //@note:Recommended Size: CGSize(width:70,height:70)
 struct Attributes {
-    let borderWidth:CGFloat = 2.0
-    let borderColor = UIColor.white
-    let backgroundColor = IGTheme.redOrange
-    let size = CGSize(width:68,height:68)
+   static let borderWidth:CGFloat = 2.0
+   static let borderColor = UIColor.white
+   static let backgroundColor = IGTheme.redOrange
+   static let size = CGSize(width:68,height:68)
 }
 
 class IGRoundedView: UIView {
-    private var attributes:Attributes = Attributes()
-    lazy var imageView: UIImageView = {
+    let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.layer.borderWidth = (attributes.borderWidth)
-        iv.layer.borderColor = attributes.borderColor.cgColor
+        iv.layer.borderWidth = Attributes.borderWidth
+        iv.layer.borderColor = Attributes.borderColor.cgColor
         iv.clipsToBounds = true
         return iv
     }()
@@ -30,32 +29,30 @@ class IGRoundedView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         clipsToBounds = true
-        backgroundColor = attributes.backgroundColor
+        backgroundColor = Attributes.backgroundColor
         addSubview(imageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        clipsToBounds = true
-        backgroundColor = attributes.backgroundColor
-        addSubview(imageView)
     }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = frame.height/2
-        imageView.frame = CGRect(x:1,y:1,width:(attributes.size.width)-2,height:attributes.size.height-2)
+        imageView.frame = CGRect(x:1,y:1,width:(Attributes.size.width)-2,height:Attributes.size.height-2)
         imageView.layer.cornerRadius = imageView.frame.height/2
     }
 }
 
 extension IGRoundedView {
-    func enableBorder(enabled: Bool = true) {
+    func enableBorder(_ enabled: Bool = true) {
         if enabled {
             layer.borderColor = UIColor.clear.cgColor
             layer.borderWidth = 0
         }else {
-            layer.borderColor = attributes.borderColor.cgColor
-            layer.borderWidth = attributes.borderWidth
+            layer.borderColor = Attributes.borderColor.cgColor
+            layer.borderWidth = Attributes.borderWidth
         }
     }
 }

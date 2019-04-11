@@ -6,8 +6,8 @@
             "last_updated": 1504799962,
             "user": {
                 "id": "b1",
-                "name": "Terasa",
-                "picture": "https://randomuser.me/api/portraits/med/women/1.jpg"
+                "name": "Isobel Webb",
+                "picture": "https://randomuser.me/api/portraits/women/18.jpg"
             },
             "snaps_count": 7,
             "snaps": [
@@ -60,8 +60,8 @@
             "last_updated": 1504799962,
             "user": {
                 "id": "b2",
-                "name": "Nicky",
-                "picture": "https://randomuser.me/api/portraits/med/women/2.jpg"
+                "name": "Thomson",
+                "picture": "https://randomuser.me/api/portraits/men/19.jpg"
             },
             "snaps_count": 6,
             "snaps": [
@@ -108,8 +108,8 @@
             "last_updated": 1504799992,
             "user": {
                 "id": "b2",
-                "name": "Lara",
-                "picture": "https://randomuser.me/api/portraits/med/women/3.jpg"
+                "name": "Joseph",
+                "picture": "https://randomuser.me/api/portraits/men/13.jpg"
             },
             "snaps_count": 5,
             "snaps": [
@@ -150,8 +150,8 @@
             "last_updated": 1504799092,
             "user": {
                 "id": "b2",
-                "name": "Rossie",
-                "picture": "https://randomuser.me/api/portraits/med/women/4.jpg",
+                "name": "Marian Thompson",
+                "picture": "https://randomuser.me/api/portraits/women/24.jpg",
                 "last_updated": "13m"
             },
             "snaps_count": 3,

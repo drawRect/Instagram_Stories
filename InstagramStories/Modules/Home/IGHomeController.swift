@@ -8,8 +8,6 @@
 
 import UIKit
 
-let DEL_CACHE_ENABLED = false
-
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
@@ -32,19 +30,26 @@ final class IGHomeController: UIViewController {
     }
     override var navigationItem: UINavigationItem {
         let navigationItem = UINavigationItem(title: "Instagram")
-        if DEL_CACHE_ENABLED {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
-        }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_trash"), style: .done, target: self, action: #selector(clearImageCache))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(named: "ic_camera"), style: .done, target: self, action: #selector(showComingSoonAlert))
+        navigationItem.leftBarButtonItem?.tintColor = .black
+        navigationItem.rightBarButtonItem?.tintColor = .black
         return navigationItem
     }
     
     //MARK: - Private functions
     @objc private func clearImageCache() {
-        IGCache.shared.removeAllObjects()
+        let alertController = UIAlertController(title: "Are you sure want to clear the Cache?", message: nil, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let deleteAction = UIAlertAction(title: "Yes, Delete", style: .destructive) { (tapped) in
+            IGCache.shared.removeAllObjects()
+        }
+        alertController.addAction(cancelAction)
+        alertController.addAction(deleteAction)
+        present(alertController, animated: true, completion: nil)
     }
-    private func showComingSoonAlert() {
-        let alertController = UIAlertController.init(title: "Coming Soon...", message: nil, preferredStyle: .alert)
+    @objc private func showComingSoonAlert() {
+        let alertController = UIAlertController(title: "Coming Soon...", message: nil, preferredStyle: .alert)
         present(alertController, animated: true) {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3){
                 alertController.dismiss(animated: true, completion: nil)
@@ -63,12 +68,11 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGAddStoryCell.reuseIdentifier, for: indexPath) as? IGAddStoryCell else { fatalError() }
-            cell.userDetails = ("Your Story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            let cell: IGAddStoryCell = collectionView.dequeueReusableCell(forIndexPath: indexPath)
             return cell
         }else {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier,for: indexPath) as? IGStoryListCell else { fatalError() }
-            let story = viewModel.cellForItemAt(indexPath: indexPath)
+            let cell: IGStoryListCell = collectionView.dequeueReusableCell(forIndexPath: indexPath)
+            guard let story = viewModel.cellForItemAt(indexPath: indexPath) else{fatalError("story not found at \(indexPath.item)")}
             cell.story = story
             return cell
         }
@@ -80,13 +84,13 @@ UICollectionViewDelegateFlowLayout {
         }else {
             DispatchQueue.main.async {
                 if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {
-                    let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
+                    let storyPreviewScene = IGStoryPreviewController(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
                     self.present(storyPreviewScene, animated: true, completion: nil)
                 }
             }
         }
     }
-    
+    //Move these hard coded size to respective custom cell
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {

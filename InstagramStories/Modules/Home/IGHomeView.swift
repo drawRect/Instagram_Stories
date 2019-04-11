@@ -19,12 +19,12 @@ class IGHomeView: UIView {
         return flowLayout
     }()
     lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
-        cv.register(IGStoryListCell.self, forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier)
-        cv.register(IGAddStoryCell.self, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier)
+        cv.register(IGAddStoryCell.self)
+        cv.register(IGStoryListCell.self)
         cv.translatesAutoresizingMaskIntoConstraints = false
         return cv
     }()

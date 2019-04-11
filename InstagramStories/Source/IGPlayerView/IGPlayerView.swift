@@ -120,7 +120,7 @@ class IGPlayerView: UIView {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
             removeObservers()
         }
-        debugPrint("Deinit called")
+//        debugPrint("Deinit called")
     }
     
     // MARK: - Internal methods

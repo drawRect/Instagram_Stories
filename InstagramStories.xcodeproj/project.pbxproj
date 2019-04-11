@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		072E5AA8225FD7C0005FF9D1 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 072E5AA7225FD7BF005FF9D1 /* StoryCell.swift */; };
 		0748617B1F9D4D0900C1AC1F /* InstagramStoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */; };
 		078E413D1F61E86500222191 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
@@ -63,6 +64,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		072E5AA7225FD7BF005FF9D1 /* StoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StoryCell.swift; path = Modules/Home/StoryCell.swift; sourceTree = "<group>"; };
 		074861781F9D4D0900C1AC1F /* InstagramStoriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramStoriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramStoriesTests.swift; sourceTree = "<group>"; };
 		0748617C1F9D4D0900C1AC1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -188,6 +190,7 @@
 				1024C9F61FAA0D4300237538 /* IGHomeController.swift */,
 				1024C9FE1FAA0D5F00237538 /* IGHomeView.swift */,
 				1024CA001FAA102200237538 /* IGHomeViewModel.swift */,
+				072E5AA7225FD7BF005FF9D1 /* StoryCell.swift */,
 				1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */,
 				1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */,
 			);
@@ -521,6 +524,7 @@
 				D6D240AA22520755008C0738 /* IGCache.swift in Sources */,
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,
 				D65EC3FF22539ED7000D01B6 /* UIImageView+Extension.swift in Sources */,
+				072E5AA8225FD7C0005FF9D1 /* StoryCell.swift in Sources */,
 				7951B195225F70F300DA5688 /* IGRoundedView.swift in Sources */,
 				4C1E29CC22316F6F0070FD27 /* CubeAttributesAnimator.swift in Sources */,
 				4C1E29D9223206200070FD27 /* IGPlayerView.swift in Sources */,

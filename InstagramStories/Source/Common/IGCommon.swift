@@ -9,27 +9,29 @@
 import Foundation
 import UIKit
 
-/******** UITableViewCell&UICollectionViewCell<Extension> *******************************/
-protocol CellConfigurer:class {
-    static var nib: UINib {get}
-    static var reuseIdentifier: String {get}
-}
+//Superstar Code :)
 
-extension CellConfigurer {
-    static var nib: UINib {
-        return UINib(nibName: reuseIdentifier, bundle: nil)
-    }
-    static var reuseIdentifier: String{
+protocol Reusable {}
+
+extension Reusable where Self: UICollectionViewCell {
+    static var reuseIdentifier: String {
         return String(describing: self)
     }
 }
 
-extension UICollectionViewCell: CellConfigurer {}
-extension UITableViewCell: CellConfigurer {}
+extension UICollectionViewCell: Reusable {}
 
-/*************************** UINIB<Extension> ************************************************/
-extension UINib {
-    class func nib(with name: String) -> UINib {
-        return UINib(nibName: name, bundle: nil)
+extension UICollectionView {
+
+    func register<T: UICollectionViewCell>(_ :T.Type) {
+        register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
     }
+
+    func dequeueReusableCell<T: UICollectionViewCell>(forIndexPath indexPath: IndexPath) -> T {
+        guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
+            fatalError("could not dequeue cell")
+        }
+        return cell
+    }
+
 }
