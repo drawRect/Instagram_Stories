@@ -22,8 +22,11 @@ public class IGRetryLoaderButton: UIButton {
         self.backgroundColor = .white
         self.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
         self.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
+        self.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         self.addTarget(self, action: #selector(didTapRetryBtn), for: .touchUpInside)
         self.contentURL = url
+        self.layer.cornerRadius = 4
+        self.clipsToBounds = true
         self.tag = 100
     }
     @objc func didTapRetryBtn() {

@@ -11,7 +11,7 @@ import UIKit
 class IGStoryPreviewView: UIView {
     
     //MARK:- iVars
-    var layoutType: layoutType?
+    var layoutType: FlowLayoutType?
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType!.animator, true, 1, 1)
     lazy var snapsCollectionViewFlowLayout: AnimatedCollectionViewLayout = {
@@ -39,7 +39,7 @@ class IGStoryPreviewView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    convenience init(layoutType: layoutType) {
+    convenience init(layoutType: FlowLayoutType) {
         self.init()
         self.layoutType = layoutType
         createUIElements()
