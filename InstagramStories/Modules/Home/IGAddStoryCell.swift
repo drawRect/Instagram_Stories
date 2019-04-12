@@ -28,7 +28,6 @@ final class IGAddStoryCell: StoryCell {
         profileNameLabel.alpha = 0.5
         profileNameLabel.text = "Your Story"
         profileImageView.imageView.setImage(url: "https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
-        profileImageView.enableBorder(false)
     }
 
     override func installConstraints() {

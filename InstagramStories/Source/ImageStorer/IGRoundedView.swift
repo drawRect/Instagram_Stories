@@ -9,27 +9,25 @@
 import Foundation
 import UIKit
 
-//@note:Recommended Size: CGSize(width:70,height:70)
-struct Attributes {
+//RV=RoundedView
+fileprivate struct RVAttributes {
    static let borderWidth:CGFloat = 2.0
-   static let borderColor = UIColor.white
-   static let backgroundColor = IGTheme.redOrange
    static let size = CGSize(width:68,height:68)
 }
 
 class IGRoundedView: UIView {
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.layer.borderWidth = Attributes.borderWidth
-        iv.layer.borderColor = Attributes.borderColor.cgColor
-        iv.clipsToBounds = true
+        iv.layer.borderWidth = RVAttributes.borderWidth
+        iv.layer.borderColor = UIColor.white.cgColor
         return iv
     }()
         
     override init(frame: CGRect) {
         super.init(frame: frame)
-        clipsToBounds = true
-        backgroundColor = Attributes.backgroundColor
+        backgroundColor = IGTheme.redOrange
+        layer.borderColor = UIColor.white.cgColor
+        layer.borderWidth = RVAttributes.borderWidth
         addSubview(imageView)
     }
     
@@ -40,19 +38,14 @@ class IGRoundedView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = frame.height/2
-        imageView.frame = CGRect(x:1,y:1,width:(Attributes.size.width)-2,height:Attributes.size.height-2)
+        imageView.frame = CGRect(x:1,y:1,width:(RVAttributes.size.width)-2,height:RVAttributes.size.height-2)
         imageView.layer.cornerRadius = imageView.frame.height/2
     }
 }
 
 extension IGRoundedView {
-    func enableBorder(_ enabled: Bool = true) {
-        if enabled {
-            layer.borderColor = UIColor.clear.cgColor
-            layer.borderWidth = 0
-        }else {
-            layer.borderColor = Attributes.borderColor.cgColor
-            layer.borderWidth = Attributes.borderWidth
-        }
+    func enableBorder() {
+        layer.borderColor = UIColor.clear.cgColor
+        layer.borderWidth = 0
     }
 }
