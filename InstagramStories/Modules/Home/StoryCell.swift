@@ -74,9 +74,9 @@ class StoryCell: UICollectionViewCell {
             profileNameLabel.centerXAnchor.constraint(
                 equalTo: centerXAnchor
                 ),
-            profileNameLabel.bottomAnchor.constraint(
-                equalTo: bottomAnchor,
-                constant: -8
+            bottomAnchor.constraint(
+                equalTo: profileNameLabel.bottomAnchor,
+                constant: 8
                 )
             ]
         )

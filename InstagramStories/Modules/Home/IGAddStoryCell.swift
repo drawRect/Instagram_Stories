@@ -35,9 +35,9 @@ final class IGAddStoryCell: StoryCell {
 
         NSLayoutConstraint.activate(
             [
-            addImageView.rightAnchor.constraint(
-                equalTo: rightAnchor,
-                constant: -17
+            rightAnchor.constraint(
+                equalTo: addImageView.rightAnchor,
+                constant: 17
                 ),
              addImageView.widthAnchor.constraint(
                 equalToConstant: 20
@@ -45,9 +45,9 @@ final class IGAddStoryCell: StoryCell {
              addImageView.heightAnchor.constraint(
                 equalToConstant: 20
                 ),
-             addImageView.bottomAnchor.constraint(
-                equalTo: bottomAnchor,
-                constant: -25
+             bottomAnchor.constraint(
+                equalTo: addImageView.bottomAnchor,
+                constant: 25
                 )
             ]
         )
