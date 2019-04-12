@@ -11,14 +11,14 @@ import UIKit
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
-    private var _view: IGHomeView {return view as! IGHomeView}
+    private var homeView: IGHomeView {return view as! IGHomeView}
     private lazy var viewModel: IGHomeViewModel = IGHomeViewModel()
     
     //MARK: - Overridden functions
     override func loadView() {
         view = IGHomeView(frame: UIScreen.main.bounds)
-        _view.collectionView.delegate = self
-        _view.collectionView.dataSource = self
+        homeView.collectionView.delegate = self
+        homeView.collectionView.dataSource = self
     }
     override func viewDidLoad() {
         super.viewDidLoad()

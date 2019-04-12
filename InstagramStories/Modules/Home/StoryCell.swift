@@ -24,7 +24,7 @@ class StoryCell: UICollectionViewCell {
         roundedView.translatesAutoresizingMaskIntoConstraints = false
         return roundedView
     }()
-
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addChildViews()
