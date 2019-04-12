@@ -9,8 +9,6 @@
 import Foundation
 import UIKit
 
-//Superstar Code :)
-
 protocol Reusable {}
 
 extension Reusable where Self: UICollectionViewCell {
@@ -22,16 +20,22 @@ extension Reusable where Self: UICollectionViewCell {
 extension UICollectionViewCell: Reusable {}
 
 extension UICollectionView {
-
+    
     func register<T: UICollectionViewCell>(_ :T.Type) {
         register(T.self, forCellWithReuseIdentifier: T.reuseIdentifier)
     }
-
+    
     func dequeueReusableCell<T: UICollectionViewCell>(forIndexPath indexPath: IndexPath) -> T {
         guard let cell = dequeueReusableCell(withReuseIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
             fatalError("could not dequeue cell")
         }
         return cell
     }
+    
+}
 
+extension IndexPath {
+    var isFirstRow: Bool {
+        return row == 0
+    }
 }

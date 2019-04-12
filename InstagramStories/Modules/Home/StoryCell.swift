@@ -6,7 +6,6 @@
 //  Copyright © 2019 DrawRect. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class StoryCell: UICollectionViewCell {
@@ -21,9 +20,9 @@ class StoryCell: UICollectionViewCell {
     }()
 
     let profileImageView: IGRoundedView = {
-        let rv = IGRoundedView()
-        rv.translatesAutoresizingMaskIntoConstraints = false
-        return rv
+        let roundedView = IGRoundedView()
+        roundedView.translatesAutoresizingMaskIntoConstraints = false
+        return roundedView
     }()
 
     override init(frame: CGRect) {

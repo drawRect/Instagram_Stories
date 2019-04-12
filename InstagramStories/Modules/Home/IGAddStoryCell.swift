@@ -11,13 +11,13 @@ import UIKit
 final class IGAddStoryCell: StoryCell {
 
     let addImageView: UIImageView = {
-        let iv = UIImageView(image: UIImage(named: "ic_Add"))
-        iv.translatesAutoresizingMaskIntoConstraints = false
-        iv.layer.cornerRadius = 20/2
-        iv.layer.borderWidth = 2.0
-        iv.layer.borderColor = UIColor.white.cgColor
-        iv.clipsToBounds = true
-        return iv
+        let imageView = UIImageView(image: UIImage(named: "ic_Add"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 20/2
+        imageView.layer.borderWidth = 2.0
+        imageView.layer.borderColor = UIColor.white.cgColor
+        imageView.clipsToBounds = true
+        return imageView
     }()
 
     override func addChildViews() {
@@ -51,5 +51,11 @@ final class IGAddStoryCell: StoryCell {
                 )
             ]
         )
+    }
+}
+
+extension IGAddStoryCell {
+   static var size: CGSize {
+        return CGSize(width: 100, height: 100)
     }
 }

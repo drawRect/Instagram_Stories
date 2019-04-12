@@ -20,5 +20,9 @@ public struct IGScreen {
 public struct IGTheme {
     //Instagram Red Orange
     static let redOrange = UIColor.rgb(from: 0xe95950)
-    
+    static let lightGrey = UIColor.rgb(from: 0xEFEFF4)
+}
+
+struct IGAssets {
+    static let storiesJSON = "stories.json"
 }

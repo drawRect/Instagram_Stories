@@ -19,3 +19,9 @@ final class IGStoryListCell: StoryCell {
     }
     
 }
+
+extension IGStoryListCell {
+   static var size: CGSize {
+        return CGSize(width: 80, height: 100)
+    }
+}

@@ -6,35 +6,33 @@
 //  Copyright © 2017 DrawRect. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class IGHomeView: UIView {
     
     //MARK: - iVars
-    lazy var layout: UICollectionViewFlowLayout = {
+    private let layout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
-        flowLayout.itemSize = CGSize(width: 100, height: 100)
         return flowLayout
     }()
     lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
-        cv.showsVerticalScrollIndicator = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.register(IGAddStoryCell.self)
-        cv.register(IGStoryListCell.self)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        return cv
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(IGAddStoryCell.self)
+        collectionView.register(IGStoryListCell.self)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
     }()
     
     //MARK: - Overridden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = UIColor.rgb(from: 0xEFEFF4)
-        createUIElements()
-        installLayoutConstraints()
+        backgroundColor = IGTheme.lightGrey
+        addChildViews()
+        installConstraints()
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -42,10 +40,10 @@ class IGHomeView: UIView {
     }
     
     //MARK: - Private functions
-    private func createUIElements(){
+    private func addChildViews(){
         addSubview(collectionView)
     }
-    private func installLayoutConstraints(){
+    private func installConstraints(){
         NSLayoutConstraint.activate(
             [
             leftAnchor.constraint(
