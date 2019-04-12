@@ -34,3 +34,13 @@ public class IGSnap: Codable {
         case url = "url"
     }
 }
+
+extension IGSnap {
+    var ableToPlay: Bool {
+        return universeResourceLocator != nil
+    }
+    //Throws -> can catch invalid url, Assets not found and something else
+    var universeResourceLocator: URL? {
+        return URL(string: url)
+    }
+}

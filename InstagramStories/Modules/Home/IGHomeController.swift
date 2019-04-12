@@ -11,8 +11,17 @@ import UIKit
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
-    private var homeView: IGHomeView {return view as! IGHomeView}
+    private(set) var homeView: IGHomeView!
     private lazy var viewModel: IGHomeViewModel = IGHomeViewModel()
+    
+    override var view: UIView! {
+        get {
+            return homeView
+        }
+        set {
+            homeView = (newValue as! IGHomeView)
+        }
+    }
     
     //MARK: - Overridden functions
     override func loadView() {
@@ -23,6 +32,9 @@ final class IGHomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
+        let v = UIView(frame: CGRect(x: 100, y: 100, width: 100, height: 100))
+        v.backgroundColor = .yellow
+        view.addSubview(v)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

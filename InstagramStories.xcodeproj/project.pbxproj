@@ -27,6 +27,9 @@
 		4C1E29D722316F6F0070FD27 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E29CA22316F6F0070FD27 /* README.md */; };
 		4C1E29D9223206200070FD27 /* IGPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29D8223206200070FD27 /* IGPlayerView.swift */; };
 		7951B195225F70F300DA5688 /* IGRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951B194225F70F300DA5688 /* IGRoundedView.swift */; };
+		7951B1972260954A00DA5688 /* IGScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951B1962260954A00DA5688 /* IGScrollView.swift */; };
+		7951B19922609E8300DA5688 /* IGSnapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951B19822609E8300DA5688 /* IGSnapView.swift */; };
+		7951B19B22609F1400DA5688 /* IGXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951B19A22609F1400DA5688 /* IGXView.swift */; };
 		D6287E3B223FC6320070E5FE /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E3A223FC6320070E5FE /* Reachability.swift */; };
 		D6287E3E223FC6420070E5FE /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E3D223FC6420070E5FE /* IGMockLoader.swift */; };
 		D6287E44223FC6660070E5FE /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E40223FC6660070E5FE /* UIView+Extension.swift */; };
@@ -88,6 +91,9 @@
 		4C1E29CA22316F6F0070FD27 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		4C1E29D8223206200070FD27 /* IGPlayerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGPlayerView.swift; sourceTree = "<group>"; };
 		7951B194225F70F300DA5688 /* IGRoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGRoundedView.swift; sourceTree = "<group>"; };
+		7951B1962260954A00DA5688 /* IGScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGScrollView.swift; sourceTree = "<group>"; };
+		7951B19822609E8300DA5688 /* IGSnapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGSnapView.swift; sourceTree = "<group>"; };
+		7951B19A22609F1400DA5688 /* IGXView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGXView.swift; sourceTree = "<group>"; };
 		D6287E3A223FC6320070E5FE /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D6287E3D223FC6420070E5FE /* IGMockLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGMockLoader.swift; sourceTree = "<group>"; };
 		D6287E40223FC6660070E5FE /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
@@ -264,6 +270,9 @@
 			isa = PBXGroup;
 			children = (
 				1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */,
+				7951B1962260954A00DA5688 /* IGScrollView.swift */,
+				7951B19822609E8300DA5688 /* IGSnapView.swift */,
+				7951B19A22609F1400DA5688 /* IGXView.swift */,
 			);
 			path = CollectionViewCell;
 			sourceTree = "<group>";
@@ -493,6 +502,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7951B1972260954A00DA5688 /* IGScrollView.swift in Sources */,
 				1024C9FB1FAA0D4400237538 /* IGAddStoryCell.swift in Sources */,
 				1024CA011FAA102200237538 /* IGHomeViewModel.swift in Sources */,
 				D6287E5C223FC69B0070E5FE /* IGStoryPreviewHeaderView.swift in Sources */,
@@ -516,10 +526,12 @@
 				D6287E56223FC68F0070E5FE /* IGSnap.swift in Sources */,
 				D6287E47223FC6660070E5FE /* ImageView+Additions.swift in Sources */,
 				D6287E5B223FC69B0070E5FE /* IGSnapProgressView.swift in Sources */,
+				7951B19922609E8300DA5688 /* IGSnapView.swift in Sources */,
 				D65EC3F722539C08000D01B6 /* IGURLSession.swift in Sources */,
 				D6287E44223FC6660070E5FE /* UIView+Extension.swift in Sources */,
 				4C1E29D622316F6F0070FD27 /* LayoutAttributesAnimator.swift in Sources */,
 				D6287E4D223FC67B0070E5FE /* IGConstants.swift in Sources */,
+				7951B19B22609F1400DA5688 /* IGXView.swift in Sources */,
 				4C1E29CD22316F6F0070FD27 /* AnimatedCollectionViewLayout.swift in Sources */,
 				D6D240AA22520755008C0738 /* IGCache.swift in Sources */,
 				1024C9FC1FAA0D4400237538 /* IGStoryListCell.swift in Sources */,

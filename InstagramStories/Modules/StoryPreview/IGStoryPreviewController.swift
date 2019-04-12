@@ -29,7 +29,7 @@ final class IGStoryPreviewController: UIViewController {
     
     //MARK: - iVars
     private var storyPreview: IGStoryPreviewView {return view as! IGStoryPreviewView}
-    private var viewModel: IGStoryPreviewModel
+    private let viewModel: IGStoryPreviewModel
     
     private(set) var stories: IGStories
     /** This index will tell you which Story, user has picked*/

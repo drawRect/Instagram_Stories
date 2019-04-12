@@ -29,11 +29,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     //MARK:- Private iVars
-    private let scrollview: UIScrollView = {
-        let sv = UIScrollView()
-        sv.showsVerticalScrollIndicator = false
-        sv.showsHorizontalScrollIndicator = false
-        sv.isScrollEnabled = false
+    lazy var scrollview: IGScrollView = {
+        let sv = IGScrollView()
+        sv.gestureDelegate = self
+//        sv.gestureDelegate = self
+//        sv.showsVerticalScrollIndicator = false
+//        sv.showsHorizontalScrollIndicator = false
+//        sv.isScrollEnabled = false
         sv.translatesAutoresizingMaskIntoConstraints = false
         return sv
     }()
@@ -41,22 +43,22 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         let v = IGStoryPreviewHeaderView.init(frame: CGRect(x: 0,y: 0,width: frame.width,height: 80))
         return v
     }()
-    private lazy var longPress_gesture: UILongPressGestureRecognizer = {
-        let lp = UILongPressGestureRecognizer.init(target: self, action: #selector(didLongPress(_:)))
-        lp.minimumPressDuration = 0.2
-        return lp
-    }()
-    private lazy var tap_gesture: UITapGestureRecognizer = {
-        let tg = UITapGestureRecognizer(target: self, action: #selector(didTapSnap(_:)))
-        tg.numberOfTapsRequired = 1
-        return tg
-    }()
-    private var previousSnapIndex: Int {
-        return snapIndex - 1
-    }
-    private var snapViewXPos: CGFloat {
-        return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
-    }
+//    private lazy var longPress_gesture: UILongPressGestureRecognizer = {
+//        let lp = UILongPressGestureRecognizer.init(target: self, action: #selector(didLongPress(_:)))
+//        lp.minimumPressDuration = 0.2
+//        return lp
+//    }()
+//    private lazy var tap_gesture: UITapGestureRecognizer = {
+//        let tg = UITapGestureRecognizer(target: self, action: #selector(didTapSnap(_:)))
+//        tg.numberOfTapsRequired = 1
+//        return tg
+//    }()
+//    private var previousSnapIndex: Int {
+//        return snapIndex - 1
+//    }
+//    private var snapViewXPos: CGFloat {
+//        return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
+//    }
     private var videoSnapIndex: Int = 0
     //private var videoView: IGPlayerView?
     
@@ -77,7 +79,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                                 startRequest(snapView: snapView, with: snap.url)
                             } else {
                                 let snapView = createSnapView()
-                                startRequest(snapView: snapView, with: snap.url)
+                                startRequest(snapView: snapView.children., with: snap.url)
                             }
                         }else {
                             if let videoView = getVideoView(with: snapIndex) {
@@ -147,12 +149,12 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     //MARK: - Private functions
     private func loadUIElements() {
         scrollview.delegate = self
-        scrollview.isPagingEnabled = true
-        scrollview.backgroundColor = .black
+//        scrollview.isPagingEnabled = true
+//        scrollview.backgroundColor = .black
         contentView.addSubview(scrollview)
         contentView.addSubview(storyHeaderView)
-        scrollview.addGestureRecognizer(longPress_gesture)
-        scrollview.addGestureRecognizer(tap_gesture)
+//        scrollview.addGestureRecognizer(longPress_gesture)
+//        scrollview.addGestureRecognizer(tap_gesture)
     }
     private func installLayoutConstraints() {
         //Setting constraints for scrollview
@@ -162,12 +164,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
-    private func createSnapView() -> UIImageView {
-        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
-        snapView.tag = snapIndex + snapViewTagIndicator
-        snapView.backgroundColor = .black
-        scrollview.addSubview(snapView)
-        return snapView
+    private func createSnapView() -> IGSnapView {
+        let snap = story?.snaps[snapIndex]
+        scrollview.createSnapView(for: snap!)
+        return scrollview.children.last!
+//        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+//        snapView.tag = snapIndex + snapViewTagIndicator
+//        snapView.backgroundColor = .black
+//        scrollview.addSubview(snapView)
+//        return snapView
     }
     private func getSnapview() -> UIImageView? {
         if let imageView = scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first as? UIImageView {
@@ -218,73 +223,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .began || sender.state == .ended {
-            let v = getProgressView(with: snapIndex)
-            let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-            if sender.state == .began {
-                if videoView != nil {
-                    v?.pause()
-                    videoView?.pause()
-                }else {
-                    v?.pause()
-                }
-            }else {
-                if videoView != nil {
-                    v?.resume()
-                    videoView?.play()
-                }else {
-                    v?.resume()
-                }
-            }
-            
-        }
-    }
-    @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
-        let touchLocation = sender.location(ofTouch: 0, in: self.scrollview)
-        
-        if let snapCount = story?.snapsCount {
-            var n = snapIndex
-            /*!
-             * Based on the tap gesture(X) setting the direction to either forward or backward
-             */
-            if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
-                //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapview(), let btn = retryBtn, snapView.subviews.contains(btn) {
-                    snapView.removeRetryButton()
-                }
-                fillupLastPlayedSnap(n)
-            }else {
-                //Remove retry button if tap forward or backward if it exists
-                if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
-                    videoView.removeRetryButton()
-                }
-                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
-                    fillupLastPlayedSnap(n)
-                }
-            }
-            if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
-                direction = .backward
-                if snapIndex >= 1 && snapIndex <= snapCount {
-                    clearLastPlayedSnaps(n)
-                    stopSnapProgressors(with: n)
-                    n -= 1
-                    resetSnapProgressors(with: n)
-                    willMoveToPreviousOrNextSnap(n: n)
-                } else {
-                    delegate?.moveToPreviousStory()
-                }
-            } else {
-                if snapIndex >= 0 && snapIndex <= snapCount {
-                    //Stopping the current running progressors
-                    stopSnapProgressors(with: n)
-                    direction = .forward
-                    n += 1
-                    willMoveToPreviousOrNextSnap(n: n)
-                }
-            }
-        }
-    }
+    
     @objc private func didEnterForeground() {
         //startSnapProgress(with: snapIndex)
     }
@@ -571,5 +510,76 @@ extension IGStoryPreviewCell: IGPlayerObserver {
 extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
+    }
+}
+
+extension IGStoryPreviewCell: GestureConstable {
+    func didLongPress(_ sender: UILongPressGestureRecognizer) {
+        if sender.state == .began || sender.state == .ended {
+            let v = getProgressView(with: snapIndex)
+            let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+            if sender.state == .began {
+                if videoView != nil {
+                    v?.pause()
+                    videoView?.pause()
+                }else {
+                    v?.pause()
+                }
+            }else {
+                if videoView != nil {
+                    v?.resume()
+                    videoView?.play()
+                }else {
+                    v?.resume()
+                }
+            }
+            
+        }
+    }
+    
+    func didTap(_ sender: UITapGestureRecognizer) {
+        let touchLocation = sender.location(ofTouch: 0, in: self.scrollview)
+        
+        if let snapCount = story?.snapsCount {
+            var n = snapIndex
+            /*!
+             * Based on the tap gesture(X) setting the direction to either forward or backward
+             */
+            if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
+                //Remove retry button if tap forward or backward if it exists
+                if let snapView = getSnapview(), let btn = retryBtn, snapView.subviews.contains(btn) {
+                    snapView.removeRetryButton()
+                }
+                fillupLastPlayedSnap(n)
+            }else {
+                //Remove retry button if tap forward or backward if it exists
+                if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
+                    videoView.removeRetryButton()
+                }
+                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
+                    fillupLastPlayedSnap(n)
+                }
+            }
+            if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
+                direction = .backward
+                if snapIndex >= 1 && snapIndex <= snapCount {
+                    clearLastPlayedSnaps(n)
+                    stopSnapProgressors(with: n)
+                    n -= 1
+                    resetSnapProgressors(with: n)
+                    willMoveToPreviousOrNextSnap(n: n)
+                } else {
+                    delegate?.moveToPreviousStory()
+                }
+            } else {
+                if snapIndex >= 0 && snapIndex <= snapCount {
+                    //Stopping the current running progressors
+                    stopSnapProgressors(with: n)
+                    direction = .forward
+                    n += 1
+                    willMoveToPreviousOrNextSnap(n: n)
+                }
+            }
+        }
     }
 }
