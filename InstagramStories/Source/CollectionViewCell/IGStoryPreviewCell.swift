@@ -286,6 +286,24 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     @objc private func didEnterForeground() {
         //startSnapProgress(with: snapIndex)
+        //snapIndex = (story != nil) ? (story!.lastPlayedSnapIndex > 0 ? story!.lastPlayedSnapIndex - 1 : 0) : 0
+        if let snap = story?.snaps[snapIndex] {
+            if snap.kind == .video {
+                //startSnapProgress(with: snapIndex)
+                let videoView = getVideoView(with: snapIndex)
+                startPlayer(videoView: videoView!, with: snap.url)
+            }else {
+                startSnapProgress(with: snapIndex)
+            }
+        }
+    }
+    @objc private func didEnterBackground() {
+        if let snap = story?.snaps[snapIndex] {
+            if snap.kind == .video {
+                stopPlayer()
+            }
+        }
+        resetSnapProgressors(with: snapIndex)
     }
     private func willMoveToPreviousOrNextSnap(n: Int) {
         if let count = story?.snapsCount {
@@ -449,6 +467,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         
         //Remove the previous observors
         NotificationCenter.default.removeObserver(self)
+        
+        // Add the observer to handle application from background to foreground
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     public func startSnapProgress(with sIndex: Int) {
         if let indicatorView = getProgressIndicatorView(with: sIndex),
@@ -485,8 +507,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         getVideoView(with: sIndex)?.play()
     }
     public func didEndDisplayingCell() {
-        //Here only the cell is completely visible. So this is the right place to add the observer.
-        NotificationCenter.default.addObserver(self, selector: #selector(self.didEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
     }
     public func resumePreviousSnapProgress(with sIndex: Int) {
         getProgressView(with: sIndex)?.resume()
