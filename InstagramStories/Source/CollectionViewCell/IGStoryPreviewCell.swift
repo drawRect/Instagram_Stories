@@ -79,7 +79,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                                 startRequest(snapView: snapView, with: snap.url)
                             } else {
                                 let snapView = createSnapView()
-                                startRequest(snapView: snapView.children., with: snap.url)
+                                snapView.loadContent()
+//                                startRequest(snapView: snapView, with: snap.url)
                             }
                         }else {
                             if let videoView = getVideoView(with: snapIndex) {
@@ -164,9 +165,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
-    private func createSnapView() -> IGSnapView {
+    private func createSnapView() -> IGXView {
         let snap = story?.snaps[snapIndex]
-        scrollview.createSnapView(for: snap!)
+//        scrollview.createSnapView(for: snap!)
+        scrollview.addChildView(snap: snap!)
         return scrollview.children.last!
 //        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
 //        snapView.tag = snapIndex + snapViewTagIndicator
@@ -181,7 +183,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return nil
     }
     private func createVideoView() -> IGPlayerView {
-        let videoView = IGPlayerView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let videoView = IGPlayerView(frame: CGRect(x: 0, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)

@@ -21,7 +21,7 @@ class IGScrollView: UIScrollView {
     }
     var direction: Direction = .forward
     //The below var is replacement of subviews. anyone can add subview in scrollview. but children is blueprint of our requirement. it can have our babies only. :P
-    var children: [IGSnapView] = [] //if you want respective child using index, you can directly get it (we are avoiding subviews explicitly)
+    var children: [IGXView] = [] //if you want respective child using index, you can directly get it (we are avoiding subviews explicitly)
     
     private lazy var guestreRecognisers: [UIGestureRecognizer] = {
         let lp = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
@@ -46,20 +46,49 @@ class IGScrollView: UIScrollView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    private var snapViewXPos: CGFloat {
-//        return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
-        return children.isEmpty ? 0 : (children.last?.frame.maxX)!
+//    private var snapViewXPos: CGFloat {
+////        return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
+//        return children.isEmpty ? 0 : (children.last?.frame.maxX)!
+//    }
+    
+    var xPos: CGFloat {
+        if children.isEmpty {
+            return 0.0
+        }
+        return (children.last?.frame.width)!
     }
     
-    public func createSnapView(for snap:IGSnap) {
-        if snap.ableToPlay == true {
-            let snapView = IGSnapView(frame: CGRect(x: snapViewXPos, y: 0, width: frame.width, height: frame.height), snap: snap)
-            addSubview(snapView)
-            children.append(snapView)
-        }else {
-            print("Invalid File url\(snap.url)")
-        }
+    var newRect: CGRect {
+        return CGRect(x: xPos, y: 0, width: frame.width, height: frame.height)
     }
+    
+    
+    func addChildView(snap: IGSnap) {
+        if snap.ableToPlay == false {
+             print("Invalid File url\(snap.url)")
+            return
+        }
+        var child: IGXView!
+        switch snap.kind {
+        case .image:
+            child = IGImageView(frame: newRect, snap: snap)
+        case .video:
+            child = IGVideoView(frame: newRect, snap: snap)
+        default:
+            fatalError()
+        }
+        children.append(child)
+    }
+    
+//    public func createSnapView(for snap:IGSnap) {
+//        if snap.ableToPlay == true {
+//            let snapView = IGSnapView(frame: CGRect(x: snapViewXPos, y: 0, width: frame.width, height: frame.height), snap: snap)
+////            addSubview(snapView)
+//            children.append(snapView)
+//        }else {
+//            print("Invalid File url\(snap.url)")
+//        }
+//    }
     
 //    private func createSnapView() -> UIImageView {
 //        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))

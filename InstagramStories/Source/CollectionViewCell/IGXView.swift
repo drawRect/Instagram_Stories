@@ -69,16 +69,15 @@ class IGXView: UIView, IGXMisc {
     }
     
     @objc func loadContent() {
-        //start request this image using sdwebimage using snap.url
-        //start request this video using avplayer with contents of url
+        fatalError("This method must be overridden")
     }
     
 }
 
 class IGImageView: IGXView {
-    let children: UIImageView
+    let imageView = UIImageView()
     override init(frame: CGRect, snap: IGSnap) {
-        children = UIImageView(frame: frame)
+//        children = UIImageView(frame: frame)
         super.init(frame: frame, snap: snap)
     }
     
@@ -89,6 +88,19 @@ class IGImageView: IGXView {
     //Add your Image related stuff here
     @objc override func loadContent() {
         //start request this image using sdwebimage using snap.url
+        imageView.setImage(url: snap.url, style: .squared) {[weak self] (result) in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success(_):
+                    break
+//                    strongSelf.startProgressors()
+                case .failure(_):
+                    break
+//                    strongSelf.showRetryButton(with: url, for: snapView)
+                }
+            }
+        }
     }
     
 }
