@@ -23,18 +23,14 @@ class IGStoryPreviewModel: NSObject {
     //MARK:- Functions
     func numberOfItemsInSection(_ section: Int) -> Int {
         if let count = stories?.count {
-            //return count-handPickedStoryIndex!
             return count
         }
         return 0
     }
     func cellForItemAtIndexPath(_ indexPath: IndexPath) -> IGStory? {
-        guard let handPickedIndex = handPickedStoryIndex, let count = stories?.count else {return nil}
-        let counted = handPickedIndex+indexPath.item
-        if counted < count {
-            //return stories?.stories[counted]
-            return stories?.stories[handPickedIndex]
-            //return stories?.stories[indexPath.item]
+        guard let count = stories?.count else {return nil}
+        if indexPath.item < count {
+            return stories?.stories[indexPath.item]
         }else {
             fatalError("Stories Index mis-matched :(")
         }
