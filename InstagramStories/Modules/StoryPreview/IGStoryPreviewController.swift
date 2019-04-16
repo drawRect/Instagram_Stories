@@ -88,7 +88,9 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
         cell.story = story
         cell.delegate = self
-        nStoryIndex = indexPath.item
+        //nStoryIndex = indexPath.item
+        nStoryIndex = handPickedStoryIndex
+        handPickedStoryIndex = 0
         return cell
     }
 }
@@ -197,7 +199,8 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         }
     }
     func moveToPreviousStory() {
-        let n = handPickedStoryIndex+nStoryIndex+1
+        //let n = handPickedStoryIndex+nStoryIndex+1
+        let n = nStoryIndex+1
         if n <= stories.count && n > 1 {
             story_copy = stories.stories[nStoryIndex+handPickedStoryIndex]
             nStoryIndex = nStoryIndex - 1
