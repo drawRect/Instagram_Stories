@@ -25,7 +25,6 @@ Instagram Stories
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
 * Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
-* That's all you need to know.
 #Spread the word
 
 ## License
