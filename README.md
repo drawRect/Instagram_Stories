@@ -2,7 +2,7 @@ Instagram Stories
 =================
 
 ## Sample Screenshots
-!["HomeScreen"](InstagramStories/Sample%20Screenshots/xrjpeg-1.jpg) !["PreviewScreen-1"](InstagramStories/Sample%20Screenshots/demo.gif) !["PreviewScreen-2"](InstagramStories/Sample%20Screenshots/xrjpeg-2.jpg)
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-1.png" width="250" height="480"> !["PreviewScreen-1"](InstagramStories/Sample%20Screenshots/demo.gif) <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="250" height="480">
 
 ## Features
 * Image Support
