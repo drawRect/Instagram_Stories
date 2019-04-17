@@ -41,19 +41,32 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         return gesture
     }()
     
+    private(set) var executeOnce = false
+    
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
         view = IGStoryPreviewView.init(layoutType: self.layoutType)
         viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
-        _view.snapsCollectionView.delegate = self
-        _view.snapsCollectionView.dataSource = self
         _view.snapsCollectionView.decelerationRate = .fast
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
         _view.snapsCollectionView.addGestureRecognizer(dismissGesture)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if !executeOnce {
+            DispatchQueue.main.async {
+                self._view.snapsCollectionView.delegate = self
+                self._view.snapsCollectionView.dataSource = self
+                let indexPath = IndexPath(item: self.handPickedStoryIndex, section: 0)
+                self._view.snapsCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+                self.handPickedStoryIndex = 0
+                self.executeOnce = true
+            }
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -197,7 +210,8 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         }
     }
     func moveToPreviousStory() {
-        let n = handPickedStoryIndex+nStoryIndex+1
+        //let n = handPickedStoryIndex+nStoryIndex+1
+        let n = nStoryIndex+1
         if n <= stories.count && n > 1 {
             story_copy = stories.stories[nStoryIndex+handPickedStoryIndex]
             nStoryIndex = nStoryIndex - 1
