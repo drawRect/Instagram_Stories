@@ -26,7 +26,9 @@ Instagram Stories
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
 * Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
 
-#### If you like this repo, give a star to make this repo useful for others. Let us know, if there is any suggestion about this repo.
+## Contributing
+* If you like this repository please do :star: to make this useful for others.
+* Feel free to contribute by opening issues or submitting PRs through GitHub.
 
 ## License
 
