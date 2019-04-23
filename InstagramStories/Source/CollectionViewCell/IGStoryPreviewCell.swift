@@ -166,9 +166,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
     private func createSnapView() -> IGXView {
-        let snap = story?.snaps[snapIndex]
+//        let snap = story?.snaps[snapIndex]
 //        scrollview.createSnapView(for: snap!)
-        scrollview.addChildView(snap: snap!)
+//        scrollview.addChildView(snap: snap!)
+        scrollview.addChildView()
         return scrollview.children.last!
 //        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
 //        snapView.tag = snapIndex + snapViewTagIndicator
@@ -202,7 +203,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             DispatchQueue.main.async {
                 switch result {
                 case .success(_):
-                    strongSelf.startProgressors()
+                    strongSelf.scrollview.startProgressors()
+//                    strongSelf.startProgressors()
                 case .failure(_):
                     strongSelf.showRetryButton(with: url, for: snapView)
                 }
@@ -355,25 +357,25 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     //MARK:- Internal functions
-    func startProgressors() {
-        DispatchQueue.main.async {
-            if self.scrollview.subviews.count > 0 {
-                let imageView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? UIImageView
-                if imageView?.image != nil && self.story?.isCompletelyVisible == true {
-                    self.gearupTheProgressors(type: .image)
-                } else {
-                    // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
-                    if self.story?.isCompletelyVisible == true {
-                        let videoView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? IGPlayerView
-                        let snap = self.story?.snaps[self.snapIndex]
-                        if let vv = videoView, self.story?.isCompletelyVisible == true {
-                            self.startPlayer(videoView: vv, with: snap!.url)
-                        }
-                    }
-                }
-            }
-        }
-    }
+//    func startProgressors() {
+//        DispatchQueue.main.async {
+//            if self.scrollview.subviews.count > 0 {
+//                let imageView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? UIImageView
+//                if imageView?.image != nil && self.story?.isCompletelyVisible == true {
+//                    self.gearupTheProgressors(type: .image)
+//                } else {
+//                    // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
+//                    if self.story?.isCompletelyVisible == true {
+//                        let videoView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+//                        let snap = self.story?.snaps[self.snapIndex]
+//                        if let vv = videoView, self.story?.isCompletelyVisible == true {
+//                            self.startPlayer(videoView: vv, with: snap!.url)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     //MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
@@ -584,4 +586,20 @@ extension IGStoryPreviewCell: GestureConstable {
             }
         }
     }
+}
+
+
+extension IGStoryPreviewCell: CellVariables {
+    var isCompletelyVisible: Bool {
+        return (story?.isCompletelyVisible)!
+    }
+    
+    var snap: IGSnap {
+        return (story?.snaps[snapIndex])!
+    }
+    
+    var snapIIndex: Int {
+        return snapIndex
+    }
+    
 }

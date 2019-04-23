@@ -137,7 +137,8 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             if let cell = cell as? IGStoryPreviewCell {
                 cell.stopPlayer()
             }
-            visibleCell.startProgressors()
+//            visibleCell.startProgressors()
+            visibleCell.scrollview.startProgressors()
         }
         if vCellIndexPath.item == nStoryIndex {
             visibleCell.didEndDisplayingCell()

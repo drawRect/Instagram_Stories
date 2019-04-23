@@ -24,10 +24,15 @@ extension IGXMisc where Self: IGXView {
     }
 }
 
+protocol IGXContent: class {
+    associatedtype cType
+}
 
 //This class can act as Person class
 //ScrollView children should have Parent class of IGXView but the instance is based on the MIME Type whether it is a IGImageView or IGPlayerView
-class IGXView: UIView, IGXMisc {
+class IGXView: UIView, IGXMisc,IGXContent {
+    typealias cType = UIView
+    
     enum ContentState {
         case isLoading, isLoaded, isFailed
     }
@@ -75,6 +80,7 @@ class IGXView: UIView, IGXMisc {
 }
 
 class IGImageView: IGXView {
+    typealias cType = UIImageView
     let imageView = UIImageView()
     override init(frame: CGRect, snap: IGSnap) {
 //        children = UIImageView(frame: frame)
@@ -106,6 +112,7 @@ class IGImageView: IGXView {
 }
 
 class IGVideoView: IGXView {
+    typealias cType = UIView
     //Add your Video related stuff here
     @objc override func loadContent() {
         //start request this video using avplayer with contents of url

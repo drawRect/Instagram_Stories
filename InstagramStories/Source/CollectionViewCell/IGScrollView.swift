@@ -14,14 +14,29 @@ protocol GestureConstable: class {
     func didTap(_ sender: UITapGestureRecognizer)
 }
 
+protocol CellVariables: class {
+    var snapIIndex: Int {get}
+    var isCompletelyVisible: Bool {get}
+    var snap: IGSnap {get}
+}
+
 //There is no direct dealing between IGSnapview vs Cell.
 class IGScrollView: UIScrollView {
+    
     enum Direction {
         case forward,backward
     }
     var direction: Direction = .forward
     //The below var is replacement of subviews. anyone can add subview in scrollview. but children is blueprint of our requirement. it can have our babies only. :P
     var children: [IGXView] = [] //if you want respective child using index, you can directly get it (we are avoiding subviews explicitly)
+    
+    var imageView: IGImageView {
+        return children[snapIndex] as! IGImageView
+    }
+    
+    var videoView: IGVideoView {
+        return children[snapIndex] as! IGVideoView
+    }
     
     private lazy var guestreRecognisers: [UIGestureRecognizer] = {
         let lp = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
@@ -31,7 +46,14 @@ class IGScrollView: UIScrollView {
         return [lp,tg]
     }()
     
-    public weak var gestureDelegate: GestureConstable?
+    weak var gestureDelegate: GestureConstable?
+    weak var cellVarDelegate: CellVariables?
+//    var index: Int = 0
+//    var snap:IGSnap! {
+//        didSet {
+//            addChildView()
+//        }
+//    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,8 +84,19 @@ class IGScrollView: UIScrollView {
         return CGRect(x: xPos, y: 0, width: frame.width, height: frame.height)
     }
     
+    var snap: IGSnap {
+        return (cellVarDelegate?.snap)!
+    }
     
-    func addChildView(snap: IGSnap) {
+    var snapIndex: Int {
+        return (cellVarDelegate?.snapIIndex)!
+    }
+    
+    var isCompletelyVisible: Bool {
+        return (cellVarDelegate?.isCompletelyVisible)!
+    }
+    
+    func addChildView() {
         if snap.ableToPlay == false {
              print("Invalid File url\(snap.url)")
             return
@@ -127,4 +160,68 @@ extension IGScrollView {
     @objc private func didTap(_ sender: UITapGestureRecognizer) {
         gestureDelegate?.didTap(sender)
     }
+}
+
+
+extension IGScrollView {
+    //MARK:- Internal functions
+//    func startProgressors() {
+//        DispatchQueue.main.async {
+//            if self.scrollview.subviews.count > 0 {
+//                let imageView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? UIImageView
+//                if imageView?.image != nil && self.story?.isCompletelyVisible == true {
+//                    self.gearupTheProgressors(type: .image)
+//                } else {
+//                    // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
+//                    if self.story?.isCompletelyVisible == true {
+//                        let videoView = self.scrollview.subviews.filter{v in v.tag == self.snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+//                        let snap = self.story?.snaps[self.snapIndex]
+//                        if let vv = videoView, self.story?.isCompletelyVisible == true {
+//                            self.startPlayer(videoView: vv, with: snap!.url)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    
+    func startProgressors() {
+        if !children.isEmpty {
+            let child: IGXView!
+            child = children[snapIndex]
+            switch snap.kind {
+            case .image:
+                if imageView.imageView.image != nil && isCompletelyVisible == true {
+                    //self.gearupTheProgressors(type: .image)
+                }
+            case .video:
+                if isCompletelyVisible {
+                    //   self.startPlayer(videoView: vv, with: snap!.url)
+                }
+            default:
+                fatalError()
+            }
+        }else {
+            fatalError("Children is Empty")
+        }
+    }
+    
+//    private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
+//        if let holderView = getProgressIndicatorView(with: snapIndex),
+//            let progressView = getProgressView(with: snapIndex){
+//            progressView.story_identifier = self.story?.internalIdentifier
+//            progressView.snapIndex = snapIndex
+//            DispatchQueue.main.async {
+//                if type == .image {
+//                    progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
+//                        if isCancelledAbruptly == false {
+//                            self.didCompleteProgress()
+//                        }
+//                    })
+//                }else {
+//                    //Handled in delegate methods for videos
+//                }
+//            }
+//        }
+//    }
 }
