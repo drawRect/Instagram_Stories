@@ -1,5 +1,12 @@
-Instagram Stories
-=================
+<p align="center">
+    <img src="logo.png" width="480” max-width="90%" alt="Instagram Stories" />
+</p>
+                                                                           
+<p align="center">
+    <img src="https://img.shields.io/badge/Swift-4.2-orange.svg" />
+</p>
+
+
 
 ## Sample Screenshots
 <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-1.png" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="250" height="500">
@@ -21,6 +28,10 @@ Instagram Stories
 * Also don't change CollectionView's custom cell. Use the same IGStoryPreviewCell.
 * Because all the functionalities are handled in the IGStoryPreviewCell only.
 * If there is any issue or stuck somewhere on configuring Source folder on your project, please raise issues on github. We will reply back as soon as possible.
+
+## Requirements
+* iOS 10 and above
+* Xcode 8 and above
 
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
