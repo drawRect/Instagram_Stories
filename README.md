@@ -39,7 +39,7 @@
 
 ## Contributing
 * If you like this repository please do :star: to make this useful for others.
-* If you wish to make a change, [open a Pull Request](https://github.com/drawRect/Instagram_Stories/pull/new) — even if it just contains a draft of the changes you’re planning, or a test that reproduces an issue — and we can discuss it further from there.
+* Feel free to contribute by [open a Issue](https://github.com/drawRect/Instagram_Stories/issues/new/choose) or [create a Pull Request](https://github.com/drawRect/Instagram_Stories/pull/new)
 
 ## License
 
