@@ -3,7 +3,7 @@
 </p>
                                                                            
 <p align="center">
-    <img src="https://img.shields.io/badge/Swift-4.2-orange.svg" />
+    <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" />
 </p>
 
 
@@ -32,6 +32,8 @@
 ## Requirements
 * iOS 10 and above
 * Xcode 8 and above
+
+### Swift v4.2: https://github.com/drawRect/Instagram_Stories/tree/Swift-v4.2
 
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
