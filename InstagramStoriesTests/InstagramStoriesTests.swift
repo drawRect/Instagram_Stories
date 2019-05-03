@@ -24,7 +24,7 @@ class InstagramStoriesTests: XCTestCase {
     func testMockFileLoading() {
         do {
             let bundle = Bundle.init(for: type(of: self))
-            let stories = try IGMockLoader.loadMockFile(named: "stories.json", bundle:bundle)
+            let stories = try IGMockLoader.loadMockFile(named: "stories.json", bundle: bundle)
             XCTAssertTrue(stories.count > 0)
         } catch let e as MockLoaderError{
             debugPrint(e.description)
