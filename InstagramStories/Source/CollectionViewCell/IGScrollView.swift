@@ -18,6 +18,10 @@ protocol CellVariables: class {
     var snapIIndex: Int {get}
     var isCompletelyVisible: Bool {get}
     var snap: IGSnap {get}
+    var story: IGStory? {get}
+    func getProgressIndicatorView(with: Int) -> UIView?
+    func getProgressView(with: Int) -> IGSnapProgressView?
+    func didCompleteProgress()
 }
 
 //There is no direct dealing between IGSnapview vs Cell.
@@ -63,6 +67,7 @@ class IGScrollView: UIScrollView {
         isPagingEnabled = true
         backgroundColor = .black
         gestureRecognizers = guestreRecognisers
+        isUserInteractionEnabled = true
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -96,7 +101,7 @@ class IGScrollView: UIScrollView {
         return (cellVarDelegate?.isCompletelyVisible)!
     }
     
-    func addChildView() {
+    func addChildView(with snap:IGSnap) {
         if snap.ableToPlay == false {
              print("Invalid File url\(snap.url)")
             return
@@ -110,7 +115,9 @@ class IGScrollView: UIScrollView {
         default:
             fatalError()
         }
+        child.translatesAutoresizingMaskIntoConstraints = false
         children.append(child)
+        addSubview(child)
     }
     
 //    public func createSnapView(for snap:IGSnap) {
@@ -187,11 +194,12 @@ extension IGScrollView {
     
     func startProgressors() {
         if !children.isEmpty {
-            let child: IGXView!
-            child = children[snapIndex]
+//            let child: IGXView!
+//            let child = children[snapIndex]
             switch snap.kind {
             case .image:
                 if imageView.imageView.image != nil && isCompletelyVisible == true {
+                    self.gearupTheProgressors(type: .image)
                     //self.gearupTheProgressors(type: .image)
                 }
             case .video:
@@ -205,7 +213,28 @@ extension IGScrollView {
             fatalError("Children is Empty")
         }
     }
+
+
+    private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
+        if let holderView = cellVarDelegate?.getProgressIndicatorView(with: snapIndex),
+            let progressView = cellVarDelegate?.getProgressView(with: snapIndex){
+            progressView.story_identifier = cellVarDelegate?.story!.internalIdentifier
+            progressView.snapIndex = snapIndex
+            DispatchQueue.main.async {
+                if type == .image {
+                    progressView.start(with: 5.0, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
+                        if isCancelledAbruptly == false {
+                            self.cellVarDelegate?.didCompleteProgress()
+                        }
+                    })
+                }else {
+                    //Handled in delegate methods for videos
+                }
+            }
+        }
+    }
     
+
 //    private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
 //        if let holderView = getProgressIndicatorView(with: snapIndex),
 //            let progressView = getProgressView(with: snapIndex){

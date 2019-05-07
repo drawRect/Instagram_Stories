@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+//Have to use it
 protocol IGXMisc: class {
     func showLoader(color: UIColor)
     func hideLoader(color: UIColor)
@@ -24,15 +25,10 @@ extension IGXMisc where Self: IGXView {
     }
 }
 
-protocol IGXContent: class {
-    associatedtype cType
-}
-
 //This class can act as Person class
 //ScrollView children should have Parent class of IGXView but the instance is based on the MIME Type whether it is a IGImageView or IGPlayerView
-class IGXView: UIView, IGXMisc,IGXContent {
-    typealias cType = UIView
-    
+class IGXView: UIView, IGXMisc {
+
     enum ContentState {
         case isLoading, isLoaded, isFailed
     }
@@ -64,27 +60,31 @@ class IGXView: UIView, IGXMisc,IGXContent {
         self.snap = snap
         super.init(frame: frame)
         self.backgroundColor = .black
-        defer {
-            loadContent()
-        }
+//        defer {
+//            loadContent { (isDone) in
+//                
+//            }
+//        }
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc func loadContent() {
+    @objc func loadContent(completionBlock:@escaping (_ done:Bool)->()) {
         fatalError("This method must be overridden")
     }
     
 }
 
 class IGImageView: IGXView {
-    typealias cType = UIImageView
-    let imageView = UIImageView()
+
+    let imageView: UIImageView
+
     override init(frame: CGRect, snap: IGSnap) {
-//        children = UIImageView(frame: frame)
+        imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         super.init(frame: frame, snap: snap)
+        self.addSubview(imageView)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,18 +92,19 @@ class IGImageView: IGXView {
     }
     
     //Add your Image related stuff here
-    @objc override func loadContent() {
+    @objc override func loadContent(completionBlock:@escaping (_ done:Bool)->()) {
         //start request this image using sdwebimage using snap.url
         imageView.setImage(url: snap.url, style: .squared) {[weak self] (result) in
             guard let strongSelf = self else { return }
             DispatchQueue.main.async {
                 switch result {
                 case .success(_):
-                    break
-//                    strongSelf.startProgressors()
+                    completionBlock(true)
+//                    strongSelf..startProgressors()
                 case .failure(_):
+                    completionBlock(false)
                     break
-//                    strongSelf.showRetryButton(with: url, for: snapView)
+//                    strongSelf.showRetryButton(with: snap.url, for: snapView)
                 }
             }
         }
@@ -112,9 +113,20 @@ class IGImageView: IGXView {
 }
 
 class IGVideoView: IGXView {
-    typealias cType = UIView
+
+    let playerView: IGPlayerView
+
+    override init(frame: CGRect, snap: IGSnap) {
+        playerView = IGPlayerView(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
+        super.init(frame: frame, snap: snap)
+        self.addSubview(playerView)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     //Add your Video related stuff here
-    @objc override func loadContent() {
-        //start request this video using avplayer with contents of url
+    override func loadContent(completionBlock: @escaping (_ done: Bool) -> ()) {
+
     }
 }

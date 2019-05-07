@@ -31,6 +31,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     //MARK:- Private iVars
     lazy var scrollview: IGScrollView = {
         let sv = IGScrollView()
+        sv.cellVarDelegate = self
         sv.gestureDelegate = self
 //        sv.gestureDelegate = self
 //        sv.showsVerticalScrollIndicator = false
@@ -40,7 +41,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return sv
     }()
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        let v = IGStoryPreviewHeaderView.init(frame: CGRect(x: 0,y: 0,width: frame.width,height: 80))
+        let v = IGStoryPreviewHeaderView(frame: CGRect(x: 0,y: 0,width: frame.width,height: 80))
         return v
     }()
 //    private lazy var longPress_gesture: UILongPressGestureRecognizer = {
@@ -67,28 +68,37 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
 
+    var imageView: IGImageView {
+        return scrollview.children[snapIndex] as! IGImageView
+    }
+    var videoView: IGVideoView {
+        return scrollview.children[snapIndex] as! IGVideoView
+    }
+
     public var snapIndex: Int = 0 {
         didSet {
-            scrollview.isUserInteractionEnabled = true
             switch direction {
             case .forward:
                 if snapIndex < story?.snapsCount ?? 0 {
                     if let snap = story?.snaps[snapIndex] {
-                        if snap.kind != MimeType.video {
-                            if let snapView = getSnapview() {
-                                startRequest(snapView: snapView, with: snap.url)
-                            } else {
-                                let snapView = createSnapView()
-                                snapView.loadContent()
-//                                startRequest(snapView: snapView, with: snap.url)
+                        scrollview.addChildView(with: snap)
+                        if snap.kind == MimeType.image {
+                            let snapView = imageView
+//                            let snapView = scrollview.children.last! as! IGImageView
+//                            let snapView = createSnapView()
+                            snapView.loadContent { (isDone) in
+                                self.scrollview.startProgressors()
+//                                self.startSnapProgress(with: self.snapIndex)
                             }
                         }else {
-                            if let videoView = getVideoView(with: snapIndex) {
-                                startPlayer(videoView: videoView, with: snap.url)
-                            }else {
-                                let videoView = createVideoView()
-                                startPlayer(videoView: videoView, with: snap.url)
-                            }
+                            let snapView = videoView
+//                            if let videoView = getVideoView(with: snapIndex) {
+//                                startPlayer(videoView: videoView, with: snap.url)
+//                            }else {
+//                            let videoView:IGVideoView = createVideoView()
+//                            let snapView = scrollview.children.last as! IGVideoView
+                            startPlayer(videoView: snapView.playerView, with: snap.url)
+//                            }
                         }
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                     }
@@ -96,18 +106,20 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             case .backward:
                 if snapIndex < story?.snapsCount ?? 0 {
                     if let snap = story?.snaps[snapIndex] {
-                        if snap.kind != MimeType.video {
-                            if let snapView = getSnapview() {
-                                self.startRequest(snapView: snapView, with: snap.url)
-                            }
+                        if snap.kind == MimeType.image {
+//                            if let snapView = imagView {
+                              let iv = imageView.imageView
+                                self.startRequest(snapView: iv, with: snap.url)
+//                            }
                         }else {
-                            if let videoView = getVideoView(with: snapIndex) {
-                                startPlayer(videoView: videoView, with: snap.url)
-                            }
-                            else {
-                                let videoView = self.createVideoView()
-                                self.startPlayer(videoView: videoView, with: snap.url)
-                            }
+//                            if let videoView = getVideoView(with: snapIndex) {
+//                                startPlayer(videoView: videoView, with: snap.url)
+//                            }
+//                            else {
+//                                let videoView = self.createVideoView()
+                               let pv = videoView.playerView
+                                self.startPlayer(videoView: pv, with: snap.url)
+//                            }
                         }
                         storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                     }
@@ -165,38 +177,54 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
     }
-    private func createSnapView() -> IGXView {
+
+    //Responsbility differs here -> Its creating or retriveing
+    //Split across for creating only
+    //As well as retriving
+//    private func createSnapView() -> IGXView {
 //        let snap = story?.snaps[snapIndex]
 //        scrollview.createSnapView(for: snap!)
 //        scrollview.addChildView(snap: snap!)
-        scrollview.addChildView()
-        return scrollview.children.last!
+//        scrollview.addChildView()
+//        return scrollview.children.last!
 //        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
 //        snapView.tag = snapIndex + snapViewTagIndicator
 //        snapView.backgroundColor = .black
 //        scrollview.addSubview(snapView)
 //        return snapView
-    }
-    private func getSnapview() -> UIImageView? {
-        if let imageView = scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first as? UIImageView {
-            return imageView
-        }
-        return nil
-    }
-    private func createVideoView() -> IGPlayerView {
-        let videoView = IGPlayerView(frame: CGRect(x: 0, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
-        videoView.tag = snapIndex + snapViewTagIndicator
-        videoView.playerObserverDelegate = self
-        scrollview.addSubview(videoView)
-        return videoView
-    }
-    private func getVideoView(with index: Int) -> IGPlayerView? {
-        if let videoView = scrollview.subviews.filter({$0.tag == index + snapViewTagIndicator}).first as? IGPlayerView {
-            return videoView
-        }
-        return nil
-    }
-    
+//    }
+//    private func getSnapview() -> UIImageView? {
+//        let iv = scrollview.children[snapIndex] as! IGImageView
+//        return iv.imageView
+//    }
+//    private func getSnapview() -> UIImageView? {
+//        if let imageView = scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first as? UIImageView {
+//            return imageView
+//        }
+//        return nil
+//    }
+    //IGPlayerView
+//    private func createVideoView() -> IGVideoView {
+//        scrollview.addChildView()
+//        return scrollview.children.last! as! IGVideoView
+//        let videoView = IGPlayerView(frame: CGRect(x: 0, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+//        videoView.tag = snapIndex + snapViewTagIndicator
+//        videoView.playerObserverDelegate = self
+//        scrollview.addSubview(videoView)
+//        return videoView
+//    }
+
+//    private func getVideoView() -> IGPlayerView {
+//        let pv = scrollview.children[snapIndex] as! IGVideoView
+//        return pv.playerView
+//    }
+//    private func getVideoView(with index: Int) -> IGPlayerView? {
+//        if let videoView = scrollview.subviews.filter({$0.tag == index + snapViewTagIndicator}).first as? IGPlayerView {
+//            return videoView
+//        }
+//        return nil
+//    }
+
     private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared) {[weak self] (result) in
             guard let strongSelf = self else { return }
@@ -213,7 +241,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
 
     private func showRetryButton(with url: String, for snapView: UIImageView) {
-        self.retryBtn = IGRetryLoaderButton.init(withURL: url)
+        self.retryBtn = IGRetryLoaderButton(withURL: url)
         self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
         self.retryBtn.delegate = self
         self.isUserInteractionEnabled = true
@@ -245,7 +273,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    @objc private func didCompleteProgress() {
+    @objc func didCompleteProgress() {
         let n = snapIndex + 1
         if let count = story?.snapsCount {
             if n < count {
@@ -262,7 +290,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    private func getProgressView(with index: Int) -> IGSnapProgressView? {
+    public func getProgressView(with index: Int) -> IGSnapProgressView? {
         let progressView = storyHeaderView.getProgressView
         if progressView.subviews.count > 0 {
             let pv = progressView.subviews.filter({v in v.tag == index+progressViewTag}).first as? IGSnapProgressView
@@ -274,7 +302,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
         return nil
     }
-    private func getProgressIndicatorView(with index: Int) -> UIView? {
+    public func getProgressIndicatorView(with index: Int) -> UIView? {
         let progressView = storyHeaderView.getProgressView
         if progressView.subviews.count>0 {
             return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first
@@ -415,18 +443,24 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.getProgressView(with: sIndex)?.reset()
     }
     public func pausePlayer(with sIndex: Int) {
-        getVideoView(with: sIndex)?.pause()
+//        getVideoView(with: sIndex)?.pause()
+//        getVideoView().pause()
+        videoView.playerView.pause()
     }
     public func stopPlayer() {
-        let videoView = getVideoView(with: videoSnapIndex)
-        if videoView?.player?.timeControlStatus != .playing {
-            getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
+//        let videoView = getVideoView(with: videoSnapIndex)
+//        let videoView = getVideoView()
+        let videoView = self.videoView.playerView
+        if videoView.player?.timeControlStatus != .playing {
+            videoView.player?.replaceCurrentItem(with: nil)
+//            getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
         }
-        videoView?.stop()
+        videoView.stop()
         //getVideoView(with: videoSnapIndex)?.player = nil
     }
     public func resumePlayer(with sIndex: Int) {
-        getVideoView(with: sIndex)?.play()
+//        getVideoView(with: sIndex)?.play()
+        videoView.playerView.play()
     }
     public func didEndDisplayingCell() {
         //Here only the cell is completely visible. So this is the right place to add the observer.
@@ -465,7 +499,9 @@ extension IGStoryPreviewCell: RetryBtnDelegate {
 extension IGStoryPreviewCell: IGPlayerObserver {
     
     func didStartPlaying() {
-        if let videoView = getVideoView(with: snapIndex), videoView.currentTime <= 0 {
+//        let videoView = getVideoView()
+        let videoView = self.videoView.playerView
+        if videoView.currentTime <= 0 {
             //let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if videoView.error == nil && (story?.isCompletelyVisible)! == true {
                 if let holderView = getProgressIndicatorView(with: snapIndex),
@@ -494,7 +530,9 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     }
     func didFailed(withError error: String, for url: URL?) {
         debugPrint("Failed with error: \(error)")
-        if let videoView = getVideoView(with: snapIndex), let videoURL = url {
+//        let videoView = getVideoView()
+        let videoView = self.videoView.playerView
+        if let videoURL = url {
             self.retryBtn = IGRetryLoaderButton(withURL: videoURL.absoluteString)
             self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
             self.retryBtn.delegate = self
@@ -549,18 +587,21 @@ extension IGStoryPreviewCell: GestureConstable {
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
+            if let snap = story?.snaps[n], snap.kind == .image, imageView.imageView.image == nil {
+                let snapView = imageView
                 //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapview(), let btn = retryBtn, snapView.subviews.contains(btn) {
+//                if let snapView = getSnapview(),
+                    if let btn = retryBtn, snapView.subviews.contains(btn) {
                     snapView.removeRetryButton()
                 }
                 fillupLastPlayedSnap(n)
             }else {
                 //Remove retry button if tap forward or backward if it exists
-                if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
+                let videoView = self.videoView
+                if let btn = retryBtn, videoView.subviews.contains(btn) {
                     videoView.removeRetryButton()
                 }
-                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
+                if videoView.playerView.player?.timeControlStatus != .playing {
                     fillupLastPlayedSnap(n)
                 }
             }
@@ -590,6 +631,7 @@ extension IGStoryPreviewCell: GestureConstable {
 
 
 extension IGStoryPreviewCell: CellVariables {
+
     var isCompletelyVisible: Bool {
         return (story?.isCompletelyVisible)!
     }

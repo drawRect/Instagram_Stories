@@ -17,7 +17,7 @@ public let progressIndicatorViewTag = 88
 public let progressViewTag = 99
 
 final class IGStoryPreviewHeaderView: UIView {
-    
+
     //MARK: - Overriden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
