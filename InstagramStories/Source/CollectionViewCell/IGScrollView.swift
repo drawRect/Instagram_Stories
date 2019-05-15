@@ -41,6 +41,10 @@ class IGScrollView: UIScrollView {
     var videoView: IGVideoView {
         return children[snapIndex] as! IGVideoView
     }
+
+    func getVideoView(index:Int) -> IGVideoView {
+        return children[index] as! IGVideoView
+    }
     
     private lazy var guestreRecognisers: [UIGestureRecognizer] = {
         let lp = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
@@ -82,7 +86,7 @@ class IGScrollView: UIScrollView {
         if children.isEmpty {
             return 0.0
         }
-        return (children.last?.frame.width)!
+        return (children.last?.frame.maxX)!
     }
     
     var newRect: CGRect {

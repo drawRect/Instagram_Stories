@@ -92,6 +92,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                             }
                         }else {
                             let snapView = videoView
+                            snapView.playerView.playerObserverDelegate = self
 //                            if let videoView = getVideoView(with: snapIndex) {
 //                                startPlayer(videoView: videoView, with: snap.url)
 //                            }else {
@@ -450,7 +451,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     public func stopPlayer() {
 //        let videoView = getVideoView(with: videoSnapIndex)
 //        let videoView = getVideoView()
-        let videoView = self.videoView.playerView
+//        let videoView = self.videoView.playerView
+        let videoView = self.scrollview.getVideoView(index: videoSnapIndex).playerView
         if videoView.player?.timeControlStatus != .playing {
             videoView.player?.replaceCurrentItem(with: nil)
 //            getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
@@ -500,7 +502,8 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     
     func didStartPlaying() {
 //        let videoView = getVideoView()
-        let videoView = self.videoView.playerView
+//        let videoView = self.videoView.playerView
+        let videoView = self.scrollview.getVideoView(index: snapIndex).playerView
         if videoView.currentTime <= 0 {
             //let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if videoView.error == nil && (story?.isCompletelyVisible)! == true {
@@ -531,7 +534,8 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     func didFailed(withError error: String, for url: URL?) {
         debugPrint("Failed with error: \(error)")
 //        let videoView = getVideoView()
-        let videoView = self.videoView.playerView
+//        let videoView = self.videoView.playerView
+        let videoView = self.scrollview.getVideoView(index: snapIndex).playerView
         if let videoURL = url {
             self.retryBtn = IGRetryLoaderButton(withURL: videoURL.absoluteString)
             self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
@@ -587,7 +591,8 @@ extension IGStoryPreviewCell: GestureConstable {
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if let snap = story?.snaps[n], snap.kind == .image, imageView.imageView.image == nil {
+//            if let snap = story?.snaps[n], snap.kind == .image, imageView.imageView.image == nil {
+            if snap.kind == .image {
                 let snapView = imageView
                 //Remove retry button if tap forward or backward if it exists
 //                if let snapView = getSnapview(),
