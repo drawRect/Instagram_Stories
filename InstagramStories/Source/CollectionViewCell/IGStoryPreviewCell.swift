@@ -38,7 +38,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return sv
     }()
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
-        let v = IGStoryPreviewHeaderView.init(frame: CGRect(x: 0,y: 0,width: frame.width,height: 80))
+        let v = IGStoryPreviewHeaderView()
+        v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     private lazy var longPress_gesture: UILongPressGestureRecognizer = {
@@ -58,7 +59,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
     }
     private var videoSnapIndex: Int = 0
-    //private var videoView: IGPlayerView?
     
     var retryBtn: IGRetryLoaderButton!
     
@@ -161,11 +161,25 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor),
             scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
             scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
+        NSLayoutConstraint.activate([
+            storyHeaderView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            storyHeaderView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            storyHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            storyHeaderView.heightAnchor.constraint(equalToConstant: 80)
+            ])
     }
     private func createSnapView() -> UIImageView {
-        let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        //let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let snapView = UIImageView()
+        snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
+        NSLayoutConstraint.activate([
+            snapView.leftAnchor.constraint(equalTo: scrollview.leftAnchor),
+            snapView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
+            snapView.topAnchor.constraint(equalTo: scrollview.topAnchor),
+            snapView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor)
+            ])
         return snapView
     }
     private func getSnapview() -> UIImageView? {
@@ -175,10 +189,18 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return nil
     }
     private func createVideoView() -> IGPlayerView {
-        let videoView = IGPlayerView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        //let videoView = IGPlayerView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
+        let videoView = IGPlayerView()
+        videoView.translatesAutoresizingMaskIntoConstraints = false
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)
+        NSLayoutConstraint.activate([
+            videoView.leftAnchor.constraint(equalTo: scrollview.leftAnchor),
+            videoView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
+            videoView.topAnchor.constraint(equalTo: scrollview.topAnchor),
+            videoView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor)
+            ])
         return videoView
     }
     private func getVideoView(with index: Int) -> IGPlayerView? {

@@ -71,6 +71,10 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
+    }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
         self.stories = stories

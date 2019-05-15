@@ -121,7 +121,7 @@ final class IGStoryPreviewHeaderView: UIView {
             closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
             closeButton.widthAnchor.constraint(equalToConstant: 60),
-            closeButton.heightAnchor.constraint(equalToConstant: self.frame.height)])
+            closeButton.heightAnchor.constraint(equalToConstant: 80)])
         
         //Setting constraints for snapperNameLabel
         NSLayoutConstraint.activate([
