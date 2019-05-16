@@ -108,6 +108,7 @@ class IGPlayerView: UIView {
     //MARK:- Init methods
     override init(frame: CGRect) {
         activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: frame)
         setupActivityIndicator()
     }
@@ -128,8 +129,12 @@ class IGPlayerView: UIView {
         activityIndicator.hidesWhenStopped = true
         //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         backgroundColor = .black
-        activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
+        //activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
         self.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            ])
     }
     func removeObservers() {
         cleanUpPlayerPeriodicTimeObserver()

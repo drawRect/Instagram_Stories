@@ -175,10 +175,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
         NSLayoutConstraint.activate([
-            snapView.leftAnchor.constraint(equalTo: scrollview.leftAnchor),
+            snapView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
             snapView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
-            snapView.topAnchor.constraint(equalTo: scrollview.topAnchor),
-            snapView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor)
+            snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
+            snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
             ])
         return snapView
     }
@@ -196,10 +196,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)
         NSLayoutConstraint.activate([
-            videoView.leftAnchor.constraint(equalTo: scrollview.leftAnchor),
+            videoView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
             videoView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
-            videoView.topAnchor.constraint(equalTo: scrollview.topAnchor),
-            videoView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor)
+            videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
+            videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
             ])
         return videoView
     }
