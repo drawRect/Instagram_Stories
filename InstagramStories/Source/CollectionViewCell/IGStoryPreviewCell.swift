@@ -176,7 +176,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         scrollview.addSubview(snapView)
         NSLayoutConstraint.activate([
             snapView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
-            snapView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
+            ((snapIndex == 0) ? scrollview : scrollview.subviews[previousSnapIndex]).rightAnchor.constraint(equalTo: snapView.rightAnchor),
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
             ])
@@ -197,7 +197,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         scrollview.addSubview(videoView)
         NSLayoutConstraint.activate([
             videoView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
-            videoView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
+            ((snapIndex == 0) ? scrollview : scrollview.subviews[previousSnapIndex]).rightAnchor.constraint(equalTo: videoView.rightAnchor),
             videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
             ])
@@ -226,10 +226,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
 
     private func showRetryButton(with url: String, for snapView: UIImageView) {
         self.retryBtn = IGRetryLoaderButton.init(withURL: url)
-        self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+        //self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
         self.retryBtn.delegate = self
         self.isUserInteractionEnabled = true
         snapView.addSubview(self.retryBtn)
+        NSLayoutConstraint.activate([
+            self.retryBtn.centerXAnchor.constraint(equalTo: snapView.centerXAnchor),
+            self.retryBtn.centerYAnchor.constraint(equalTo: snapView.centerYAnchor)
+            ])
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollview.subviews.count > 0 {

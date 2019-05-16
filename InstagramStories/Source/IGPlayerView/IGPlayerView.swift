@@ -117,6 +117,9 @@ class IGPlayerView: UIView {
         super.init(coder: aDecoder)
         setupActivityIndicator()
     }
+    override func layoutSubviews() {
+        playerLayer?.frame = self.bounds
+    }
     deinit {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
             removeObservers()
@@ -186,7 +189,6 @@ extension IGPlayerView: PlayerControls {
             setupPlayerPeriodicTimeObserver()
             if let pLayer = playerLayer {
                 pLayer.videoGravity = .resizeAspect
-                pLayer.frame = self.bounds
                 self.layer.addSublayer(pLayer)
             }
         }
