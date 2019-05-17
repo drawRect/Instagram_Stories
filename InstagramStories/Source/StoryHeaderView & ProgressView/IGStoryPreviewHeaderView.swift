@@ -173,67 +173,67 @@ final class IGStoryPreviewHeaderView: UIView {
     }
     
     public func createSnapProgressors(){
-        let padding:CGFloat = 8 //GUI-Padding
-        let height:CGFloat = 3
-//        var x:CGFloat = padding
-//        let y:CGFloat = (self.getProgressView.frame.height/2)-height
-//        let width = (IGScreen.width - ((snapsPerStory+1).toFloat * padding))/snapsPerStory.toFloat
-        var constraintToDeactivateNextTime: [NSLayoutConstraint] = [NSLayoutConstraint]()
+        let padding: CGFloat = 8 //GUI-Padding
+        let height: CGFloat = 3
+        var pvIndicatorArray: [UIView] = []
+        var pvArray: [IGSnapProgressView] = []
+
         for i in 0..<snapsPerStory{
             //let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
             let pvIndicator = UIView()
             pvIndicator.translatesAutoresizingMaskIntoConstraints = false
             getProgressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag, alpha:0.2))
-            let pvIndicatorLeftSecondItem = (i == 0)
-                ? self.leftAnchor
-                : self.getProgressView.subviews.filter({$0.tag == i-1+progressIndicatorViewTag}).last!.rightAnchor
-            
-            // Deactivate old constraints
-            if !constraintToDeactivateNextTime.isEmpty {
-                NSLayoutConstraint.deactivate(constraintToDeactivateNextTime)
-                constraintToDeactivateNextTime.removeAll()
-            }
-            
-            //Setting constraints for PVIndicator
-            let pvILeftAnchor = pvIndicator.leftAnchor.constraint(equalTo: pvIndicatorLeftSecondItem, constant: padding)
-            let pvICenterYAnchor = pvIndicator.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor)
-            let pvIRightAnchor = self.rightAnchor.constraint(equalTo: pvIndicator.rightAnchor, constant: padding)
-            pvIRightAnchor.priority = UILayoutPriority(rawValue: Float(900+i))
-            let pvIHeightAnchor = pvIndicator.heightAnchor.constraint(equalToConstant: height)
-            constraintToDeactivateNextTime.append(pvIRightAnchor)
-            /*if i > 0 {
-                let firstPVIndicator = self.getProgressView.subviews.filter({$0.tag == i-1+progressIndicatorViewTag}).first!
-                NSLayoutConstraint.activate([
-                    firstPVIndicator.widthAnchor.constraint(equalTo: pvIndicator.widthAnchor, multiplier: 1.0)
-                    ])
-            }*/
-            NSLayoutConstraint.activate([pvILeftAnchor, pvICenterYAnchor, pvIRightAnchor, pvIHeightAnchor])
+            pvIndicatorArray.append(pvIndicator)
             
             //let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
             let pv = IGSnapProgressView()
             pv.translatesAutoresizingMaskIntoConstraints = false
             getProgressView.addSubview(applyProperties(pv, with: i+progressViewTag))
-            
-            let pvLeftSecondItem = (i == 0)
-                ? self.leftAnchor
-                : self.getProgressView.subviews.filter({$0.tag == i-1+progressViewTag}).last!.rightAnchor
-            
-            //Setting constraints for PV
-            let pvLeftAnchor = pv.leftAnchor.constraint(equalTo: pvLeftSecondItem, constant: padding)
-            let pvCenterYAnchor = pv.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor)
-            let pvRightAnchor = self.rightAnchor.constraint(equalTo: pv.rightAnchor, constant: padding)
-            pvRightAnchor.priority = UILayoutPriority(rawValue: Float(900+i))
-            let pvWidthAnchor = pv.widthAnchor.constraint(equalToConstant: 0)
-            let pvHeightAnchor = pv.heightAnchor.constraint(equalToConstant: height)
-            constraintToDeactivateNextTime.append(pvRightAnchor)
-            /*if i > 0 {
-                let firstPV = self.getProgressView.subviews.filter({$0.tag == i-1+progressIndicatorViewTag}).first!
+            pvArray.append(pv)
+        }
+        for index in 0..<pvIndicatorArray.count {
+            let pvIndicator = pvIndicatorArray[index]
+            if index == 0 {
                 NSLayoutConstraint.activate([
-                    firstPV.widthAnchor.constraint(equalTo: pv.widthAnchor, multiplier: 1.0)
+                    pvIndicator.leadingAnchor.constraint(equalTo: self.getProgressView.leadingAnchor, constant: padding),
+                    pvIndicator.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
+                    pvIndicator.heightAnchor.constraint(equalToConstant: height)
                     ])
-            }*/
-            NSLayoutConstraint.activate([pvLeftAnchor, pvCenterYAnchor, pvRightAnchor, pvWidthAnchor, pvHeightAnchor])
-            //x = x + width + padding
+            }else {
+                let prePVIndicator = pvIndicatorArray[index-1]
+                NSLayoutConstraint.activate([
+                    pvIndicator.leadingAnchor.constraint(equalTo: prePVIndicator.trailingAnchor, constant: padding),
+                    pvIndicator.centerYAnchor.constraint(equalTo: prePVIndicator.centerYAnchor),
+                    pvIndicator.heightAnchor.constraint(equalToConstant: height),
+                    pvIndicator.widthAnchor.constraint(equalTo: prePVIndicator.widthAnchor, multiplier: 1.0)
+                    ])
+                if index == pvIndicatorArray.count-1 {
+                    self.trailingAnchor.constraint(equalTo: pvIndicator.trailingAnchor, constant: padding).isActive = true
+                }
+            }
+        }
+        for index in 0..<pvArray.count {
+            let pv = pvArray[index]
+            if index == 0 {
+                NSLayoutConstraint.activate([
+                    pv.leadingAnchor.constraint(equalTo: self.getProgressView.leadingAnchor, constant: padding),
+                    pv.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
+                    pv.heightAnchor.constraint(equalToConstant: height),
+                    pv.widthAnchor.constraint(equalToConstant: 0)
+                    ])
+            }else {
+                let prePV = pvArray[index-1]
+                let prePVIndicator = pvIndicatorArray[index-1]
+                NSLayoutConstraint.activate([
+                    pv.leadingAnchor.constraint(equalTo: prePVIndicator.trailingAnchor, constant: padding),
+                    pv.centerYAnchor.constraint(equalTo: prePV.centerYAnchor),
+                    pv.heightAnchor.constraint(equalToConstant: height),
+                    pv.widthAnchor.constraint(equalToConstant: 0)
+                    ])
+                if index == pvArray.count-1 {
+                    self.trailingAnchor.constraint(greaterThanOrEqualTo: pv.trailingAnchor, constant: padding).isActive = true
+                }
+            }
         }
         snaperNameLabel.text = story?.user.name
     }

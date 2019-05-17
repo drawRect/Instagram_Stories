@@ -9,17 +9,18 @@
 import UIKit
 
 protocol ViewAnimator: class {
-    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void)
+    func start(with duration: TimeInterval, holderView: UIView, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void)
     func resume()
     func pause()
     func stop()
     func reset()
 }
 extension ViewAnimator where Self: IGSnapProgressView {
-    func start(with duration: TimeInterval, width: CGFloat, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void) {
+    func start(with duration: TimeInterval, holderView: UIView, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void) {
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
             if let _self = self {
-                _self.frame.size.width = width
+                //_self.frame.size.width = width
+                _self.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0).isActive = true
             }
         }) { [weak self] (finished) in
             self?.story.isCancelledAbruptly = !finished
