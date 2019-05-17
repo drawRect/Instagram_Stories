@@ -32,7 +32,7 @@ extension ViewAnimator where Self: IGSnapProgressView {
                     return completion(strongSelf.story_identifier!, strongSelf.snapIndex!, strongSelf.story.isCancelledAbruptly)
                 }
             } else {
-                return completion(self?.story_identifier ?? "Unknowm", self?.snapIndex ?? 0, self?.story.isCancelledAbruptly ?? true)
+                return completion(self?.story_identifier ?? "Unknown", self?.snapIndex ?? 0, self?.story.isCancelledAbruptly ?? true)
             }
         }
     }

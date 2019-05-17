@@ -178,7 +178,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             snapView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
             ((snapIndex == 0) ? scrollview : scrollview.subviews[previousSnapIndex]).rightAnchor.constraint(equalTo: snapView.rightAnchor),
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
-            snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
+            snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
+            scrollview.bottomAnchor.constraint(equalTo: snapView.bottomAnchor)
             ])
         return snapView
     }
@@ -199,7 +200,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             videoView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
             ((snapIndex == 0) ? scrollview : scrollview.subviews[previousSnapIndex]).rightAnchor.constraint(equalTo: videoView.rightAnchor),
             videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
-            videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor)
+            videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
+            scrollview.bottomAnchor.constraint(equalTo: videoView.bottomAnchor)
             ])
         return videoView
     }
@@ -226,7 +228,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
 
     private func showRetryButton(with url: String, for snapView: UIImageView) {
         self.retryBtn = IGRetryLoaderButton.init(withURL: url)
-        //self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+        self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
         self.retryBtn.delegate = self
         self.isUserInteractionEnabled = true
         snapView.addSubview(self.retryBtn)
@@ -399,7 +401,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
         if let holderView = self.getProgressIndicatorView(with: sIndex),
             let progressView = self.getProgressView(with: sIndex){
-            //progressView.frame.size.width = holderView.frame.width
             progressView.widthConstraint?.isActive = false
             progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
             progressView.widthConstraint?.isActive = true
@@ -411,7 +412,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             for i in 0..<sIndex {
                 if let holderView = self.getProgressIndicatorView(with: i),
                     let progressView = self.getProgressView(with: i){
-                    //progressView.frame.size.width = holderView.frame.width
                     progressView.widthConstraint?.isActive = false
                     progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
                     progressView.widthConstraint?.isActive = true
@@ -422,7 +422,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func clearLastPlayedSnaps(_ sIndex: Int) {
         if let _ = self.getProgressIndicatorView(with: sIndex),
             let progressView = self.getProgressView(with: sIndex) {
-            //progressView.frame.size.width = 0
             progressView.widthConstraint?.constant = 0
         }
     }
@@ -606,10 +605,14 @@ extension IGStoryPreviewCell: IGPlayerObserver {
         debugPrint("Failed with error: \(error)")
         if let videoView = getVideoView(with: snapIndex), let videoURL = url {
             self.retryBtn = IGRetryLoaderButton(withURL: videoURL.absoluteString)
-            self.retryBtn.center = CGPoint(x: self.bounds.width/2, y: self.bounds.height/2)
+            self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
             self.retryBtn.delegate = self
             self.isUserInteractionEnabled = true
             videoView.addSubview(self.retryBtn)
+            NSLayoutConstraint.activate([
+                self.retryBtn.centerXAnchor.constraint(equalTo: videoView.centerXAnchor),
+                self.retryBtn.centerYAnchor.constraint(equalTo: videoView.centerYAnchor)
+                ])
         }
     }
     func didCompletePlay() {
