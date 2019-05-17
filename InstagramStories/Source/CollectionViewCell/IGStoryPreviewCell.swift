@@ -422,7 +422,9 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func clearLastPlayedSnaps(_ sIndex: Int) {
         if let _ = self.getProgressIndicatorView(with: sIndex),
             let progressView = self.getProgressView(with: sIndex) {
-            progressView.widthConstraint?.constant = 0
+            progressView.widthConstraint?.isActive = false
+            progressView.widthConstraint = self.widthAnchor.constraint(equalToConstant: 0)
+            progressView.widthConstraint?.isActive = true
         }
     }
     private func clearScrollViewGarbages() {
@@ -575,7 +577,6 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     
     func didStartPlaying() {
         if let videoView = getVideoView(with: snapIndex), videoView.currentTime <= 0 {
-            //let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if videoView.error == nil && (story?.isCompletelyVisible)! == true {
                 if let holderView = getProgressIndicatorView(with: snapIndex),
                     let progressView = getProgressView(with: snapIndex) {

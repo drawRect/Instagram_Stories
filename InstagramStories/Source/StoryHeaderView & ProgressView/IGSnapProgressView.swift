@@ -55,7 +55,10 @@ extension ViewAnimator where Self: IGSnapProgressView {
     }
     func reset() {
         self.story.isCancelledAbruptly = true
-        self.widthConstraint!.constant = 0
+        self.widthConstraint?.isActive = false
+        self.widthConstraint = self.widthAnchor.constraint(equalToConstant: 0)
+        self.widthConstraint?.isActive = true
+//        layer.removeAllAnimations()
     }
 }
 

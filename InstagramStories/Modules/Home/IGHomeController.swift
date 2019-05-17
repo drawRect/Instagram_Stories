@@ -43,8 +43,8 @@ final class IGHomeController: UIViewController {
     @objc private func clearImageCache() {
         IGCache.shared.removeAllObjects()
     }
-    private func showComingSoonAlert() {
-        let alertController = UIAlertController.init(title: "Coming Soon...", message: nil, preferredStyle: .alert)
+    private func showAlert() {
+        let alertController = UIAlertController.init(title: "Try to implement your own functionality for Add Story", message: nil, preferredStyle: .alert)
         present(alertController, animated: true) {
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3){
                 alertController.dismiss(animated: true, completion: nil)
@@ -76,7 +76,7 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            showComingSoonAlert()
+            showAlert()
         }else {
             DispatchQueue.main.async {
                 if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {
