@@ -399,7 +399,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
         if let holderView = self.getProgressIndicatorView(with: sIndex),
             let progressView = self.getProgressView(with: sIndex){
-            progressView.frame.size.width = holderView.frame.width
+            //progressView.frame.size.width = holderView.frame.width
+            progressView.widthConstraint?.isActive = false
+            progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
+            progressView.widthConstraint?.isActive = true
         }
     }
     private func fillupLastPlayedSnaps(_ sIndex: Int) {
@@ -408,7 +411,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             for i in 0..<sIndex {
                 if let holderView = self.getProgressIndicatorView(with: i),
                     let progressView = self.getProgressView(with: i){
-                    progressView.frame.size.width = holderView.frame.width
+                    //progressView.frame.size.width = holderView.frame.width
+                    progressView.widthConstraint?.isActive = false
+                    progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
+                    progressView.widthConstraint?.isActive = true
                 }
             }
         }
@@ -416,7 +422,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func clearLastPlayedSnaps(_ sIndex: Int) {
         if let _ = self.getProgressIndicatorView(with: sIndex),
             let progressView = self.getProgressView(with: sIndex) {
-            progressView.frame.size.width = 0
+            //progressView.frame.size.width = 0
+            progressView.widthConstraint?.constant = 0
         }
     }
     private func clearScrollViewGarbages() {

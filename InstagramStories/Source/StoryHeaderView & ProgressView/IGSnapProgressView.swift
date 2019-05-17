@@ -17,10 +17,13 @@ protocol ViewAnimator: class {
 }
 extension ViewAnimator where Self: IGSnapProgressView {
     func start(with duration: TimeInterval, holderView: UIView, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void) {
+        // Modifying the existing widthConstraint and setting the width equalTo holderView's widthAchor
+        self.widthConstraint?.isActive = false
+        self.widthConstraint = self.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
+        self.widthConstraint?.isActive = true
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
             if let _self = self {
-                //_self.frame.size.width = width
-                _self.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0).isActive = true
+                _self.superview?.layoutIfNeeded()
             }
         }) { [weak self] (finished) in
             self?.story.isCancelledAbruptly = !finished
@@ -52,13 +55,13 @@ extension ViewAnimator where Self: IGSnapProgressView {
     }
     func reset() {
         self.story.isCancelledAbruptly = true
-        self.frame.size.width = 0
+        self.widthConstraint!.constant = 0
     }
 }
 
 final class IGSnapProgressView: UIView, ViewAnimator {
     public var story_identifier: String?
     public var snapIndex: Int?
-    //public var isCancelledAbruptly = false
+    public var widthConstraint: NSLayoutConstraint?
     public var story: IGStory!
 }

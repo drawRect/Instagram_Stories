@@ -215,20 +215,22 @@ final class IGStoryPreviewHeaderView: UIView {
         for index in 0..<pvArray.count {
             let pv = pvArray[index]
             if index == 0 {
+                pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
                 NSLayoutConstraint.activate([
                     pv.leadingAnchor.constraint(equalTo: self.getProgressView.leadingAnchor, constant: padding),
                     pv.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
                     pv.heightAnchor.constraint(equalToConstant: height),
-                    pv.widthAnchor.constraint(equalToConstant: 0)
+                    pv.widthConstraint!
                     ])
             }else {
                 let prePV = pvArray[index-1]
                 let prePVIndicator = pvIndicatorArray[index-1]
+                pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
                 NSLayoutConstraint.activate([
                     pv.leadingAnchor.constraint(equalTo: prePVIndicator.trailingAnchor, constant: padding),
                     pv.centerYAnchor.constraint(equalTo: prePV.centerYAnchor),
                     pv.heightAnchor.constraint(equalToConstant: height),
-                    pv.widthAnchor.constraint(equalToConstant: 0)
+                    pv.widthConstraint!
                     ])
                 if index == pvArray.count-1 {
                     self.trailingAnchor.constraint(greaterThanOrEqualTo: pv.trailingAnchor, constant: padding).isActive = true
