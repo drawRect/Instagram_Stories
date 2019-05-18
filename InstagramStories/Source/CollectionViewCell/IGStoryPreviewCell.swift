@@ -158,25 +158,23 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         //Setting constraints for scrollview
         NSLayoutConstraint.activate([
             scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            scrollview.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            contentView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
             scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
-            scrollview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)])
+            contentView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor)])
         NSLayoutConstraint.activate([
             storyHeaderView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            storyHeaderView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            contentView.rightAnchor.constraint(equalTo: storyHeaderView.rightAnchor),
             storyHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
             storyHeaderView.heightAnchor.constraint(equalToConstant: 80)
             ])
     }
     private func createSnapView() -> UIImageView {
-        //let snapView = UIImageView(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         let snapView = UIImageView()
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
         NSLayoutConstraint.activate([
-            snapView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
-            ((snapIndex == 0) ? scrollview : scrollview.subviews[previousSnapIndex]).rightAnchor.constraint(equalTo: snapView.rightAnchor),
+            snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.bottomAnchor.constraint(equalTo: snapView.bottomAnchor)
@@ -190,15 +188,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return nil
     }
     private func createVideoView() -> IGPlayerView {
-        //let videoView = IGPlayerView.init(frame: CGRect(x: snapViewXPos, y: 0, width: scrollview.frame.width, height: scrollview.frame.height))
         let videoView = IGPlayerView()
         videoView.translatesAutoresizingMaskIntoConstraints = false
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)
         NSLayoutConstraint.activate([
-            videoView.leftAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leftAnchor : scrollview.subviews[previousSnapIndex].leftAnchor),
-            ((snapIndex == 0) ? scrollview : scrollview.subviews[previousSnapIndex]).rightAnchor.constraint(equalTo: videoView.rightAnchor),
+            videoView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.bottomAnchor.constraint(equalTo: videoView.bottomAnchor)
@@ -313,11 +309,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
     }
     @objc private func didEnterForeground() {
-        //startSnapProgress(with: snapIndex)
-        //snapIndex = (story != nil) ? (story!.lastPlayedSnapIndex > 0 ? story!.lastPlayedSnapIndex - 1 : 0) : 0
         if let snap = story?.snaps[snapIndex] {
             if snap.kind == .video {
-                //startSnapProgress(with: snapIndex)
                 let videoView = getVideoView(with: snapIndex)
                 startPlayer(videoView: videoView!, with: snap.url)
             }else {
@@ -423,7 +416,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let _ = self.getProgressIndicatorView(with: sIndex),
             let progressView = self.getProgressView(with: sIndex) {
             progressView.widthConstraint?.isActive = false
-            progressView.widthConstraint = self.widthAnchor.constraint(equalToConstant: 0)
+            progressView.widthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
             progressView.widthConstraint?.isActive = true
         }
     }

@@ -73,7 +73,15 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
+        guard let flowLayout = _view.snapsCollectionView.collectionViewLayout as? AnimatedCollectionViewLayout else {
+            return
+        }
+        flowLayout.invalidateLayout()
+//        coordinator.animate(alongsideTransition: nil) { (context) in
+//            self._view.snapsCollectionView.performBatchUpdates({
+//                self._view.snapsCollectionView.collectionViewLayout.invalidateLayout()
+//            }, completion: nil)
+//        }
     }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
@@ -165,7 +173,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.width, height: view.height)
+        return CGSize(width: collectionView.width, height: floor(collectionView.height))
     }
 }
 

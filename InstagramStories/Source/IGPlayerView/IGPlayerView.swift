@@ -132,7 +132,6 @@ class IGPlayerView: UIView {
         activityIndicator.hidesWhenStopped = true
         //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         backgroundColor = .black
-        //activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
         self.addSubview(activityIndicator)
         NSLayoutConstraint.activate([
             activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -189,6 +188,7 @@ extension IGPlayerView: PlayerControls {
             setupPlayerPeriodicTimeObserver()
             if let pLayer = playerLayer {
                 pLayer.videoGravity = .resizeAspect
+                pLayer.frame = self.bounds
                 self.layer.addSublayer(pLayer)
             }
         }
