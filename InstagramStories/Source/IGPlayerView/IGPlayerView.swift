@@ -234,6 +234,8 @@ extension IGPlayerView: PlayerControls {
             case .unknown: return .unknown
             case .readyToPlay: return .readyToPlay
             case .failed: return .failed
+            @unknown default:
+                return .unknown
             }
         }
         return .unknown

@@ -1,8 +1,15 @@
-Instagram Stories
-=================
+<p align="center">
+    <img src="logo.png" width="480” max-width="90%" alt="Instagram Stories" />
+</p>
+                                                                           
+<p align="center">
+    <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" />
+</p>
+
+
 
 ## Sample Screenshots
-<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-1.png" width="250" height="480"> !["PreviewScreen-1"](InstagramStories/Sample%20Screenshots/demo.gif) <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="250" height="480">
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-1.png" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="250" height="500">
 
 ## Features
 * Image Support
@@ -22,13 +29,19 @@ Instagram Stories
 * Because all the functionalities are handled in the IGStoryPreviewCell only.
 * If there is any issue or stuck somewhere on configuring Source folder on your project, please raise issues on github. We will reply back as soon as possible.
 
+## Requirements
+* iOS 10 and above
+* Xcode 8 and above
+
+### Swift v4.2: https://github.com/drawRect/Instagram_Stories/tree/Swift-v4.2
+
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
 * Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
 
 ## Contributing
 * If you like this repository please do :star: to make this useful for others.
-* Feel free to contribute by opening issues or submitting PRs through GitHub.
+* Feel free to contribute by [open a Issue](https://github.com/drawRect/Instagram_Stories/issues/new/choose) or [create a Pull Request](https://github.com/drawRect/Instagram_Stories/pull/new)
 
 ## License
 
