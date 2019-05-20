@@ -77,11 +77,6 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
             return
         }
         flowLayout.invalidateLayout()
-//        coordinator.animate(alongsideTransition: nil) { (context) in
-//            self._view.snapsCollectionView.performBatchUpdates({
-//                self._view.snapsCollectionView.collectionViewLayout.invalidateLayout()
-//            }, completion: nil)
-//        }
     }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
@@ -173,7 +168,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.width, height: floor(collectionView.height))
+        return CGSize(width: collectionView.width, height: collectionView.height)
     }
 }
 
