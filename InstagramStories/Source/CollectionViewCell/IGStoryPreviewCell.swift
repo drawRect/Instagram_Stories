@@ -157,14 +157,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func installLayoutConstraints() {
         //Setting constraints for scrollview
         NSLayoutConstraint.activate([
-            scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            contentView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
-            scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor)])
+            scrollview.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
+            scrollview.topAnchor.constraint(equalTo: self.topAnchor),
+            self.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor),
+            scrollview.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0),
+            scrollview.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1.0)
+            ])
         NSLayoutConstraint.activate([
-            storyHeaderView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            contentView.rightAnchor.constraint(equalTo: storyHeaderView.rightAnchor),
-            storyHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            storyHeaderView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.rightAnchor.constraint(equalTo: storyHeaderView.rightAnchor),
+            storyHeaderView.topAnchor.constraint(equalTo: self.topAnchor),
             storyHeaderView.heightAnchor.constraint(equalToConstant: 80)
             ])
     }
@@ -173,6 +176,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
+//        let trailingAnchor = scrollview.trailingAnchor.constraint(equalTo: snapView.trailingAnchor)
+//        trailingAnchor.isActive = (snapIndex == story!.snapsCount-1) ? true : false
         NSLayoutConstraint.activate([
             snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
@@ -193,6 +198,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
         scrollview.addSubview(videoView)
+//        let trailingAnchor = scrollview.trailingAnchor.constraint(equalTo: videoView.trailingAnchor)
+//        trailingAnchor.isActive = (snapIndex == story!.snapsCount-1) ? true : false
         NSLayoutConstraint.activate([
             videoView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),

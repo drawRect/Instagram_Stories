@@ -199,6 +199,9 @@ final class IGStoryPreviewHeaderView: UIView {
                     pvIndicator.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height)
                     ])
+                if pvIndicatorArray.count == 1 {
+                    self.getProgressView.trailingAnchor.constraint(equalTo: pvIndicator.trailingAnchor, constant: padding).isActive = true
+                }
             }else {
                 let prePVIndicator = pvIndicatorArray[index-1]
                 NSLayoutConstraint.activate([

@@ -41,6 +41,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         return gesture
     }()
     
+    private(set) var collectionViewSizeChanged = false
     private(set) var executeOnce = false
     
     //MARK: - Overriden functions
@@ -68,15 +69,26 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
             }
         }
     }
+//    override func viewWillLayoutSubviews() {
+//        super.viewWillLayoutSubviews()
+//        if collectionViewSizeChanged {
+//            _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
+//        }
+//    }
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        if collectionViewSizeChanged {
+//            collectionViewSizeChanged = false
+//            _view.snapsCollectionView.performBatchUpdates({}, completion: nil)
+//        }
+//    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        guard let flowLayout = _view.snapsCollectionView.collectionViewLayout as? AnimatedCollectionViewLayout else {
-            return
-        }
-        flowLayout.invalidateLayout()
+        //collectionViewSizeChanged = true
+        self._view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
@@ -168,7 +180,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.width, height: collectionView.height)
+        return _view.snapsCollectionView.frame.size
     }
 }
 
