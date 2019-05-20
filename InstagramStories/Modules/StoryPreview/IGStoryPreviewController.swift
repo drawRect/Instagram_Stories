@@ -69,25 +69,11 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
             }
         }
     }
-//    override func viewWillLayoutSubviews() {
-//        super.viewWillLayoutSubviews()
-//        if collectionViewSizeChanged {
-//            _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
-//        }
-//    }
-//    override func viewDidLayoutSubviews() {
-//        super.viewDidLayoutSubviews()
-//        if collectionViewSizeChanged {
-//            collectionViewSizeChanged = false
-//            _view.snapsCollectionView.performBatchUpdates({}, completion: nil)
-//        }
-//    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        //collectionViewSizeChanged = true
         self._view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
@@ -180,7 +166,11 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return _view.snapsCollectionView.frame.size
+        if #available(iOS 11.0, *) {
+            return CGSize(width: _view.snapsCollectionView.safeAreaLayoutGuide.layoutFrame.width, height: _view.snapsCollectionView.safeAreaLayoutGuide.layoutFrame.height)
+        } else {
+            return CGSize(width: _view.snapsCollectionView.frame.width, height: _view.snapsCollectionView.frame.height)
+        }
     }
 }
 

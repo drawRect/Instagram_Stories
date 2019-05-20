@@ -29,6 +29,30 @@ open class AnimatedCollectionViewLayout: UICollectionViewFlowLayout {
         return true
     }
     
+    /////// START - Added code additionally to fix content not displayed properly when rotating device.
+    private var focusedIndexPath: IndexPath?
+
+    override open func prepare(forAnimatedBoundsChange oldBounds: CGRect) {
+        super.prepare(forAnimatedBoundsChange: oldBounds)
+        focusedIndexPath = collectionView?.indexPathsForVisibleItems.first
+    }
+
+    override open func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint) -> CGPoint {
+        guard let indexPath = focusedIndexPath
+            , let attributes = layoutAttributesForItem(at: indexPath)
+            , let collectionView = collectionView else {
+                return super.targetContentOffset(forProposedContentOffset: proposedContentOffset)
+        }
+        return CGPoint(x: attributes.frame.origin.x - collectionView.contentInset.left,
+                       y: attributes.frame.origin.y - collectionView.contentInset.left)
+    }
+
+    override open func finalizeAnimatedBoundsChange() {
+        super.finalizeAnimatedBoundsChange()
+        focusedIndexPath = nil
+    }
+    /////// END
+    
     private func transformLayoutAttributes(_ attributes: AnimatedCollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
         
         guard let collectionView = self.collectionView else { return attributes }

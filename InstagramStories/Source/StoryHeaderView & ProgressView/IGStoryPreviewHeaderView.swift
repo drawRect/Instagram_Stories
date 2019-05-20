@@ -177,20 +177,20 @@ final class IGStoryPreviewHeaderView: UIView {
         let height: CGFloat = 3
         var pvIndicatorArray: [UIView] = []
         var pvArray: [IGSnapProgressView] = []
-
+        
+        // Adding all ProgressView Indicator and ProgressView to seperate arrays
         for i in 0..<snapsPerStory{
-            //let pvIndicator = UIView.init(frame: CGRect(x: x, y: y, width: width, height: height))
             let pvIndicator = UIView()
             pvIndicator.translatesAutoresizingMaskIntoConstraints = false
             getProgressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag, alpha:0.2))
             pvIndicatorArray.append(pvIndicator)
             
-            //let pv = IGSnapProgressView.init(frame: CGRect(x: x, y: y, width: 0, height: height))
             let pv = IGSnapProgressView()
             pv.translatesAutoresizingMaskIntoConstraints = false
             getProgressView.addSubview(applyProperties(pv, with: i+progressViewTag))
             pvArray.append(pv)
         }
+        // Setting Constraints for all progressView indicators
         for index in 0..<pvIndicatorArray.count {
             let pvIndicator = pvIndicatorArray[index]
             if index == 0 {
@@ -215,6 +215,7 @@ final class IGStoryPreviewHeaderView: UIView {
                 }
             }
         }
+        // Setting Constraints for all progressViews
         for index in 0..<pvArray.count {
             let pv = pvArray[index]
             if index == 0 {
