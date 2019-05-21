@@ -75,7 +75,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
-        self._view.snapsCollectionView.collectionViewLayout.invalidateLayout()
+        _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout

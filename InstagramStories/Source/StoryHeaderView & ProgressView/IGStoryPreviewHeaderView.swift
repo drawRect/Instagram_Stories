@@ -151,11 +151,13 @@ final class IGStoryPreviewHeaderView: UIView {
         layer.shadowOffset = CGSize(width: -1, height: 1)
         layer.shadowRadius = 1
     }
-    private func applyProperties<T:UIView>(_ view:T,with tag:Int,alpha:CGFloat = 1.0)->T {
+    private func applyProperties<T: UIView>(_ view: T, with tag: Int? = nil, alpha: CGFloat = 1.0) -> T {
         view.layer.cornerRadius = 1
         view.layer.masksToBounds = true
         view.backgroundColor = UIColor.white.withAlphaComponent(alpha)
-        view.tag = tag
+        if let tagValue = tag {
+            view.tag = tagValue
+        }
         return view
     }
     
@@ -187,7 +189,8 @@ final class IGStoryPreviewHeaderView: UIView {
             
             let pv = IGSnapProgressView()
             pv.translatesAutoresizingMaskIntoConstraints = false
-            getProgressView.addSubview(applyProperties(pv, with: i+progressViewTag))
+            //getProgressView.addSubview(applyProperties(pv, with: i+progressViewTag))
+            pvIndicator.addSubview(applyProperties(pv))
             pvArray.append(pv)
         }
         // Setting Constraints for all progressView indicators
@@ -218,28 +221,13 @@ final class IGStoryPreviewHeaderView: UIView {
         // Setting Constraints for all progressViews
         for index in 0..<pvArray.count {
             let pv = pvArray[index]
-            if index == 0 {
-                pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
-                NSLayoutConstraint.activate([
-                    pv.leadingAnchor.constraint(equalTo: self.getProgressView.leadingAnchor, constant: padding),
-                    pv.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
-                    pv.heightAnchor.constraint(equalToConstant: height),
-                    pv.widthConstraint!
-                    ])
-            }else {
-                let prePV = pvArray[index-1]
-                let prePVIndicator = pvIndicatorArray[index-1]
-                pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
-                NSLayoutConstraint.activate([
-                    pv.leadingAnchor.constraint(equalTo: prePVIndicator.trailingAnchor, constant: padding),
-                    pv.centerYAnchor.constraint(equalTo: prePV.centerYAnchor),
-                    pv.heightAnchor.constraint(equalToConstant: height),
-                    pv.widthConstraint!
-                    ])
-                if index == pvArray.count-1 {
-                    self.trailingAnchor.constraint(greaterThanOrEqualTo: pv.trailingAnchor, constant: padding).isActive = true
-                }
-            }
+            let pvIndicator = pvIndicatorArray[index]
+            pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
+            NSLayoutConstraint.activate([
+                pv.leadingAnchor.constraint(equalTo: pvIndicator.leadingAnchor),
+                pv.heightAnchor.constraint(equalTo: pvIndicator.heightAnchor),
+                pv.widthConstraint!
+                ])
         }
         snaperNameLabel.text = story?.user.name
     }

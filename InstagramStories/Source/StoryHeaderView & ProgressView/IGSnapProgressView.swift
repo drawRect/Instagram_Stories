@@ -21,9 +21,10 @@ extension ViewAnimator where Self: IGSnapProgressView {
         self.widthConstraint?.isActive = false
         self.widthConstraint = self.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
         self.widthConstraint?.isActive = true
+        
         UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
-            if let _self = self {
-                _self.superview?.layoutIfNeeded()
+            if let strongSelf = self {
+                strongSelf.superview?.layoutIfNeeded()
             }
         }) { [weak self] (finished) in
             self?.story.isCancelledAbruptly = !finished

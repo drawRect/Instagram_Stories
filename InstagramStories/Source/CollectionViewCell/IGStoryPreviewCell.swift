@@ -255,24 +255,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
-            let v = getProgressView(with: snapIndex)
-            let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
             if sender.state == .began {
-                if videoView != nil {
-                    v?.pause()
-                    videoView?.pause()
-                }else {
-                    v?.pause()
-                }
+                pauseEntireSnap()
             }else {
-                if videoView != nil {
-                    v?.resume()
-                    videoView?.play()
-                }else {
-                    v?.resume()
-                }
+                resumeEntireSnap()
             }
-            
         }
     }
     @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
@@ -372,7 +359,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func getProgressView(with index: Int) -> IGSnapProgressView? {
         let progressView = storyHeaderView.getProgressView
         if progressView.subviews.count > 0 {
-            let pv = progressView.subviews.filter({v in v.tag == index+progressViewTag}).first as? IGSnapProgressView
+            let pv = getProgressIndicatorView(with: index)?.subviews.first as? IGSnapProgressView
             guard let currentStory = self.story else {
                 fatalError("story not found")
             }
@@ -550,6 +537,26 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     public func resumePreviousSnapProgress(with sIndex: Int) {
         getProgressView(with: sIndex)?.resume()
+    }
+    public func pauseEntireSnap() {
+        let v = getProgressView(with: snapIndex)
+        let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+        if videoView != nil {
+            v?.pause()
+            videoView?.pause()
+        }else {
+            v?.pause()
+        }
+    }
+    public func resumeEntireSnap() {
+        let v = getProgressView(with: snapIndex)
+        let videoView = scrollview.subviews.filter{v in v.tag == snapIndex + snapViewTagIndicator}.first as? IGPlayerView
+        if videoView != nil {
+            v?.resume()
+            videoView?.play()
+        }else {
+            v?.resume()
+        }
     }
     //Used the below function for image retry option
     public func retryRequest(view: UIView, with url: String) {
