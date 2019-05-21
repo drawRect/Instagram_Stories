@@ -43,6 +43,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     
     private(set) var collectionViewSizeChanged = false
     private(set) var executeOnce = false
+    private(set) var currentCell: IGStoryPreviewCell?
     
     //MARK: - Overriden functions
     override func loadView() {
@@ -107,6 +108,7 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         cell.story = story
         cell.delegate = self
         nStoryIndex = indexPath.item
+        currentCell = cell
         return cell
     }
 }
@@ -166,6 +168,13 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        /* During device rotation, invalidateLayout gets call to make cell width and height proper.
+         * InvalidateLayout methods call this UICollectionViewDelegateFlowLayout method, and the scrollView content offset moves to (0, 0). Which is not the expected result.
+         * To keep the contentOffset to that same position adding the below method.
+         */
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            self.currentCell?.getScrollView.setContentOffset(CGPoint(x: CGFloat(self.currentCell!.snapIndex) * self.view.frame.width, y: 0), animated: false)
+        }
         if #available(iOS 11.0, *) {
             return CGSize(width: _view.snapsCollectionView.safeAreaLayoutGuide.layoutFrame.width, height: _view.snapsCollectionView.safeAreaLayoutGuide.layoutFrame.height)
         } else {

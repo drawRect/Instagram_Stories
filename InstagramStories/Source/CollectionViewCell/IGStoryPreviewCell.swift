@@ -67,7 +67,12 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
-
+    public var getScrollView: UIScrollView {
+        return scrollview
+    }
+    public var getSnapIndex: Int {
+        return snapIndex
+    }
     public var snapIndex: Int = 0 {
         didSet {
             scrollview.isUserInteractionEnabled = true
@@ -121,9 +126,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             if let picture = story?.user.picture {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
-            if let count = story?.snaps.count {
-                scrollview.contentSize = CGSize(width: IGScreen.width * CGFloat(count), height: IGScreen.height)
-            }
+            // We can't predict the contentSize if device has rotation functionality. So commented the below code.
+//            if let count = story?.snaps.count {
+//                scrollview.contentSize = CGSize(width: IGScreen.width * CGFloat(count), height: IGScreen.height)
+//            }
         }
     }
     
@@ -146,10 +152,9 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     //MARK: - Private functions
     private func loadUIElements() {
-        contentView.isUserInteractionEnabled = true
         scrollview.delegate = self
         scrollview.isPagingEnabled = true
         scrollview.backgroundColor = .black

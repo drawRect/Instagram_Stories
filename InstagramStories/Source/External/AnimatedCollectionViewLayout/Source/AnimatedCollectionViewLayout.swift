@@ -44,7 +44,7 @@ open class AnimatedCollectionViewLayout: UICollectionViewFlowLayout {
                 return super.targetContentOffset(forProposedContentOffset: proposedContentOffset)
         }
         return CGPoint(x: attributes.frame.origin.x - collectionView.contentInset.left,
-                       y: attributes.frame.origin.y - collectionView.contentInset.left)
+                       y: attributes.frame.origin.y - collectionView.contentInset.top)
     }
 
     override open func finalizeAnimatedBoundsChange() {
