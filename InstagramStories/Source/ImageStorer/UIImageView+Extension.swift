@@ -51,7 +51,6 @@ extension UIImageView {
         }
         set(newValue) {
             let activityView = newValue
-            activityView.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
             activityView.hidesWhenStopped = true
             objc_setAssociatedObject(self, &ActivityIndicator.view, activityView, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
         }
@@ -63,9 +62,14 @@ extension UIImageView {
             DispatchQueue.main.async {
                 self.backgroundColor = IGTheme.redOrange
                 self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
+                self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
                 if !self.subviews.contains(self.activityIndicator) {
                     self.addSubview(self.activityIndicator)
                 }
+                NSLayoutConstraint.activate([
+                    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                    ])
                 self.activityIndicator.startAnimating()
             }
         }
