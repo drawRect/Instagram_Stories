@@ -16,7 +16,6 @@ protocol RetryBtnDelegate: class {
 public class IGRetryLoaderButton: UIButton {
     var contentURL: String?
     weak var delegate: RetryBtnDelegate?
-    deinit {debugPrint("Retry button removed")}
     convenience init(withURL url: String) {
         self.init()
         self.backgroundColor = .white

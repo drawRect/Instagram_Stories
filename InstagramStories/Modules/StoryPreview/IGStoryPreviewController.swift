@@ -176,18 +176,18 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
         if isTransitioning {
             let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
             let visibleCell = visibleCells.first as? IGStoryPreviewCell
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-                guard let vCell = visibleCell,
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
+                guard let strongSelf = self, let vCell = visibleCell,
                     let progressIndicatorView = vCell.getProgressIndicatorView(with: vCell.snapIndex) else {
                         fatalError("Visible cell or progressIndicatorView is nil")
                 }
-                vCell.getScrollView.setContentOffset(CGPoint(x: CGFloat(vCell.snapIndex) * self.view.frame.width, y: 0), animated: false)
+                vCell.getScrollView.setContentOffset(CGPoint(x: CGFloat(vCell.snapIndex) * collectionView.frame.width, y: 0), animated: false)
                 vCell.adjustPreviousSnapProgressorsWidth(with: vCell.snapIndex)
                 let pv = vCell.getProgressView(with: vCell.snapIndex)
                 if pv?.state == .running {
                     pv?.widthConstraint?.constant = progressIndicatorView.frame.width
                 }
-                self.isTransitioning = false
+                strongSelf.isTransitioning = false
             }
         }
         if #available(iOS 11.0, *) {
