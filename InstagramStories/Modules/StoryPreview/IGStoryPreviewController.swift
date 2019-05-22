@@ -171,15 +171,16 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
         /* During device rotation, invalidateLayout gets call to make cell width and height proper.
          * InvalidateLayout methods call this UICollectionViewDelegateFlowLayout method, and the scrollView content offset moves to (0, 0). Which is not the expected result.
          * To keep the contentOffset to that same position adding the below code which will execute after 0.1 second because need time for collectionView adjusts its width and height.
+         * Adjusting preview snap progressors width to Holder view width because when animation finished in portrait orientation, when we switch to landscape orientation, we have to update the progress view width for preview snap progressors also.
          * Also, adjusting progress view width to updated frame width when the progress view animation is executing.
          */
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
             self.currentCell?.getScrollView.setContentOffset(CGPoint(x: CGFloat(self.currentCell!.snapIndex) * self.view.frame.width, y: 0), animated: false)
             if let visibleCell = self.currentCell, let progressIndicatorView = visibleCell.getProgressIndicatorView(with: visibleCell.snapIndex)  {
+                visibleCell.adjustPreviousSnapProgressorsWidth(with: visibleCell.snapIndex)
                 let pv = visibleCell.getProgressView(with: visibleCell.snapIndex)
                 if pv?.state == .running {
                     pv?.widthConstraint?.constant = progressIndicatorView.frame.width
-                    //visibleCell.fill
                 }
             }
         }
