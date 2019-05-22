@@ -356,26 +356,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    private func getProgressView(with index: Int) -> IGSnapProgressView? {
-        let progressView = storyHeaderView.getProgressView
-        if progressView.subviews.count > 0 {
-            let pv = getProgressIndicatorView(with: index)?.subviews.first as? IGSnapProgressView
-            guard let currentStory = self.story else {
-                fatalError("story not found")
-            }
-            pv?.story = currentStory
-            return pv
-        }
-        return nil
-    }
-    private func getProgressIndicatorView(with index: Int) -> UIView? {
-        let progressView = storyHeaderView.getProgressView
-        if progressView.subviews.count>0 {
-            return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first
-        }else{
-            return nil
-        }
-    }
     private func fillUpMissingImageViews(_ sIndex: Int) {
         if sIndex != 0 {
             for i in 0..<sIndex {
@@ -476,7 +456,29 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    
+    func getProgressView(with index: Int) -> IGSnapProgressView? {
+        let progressView = storyHeaderView.getProgressView
+        if progressView.subviews.count > 0 {
+            let pv = getProgressIndicatorView(with: index)?.subviews.first as? IGSnapProgressView
+            guard let currentStory = self.story else {
+                fatalError("story not found")
+            }
+            pv?.story = currentStory
+            return pv
+        }
+        return nil
+    }
+    func getProgressIndicatorView(with index: Int) -> UIView? {
+        let progressView = storyHeaderView.getProgressView
+        if progressView.subviews.count>0 {
+            return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first
+        }else{
+            return nil
+        }
+    }
+    func adjustPreviousSnapProgressorsWidth(with index: Int) {
+        
+    }
     //MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
         story?.isCompletelyVisible = true

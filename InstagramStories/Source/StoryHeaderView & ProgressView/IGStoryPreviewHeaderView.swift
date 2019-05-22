@@ -198,23 +198,23 @@ final class IGStoryPreviewHeaderView: UIView {
             let pvIndicator = pvIndicatorArray[index]
             if index == 0 {
                 NSLayoutConstraint.activate([
-                    pvIndicator.leadingAnchor.constraint(equalTo: self.getProgressView.leadingAnchor, constant: padding),
+                    pvIndicator.leftAnchor.constraint(equalTo: self.getProgressView.leftAnchor, constant: padding),
                     pvIndicator.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height)
                     ])
                 if pvIndicatorArray.count == 1 {
-                    self.getProgressView.trailingAnchor.constraint(equalTo: pvIndicator.trailingAnchor, constant: padding).isActive = true
+                    self.getProgressView.rightAnchor.constraint(equalTo: pvIndicator.rightAnchor, constant: padding).isActive = true
                 }
             }else {
                 let prePVIndicator = pvIndicatorArray[index-1]
                 NSLayoutConstraint.activate([
-                    pvIndicator.leadingAnchor.constraint(equalTo: prePVIndicator.trailingAnchor, constant: padding),
+                    pvIndicator.leftAnchor.constraint(equalTo: prePVIndicator.rightAnchor, constant: padding),
                     pvIndicator.centerYAnchor.constraint(equalTo: prePVIndicator.centerYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height),
                     pvIndicator.widthAnchor.constraint(equalTo: prePVIndicator.widthAnchor, multiplier: 1.0)
                     ])
                 if index == pvIndicatorArray.count-1 {
-                    self.trailingAnchor.constraint(equalTo: pvIndicator.trailingAnchor, constant: padding).isActive = true
+                    self.rightAnchor.constraint(equalTo: pvIndicator.rightAnchor, constant: padding).isActive = true
                 }
             }
         }
@@ -224,7 +224,7 @@ final class IGStoryPreviewHeaderView: UIView {
             let pvIndicator = pvIndicatorArray[index]
             pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
             NSLayoutConstraint.activate([
-                pv.leadingAnchor.constraint(equalTo: pvIndicator.leadingAnchor),
+                pv.leftAnchor.constraint(equalTo: pvIndicator.leftAnchor),
                 pv.heightAnchor.constraint(equalTo: pvIndicator.heightAnchor),
                 pv.widthConstraint!
                 ])
