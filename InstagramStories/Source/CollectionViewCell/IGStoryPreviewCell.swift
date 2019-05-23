@@ -477,7 +477,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
     }
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
-        
+        fillupLastPlayedSnaps(index)
     }
     //MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {

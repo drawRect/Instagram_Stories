@@ -189,7 +189,6 @@ final class IGStoryPreviewHeaderView: UIView {
             
             let pv = IGSnapProgressView()
             pv.translatesAutoresizingMaskIntoConstraints = false
-            //getProgressView.addSubview(applyProperties(pv, with: i+progressViewTag))
             pvIndicator.addSubview(applyProperties(pv))
             pvArray.append(pv)
         }

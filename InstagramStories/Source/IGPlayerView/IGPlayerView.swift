@@ -124,7 +124,6 @@ class IGPlayerView: UIView {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
             removeObservers()
         }
-        debugPrint("Deinit called")
     }
     
     // MARK: - Internal methods
@@ -203,13 +202,11 @@ extension IGPlayerView: PlayerControls {
         }
     }
     func pause() {
-        //control the player
         if let existingPlayer = player {
             existingPlayer.pause()
         }
     }
     func stop() {
-        //control the player
         if let existingPlayer = player {
             DispatchQueue.main.async {[weak self] in
                 guard let strongSelf = self else { return }

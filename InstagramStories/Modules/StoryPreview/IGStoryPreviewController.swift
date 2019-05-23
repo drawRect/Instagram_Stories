@@ -43,7 +43,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     
     private(set) var collectionViewSizeChanged = false
     private(set) var executeOnce = false
-    private(set) var currentCell: IGStoryPreviewCell?
+    private(set) var isTransitioning = false
     
     //MARK: - Overriden functions
     override func loadView() {
@@ -87,6 +87,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
+        isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
     init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
@@ -120,7 +121,6 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         cell.story = story
         cell.delegate = self
         nStoryIndex = indexPath.item
-        currentCell = cell
         return cell
     }
 }
@@ -140,7 +140,6 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
             story_copy = vCell.story
         }
-        
         //Prepare the setup for first time story launch
         if story_copy == nil {
             cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0)
@@ -183,16 +182,26 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
         /* During device rotation, invalidateLayout gets call to make cell width and height proper.
          * InvalidateLayout methods call this UICollectionViewDelegateFlowLayout method, and the scrollView content offset moves to (0, 0). Which is not the expected result.
          * To keep the contentOffset to that same position adding the below code which will execute after 0.1 second because need time for collectionView adjusts its width and height.
+         * Adjusting preview snap progressors width to Holder view width because when animation finished in portrait orientation, when we switch to landscape orientation, we have to update the progress view width for preview snap progressors also.
          * Also, adjusting progress view width to updated frame width when the progress view animation is executing.
          */
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
-            self.currentCell?.getScrollView.setContentOffset(CGPoint(x: CGFloat(self.currentCell!.snapIndex) * self.view.frame.width, y: 0), animated: false)
-            if let visibleCell = self.currentCell, let progressIndicatorView = visibleCell.getProgressIndicatorView(with: visibleCell.snapIndex)  {
-                let pv = visibleCell.getProgressView(with: visibleCell.snapIndex)
-                if pv?.state == .running {
-                    pv?.widthConstraint?.constant = progressIndicatorView.frame.width
-                    //visibleCell.fill
+        if isTransitioning {
+            let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+            let visibleCell = visibleCells.first as? IGStoryPreviewCell
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
+                guard let strongSelf = self,
+                    let vCell = visibleCell,
+                    let progressIndicatorView = vCell.getProgressIndicatorView(with: vCell.snapIndex),
+                    let pv = vCell.getProgressView(with: vCell.snapIndex) else {
+                        fatalError("Visible cell or progressIndicatorView or progressView is nil")
                 }
+                vCell.getScrollView.setContentOffset(CGPoint(x: CGFloat(vCell.snapIndex) * collectionView.frame.width, y: 0), animated: false)
+                vCell.adjustPreviousSnapProgressorsWidth(with: vCell.snapIndex)
+                
+                if pv.state == .running {
+                    pv.widthConstraint?.constant = progressIndicatorView.frame.width
+                }
+                strongSelf.isTransitioning = false
             }
         }
         if #available(iOS 11.0, *) {
