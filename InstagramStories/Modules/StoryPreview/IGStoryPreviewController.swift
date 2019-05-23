@@ -59,6 +59,11 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        // AppUtility.lockOrientation(.portrait)
+        // Or to rotate and lock
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            IGAppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
+        }
         if !executeOnce {
             DispatchQueue.main.async {
                 self._view.snapsCollectionView.delegate = self
@@ -68,6 +73,13 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
                 self.handPickedStoryIndex = 0
                 self.executeOnce = true
             }
+        }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            // Don't forget to reset when view is being removed
+            IGAppUtility.lockOrientation(.all)
         }
     }
     override func didReceiveMemoryWarning() {

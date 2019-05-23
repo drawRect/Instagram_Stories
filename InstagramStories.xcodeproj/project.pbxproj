@@ -18,6 +18,7 @@
 		1024C9FF1FAA0D5F00237538 /* IGHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024C9FE1FAA0D5F00237538 /* IGHomeView.swift */; };
 		1024CA011FAA102200237538 /* IGHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1024CA001FAA102200237538 /* IGHomeViewModel.swift */; };
 		109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */; };
+		4C1AA56922963F2E0008F327 /* IGAppUtility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1AA56822963F2E0008F327 /* IGAppUtility.swift */; };
 		4C1E29CB22316F6F0070FD27 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 4C1E29BD22316F6F0070FD27 /* LICENSE */; };
 		4C1E29CC22316F6F0070FD27 /* CubeAttributesAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */; };
 		4C1E29CD22316F6F0070FD27 /* AnimatedCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */; };
@@ -79,6 +80,7 @@
 		1024C9FE1FAA0D5F00237538 /* IGHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGHomeView.swift; path = Modules/Home/IGHomeView.swift; sourceTree = "<group>"; };
 		1024CA001FAA102200237538 /* IGHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGHomeViewModel.swift; path = Modules/Home/IGHomeViewModel.swift; sourceTree = "<group>"; };
 		1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGStoryPreviewCell.swift; sourceTree = "<group>"; };
+		4C1AA56822963F2E0008F327 /* IGAppUtility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGAppUtility.swift; sourceTree = "<group>"; };
 		4C1E29BD22316F6F0070FD27 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		4C1E29BF22316F6F0070FD27 /* CubeAttributesAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeAttributesAnimator.swift; sourceTree = "<group>"; };
 		4C1E29C022316F6F0070FD27 /* AnimatedCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedCollectionViewLayout.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			children = (
 				07FDECE21F5FD9BA004BC833 /* Info.plist */,
 				078E413C1F61E86500222191 /* stories.json */,
+				4C1AA56822963F2E0008F327 /* IGAppUtility.swift */,
 				07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */,
 				07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */,
 				07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */,
@@ -507,6 +510,7 @@
 				D6287E54223FC68F0070E5FE /* IGStory.swift in Sources */,
 				D6287E55223FC68F0070E5FE /* IGStories.swift in Sources */,
 				1024C9FF1FAA0D5F00237538 /* IGHomeView.swift in Sources */,
+				4C1AA56922963F2E0008F327 /* IGAppUtility.swift in Sources */,
 				D65EC3FB22539DD6000D01B6 /* IGResult.swift in Sources */,
 				D6287E3E223FC6420070E5FE /* IGMockLoader.swift in Sources */,
 				D6287E57223FC68F0070E5FE /* IGUser.swift in Sources */,
