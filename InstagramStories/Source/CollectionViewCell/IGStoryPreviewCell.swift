@@ -29,14 +29,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     //MARK:- Private iVars
-    private let scrollview: UIScrollView = {
-        let sv = UIScrollView()
-        sv.showsVerticalScrollIndicator = false
-        sv.showsHorizontalScrollIndicator = false
-        sv.isScrollEnabled = false
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        return sv
-    }()
     private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
         let v = IGStoryPreviewHeaderView()
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -67,9 +59,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
-    public var getScrollView: UIScrollView {
-        return scrollview
-    }
+    public let scrollview: UIScrollView = {
+        let sv = UIScrollView()
+        sv.showsVerticalScrollIndicator = false
+        sv.showsHorizontalScrollIndicator = false
+        sv.isScrollEnabled = false
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        return sv
+    }()
     public var getSnapIndex: Int {
         return snapIndex
     }

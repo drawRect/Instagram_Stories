@@ -196,7 +196,7 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
                     let pv = vCell.getProgressView(with: vCell.snapIndex) else {
                         fatalError("Visible cell or progressIndicatorView or progressView is nil")
                 }
-                vCell.getScrollView.setContentOffset(CGPoint(x: CGFloat(vCell.snapIndex) * collectionView.frame.width, y: 0), animated: false)
+                vCell.scrollview.setContentOffset(CGPoint(x: CGFloat(vCell.snapIndex) * collectionView.frame.width, y: 0), animated: false)
                 vCell.adjustPreviousSnapProgressorsWidth(with: vCell.snapIndex)
                 
                 if pv.state == .running {
