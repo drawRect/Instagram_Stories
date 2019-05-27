@@ -20,6 +20,7 @@ class IGStoryPreviewView: UIView {
         flowLayout.animator = layoutAnimator.0
         flowLayout.minimumLineSpacing = 0.0
         flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         return flowLayout
     }()
     lazy var snapsCollectionView: UICollectionView! = {

@@ -108,6 +108,7 @@ class IGPlayerView: UIView {
     //MARK:- Init methods
     override init(frame: CGRect) {
         activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: frame)
         setupActivityIndicator()
     }
@@ -116,11 +117,13 @@ class IGPlayerView: UIView {
         super.init(coder: aDecoder)
         setupActivityIndicator()
     }
+    override func layoutSubviews() {
+        playerLayer?.frame = self.bounds
+    }
     deinit {
         if let existingPlayer = player, existingPlayer.observationInfo != nil {
             removeObservers()
         }
-        debugPrint("Deinit called")
     }
     
     // MARK: - Internal methods
@@ -128,8 +131,11 @@ class IGPlayerView: UIView {
         activityIndicator.hidesWhenStopped = true
         //backgroundColor = UIColor.rgb(from: 0xEDF0F1)
         backgroundColor = .black
-        activityIndicator.center = CGPoint(x: self.frame.width/2, y: self.frame.height/2)
         self.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            ])
     }
     func removeObservers() {
         cleanUpPlayerPeriodicTimeObserver()
@@ -196,13 +202,11 @@ extension IGPlayerView: PlayerControls {
         }
     }
     func pause() {
-        //control the player
         if let existingPlayer = player {
             existingPlayer.pause()
         }
     }
     func stop() {
-        //control the player
         if let existingPlayer = player {
             DispatchQueue.main.async {[weak self] in
                 guard let strongSelf = self else { return }
