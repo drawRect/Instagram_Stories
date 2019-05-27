@@ -126,10 +126,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             if let picture = story?.user.picture {
                 storyHeaderView.snaperImageView.setImage(url: picture)
             }
-            // We can't predict the contentSize if device has rotation functionality. So commented the below code.
-//            if let count = story?.snaps.count {
-//                scrollview.contentSize = CGSize(width: IGScreen.width * CGFloat(count), height: IGScreen.height)
-//            }
         }
     }
     
@@ -185,6 +181,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.tag = snapIndex + snapViewTagIndicator
         scrollview.addSubview(snapView)
+        
+        // Setting constraints for snap view.
         NSLayoutConstraint.activate([
             snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
@@ -470,11 +468,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     func getProgressIndicatorView(with index: Int) -> UIView? {
         let progressView = storyHeaderView.getProgressView
-        if progressView.subviews.count>0 {
-            return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first
-        }else{
-            return nil
-        }
+        return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first ?? nil
     }
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
         fillupLastPlayedSnaps(index)

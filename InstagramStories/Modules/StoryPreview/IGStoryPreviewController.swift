@@ -41,8 +41,9 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         return gesture
     }()
     
-    private(set) var collectionViewSizeChanged = false
     private(set) var executeOnce = false
+    
+    //check whether device rotation is happening or not
     private(set) var isTransitioning = false
     
     //MARK: - Overriden functions
