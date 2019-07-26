@@ -59,17 +59,31 @@ extension UIImageView {
     //MARK: - Private methods
     func showActivityIndicator() {
         if isActivityEnabled {
+            var isActivityIndicatorFound = false
             DispatchQueue.main.async {
                 self.backgroundColor = IGTheme.redOrange
                 self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
                 self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
-                if !self.subviews.contains(self.activityIndicator) {
+                if self.subviews.isEmpty {
+                    isActivityIndicatorFound = false
                     self.addSubview(self.activityIndicator)
+                    
+                } else {
+                    for view in self.subviews {
+                        if !view.isKind(of: UIActivityIndicatorView.self) {
+                            isActivityIndicatorFound = false
+                            self.addSubview(self.activityIndicator)
+                        } else {
+                            isActivityIndicatorFound = true
+                        }
+                    }
                 }
-                NSLayoutConstraint.activate([
-                    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
-                    ])
+                if !isActivityIndicatorFound {
+                    NSLayoutConstraint.activate([
+                        self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+                        self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                        ])
+                }
                 self.activityIndicator.startAnimating()
             }
         }
