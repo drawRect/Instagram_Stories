@@ -60,7 +60,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
 //    private var snapViewXPos: CGFloat {
 //        return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
 //    }
-    private var videoSnapIndex: Int = 0
+//    private var videoSnapIndex: Int = 0
     //private var videoView: IGPlayerView?
     
     var retryBtn: IGRetryLoaderButton!
@@ -69,7 +69,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     public var direction: SnapMovementDirectionState = .forward
 
     var imageView: IGImageView {
-        return scrollview.children[snapIndex] as! IGImageView
+         return scrollview.children[snapIndex] as! IGImageView
     }
     var videoView: IGVideoView {
         return scrollview.children[snapIndex] as! IGVideoView
@@ -323,7 +323,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     //Before progress view starts we have to fill the progressView
     private func fillupLastPlayedSnap(_ sIndex: Int) {
         if let snap = story?.snaps[sIndex], snap.kind == .video {
-            videoSnapIndex = sIndex
+//            videoSnapIndex = sIndex
+            snapIndex = sIndex
             stopPlayer()
         }
         if let holderView = self.getProgressIndicatorView(with: sIndex),
@@ -350,21 +351,23 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     private func clearScrollViewGarbages() {
         scrollview.contentOffset = CGPoint(x: 0, y: 0)
-        if scrollview.subviews.count > 0 {
-            var i = 0 + snapViewTagIndicator
-            var snapViews = [UIView]()
-            scrollview.subviews.forEach({ (imageView) in
-                if imageView.tag == i {
-                    snapViews.append(imageView)
-                    i += 1
-                }
-            })
-            if snapViews.count > 0 {
-                snapViews.forEach({ (view) in
-                    view.removeFromSuperview()
-                })
-            }
-        }
+        scrollview.children.forEach({$0.removeFromSuperview()})
+        scrollview.children.removeAll()
+//        if scrollview.subviews.count > 0 {
+//            var i = 0 + snapViewTagIndicator
+//            var snapViews = [UIView]()
+//            scrollview.subviews.forEach({ (imageView) in
+//                if imageView.tag == i {
+//                    snapViews.append(imageView)
+//                    i += 1
+//                }
+//            })
+//            if snapViews.count > 0 {
+//                snapViews.forEach({ (view) in
+//                    view.removeFromSuperview()
+//                })
+//            }
+//        }
     }
     private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
         if let holderView = getProgressIndicatorView(with: snapIndex),
@@ -452,7 +455,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
 //        let videoView = getVideoView(with: videoSnapIndex)
 //        let videoView = getVideoView()
 //        let videoView = self.videoView.playerView
-        let videoView = self.scrollview.getVideoView(index: videoSnapIndex).playerView
+        let videoView = self.scrollview.getVideoView(index: snapIndex).playerView
         if videoView.player?.timeControlStatus != .playing {
             videoView.player?.replaceCurrentItem(with: nil)
 //            getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
@@ -515,11 +518,11 @@ extension IGStoryPreviewCell: IGPlayerObserver {
                         if Float(duration.value) > 0 {
                             progressView.start(with: duration.seconds, width: holderView.frame.width, completion: {(identifier, snapIndex, isCancelledAbruptly) in
                                 if isCancelledAbruptly == false {
-                                    self.videoSnapIndex = snapIndex
+//                                    self.videoSnapIndex = snapIndex
                                     self.stopPlayer()
                                     self.didCompleteProgress()
                                 } else {
-                                    self.videoSnapIndex = snapIndex
+//                                    self.videoSnapIndex = snapIndex
                                     self.stopPlayer()
                                 }
                             })
