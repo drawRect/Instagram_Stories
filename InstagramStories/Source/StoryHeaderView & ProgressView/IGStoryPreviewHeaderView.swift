@@ -225,6 +225,7 @@ final class IGStoryPreviewHeaderView: UIView {
             NSLayoutConstraint.activate([
                 pv.leftAnchor.constraint(equalTo: pvIndicator.leftAnchor),
                 pv.heightAnchor.constraint(equalTo: pvIndicator.heightAnchor),
+                pv.topAnchor.constraint(equalTo: pvIndicator.topAnchor),
                 pv.widthConstraint!
                 ])
         }
