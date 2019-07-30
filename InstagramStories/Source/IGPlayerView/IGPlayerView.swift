@@ -133,8 +133,8 @@ class IGPlayerView: UIView {
         backgroundColor = .black
         self.addSubview(activityIndicator)
         NSLayoutConstraint.activate([
-            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+            activityIndicator.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+            activityIndicator.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor)
             ])
     }
     func removeObservers() {

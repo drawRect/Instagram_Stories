@@ -67,8 +67,8 @@ extension UIImageView {
                     self.addSubview(self.activityIndicator)
                 }
                 NSLayoutConstraint.activate([
-                    self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                    self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                    self.activityIndicator.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+                    self.activityIndicator.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor)
                     ])
                 self.activityIndicator.startAnimating()
             }
