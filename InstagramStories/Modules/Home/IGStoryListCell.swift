@@ -64,15 +64,15 @@ final class IGStoryListCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             profileImageView.widthAnchor.constraint(equalToConstant: 68),
             profileImageView.heightAnchor.constraint(equalToConstant: 68),
-            profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-            profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+            profileImageView.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 8),
+            profileImageView.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor)])
 
         NSLayoutConstraint.activate([
-            profileNameLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
-            profileNameLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-            profileNameLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 2),
-            profileNameLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            profileNameLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)])
+            profileNameLabel.igLeftAnchor.constraint(equalTo: self.igLeftAnchor),
+            profileNameLabel.igRightAnchor.constraint(equalTo: self.igRightAnchor),
+            profileNameLabel.igTopAnchor.constraint(equalTo: self.profileImageView.igBottomAnchor, constant: 2),
+            profileNameLabel.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+            self.igBottomAnchor.constraint(equalTo: profileNameLabel.igBottomAnchor, constant: 8)])
         
         layoutIfNeeded()
     }

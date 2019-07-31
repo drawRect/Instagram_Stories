@@ -10,37 +10,38 @@ import Foundation
 import UIKit
 
 extension UIView {
-    var leftAnchor: NSLayoutXAxisAnchor {
+    
+    var igLeftAnchor: NSLayoutXAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.leftAnchor
         }
         return self.leftAnchor
     }
-    var rightAnchor: NSLayoutXAxisAnchor {
+    var igRightAnchor: NSLayoutXAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.rightAnchor
         }
         return self.rightAnchor
     }
-    var topAnchor: NSLayoutYAxisAnchor {
+    var igTopAnchor: NSLayoutYAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.topAnchor
         }
         return self.topAnchor
     }
-    var bottomAnchor: NSLayoutYAxisAnchor {
+    var igBottomAnchor: NSLayoutYAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.bottomAnchor
         }
         return self.bottomAnchor
     }
-    var centerXAnchor: NSLayoutXAxisAnchor {
+    var igCenterXAnchor: NSLayoutXAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.centerXAnchor
         }
         return self.centerXAnchor
     }
-    var centerYAnchor: NSLayoutYAxisAnchor {
+    var igCenterYAnchor: NSLayoutYAxisAnchor {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide.centerYAnchor
         }
