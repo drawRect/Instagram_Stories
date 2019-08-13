@@ -22,3 +22,19 @@ public class IGStories: Codable {
         return copy
     }
 }
+
+extension IGStories {
+    func removeCachedFile(for urlString: String) {
+        IGVideoCacheManager.shared.getFile(for: urlString) { (result) in
+            switch result {
+            case .success(let url):
+                IGVideoCacheManager.shared.clearCache(for: url.absoluteString)
+            case .failure(let error):
+                debugPrint("File read error: \(error)")
+            }
+        }
+    }
+    static func removeAllVideoFilesFromCache() {
+        IGVideoCacheManager.shared.clearCache()
+    }
+}

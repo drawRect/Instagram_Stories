@@ -137,6 +137,13 @@ class IGPlayerView: UIView {
             activityIndicator.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor)
             ])
     }
+    func startAnimating() {
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+    }
+    func stopAnimating() {
+        activityIndicator.startAnimating()
+    }
     func removeObservers() {
         cleanUpPlayerPeriodicTimeObserver()
     }
@@ -191,8 +198,7 @@ extension IGPlayerView: PlayerControls {
                 self.layer.addSublayer(pLayer)
             }
         }
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
+        startAnimating()
         player?.play()
     }
     func play() {

@@ -245,8 +245,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollview.subviews.count > 0 {
             if story?.isCompletelyVisible == true {
-                let videoResource = VideoResource(filePath: url)
-                videoView.play(with: videoResource)
+                videoView.startAnimating()
+                IGVideoCacheManager.shared.getFile(for: url) { (result) in
+                    switch result {
+                    case .success(let url):
+                        let videoResource = VideoResource(filePath: url.absoluteString)
+                        videoView.play(with: videoResource)
+                    case .failure(let error):
+                        videoView.stopAnimating()
+                        debugPrint("Video error: \(error)")
+                    }
+                }
             }
         }
     }

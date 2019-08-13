@@ -50,6 +50,7 @@
 		D65EC3FB22539DD6000D01B6 /* IGResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FA22539DD6000D01B6 /* IGResult.swift */; };
 		D65EC3FD22539E65000D01B6 /* IGImageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */; };
 		D65EC3FF22539ED7000D01B6 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */; };
+		D6910FDE22EADD61001727D9 /* IGVideoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6910FDD22EADD61001727D9 /* IGVideoCacheManager.swift */; };
 		D6AD6904227C5FD800A160DE /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
 		D6D240AA22520755008C0738 /* IGCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D240A922520755008C0738 /* IGCache.swift */; };
 /* End PBXBuildFile section */
@@ -113,6 +114,7 @@
 		D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGImageRequestable.swift; sourceTree = "<group>"; };
 		D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extension.swift"; sourceTree = "<group>"; };
 		D65EC40422573B7D000D01B6 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D6910FDD22EADD61001727D9 /* IGVideoCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGVideoCacheManager.swift; sourceTree = "<group>"; };
 		D6D240A922520755008C0738 /* IGCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGCache.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -239,6 +241,7 @@
 		D6287E36223FC17E0070E5FE /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				D6910FDC22EADD16001727D9 /* Video Cache */,
 				072E5AA6225FA71D005FF9D1 /* External */,
 				D6D240A8225206D5008C0738 /* ImageStorer */,
 				D6287E3C223FC6420070E5FE /* Stubs */,
@@ -343,6 +346,14 @@
 				D6287E5E223FC6BA0070E5FE /* IGStoryPreviewView.swift */,
 			);
 			path = StoryPreviewView;
+			sourceTree = "<group>";
+		};
+		D6910FDC22EADD16001727D9 /* Video Cache */ = {
+			isa = PBXGroup;
+			children = (
+				D6910FDD22EADD61001727D9 /* IGVideoCacheManager.swift */,
+			);
+			path = "Video Cache";
 			sourceTree = "<group>";
 		};
 		D6D240A8225206D5008C0738 /* ImageStorer */ = {
@@ -500,6 +511,7 @@
 				1024CA011FAA102200237538 /* IGHomeViewModel.swift in Sources */,
 				D6287E5C223FC69B0070E5FE /* IGStoryPreviewHeaderView.swift in Sources */,
 				D6287E45223FC6660070E5FE /* IGAdditions.swift in Sources */,
+				D6910FDE22EADD61001727D9 /* IGVideoCacheManager.swift in Sources */,
 				D6287E63223FC6BA0070E5FE /* IGStoryPreviewController.swift in Sources */,
 				D6287E4E223FC67B0070E5FE /* IGRetryButton.swift in Sources */,
 				D6287E61223FC6BA0070E5FE /* IGStoryPreviewView.swift in Sources */,

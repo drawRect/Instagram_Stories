@@ -43,6 +43,7 @@ final class IGHomeController: UIViewController {
     //MARK: - Private functions
     @objc private func clearImageCache() {
         IGCache.shared.removeAllObjects()
+        IGStories.removeAllVideoFilesFromCache()
     }
     private func showAlert() {
         let alertController = UIAlertController.init(title: "Try to implement your own functionality for Add Story", message: nil, preferredStyle: .alert)
