@@ -109,6 +109,10 @@ class IGImageView: IGXView {
             }
         }
     }
+
+    deinit {
+        print(#function + "IGImageView")
+    }
     
 }
 
@@ -128,5 +132,9 @@ class IGVideoView: IGXView {
     //Add your Video related stuff here
     override func loadContent(completionBlock: @escaping (_ done: Bool) -> ()) {
 
+    }
+
+    deinit {
+        print(#function + "IGVideoView")
     }
 }
