@@ -69,21 +69,22 @@ final class IGAddStoryCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             profileImageView.widthAnchor.constraint(equalToConstant: 68),
             profileImageView.heightAnchor.constraint(equalToConstant: 68),
-            profileImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-            profileImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor)])
+            profileImageView.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 8),
+            profileImageView.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+            addStoryLabel.igTopAnchor.constraint(equalTo: self.profileImageView.igBottomAnchor, constant: 2)])
         
         NSLayoutConstraint.activate([
-            addStoryLabel.leftAnchor.constraint(equalTo: self.leftAnchor),
-            addStoryLabel.rightAnchor.constraint(equalTo: self.rightAnchor),
-            addStoryLabel.topAnchor.constraint(equalTo: self.profileImageView.bottomAnchor, constant: 2),
-            addStoryLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            addStoryLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -8)])
+            addStoryLabel.igLeftAnchor.constraint(equalTo: self.igLeftAnchor),
+            self.igRightAnchor.constraint(equalTo: addStoryLabel.igRightAnchor),
+            addStoryLabel.igTopAnchor.constraint(equalTo: self.profileImageView.igBottomAnchor, constant: 2),
+            addStoryLabel.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+            self.igBottomAnchor.constraint(equalTo: addStoryLabel.igBottomAnchor, constant: 8)])
         
         NSLayoutConstraint.activate([
-            addImageView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -17),
+            self.igRightAnchor.constraint(equalTo: addImageView.igRightAnchor, constant: 17),
             addImageView.widthAnchor.constraint(equalToConstant: 20),
             addImageView.heightAnchor.constraint(equalToConstant: 20),
-            addImageView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -25)])
+            self.igBottomAnchor.constraint(equalTo: addImageView.igBottomAnchor, constant: 25)])
         
         layoutIfNeeded()
     }

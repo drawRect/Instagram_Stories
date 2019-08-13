@@ -73,6 +73,7 @@ extension UIImageView {
                         if !view.isKind(of: UIActivityIndicatorView.self) {
                             isActivityIndicatorFound = false
                             self.addSubview(self.activityIndicator)
+                            break
                         } else {
                             isActivityIndicatorFound = true
                         }
@@ -80,8 +81,8 @@ extension UIImageView {
                 }
                 if !isActivityIndicatorFound {
                     NSLayoutConstraint.activate([
-                        self.activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-                        self.activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+                        self.activityIndicator.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+                        self.activityIndicator.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor)
                         ])
                 }
                 self.activityIndicator.startAnimating()

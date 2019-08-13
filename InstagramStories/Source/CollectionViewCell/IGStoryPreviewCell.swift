@@ -159,17 +159,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private func installLayoutConstraints() {
         //Setting constraints for scrollview
         NSLayoutConstraint.activate([
-            scrollview.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            contentView.rightAnchor.constraint(equalTo: scrollview.rightAnchor),
-            scrollview.topAnchor.constraint(equalTo: contentView.topAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollview.bottomAnchor),
+            scrollview.igLeftAnchor.constraint(equalTo: contentView.igLeftAnchor),
+            contentView.igRightAnchor.constraint(equalTo: scrollview.igRightAnchor),
+            scrollview.igTopAnchor.constraint(equalTo: contentView.igTopAnchor),
+            contentView.igBottomAnchor.constraint(equalTo: scrollview.igBottomAnchor),
             scrollview.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0),
             scrollview.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1.0)
             ])
         NSLayoutConstraint.activate([
-            storyHeaderView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            contentView.rightAnchor.constraint(equalTo: storyHeaderView.rightAnchor),
-            storyHeaderView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            storyHeaderView.igLeftAnchor.constraint(equalTo: contentView.igLeftAnchor),
+            contentView.igRightAnchor.constraint(equalTo: storyHeaderView.igRightAnchor),
+            storyHeaderView.igTopAnchor.constraint(equalTo: contentView.igTopAnchor),
             storyHeaderView.heightAnchor.constraint(equalToConstant: 80)
             ])
     }
@@ -182,9 +182,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         // Setting constraints for snap view.
         NSLayoutConstraint.activate([
             snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
+            snapView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
-            scrollview.bottomAnchor.constraint(equalTo: snapView.bottomAnchor)
+            scrollview.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
             ])
         return snapView
     }
@@ -202,9 +203,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         scrollview.addSubview(videoView)
         NSLayoutConstraint.activate([
             videoView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
+            videoView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
             videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
-            scrollview.bottomAnchor.constraint(equalTo: videoView.bottomAnchor)
+            scrollview.igBottomAnchor.constraint(equalTo: videoView.igBottomAnchor)
             ])
         return videoView
     }
@@ -236,8 +238,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         self.isUserInteractionEnabled = true
         snapView.addSubview(self.retryBtn)
         NSLayoutConstraint.activate([
-            self.retryBtn.centerXAnchor.constraint(equalTo: snapView.centerXAnchor),
-            self.retryBtn.centerYAnchor.constraint(equalTo: snapView.centerYAnchor)
+            self.retryBtn.igCenterXAnchor.constraint(equalTo: snapView.igCenterXAnchor),
+            self.retryBtn.igCenterYAnchor.constraint(equalTo: snapView.igCenterYAnchor)
             ])
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
@@ -625,8 +627,8 @@ extension IGStoryPreviewCell: IGPlayerObserver {
             self.isUserInteractionEnabled = true
             videoView.addSubview(self.retryBtn)
             NSLayoutConstraint.activate([
-                self.retryBtn.centerXAnchor.constraint(equalTo: videoView.centerXAnchor),
-                self.retryBtn.centerYAnchor.constraint(equalTo: videoView.centerYAnchor)
+                self.retryBtn.igCenterXAnchor.constraint(equalTo: videoView.igCenterXAnchor),
+                self.retryBtn.igCenterYAnchor.constraint(equalTo: videoView.igCenterYAnchor)
                 ])
         }
     }

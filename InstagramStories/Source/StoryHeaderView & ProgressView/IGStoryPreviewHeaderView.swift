@@ -97,9 +97,9 @@ final class IGStoryPreviewHeaderView: UIView {
         //Setting constraints for progressView
         let pv = getProgressView
         NSLayoutConstraint.activate([
-            pv.leftAnchor.constraint(equalTo: self.leftAnchor),
-            pv.topAnchor.constraint(equalTo: self.topAnchor, constant: 8),
-            self.rightAnchor.constraint(equalTo: pv.rightAnchor),
+            pv.igLeftAnchor.constraint(equalTo: self.igLeftAnchor),
+            pv.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 8),
+            self.igRightAnchor.constraint(equalTo: pv.igRightAnchor),
             pv.heightAnchor.constraint(equalToConstant: 10)
             ])
         
@@ -107,41 +107,41 @@ final class IGStoryPreviewHeaderView: UIView {
         NSLayoutConstraint.activate([
             snaperImageView.widthAnchor.constraint(equalToConstant: 40),
             snaperImageView.heightAnchor.constraint(equalToConstant: 40),
-            snaperImageView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
-            snaperImageView.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10)
+            snaperImageView.igLeftAnchor.constraint(equalTo: self.igLeftAnchor, constant: 10),
+            snaperImageView.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor),
+            detailView.igLeftAnchor.constraint(equalTo: snaperImageView.igRightAnchor, constant: 10)
             ])
         layoutIfNeeded() //To make snaperImageView round. Adding this to somewhere else will create constraint warnings.
         
         //Setting constraints for detailView
         NSLayoutConstraint.activate([
-            detailView.leftAnchor.constraint(equalTo: snaperImageView.rightAnchor, constant: 10),
-            detailView.centerYAnchor.constraint(equalTo: snaperImageView.centerYAnchor),
+            detailView.igLeftAnchor.constraint(equalTo: snaperImageView.igRightAnchor, constant: 10),
+            detailView.igCenterYAnchor.constraint(equalTo: snaperImageView.igCenterYAnchor),
             detailView.heightAnchor.constraint(equalToConstant: 40),
-            closeButton.leftAnchor.constraint(equalTo: detailView.rightAnchor, constant: 10)
+            closeButton.igLeftAnchor.constraint(equalTo: detailView.igRightAnchor, constant: 10)
             ])
         
         //Setting constraints for closeButton
         NSLayoutConstraint.activate([
-            closeButton.leftAnchor.constraint(equalTo: detailView.rightAnchor, constant: 10),
-            closeButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            closeButton.rightAnchor.constraint(equalTo: self.rightAnchor),
+            closeButton.igLeftAnchor.constraint(equalTo: detailView.igRightAnchor, constant: 10),
+            closeButton.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor),
+            closeButton.igRightAnchor.constraint(equalTo: self.igRightAnchor),
             closeButton.widthAnchor.constraint(equalToConstant: 60),
             closeButton.heightAnchor.constraint(equalToConstant: 80)
             ])
         
         //Setting constraints for snapperNameLabel
         NSLayoutConstraint.activate([
-            snaperNameLabel.leftAnchor.constraint(equalTo: detailView.leftAnchor),
-            lastUpdatedLabel.leftAnchor.constraint(equalTo: snaperNameLabel.rightAnchor, constant: 10.0),
+            snaperNameLabel.igLeftAnchor.constraint(equalTo: detailView.igLeftAnchor),
+            lastUpdatedLabel.igLeftAnchor.constraint(equalTo: snaperNameLabel.igRightAnchor, constant: 10.0),
             snaperNameLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 100),
-            snaperNameLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor)
+            snaperNameLabel.igCenterYAnchor.constraint(equalTo: detailView.igCenterYAnchor)
             ])
         
         //Setting constraints for lastUpdatedLabel
         NSLayoutConstraint.activate([
-            lastUpdatedLabel.centerYAnchor.constraint(equalTo: detailView.centerYAnchor),
-            lastUpdatedLabel.leftAnchor.constraint(equalTo: snaperNameLabel.rightAnchor, constant:10.0)
+            lastUpdatedLabel.igCenterYAnchor.constraint(equalTo: detailView.igCenterYAnchor),
+            lastUpdatedLabel.igLeftAnchor.constraint(equalTo: snaperNameLabel.igRightAnchor, constant:10.0)
             ])
     }
     private func applyShadowOffset() {
@@ -197,23 +197,23 @@ final class IGStoryPreviewHeaderView: UIView {
             let pvIndicator = pvIndicatorArray[index]
             if index == 0 {
                 NSLayoutConstraint.activate([
-                    pvIndicator.leftAnchor.constraint(equalTo: self.getProgressView.leftAnchor, constant: padding),
-                    pvIndicator.centerYAnchor.constraint(equalTo: self.getProgressView.centerYAnchor),
+                    pvIndicator.igLeftAnchor.constraint(equalTo: self.getProgressView.igLeftAnchor, constant: padding),
+                    pvIndicator.igCenterYAnchor.constraint(equalTo: self.getProgressView.igCenterYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height)
                     ])
                 if pvIndicatorArray.count == 1 {
-                    self.getProgressView.rightAnchor.constraint(equalTo: pvIndicator.rightAnchor, constant: padding).isActive = true
+                    self.getProgressView.igRightAnchor.constraint(equalTo: pvIndicator.igRightAnchor, constant: padding).isActive = true
                 }
             }else {
                 let prePVIndicator = pvIndicatorArray[index-1]
                 NSLayoutConstraint.activate([
-                    pvIndicator.leftAnchor.constraint(equalTo: prePVIndicator.rightAnchor, constant: padding),
-                    pvIndicator.centerYAnchor.constraint(equalTo: prePVIndicator.centerYAnchor),
+                    pvIndicator.igLeftAnchor.constraint(equalTo: prePVIndicator.igRightAnchor, constant: padding),
+                    pvIndicator.igCenterYAnchor.constraint(equalTo: prePVIndicator.igCenterYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height),
                     pvIndicator.widthAnchor.constraint(equalTo: prePVIndicator.widthAnchor, multiplier: 1.0)
                     ])
                 if index == pvIndicatorArray.count-1 {
-                    self.rightAnchor.constraint(equalTo: pvIndicator.rightAnchor, constant: padding).isActive = true
+                    self.igRightAnchor.constraint(equalTo: pvIndicator.igRightAnchor, constant: padding).isActive = true
                 }
             }
         }
@@ -223,8 +223,9 @@ final class IGStoryPreviewHeaderView: UIView {
             let pvIndicator = pvIndicatorArray[index]
             pv.widthConstraint = pv.widthAnchor.constraint(equalToConstant: 0)
             NSLayoutConstraint.activate([
-                pv.leftAnchor.constraint(equalTo: pvIndicator.leftAnchor),
+                pv.igLeftAnchor.constraint(equalTo: pvIndicator.igLeftAnchor),
                 pv.heightAnchor.constraint(equalTo: pvIndicator.heightAnchor),
+                pv.igTopAnchor.constraint(equalTo: pvIndicator.igTopAnchor),
                 pv.widthConstraint!
                 ])
         }
