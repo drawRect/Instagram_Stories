@@ -110,6 +110,11 @@ class IGScrollView: UIScrollView {
              print("Invalid File url\(snap.url)")
             return
         }
+        if let lastPlayedVideoView = subviews.filter({$0.tag == 12}).first {
+            if lastPlayedVideoView is IGVideoView {
+                (lastPlayedVideoView as! IGVideoView).playerView.stop()
+            }
+        }
         var child: IGXView!
         switch snap.kind {
         case .image:
@@ -119,6 +124,7 @@ class IGScrollView: UIScrollView {
         default:
             fatalError()
         }
+        child.tag = 12
         child.translatesAutoresizingMaskIntoConstraints = false
         children.append(child)
         addSubview(child)

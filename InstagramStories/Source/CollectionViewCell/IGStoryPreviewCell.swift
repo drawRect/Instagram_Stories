@@ -79,6 +79,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         didSet {
             switch direction {
             case .forward:
+                //Story.snps isEqualTo ScrollView.children
                 if snapIndex < story?.snapsCount ?? 0 {
                     if let snap = story?.snaps[snapIndex] {
                         scrollview.addChildView(with: snap)

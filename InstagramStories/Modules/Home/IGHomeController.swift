@@ -32,6 +32,11 @@ final class IGHomeController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = true
+        } else {
+            // Fallback on earlier versions
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
