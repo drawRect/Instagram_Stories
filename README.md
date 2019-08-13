@@ -20,6 +20,7 @@
 * Left tap and Right tap gestures to switch between snaps and stories
 * If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
 * Image caching handled using NSCache
+* Video caching handled in documents directory using FileManager.
 
 ## Usage
 * Open the project(InstagramStories) folder. You can find the Source folder inside.
