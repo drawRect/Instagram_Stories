@@ -3,37 +3,38 @@
 </p>
                                                                            
 <p align="center">
-    <img src="https://img.shields.io/badge/Swift-5.0-orange.svg" />
+     <img src="https://img.shields.io/cocoapods/l/BadgeSwift.svg?style=flat" />
+    <img src="https://img.shields.io/badge/language-Swift%205.0-orange.svg" />
+    <img src="https://img.shields.io/badge/platforms-iOS-cc9c00.svg" />
 </p>
 
 
-
-## Sample Screenshots
+## Screenshots
 <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-1.png" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="250" height="500">
 
 ## Features
 * Supports portrait orientation(only) in iPhone and all orientations in iPad.
 * Image Support
 * Video Support
-* Long Press pause and play
+* Long press pause and play
 * Manual swipe between stories
 * Left tap and Right tap gestures to switch between snaps and stories
 * If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
 * Image caching handled using NSCache
 * Video caching handled in documents directory using FileManager.
 
-## Usage
+## How To Use
 * Open the project(InstagramStories) folder. You can find the Source folder inside.
-* Drag and drop Source folder into your project.
-* In your project use same IGStoryPreviewController.
-* But don't change default code what we wrote inside IGStoryPreviewController. You can add code on top of that.
-* Also don't change CollectionView's custom cell. Use the same IGStoryPreviewCell.
+* Drag and drop **Source** folder into your project.
+* In your project use same **IGStoryPreviewController**.
+* But do not change default code what we have written inside IGStoryPreviewController. You can add code on top of that.
+* Also don nott change collectionView custom cell. Use the same **IGStoryPreviewCell**.
 * Because all the functionalities are handled in the IGStoryPreviewCell only.
 * If there is any issue or stuck somewhere on configuring Source folder on your project, please raise issues on github. We will reply back as soon as possible.
 
 ## Requirements
-* iOS 10 and above
-* Xcode 8 and above
+* iOS 10
+* Xcode 8
 
 ### Swift v4.2: https://github.com/drawRect/Instagram_Stories/tree/Swift-v4.2
 
