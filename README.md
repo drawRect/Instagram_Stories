@@ -28,7 +28,7 @@
 * Drag and drop **Source** folder into your project.
 * In your project use same **IGStoryPreviewController**.
 * But do not change default code what we have written inside IGStoryPreviewController. You can add code on top of that.
-* Also don nott change collectionView custom cell. Use the same **IGStoryPreviewCell**.
+* Also do not change collectionView custom cell. Use the same **IGStoryPreviewCell**.
 * Because all the functionalities are handled in the IGStoryPreviewCell only.
 * If there is any issue or stuck somewhere on configuring Source folder on your project, please raise issues on github. We will reply back as soon as possible.
 
