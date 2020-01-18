@@ -32,7 +32,6 @@ extension AppDelegate {
      func rootSceneSetup() {
         let nc = UINavigationController(rootViewController: IGHomeController())
         nc.navigationBar.isTranslucent = false
-        nc.navigationBar.barTintColor = .white
         window.rootViewController = nc
     }
 }

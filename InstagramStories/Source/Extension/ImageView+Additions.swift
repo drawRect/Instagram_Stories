@@ -17,11 +17,20 @@ extension UIImageView: IGImageRequestable {
         layer.masksToBounds = false
         if style == .rounded {
             layer.cornerRadius = frame.height/2
-            activityStyle = .white
+            if #available(iOS 13.0, *) {
+                activityStyle = .medium
+            }else {
+                activityStyle = .white
+            }
         } else if style == .squared {
             layer.cornerRadius = 0
-            activityStyle = .whiteLarge
+            if #available(iOS 13.0, *) {
+                activityStyle = .large
+            }else {
+                activityStyle = .whiteLarge
+            }
         }
+        
         clipsToBounds = true
         setImage(urlString: url) { (response) in
             if let completion = completion {
