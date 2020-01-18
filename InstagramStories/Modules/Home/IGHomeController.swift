@@ -8,7 +8,7 @@
 
 import UIKit
 
-let DEL_CACHE_ENABLED = false
+fileprivate let isClearCacheEnabled = true
 
 final class IGHomeController: UIViewController {
     
@@ -33,8 +33,8 @@ final class IGHomeController: UIViewController {
     override var navigationItem: UINavigationItem {
         let navigationItem = UINavigationItem()
         navigationItem.titleView = UIImageView(image: UIImage(named: "icInstaLogo"))
-        if DEL_CACHE_ENABLED {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Del.CACHE", style: .done, target: self, action: #selector(clearImageCache))
+        if isClearCacheEnabled {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear Cache", style: .done, target: self, action: #selector(clearImageCache))
             navigationItem.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
         }
         return navigationItem

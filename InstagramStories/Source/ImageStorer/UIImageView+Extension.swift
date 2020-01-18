@@ -61,7 +61,7 @@ extension UIImageView {
         if isActivityEnabled {
             var isActivityIndicatorFound = false
             DispatchQueue.main.async {
-                self.backgroundColor = IGTheme.redOrange
+                self.backgroundColor = .black
                 self.activityIndicator = UIActivityIndicatorView(style: self.activityStyle)
                 self.activityIndicator.translatesAutoresizingMaskIntoConstraints = false
                 if self.subviews.isEmpty {

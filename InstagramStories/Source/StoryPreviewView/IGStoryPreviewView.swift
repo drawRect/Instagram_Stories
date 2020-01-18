@@ -8,10 +8,19 @@
 
 import UIKit
 
+public enum IGLayoutType {
+    case cubic
+    var animator: LayoutAttributesAnimator {
+        switch self {
+        case .cubic:return CubeAttributesAnimator(perspective: -1/100, totalAngle: .pi/12)
+        }
+    }
+}
+
 class IGStoryPreviewView: UIView {
     
     //MARK:- iVars
-    var layoutType: layoutType?
+    var layoutType: IGLayoutType?
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType!.animator, true, 1, 1)
     lazy var snapsCollectionViewFlowLayout: AnimatedCollectionViewLayout = {
@@ -40,7 +49,7 @@ class IGStoryPreviewView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    convenience init(layoutType: layoutType) {
+    convenience init(layoutType: IGLayoutType) {
         self.init()
         self.layoutType = layoutType
         createUIElements()

@@ -8,14 +8,6 @@
 
 import UIKit
 
-public enum layoutType {
-    case cubic
-    var animator: LayoutAttributesAnimator {
-        switch self {
-        case .cubic:return CubeAttributesAnimator(perspective: -1/100, totalAngle: .pi/12)
-        }
-    }
-}
 /**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
  If Story.Starts -> Snap.Index(Captured|StartsWith.0)
  While Snap.done->Next.snap(continues)->done
@@ -33,7 +25,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     /** This index will help you simply iterate the story one by one*/
     private var nStoryIndex: Int = 0 //iteration(i+1)
     private var story_copy: IGStory?
-    private(set) var layoutType: layoutType
+    private(set) var layoutType: IGLayoutType
     
     private let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
@@ -91,7 +83,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
-    init(layout:layoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
+    init(layout:IGLayoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
