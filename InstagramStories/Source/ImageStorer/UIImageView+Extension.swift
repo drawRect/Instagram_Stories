@@ -15,8 +15,24 @@ extension UIImageView {
     //DataSource: UI-Level
     struct ActivityIndicator {
         static var isEnabled = false
-        static var style = UIActivityIndicatorView.Style.whiteLarge
-        static var view = UIActivityIndicatorView(style: .whiteLarge)
+        static var style = _style
+        static var view = _view
+        
+        static var _style: UIActivityIndicatorView.Style {
+            if #available(iOS 13.0, *) {
+                return .large
+            }else {
+                return .whiteLarge
+            }
+        }
+        
+        static var _view: UIActivityIndicatorView {
+            if #available(iOS 13.0, *) {
+                return UIActivityIndicatorView(style: .large)
+            }else {
+                return UIActivityIndicatorView(style: .whiteLarge)
+            }
+        }
     }
     
     //MARK: Public Vars
@@ -34,7 +50,11 @@ extension UIImageView {
     public var activityStyle: UIActivityIndicatorView.Style {
         get{
             guard let value = objc_getAssociatedObject(self, &ActivityIndicator.style) as? UIActivityIndicatorView.Style else {
-                return .whiteLarge
+                if #available(iOS 13.0, *) {
+                    return .large
+                }else {
+                    return .whiteLarge
+                }
             }
             return value
         }
@@ -45,7 +65,11 @@ extension UIImageView {
     public var activityIndicator: UIActivityIndicatorView {
         get {
             guard let value = objc_getAssociatedObject(self, &ActivityIndicator.view) as? UIActivityIndicatorView else {
-                return UIActivityIndicatorView(style: .whiteLarge)
+                if #available(iOS 13.0, *) {
+                    return UIActivityIndicatorView(style: .large)
+                }else {
+                    return UIActivityIndicatorView(style: .whiteLarge)
+                }
             }
             return value
         }

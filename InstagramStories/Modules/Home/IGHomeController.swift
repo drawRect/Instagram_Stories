@@ -35,7 +35,7 @@ final class IGHomeController: UIViewController {
         navigationItem.titleView = UIImageView(image: UIImage(named: "icInstaLogo"))
         if isClearCacheEnabled {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear Cache", style: .done, target: self, action: #selector(clearImageCache))
-            navigationItem.rightBarButtonItem?.tintColor = UIColor.init(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
+            navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
         }
         return navigationItem
     }
@@ -44,11 +44,13 @@ final class IGHomeController: UIViewController {
     @objc private func clearImageCache() {
         IGCache.shared.removeAllObjects()
         IGStories.removeAllVideoFilesFromCache()
+        showAlert(withMsg: "Images & Videos are deleted from cache")
     }
-    private func showAlert() {
-        let alertController = UIAlertController.init(title: "Try to implement your own functionality for Add Story", message: nil, preferredStyle: .alert)
+    
+    private func showAlert(withMsg: String) {
+        let alertController = UIAlertController(title: withMsg, message: nil, preferredStyle: .alert)
         present(alertController, animated: true) {
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3){
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.5){
                 alertController.dismiss(animated: true, completion: nil)
             }
         }
@@ -78,7 +80,7 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            showAlert()
+            showAlert(withMsg: "Try to implement your own functionality for 'Add Story'")
         }else {
             DispatchQueue.main.async {
                 if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {
