@@ -32,7 +32,6 @@ class IGImageView: IGXView {
                 switch result {
                     case .success(_):
                         strongSelf.contentState = .isLoaded
-                    //strongSelf.startProgressors()
                     case .failure(_):
                         strongSelf.contentState = .isFailed
                 }
