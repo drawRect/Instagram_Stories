@@ -12,7 +12,7 @@ protocol IGScrollViewDelegate {
     func clearLastPlayedSnaps(for snapIndex: Int)
     func resetSnapProgressors(for snapIndex: Int)
     func moveToPreviousStory()
-    func stopSnapProgressors(forAll snapIndex: Int)
+    func stopSnapProgressors(for snapIndex: Int)
     func pauseProgressView()
     func resumeProgressView()
     func didCompletePreview()
@@ -133,7 +133,7 @@ class IGScrollView: UIScrollView {
                 direction = .backward
                 if snapIndex >= 1 && snapIndex <= snapCount {
                     igScrollViewDelegate?.clearLastPlayedSnaps(for: n)
-                    igScrollViewDelegate?.stopSnapProgressors(forAll: n)
+                    igScrollViewDelegate?.stopSnapProgressors(for: n)
                     n -= 1
                     igScrollViewDelegate?.resetSnapProgressors(for: n)
                     willMoveToPreviousOrNextSnap(n: n)
@@ -143,7 +143,7 @@ class IGScrollView: UIScrollView {
             } else {
                 if snapIndex >= 0 && snapIndex <= snapCount {
                     //Stopping the current running progressors
-                    igScrollViewDelegate?.stopSnapProgressors(forAll: n)
+                    igScrollViewDelegate?.stopSnapProgressors(for: n)
                     direction = .forward
                     n += 1
                     willMoveToPreviousOrNextSnap(n: n)
