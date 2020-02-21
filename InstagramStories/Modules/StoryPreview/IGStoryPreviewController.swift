@@ -154,13 +154,15 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
             vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
-            if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
-                vCell.resumePlayer(with: vCell.story?.lastPlayedSnapIndex ?? 0)
-            }
+            //Commented for v2
+//            if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
+//                vCell.resumePlayer(with: vCell.story?.lastPlayedSnapIndex ?? 0)
+//            }
         }else {
-            if let cell = cell as? IGStoryPreviewCell {
-                cell.stopPlayer()
-            }
+            //Commented for v2
+//            if let cell = cell as? IGStoryPreviewCell {
+//                cell.stopPlayer()
+//            }
             vCell.startProgressors()
         }
         if vCellIndexPath.item == nStoryIndex {
@@ -210,7 +212,8 @@ extension IGStoryPreviewController {
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
         vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
-        vCell.pausePlayer(with: (vCell.story?.lastPlayedSnapIndex)!)
+        //Commented for v2
+        //vCell.pausePlayer(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
