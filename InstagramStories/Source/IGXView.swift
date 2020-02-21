@@ -62,9 +62,6 @@ class IGXView: UIView, IGXMisc {
     init(frame: CGRect, snap:IGSnap) {
         self.snap = snap
         super.init(frame: frame)
-//        defer {
-//            loadContent()
-//        }
     }
     
     required init?(coder aDecoder: NSCoder) {
