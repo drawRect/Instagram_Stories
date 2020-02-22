@@ -30,8 +30,9 @@ class IGXView: UIView, IGXMisc {
         case isLoading, isLoaded, isFailed
     }
     typealias CompletionHandler = (_ success:Bool) -> Void
-    var contentLoaded: CompletionHandler?
     
+    //MARK: iVars
+    var contentLoaded: CompletionHandler?
     lazy var retryBtn: UIButton = {
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         btn.backgroundColor = .white
@@ -41,7 +42,6 @@ class IGXView: UIView, IGXMisc {
         btn.addTarget(self, action: #selector(loadContent), for: .touchUpInside)
         return btn
     }()
-    
     let snap: IGSnap
     var contentState: ContentState = .isLoading {
         didSet {
@@ -65,15 +65,16 @@ class IGXView: UIView, IGXMisc {
         }
     }
     
+    //MARK: Init methods
     init(frame: CGRect, snap:IGSnap) {
         self.snap = snap
         super.init(frame: frame)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Internal methods
     @objc func loadContent() {
         //start request this image using sdwebimage using snap.url
         //start request this video using avplayer with contents of url

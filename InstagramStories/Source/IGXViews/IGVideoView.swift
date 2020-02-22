@@ -10,20 +10,26 @@ import UIKit
 
 class IGVideoView: IGXView {
     //Add your Video related stuff here
+    
+    //MARK: iVars
     lazy var videoView: IGPlayerView = {
         let videoView = IGPlayerView(frame: self.bounds)
         return videoView
     }()
+    var playerView: IGPlayerView {
+        return videoView
+    }
+    
+    //MARK: Init methods
     override init(frame: CGRect, snap: IGSnap) {
         super.init(frame: frame, snap: snap)
         self.addSubview(videoView)
     }
-    var playerView: IGPlayerView {
-        return videoView
-    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    //MARK: Internal methods
     @objc override func loadContent() {
         //start request this video using avplayer with contents of url
         videoView.startAnimating()
@@ -40,7 +46,6 @@ class IGVideoView: IGXView {
             }
         }
     }
-    
     func pauseVideo() {
         playerView.pause()
     }

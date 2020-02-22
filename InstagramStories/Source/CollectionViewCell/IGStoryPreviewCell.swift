@@ -124,159 +124,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             storyHeaderView.heightAnchor.constraint(equalToConstant: 80)
             ])
     }
- /*   private func createSnapView() -> UIImageView {
-        let snapView = UIImageView()
-        snapView.translatesAutoresizingMaskIntoConstraints = false
-        snapView.tag = snapIndex + snapViewTagIndicator
-        scrollview.addSubview(snapView)
-
-        // Setting constraints for snap view.
-        NSLayoutConstraint.activate([
-            snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
-            snapView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
-            snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
-            snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
-            scrollview.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
-            ])
-        return snapView
-    }
-    private func createSnapView(snap: IGSnap) -> IGSnapView {
-        scrollview.createSnapView(for: snap)
-
-        // Setting constraints for snap view.
-//        NSLayoutConstraint.activate([
-//            snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
-//            snapView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
-//            snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
-//            snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
-//            scrollview.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
-//        ])
-        //return snapView
-    }
-    private func getSnapview() -> UIImageView? {
-        if let imageView = scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first as? UIImageView {
-            return imageView
-        }
-        return nil
-    }*/
-    /*private func createVideoView() -> IGPlayerView {
-        let videoView = IGPlayerView()
-        videoView.translatesAutoresizingMaskIntoConstraints = false
-        videoView.tag = snapIndex + snapViewTagIndicator
-        videoView.playerObserverDelegate = self
-        scrollview.addSubview(videoView)
-        NSLayoutConstraint.activate([
-            videoView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
-            videoView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
-            videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
-            videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
-            scrollview.igBottomAnchor.constraint(equalTo: videoView.igBottomAnchor)
-            ])
-        return videoView
-    }
-    private func getVideoView(with index: Int) -> IGPlayerView? {
-        if let videoView = scrollview.subviews.filter({$0.tag == index + snapViewTagIndicator}).first as? IGPlayerView {
-            return videoView
-        }
-        return nil
-    }*/
-    
-    /*private func startRequest(snapView: UIImageView, with url: String) {
-        snapView.setImage(url: url, style: .squared) {[weak self] (result) in
-            guard let strongSelf = self else { return }
-            DispatchQueue.main.async {
-                switch result {
-                case .success(_):
-                    strongSelf.startProgressors()
-                case .failure(_):
-                    strongSelf.showRetryButton(with: url, for: snapView)
-                }
-            }
-        }
-    }*/
-
-    /*private func showRetryButton(with url: String, for snapView: UIImageView) {
-        self.retryBtn = IGRetryLoaderButton.init(withURL: url)
-        self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
-        self.retryBtn.delegate = self
-        self.isUserInteractionEnabled = true
-        snapView.addSubview(self.retryBtn)
-        NSLayoutConstraint.activate([
-            self.retryBtn.igCenterXAnchor.constraint(equalTo: snapView.igCenterXAnchor),
-            self.retryBtn.igCenterYAnchor.constraint(equalTo: snapView.igCenterYAnchor)
-            ])
-    }*/
-    /*private func startPlayer(videoView: IGPlayerView, with url: String) {
-        if scrollview.subviews.count > 0 {
-            if story?.isCompletelyVisible == true {
-                videoView.startAnimating()
-                IGVideoCacheManager.shared.getFile(for: url) { (result) in
-                    switch result {
-                    case .success(let url):
-                        let videoResource = VideoResource(filePath: url.absoluteString)
-                        videoView.play(with: videoResource)
-                    case .failure(let error):
-                        videoView.stopAnimating()
-                        debugPrint("Video error: \(error)")
-                    }
-                }
-            }
-        }
-    }*/
-    /*@objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .began || sender.state == .ended {
-            if sender.state == .began {
-                pauseEntireSnap()
-            }else {
-                resumeEntireSnap()
-            }
-        }
-    }
-    @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
-        let touchLocation = sender.location(ofTouch: 0, in: self.scrollview)
-        
-        if let snapCount = story?.snapsCount {
-            var n = snapIndex
-            /*!
-             * Based on the tap gesture(X) setting the direction to either forward or backward
-             */
-            if let snap = story?.snaps[n], snap.kind == .image, getSnapview()?.image == nil {
-                //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapview(), let btn = retryBtn, snapView.subviews.contains(btn) {
-                    snapView.removeRetryButton()
-                }
-                fillupLastPlayedSnap(n)
-            }else {
-                //Remove retry button if tap forward or backward if it exists
-                if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
-                    videoView.removeRetryButton()
-                }
-                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
-                    fillupLastPlayedSnap(n)
-                }
-            }
-            if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
-                direction = .backward
-                if snapIndex >= 1 && snapIndex <= snapCount {
-                    clearLastPlayedSnaps(n)
-                    stopSnapProgressors(with: n)
-                    n -= 1
-                    resetSnapProgressors(with: n)
-                    willMoveToPreviousOrNextSnap(n: n)
-                } else {
-                    delegate?.moveToPreviousStory()
-                }
-            } else {
-                if snapIndex >= 0 && snapIndex <= snapCount {
-                    //Stopping the current running progressors
-                    stopSnapProgressors(with: n)
-                    direction = .forward
-                    n += 1
-                    willMoveToPreviousOrNextSnap(n: n)
-                }
-            }
-        }
-    }*/
     @objc private func didEnterForeground() {
         startSnapProgress(with: snapIndex)
         if let snap = story?.snaps[snapIndex] {
@@ -347,7 +194,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             progressView.widthConstraint?.isActive = true
         }
     }
-    
     private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
         if let holderView = getProgressIndicatorView(with: snapIndex),
             let progressView = getProgressView(with: snapIndex){
@@ -406,6 +252,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                         }
                     })
                 }else {
+                    self.scrollview.children[scrollview.videoSnapIndex].igVideoView.contentState = .isFailed
                     debugPrint("Player error: Unable to play the video")
                 }
             }
@@ -430,6 +277,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
         fillupLastPlayedSnaps(index)
     }
+    
     //MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
         story?.isCompletelyVisible = true

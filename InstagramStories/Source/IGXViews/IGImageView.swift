@@ -10,19 +10,22 @@ import UIKit
 
 class IGImageView: IGXView {
     //Add your Image related stuff here
+    //MARK: iVars
     lazy var imageview: UIImageView = {
         let imageview = UIImageView(frame: self.bounds)
         return imageview
     }()
+    
+    //MARK: Init methods
     override init(frame: CGRect, snap: IGSnap) {
         super.init(frame: frame, snap: snap)
         self.addSubview(imageview)
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Internal methods
     @objc override func loadContent() {
         //start request this image using sdwebimage using snap.url
         self.contentState = .isLoading

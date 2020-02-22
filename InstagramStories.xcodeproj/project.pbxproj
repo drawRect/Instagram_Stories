@@ -240,6 +240,32 @@
 			path = Source;
 			sourceTree = "<group>";
 		};
+		4C70450F2401684A001BC5B5 /* IGScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				4C26CE2323FD943500AA029E /* IGScrollView.swift */,
+			);
+			path = IGScrollView;
+			sourceTree = "<group>";
+		};
+		4C70451024016882001BC5B5 /* IGSnapView */ = {
+			isa = PBXGroup;
+			children = (
+				4C26CE1B23FD90E900AA029E /* IGSnapView.swift */,
+			);
+			path = IGSnapView;
+			sourceTree = "<group>";
+		};
+		4C7045112401689B001BC5B5 /* IGXViews */ = {
+			isa = PBXGroup;
+			children = (
+				4C26CE1D23FD922E00AA029E /* IGXView.swift */,
+				4C26CE1F23FD92A100AA029E /* IGImageView.swift */,
+				4C26CE2123FD92AA00AA029E /* IGVideoView.swift */,
+			);
+			path = IGXViews;
+			sourceTree = "<group>";
+		};
 		9F57F37EDD8FC7D62F8C08A5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,15 +284,13 @@
 				D6287E3F223FC6660070E5FE /* Extension */,
 				D6287E48223FC67B0070E5FE /* Common */,
 				D6287E4F223FC68F0070E5FE /* Models */,
-				D6287E58223FC69B0070E5FE /* StoryHeaderView & ProgressView */,
-				D6287E37223FC2050070E5FE /* IGPlayerView */,
-				D65EC406225791D9000D01B6 /* StoryPreviewView */,
 				D6287E38223FC2440070E5FE /* CollectionViewCell */,
-				4C26CE1B23FD90E900AA029E /* IGSnapView.swift */,
-				4C26CE2323FD943500AA029E /* IGScrollView.swift */,
-				4C26CE1D23FD922E00AA029E /* IGXView.swift */,
-				4C26CE1F23FD92A100AA029E /* IGImageView.swift */,
-				4C26CE2123FD92AA00AA029E /* IGVideoView.swift */,
+				D6287E58223FC69B0070E5FE /* StoryHeaderView & ProgressView */,
+				D65EC406225791D9000D01B6 /* StoryPreviewView */,
+				4C70450F2401684A001BC5B5 /* IGScrollView */,
+				D6287E37223FC2050070E5FE /* IGPlayerView */,
+				4C70451024016882001BC5B5 /* IGSnapView */,
+				4C7045112401689B001BC5B5 /* IGXViews */,
 			);
 			path = Source;
 			sourceTree = "<group>";
