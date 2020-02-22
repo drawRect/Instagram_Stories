@@ -24,6 +24,8 @@ class IGSnapView: UIView {
     init(frame: CGRect, snap: IGSnap) {
         self.snap = snap
         super.init(frame: frame)
+        self.backgroundColor = .black
+        
         switch snap.kind {
         case .image:
             let contentView: IGXView = IGImageView(frame: frame, snap: snap)

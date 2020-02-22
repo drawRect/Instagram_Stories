@@ -35,6 +35,7 @@ class IGVideoView: IGXView {
                     strongSelf.videoView.play(with: videoResource)
                 case .failure(let error):
                     strongSelf.videoView.stopAnimating()
+                    strongSelf.contentState = .isFailed
                     debugPrint("Video error: \(error)")
             }
         }

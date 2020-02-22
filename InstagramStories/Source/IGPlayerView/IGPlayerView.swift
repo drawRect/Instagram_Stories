@@ -150,7 +150,7 @@ class IGPlayerView: UIView {
         activityIndicator.startAnimating()
     }
     func stopAnimating() {
-        activityIndicator.startAnimating()
+        activityIndicator.stopAnimating()
     }
     func removeObservers() {
         cleanUpPlayerPeriodicTimeObserver()

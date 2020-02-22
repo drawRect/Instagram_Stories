@@ -33,11 +33,13 @@ class IGXView: UIView, IGXMisc {
     var contentLoaded: CompletionHandler?
     
     lazy var retryBtn: UIButton = {
-        let bt = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
-        bt.setTitle("Re-try", for: .normal)
-        bt.center = center
-        bt.addTarget(self, action: #selector(loadContent), for: .touchUpInside)
-        return bt
+        let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
+        btn.backgroundColor = .white
+        btn.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.isUserInteractionEnabled = true
+        btn.addTarget(self, action: #selector(loadContent), for: .touchUpInside)
+        return btn
     }()
     
     let snap: IGSnap
@@ -55,6 +57,10 @@ class IGXView: UIView, IGXMisc {
                 case .isFailed:
                     hideLoader(color: UIColor.black.withAlphaComponent(0.2))//dimmed
                     addSubview(retryBtn)
+                    NSLayoutConstraint.activate([
+                        self.retryBtn.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
+                        self.retryBtn.igCenterYAnchor.constraint(equalTo: self.igCenterYAnchor)
+                    ])
             }
         }
     }
