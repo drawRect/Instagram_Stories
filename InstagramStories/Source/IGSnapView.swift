@@ -16,7 +16,7 @@ class IGSnapView: UIView {
     var igSnapViewDelegate: IGSnapViewDelegate?
     
     var igImageView: IGImageView {
-        return self.subviews.last as! IGImageView
+         return self.subviews.last as! IGImageView
     }
     var igVideoView: IGVideoView {
         return self.subviews.last as! IGVideoView

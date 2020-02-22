@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0748617B1F9D4D0900C1AC1F /* InstagramStoriesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */; };
-		078E413D1F61E86500222191 /* stories_backup.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories_backup.json */; };
+		078E413D1F61E86500222191 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
@@ -31,7 +31,6 @@
 		4C26CE2023FD92A100AA029E /* IGImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C26CE1F23FD92A100AA029E /* IGImageView.swift */; };
 		4C26CE2223FD92AA00AA029E /* IGVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C26CE2123FD92AA00AA029E /* IGVideoView.swift */; };
 		4C26CE2423FD943500AA029E /* IGScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C26CE2323FD943500AA029E /* IGScrollView.swift */; };
-		4C26CE2623FDA7CD00AA029E /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 4C26CE2523FDA7CD00AA029E /* stories.json */; };
 		7951B195225F70F300DA5688 /* IGRoundedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7951B194225F70F300DA5688 /* IGRoundedView.swift */; };
 		D6287E3B223FC6320070E5FE /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E3A223FC6320070E5FE /* Reachability.swift */; };
 		D6287E3E223FC6420070E5FE /* IGMockLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6287E3D223FC6420070E5FE /* IGMockLoader.swift */; };
@@ -57,7 +56,7 @@
 		D65EC3FD22539E65000D01B6 /* IGImageRequestable.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FC22539E65000D01B6 /* IGImageRequestable.swift */; };
 		D65EC3FF22539ED7000D01B6 /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = D65EC3FE22539ED7000D01B6 /* UIImageView+Extension.swift */; };
 		D6910FDE22EADD61001727D9 /* IGVideoCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6910FDD22EADD61001727D9 /* IGVideoCacheManager.swift */; };
-		D6AD6904227C5FD800A160DE /* stories_backup.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories_backup.json */; };
+		D6AD6904227C5FD800A160DE /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
 		D6D240AA22520755008C0738 /* IGCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6D240A922520755008C0738 /* IGCache.swift */; };
 /* End PBXBuildFile section */
 
@@ -75,7 +74,7 @@
 		074861781F9D4D0900C1AC1F /* InstagramStoriesTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InstagramStoriesTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0748617A1F9D4D0900C1AC1F /* InstagramStoriesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstagramStoriesTests.swift; sourceTree = "<group>"; };
 		0748617C1F9D4D0900C1AC1F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		078E413C1F61E86500222191 /* stories_backup.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stories_backup.json; sourceTree = "<group>"; };
+		078E413C1F61E86500222191 /* stories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stories.json; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -100,7 +99,6 @@
 		4C26CE1F23FD92A100AA029E /* IGImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGImageView.swift; sourceTree = "<group>"; };
 		4C26CE2123FD92AA00AA029E /* IGVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGVideoView.swift; sourceTree = "<group>"; };
 		4C26CE2323FD943500AA029E /* IGScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IGScrollView.swift; sourceTree = "<group>"; };
-		4C26CE2523FDA7CD00AA029E /* stories.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = stories.json; sourceTree = "<group>"; };
 		7951B194225F70F300DA5688 /* IGRoundedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGRoundedView.swift; sourceTree = "<group>"; };
 		D6287E3A223FC6320070E5FE /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		D6287E3D223FC6420070E5FE /* IGMockLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IGMockLoader.swift; sourceTree = "<group>"; };
@@ -189,8 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				07FDECE21F5FD9BA004BC833 /* Info.plist */,
-				078E413C1F61E86500222191 /* stories_backup.json */,
-				4C26CE2523FDA7CD00AA029E /* stories.json */,
+				078E413C1F61E86500222191 /* stories.json */,
 				4C1AA56822963F2E0008F327 /* IGAppUtility.swift */,
 				07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */,
 				07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */,
@@ -478,7 +475,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6AD6904227C5FD800A160DE /* stories_backup.json in Resources */,
+				D6AD6904227C5FD800A160DE /* stories.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,9 +484,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */,
-				078E413D1F61E86500222191 /* stories_backup.json in Resources */,
+				078E413D1F61E86500222191 /* stories.json in Resources */,
 				4C1E29D722316F6F0070FD27 /* README.md in Resources */,
-				4C26CE2623FDA7CD00AA029E /* stories.json in Resources */,
 				4C1E29CB22316F6F0070FD27 /* LICENSE in Resources */,
 				07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */,
 			);

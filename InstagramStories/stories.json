@@ -9,7 +9,7 @@
                 "name": "Terasa",
                 "picture": "https://randomuser.me/api/portraits/med/women/1.jpg"
             },
-            "snaps_count": 3,
+            "snaps_count": 6,
             "snaps": [
                 {
                     "id": "c1",
@@ -19,15 +19,33 @@
                 },
                 {
                     "id": "c2",
+                    "mime_type": "video",
+                    "url": "http://d2.funnymp4.net/files/sfd10/4988/Some%20Friendships%20Are%20Truly%20Unusual(funnymp4.net).mp4",
+                    "last_updated": "11h"
+                },
+                {
+                    "id": "c3",
                     "mime_type": "image",
                     "url": "https://i.pinimg.com/736x/a1/d4/ea/a1d4ea964c62603ec20acd16eb0e5c85.jpg",
                     "last_updated": "10h"
                 },
                 {
-                    "id": "c3",
+                    "id": "c4",
+                    "mime_type": "video",
+                    "url": "http://d2.funnymp4.net/files/sfd7/3486/Very%20Funny%20Hyderabadi%20Zoozoos%20-%20Hahaha(funnymp4.net).mp4",
+                    "last_updated": "9h"
+                },
+                {
+                    "id": "c5",
                     "mime_type": "image",
                     "url": "https://iphonehdwallpapers.net/wp-content/cache/76354cd2fcd65995a5f866f6bbb9ad0c_w324_h576_sc.jpg",
                     "last_updated": "7h"
+                },
+                {
+                    "id": "c6",
+                    "mime_type": "video",
+                    "url": "http://d2.funnymp4.net/files/sfd4/1549/Cute%20Christmas%20Cartoon(funnymp4.net).mp4",
+                    "last_updated": "6h"
                 }
             ]
         },
@@ -39,14 +57,25 @@
                 "name": "Nicky",
                 "picture": "https://randomuser.me/api/portraits/med/women/2.jpg"
             },
-            "snaps_count": 4,
+            "snaps_count": 6,
             "snaps": [
-                
+                {
+                    "id": "c8",
+                    "mime_type": "video",
+                    "url": "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                    "last_updated": "1m"
+                },
                 {
                     "id": "c9",
                     "mime_type": "image",
                     "url": "https://static1.squarespace.com/static/5397b451e4b07f25d1682866/5643b980e4b0eaf052b84a23/5643b983e4b00c09aadce12d/1447278987246/Apple-iPhone-5-5s-Wallpaper-Good-Dino-3.jpg",
                     "last_updated": "1m"
+                },
+                {
+                    "id": "c10",
+                    "mime_type": "video",
+                    "url": "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+                    "last_updated": "6h"
                 },
                 {
                     "id": "c11",
@@ -143,4 +172,3 @@
             
         }]
 }
-
