@@ -19,6 +19,7 @@ extension UIImageView: IGImageRequestable {
             layer.cornerRadius = frame.height/2
             if #available(iOS 13.0, *) {
                 activityStyle = .medium
+                activityIndicator.color = .white
             }else {
                 activityStyle = .white
             }
@@ -26,6 +27,7 @@ extension UIImageView: IGImageRequestable {
             layer.cornerRadius = 0
             if #available(iOS 13.0, *) {
                 activityStyle = .large
+                activityIndicator.color = .white
             }else {
                 activityStyle = .whiteLarge
             }

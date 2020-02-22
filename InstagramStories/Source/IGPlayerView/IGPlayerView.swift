@@ -109,6 +109,7 @@ class IGPlayerView: UIView {
     override init(frame: CGRect) {
         if #available(iOS 13.0, *) {
             activityIndicator = UIActivityIndicatorView(style: .large)
+            activityIndicator.color = .white
         }else {
             activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         }
@@ -119,6 +120,7 @@ class IGPlayerView: UIView {
     required init?(coder aDecoder: NSCoder) {
         if #available(iOS 13.0, *) {
             activityIndicator = UIActivityIndicatorView(style: .large)
+            activityIndicator.color = .white
         }else {
             activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         }
