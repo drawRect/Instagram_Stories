@@ -484,25 +484,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         scrollview.children[sIndex].igVideoView.playerView.pause()
     }
     public func stopPlayer() {
-        let videoView = scrollview.children[scrollview.snapIndex].igVideoView.playerView
-        if videoView.player?.timeControlStatus != .playing {
-            videoView.player?.replaceCurrentItem(with: nil)
+        if(scrollview.videoSnapIndex < scrollview.children.count) {
+            let videoView = scrollview.children[scrollview.videoSnapIndex].igVideoView.playerView
+            if videoView.player?.timeControlStatus != .playing {
+                videoView.player?.replaceCurrentItem(with: nil)
+            }
+            videoView.stop()
         }
-        videoView.stop()
     }
     public func resumePlayer(with sIndex: Int) {
        scrollview.children[sIndex].igVideoView.playerView.play()
     }
-    //Used the below function for image retry option
-    /*public func retryRequest(view: UIView, with url: String) {
-        if let v = view as? UIImageView {
-            v.removeRetryButton()
-            self.startRequest(snapView: v, with: url)
-        }else if let v = view as? IGPlayerView {
-            v.removeRetryButton()
-            self.startPlayer(videoView: v, with: url)
-        }
-    }*/
 }
 
 //MARK: - Extension|StoryPreviewHeaderProtocol
@@ -511,13 +503,6 @@ extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
         delegate?.didTapCloseButton()
     }
 }
-
-/*//MARK: - Extension|RetryBtnDelegate
-extension IGStoryPreviewCell: RetryBtnDelegate {
-    func retryButtonTapped() {
-        self.retryRequest(view: retryBtn.superview!, with: retryBtn.contentURL!)
-    }
-}*/
 
 extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
