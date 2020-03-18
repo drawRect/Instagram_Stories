@@ -107,21 +107,13 @@ class IGPlayerView: UIView {
     
     //MARK:- Init methods
     override init(frame: CGRect) {
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .large)
-        }else {
-            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-        }
+        activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         super.init(frame: frame)
         setupActivityIndicator()
     }
     required init?(coder aDecoder: NSCoder) {
-        if #available(iOS 13.0, *) {
-            activityIndicator = UIActivityIndicatorView(style: .large)
-        }else {
-            activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
-        }
+        activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         super.init(coder: aDecoder)
         setupActivityIndicator()
     }
