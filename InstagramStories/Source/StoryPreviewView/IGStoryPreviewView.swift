@@ -18,11 +18,10 @@ public enum IGLayoutType {
 }
 
 class IGStoryPreviewView: UIView {
-    
-    //MARK:- iVars
-    var layoutType: IGLayoutType?
+    // MARK: iVars
+    var layoutType: IGLayoutType!
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
-    lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType!.animator, true, 1, 1)
+    lazy var layoutAnimator: (LayoutAttributesAnimator, Bool) = (layoutType.animator, true)
     lazy var snapsCollectionViewFlowLayout: AnimatedCollectionViewLayout = {
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
@@ -32,20 +31,25 @@ class IGStoryPreviewView: UIView {
         flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         return flowLayout
     }()
-    lazy var snapsCollectionView: UICollectionView! = {
-        let cv = UICollectionView.init(frame: CGRect(x: 0,y: 0,width: UIScreen.main.bounds.width,height:  UIScreen.main.bounds.height), collectionViewLayout: snapsCollectionViewFlowLayout)
-        cv.backgroundColor = .black
-        cv.showsVerticalScrollIndicator = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.isPagingEnabled = true
-        cv.isPrefetchingEnabled = false
-        cv.collectionViewLayout = snapsCollectionViewFlowLayout
-        return cv
+    lazy var snapsCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: CGRect(
+                x: 0,
+                y: 0,
+                width: IGScreen.width,
+                height: IGScreen.height
+        ), collectionViewLayout: snapsCollectionViewFlowLayout)
+        collectionView.backgroundColor = .black
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isPagingEnabled = true
+        collectionView.isPrefetchingEnabled = false
+        collectionView.collectionViewLayout = snapsCollectionViewFlowLayout
+        return collectionView
     }()
-    
-    //MARK:- Overridden functions
+    // MARK: Overridden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
@@ -58,13 +62,12 @@ class IGStoryPreviewView: UIView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    //MARK: - Private functions
-    private func createUIElements(){
+    // MARK: Private functions
+    private func createUIElements() {
         backgroundColor = .black
         addSubview(snapsCollectionView)
     }
-    private func installLayoutConstraints(){
+    private func installLayoutConstraints() {
         //Setting constraints for snapsCollectionview
         NSLayoutConstraint.activate([
             igLeftAnchor.constraint(equalTo: snapsCollectionView.igLeftAnchor),

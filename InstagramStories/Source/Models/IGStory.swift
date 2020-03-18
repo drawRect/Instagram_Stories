@@ -17,7 +17,6 @@ public class IGStory: Codable {
     var lastPlayedSnapIndex = 0
     var isCompletelyVisible = false
     var isCancelledAbruptly = false
-    
     enum CodingKeys: String, CodingKey {
         case snapsCount = "snaps_count"
         case snaps = "snaps"

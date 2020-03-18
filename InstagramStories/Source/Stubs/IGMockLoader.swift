@@ -23,17 +23,25 @@ enum MockLoaderError: Error, CustomStringConvertible {
 
 struct IGMockLoader {
     //@Note:XCTestCase will go for differnt set of bundle
-    static func loadMockFile(named fileName:String,bundle:Bundle = .main) throws -> IGStories {
-        guard let url = bundle.url(forResource: fileName, withExtension: nil) else {throw MockLoaderError.invalidFileName(fileName)}
+    static func loadMockFile(named fileName: String, bundle: Bundle = .main) throws -> IGStories {
+        guard let url = bundle.url(
+            forResource: fileName,
+            withExtension: nil
+            ) else {
+                throw MockLoaderError.invalidFileName(fileName)
+            }
         do {
-            let data = try Data.init(contentsOf: url)
-            if let _ = try JSONSerialization.jsonObject(with: data as Data, options: .allowFragments) as? [String:Any] {
+            let data = try Data(contentsOf: url)
+            if try JSONSerialization.jsonObject(
+                with: data as Data,
+                options: .allowFragments
+                ) as? [String: Any] != nil {
                 let stories = try JSONDecoder().decode(IGStories.self, from: data)
                 return stories
-            }else {
+            } else {
                 throw MockLoaderError.invalidFileURL(url)
             }
-        }catch {
+        } catch {
             throw MockLoaderError.invalidJSON(fileName)
         }
     }

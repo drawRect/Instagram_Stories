@@ -9,7 +9,7 @@
 import UIKit
 
 extension UIView {
-    private var _safeAreaLayoutGuide: UILayoutGuide? {
+    private var safeAreaLG: UILayoutGuide? {
         if #available(iOS 11.0, *) {
             return self.safeAreaLayoutGuide
         }
@@ -18,37 +18,28 @@ extension UIView {
 }
 
 extension UIView {
-    
     var igLeftAnchor: NSLayoutXAxisAnchor {
-        return _safeAreaLayoutGuide?.leftAnchor ?? leftAnchor
+        return safeAreaLG?.leftAnchor ?? leftAnchor
     }
-    
     var igRightAnchor: NSLayoutXAxisAnchor {
-        return _safeAreaLayoutGuide?.rightAnchor ?? rightAnchor
+        return safeAreaLG?.rightAnchor ?? rightAnchor
     }
-    
     var igTopAnchor: NSLayoutYAxisAnchor {
-        return _safeAreaLayoutGuide?.topAnchor ?? topAnchor
+        return safeAreaLG?.topAnchor ?? topAnchor
     }
-    
     var igBottomAnchor: NSLayoutYAxisAnchor {
-        return _safeAreaLayoutGuide?.bottomAnchor ?? bottomAnchor
+        return safeAreaLG?.bottomAnchor ?? bottomAnchor
     }
-    
     var igCenterXAnchor: NSLayoutXAxisAnchor {
-        return _safeAreaLayoutGuide?.centerXAnchor ?? centerXAnchor
+        return safeAreaLG?.centerXAnchor ?? centerXAnchor
     }
-    
     var igCenterYAnchor: NSLayoutYAxisAnchor {
-        return _safeAreaLayoutGuide?.centerYAnchor ?? centerYAnchor
+        return safeAreaLG?.centerYAnchor ?? centerYAnchor
     }
-    
     var igWidth: CGFloat {
-        return _safeAreaLayoutGuide?.layoutFrame.width ?? frame.width
+        return safeAreaLG?.layoutFrame.width ?? frame.width
     }
-    
     var igHeight: CGFloat {
-        return _safeAreaLayoutGuide?.layoutFrame.height ?? frame.height
+        return safeAreaLG?.layoutFrame.height ?? frame.height
     }
-    
 }

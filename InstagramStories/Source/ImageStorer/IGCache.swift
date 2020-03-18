@@ -1,5 +1,5 @@
 //
-//  ImageCache.swift
+//  IGCache.swift
 //  InstagramStories
 //
 //  Created by Boominadha Prakash on 01/04/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-fileprivate let ONE_HUNDRED_MEGABYTES = 1024 * 1024 * 100
+private let oneHundredMegaBytes = 1024 * 1024 * 100
 
 class IGCache: NSCache<AnyObject, AnyObject> {
     static let shared = IGCache()
@@ -19,7 +19,7 @@ class IGCache: NSCache<AnyObject, AnyObject> {
 }
 
 extension IGCache {
-    func setMaximumLimit(size: Int = ONE_HUNDRED_MEGABYTES) {
+    func setMaximumLimit(size: Int = oneHundredMegaBytes) {
         totalCostLimit = size
     }
 }

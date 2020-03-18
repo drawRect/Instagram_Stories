@@ -6,6 +6,8 @@
 //  Copyright © 2017 Uthoft. All rights reserved.
 //
 
+// swiftlint:disable all
+
 import UIKit
 
 public protocol LayoutAttributesAnimator {

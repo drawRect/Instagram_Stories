@@ -40,8 +40,7 @@ protocol PlayerControls: class {
 }
 
 class IGPlayerView: UIView {
-    
-    //MARK: - Private Vars
+    // MARK: Private Vars
     private var timeObserverToken: AnyObject?
     private var playerItemStatusObserver: NSKeyValueObservation?
     private var playerTimeControlStatusObserver: NSKeyValueObservation?
@@ -54,12 +53,20 @@ class IGPlayerView: UIView {
         }
         didSet {
             player?.replaceCurrentItem(with: playerItem)
-            playerItemStatusObserver = playerItem?.observe(\AVPlayerItem.status, options: [.new, .initial], changeHandler: { [weak self] (item, _) in
+            playerItemStatusObserver = playerItem?.observe(
+                \AVPlayerItem.status,
+                options: [.new, .initial],
+                changeHandler: { [weak self] (item, _) in
                 guard let strongSelf = self else { return }
                 if item.status == .failed {
                     strongSelf.activityIndicator.stopAnimating()
-                    if let item = strongSelf.player?.currentItem, let error = item.error, let url = item.asset as? AVURLAsset {
-                        strongSelf.playerObserverDelegate?.didFailed(withError: error.localizedDescription, for: url.url)
+                    if let item = strongSelf.player?.currentItem,
+                        let error = item.error,
+                        let url = item.asset as? AVURLAsset {
+                        strongSelf.playerObserverDelegate?.didFailed(
+                            withError: error.localizedDescription,
+                            for: url.url
+                        )
                     } else {
                         strongSelf.playerObserverDelegate?.didFailed(withError: "Unknown error", for: nil)
                     }
@@ -67,8 +74,7 @@ class IGPlayerView: UIView {
             })
         }
     }
-    
-    //MARK: - iVars
+    // MARK: iVars
     var player: AVPlayer? {
         willSet {
             // Remove any previous KVO observer.
@@ -76,7 +82,10 @@ class IGPlayerView: UIView {
             playerTimeControlStatusObserver.invalidate()
         }
         didSet {
-            playerTimeControlStatusObserver = player?.observe(\AVPlayer.timeControlStatus, options: [.new, .initial], changeHandler: { [weak self] (player, _) in
+            playerTimeControlStatusObserver = player?.observe(
+                \AVPlayer.timeControlStatus,
+                options: [.new, .initial],
+                changeHandler: { [weak self] (player, _) in
                 guard let strongSelf = self else { return }
                 if player.timeControlStatus == .playing {
                     //Started Playing
@@ -94,23 +103,20 @@ class IGPlayerView: UIView {
         return player?.currentItem?.error
     }
     var activityIndicator: UIActivityIndicatorView!
-    
     var currentItem: AVPlayerItem? {
         return player?.currentItem
     }
     var currentTime: Float {
         return Float(self.player?.currentTime().value ?? 0)
     }
-    
-    //MARK: - Public Vars
+    // MARK: Public Vars
     public weak var playerObserverDelegate: IGPlayerObserver?
-    
-    //MARK:- Init methods
+    // MARK: Init methods
     override init(frame: CGRect) {
         if #available(iOS 13.0, *) {
             activityIndicator = UIActivityIndicatorView(style: .large)
             activityIndicator.color = .white
-        }else {
+        } else {
             activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         }
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -121,7 +127,7 @@ class IGPlayerView: UIView {
         if #available(iOS 13.0, *) {
             activityIndicator = UIActivityIndicatorView(style: .large)
             activityIndicator.color = .white
-        }else {
+        } else {
             activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
         }
         super.init(coder: aDecoder)
@@ -135,7 +141,6 @@ class IGPlayerView: UIView {
             removeObservers()
         }
     }
-    
     // MARK: - Internal methods
     func setupActivityIndicator() {
         activityIndicator.hidesWhenStopped = true
@@ -166,11 +171,11 @@ class IGPlayerView: UIView {
     func setupPlayerPeriodicTimeObserver() {
         // Only add the time observer if one hasn't been created yet.
         guard timeObserverToken == nil else { return }
-        
         // Use a weak self variable to avoid a retain cycle in the block.
         timeObserverToken =
-            player?.addPeriodicTimeObserver(forInterval: CMTimeMake(value: 1, timescale: 100), queue: DispatchQueue.main) {
-                [weak self] time in
+            player?.addPeriodicTimeObserver(
+            forInterval: CMTimeMake(value: 1, timescale: 100),
+            queue: .main) { [weak self] time in
                 let timeString = String(format: "%02.2f", CMTimeGetSeconds(time))
                 if let currentItem = self?.player?.currentItem {
                     let totalTimeString =  String(format: "%02.2f", CMTimeGetSeconds(currentItem.asset.duration))
@@ -187,10 +192,10 @@ class IGPlayerView: UIView {
 
 // MARK: - Protocol | PlayerControls
 extension IGPlayerView: PlayerControls {
-    
     func play(with resource: VideoResource) {
-        
-        guard let url = URL(string: resource.filePath) else {fatalError("Unable to form URL from resource")}
+        guard let url = URL(string: resource.filePath) else {
+            fatalError("Unable to form URL from resource")
+        }
         if let existingPlayer = player {
             DispatchQueue.main.async { [weak self] in
                 guard let strongSelf = self else { return }
@@ -227,8 +232,8 @@ extension IGPlayerView: PlayerControls {
             DispatchQueue.main.async {[weak self] in
                 guard let strongSelf = self else { return }
                 existingPlayer.pause()
-                
-                //Remove observer if observer presents before setting player to nil
+                //Remove observer if observer presents
+                //before setting player to nil
                 if existingPlayer.observationInfo != nil {
                     strongSelf.removeObservers()
                 }
@@ -242,15 +247,14 @@ extension IGPlayerView: PlayerControls {
         }
     }
     var playerStatus: PlayerStatus {
-        if let p = player {
-            switch p.status {
-            case .unknown: return .unknown
-            case .readyToPlay: return .readyToPlay
-            case .failed: return .failed
-            @unknown default:
-                return .unknown
-            }
+        guard let player = player else {
+            return .unknown
         }
-        return .unknown
+        switch player.status {
+        case .unknown: return .unknown
+        case .readyToPlay: return .readyToPlay
+        case .failed: return .failed
+        @unknown default: return .unknown
+        }
     }
 }

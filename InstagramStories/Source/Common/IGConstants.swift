@@ -13,7 +13,6 @@ public struct IGScreen {
     static let width = UIScreen.main.bounds.width
     /**UIScreen.main.bounds.height*/
     static let height = UIScreen.main.bounds.height
-    
     private init() {}
 }
 
@@ -22,6 +21,5 @@ public struct IGScreen {
 public struct IGTheme {
     //Instagram Red Orange
     static let redOrange = UIColor(rgb: 0xe95950)
-    
     private init() {}
 }

@@ -17,21 +17,20 @@ extension IGXMisc where Self: IGXView {
     func showLoader(color: UIColor = .black) {
         backgroundColor = color
     }
-    
     func hideLoader(color: UIColor = .clear) {
         backgroundColor = color
     }
 }
 
 //This class can act as Person class
-//ScrollView children should have Parent class of IGXView but the instance is based on the MIME Type whether it is a IGImageView or IGPlayerView
+//ScrollView children should have Parent class of IGXView
+//but the instance is based on the MIME Type whether it is a IGImageView or IGPlayerView
 class IGXView: UIView, IGXMisc {
     enum ContentState {
         case isLoading, isLoaded, isFailed
     }
-    typealias CompletionHandler = (_ success:Bool) -> Void
-    
-    //MARK: iVars
+    typealias CompletionHandler = (_ success: Bool) -> Void
+    // MARK: iVars
     var contentLoaded: CompletionHandler?
     lazy var retryBtn: UIButton = {
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
@@ -46,15 +45,15 @@ class IGXView: UIView, IGXMisc {
     var contentState: ContentState = .isLoading {
         didSet {
             switch contentState {
-                case .isLoading:
+            case .isLoading:
                     showLoader()
-                case .isLoaded:
+            case .isLoaded:
                     hideLoader()
                     //Implement remove retryButton code
-                    if(contentLoaded != nil) {
+                    if contentLoaded != nil {
                         contentLoaded!(true)
                 }
-                case .isFailed:
+            case .isFailed:
                     hideLoader(color: UIColor.black.withAlphaComponent(0.2))//dimmed
                     addSubview(retryBtn)
                     NSLayoutConstraint.activate([
@@ -64,17 +63,15 @@ class IGXView: UIView, IGXMisc {
             }
         }
     }
-    
-    //MARK: Init methods
-    init(frame: CGRect, snap:IGSnap) {
+    // MARK: Init methods
+    init(frame: CGRect, snap: IGSnap) {
         self.snap = snap
         super.init(frame: frame)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: Internal methods
+    // MARK: Internal methods
     @objc func loadContent() {
         //start request this image using sdwebimage using snap.url
         //start request this video using avplayer with contents of url

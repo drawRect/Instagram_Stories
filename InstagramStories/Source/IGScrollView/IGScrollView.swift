@@ -6,7 +6,9 @@
 //  Copyright © 2020 DrawRect. All rights reserved.
 //
 
-protocol IGScrollViewDelegate {
+import UIKit
+
+protocol IGScrollViewDelegate: class {
     func updateStoryHeaderView(for snap: IGSnap)
     func fillLastPlayedSnap(for snapIndex: Int)
     func clearLastPlayedSnaps(for snapIndex: Int)
@@ -19,55 +21,58 @@ protocol IGScrollViewDelegate {
     func contentLoaded()
     func startPlayerProgressor(for videoView: IGPlayerView)
 }
-import UIKit
 
-//We have to create our own freezed scrollview. I mean when asking the scrollview it should give me the scrollview with all the settings which are sealed(ie.Gestures are long press and tap, and other settings)
-//Nobody can create this scrollview without sealed settings, but they can override the properties and update their values repectively
+/*(We have to create our own freezed scrollview.
+I mean when asking the scrollview it should give me the scrollview
+ with all the settings which are sealed(ie.Gestures are long press and tap,
+ and other settings)
+Nobody can create this scrollview without sealed settings,
+ but they can override the properties and update their values repectively */
 
 //There is no direct dealing between IGSnapview vs Cell.
 class IGScrollView: UIScrollView {
     enum Direction {
-        case forward,backward
+        case forward, backward
     }
-    
-    //MARK: Private Vars
+    // MARK: Private Vars
     private var previousSnapIndex: Int {
         return snapIndex - 1
     }
     private lazy var guestureRecognisers: [UIGestureRecognizer] = {
-        let lp = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
-        lp.minimumPressDuration = 0.2//hardcoded :(
-        let tg = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
-        tg.numberOfTapsRequired = 1//hardcoded :(
-        return [lp,tg]
+        let lpGesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        lpGesture.minimumPressDuration = 0.2//hardcoded :(
+        let tpGesture = UITapGestureRecognizer(target: self, action: #selector(didTap(_:)))
+        tpGesture.numberOfTapsRequired = 1//hardcoded :(
+        return [lpGesture, tpGesture]
     }()
-    
-    //MARK: iVars
+    // MARK: iVars
     var story: IGStory?
-    var igScrollViewDelegate: IGScrollViewDelegate?
+    weak var igScrollViewDelegate: IGScrollViewDelegate?
     var direction: Direction = .forward
-    //The below var is replacement of subviews. anyone can add subview in scrollview. but children is blueprint of our requirement. it can have our babies only. :P
-    var children: [IGSnapView] = [] //if you want respective child using index, you can directly get it (we are avoiding subviews explicitly)
+    //The below var is replacement of subviews.
+    //anyone can add subview in scrollview. but children is blueprint
+    //of our requirement. it can have our babies only. :P
+    var children: [IGSnapView] = [] //if you want respective child using index,
+    //you can directly get it (we are avoiding subviews explicitly)
     var videoSnapIndex = 0
     var snapIndex: Int = 0 {
         didSet {
             self.isUserInteractionEnabled = true
             switch direction {
-                case .forward:
+            case .forward:
                     if snapIndex < story?.snapsCount ?? 0 {
                         if let snap = story?.snaps[snapIndex] {
                             if snap.kind == MimeType.image {
                                 if let snapView = getSnapview(snapIndex: snapIndex) {
-                                    snapView.igImageView.loadContent()
+                                    snapView.igImageView?.loadContent()
                                 } else {
                                     let snapView = createSnapView(for: snap)
-                                    snapView.igImageView.loadContent()
+                                    snapView.igImageView?.loadContent()
                                 }
-                            }
-                            else {
+                            } else {
                                 if let videoView = getSnapview(snapIndex: snapIndex) {
                                     startPlayer(videoView: videoView)
-                                }else {
+                                } else {
                                     let videoView = createVideoView(for: snap)
                                     startPlayer(videoView: videoView)
                                 }
@@ -75,18 +80,17 @@ class IGScrollView: UIScrollView {
                             igScrollViewDelegate?.updateStoryHeaderView(for: snap)
                         }
                 }
-                case .backward:
+            case .backward:
                     if snapIndex < story?.snapsCount ?? 0 {
                         if let snap = story?.snaps[snapIndex] {
                             if snap.kind != MimeType.video {
                                 if let snapView = getSnapview(snapIndex: snapIndex) {
-                                    snapView.igImageView.loadContent()
+                                    snapView.igImageView?.loadContent()
                                 }
-                            }
-                            else {
+                            } else {
                                 if let videoView = getSnapview(snapIndex: snapIndex) {
                                     startPlayer(videoView: videoView)
-                                }else {
+                                } else {
                                     let videoView = createVideoView(for: snap)
                                     startPlayer(videoView: videoView)
                                 }
@@ -97,8 +101,7 @@ class IGScrollView: UIScrollView {
             }
         }
     }
-    
-    //MARK: init methods
+    // MARK: init methods
     override init(frame: CGRect) {
         super.init(frame: frame)
         showsVerticalScrollIndicator = false
@@ -108,75 +111,74 @@ class IGScrollView: UIScrollView {
         backgroundColor = .black
         gestureRecognizers = guestureRecognisers
     }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: Private methods
+    // MARK: Private methods
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         if sender.state == .began || sender.state == .ended {
             if sender.state == .began {
                 pauseEntireSnap()
-            }else {
+            } else {
                 resumeEntireSnap()
             }
         }
     }
     @objc private func didTap(_ sender: UITapGestureRecognizer) {
         let touchLocation = sender.location(ofTouch: 0, in: self)
-        
         if let snapCount = story?.snapsCount {
-            var n = snapIndex
+            var snapIndexCopy = snapIndex
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if let snap = story?.snaps[n], snap.kind == .image {
+            if let snap = story?.snaps[snapIndexCopy], snap.kind == .image {
                 //Remove retry button if tap forward or backward if it exists
-                igScrollViewDelegate?.fillLastPlayedSnap(for: n)
-            }else {
+                igScrollViewDelegate?.fillLastPlayedSnap(for: snapIndexCopy)
+            } else {
                 //Remove retry button if tap forward or backward if it exists
-                if self.children[n].igVideoView.playerView.player?.timeControlStatus != .playing {
-                    igScrollViewDelegate?.fillLastPlayedSnap(for: n)
+                if self.children[snapIndexCopy].igVideoView?.playerView.player?.timeControlStatus != .playing {
+                    igScrollViewDelegate?.fillLastPlayedSnap(for: snapIndexCopy)
                 }
             }
             if touchLocation.x < self.contentOffset.x + (self.frame.width/2) {
                 direction = .backward
                 if snapIndex >= 1 && snapIndex <= snapCount {
-                    igScrollViewDelegate?.clearLastPlayedSnaps(for: n)
-                    igScrollViewDelegate?.stopProgressors(for: n)
-                    n -= 1
-                    igScrollViewDelegate?.resetSnapProgressors(for: n)
-                    willMoveToPreviousOrNextSnap(n: n)
+                    igScrollViewDelegate?.clearLastPlayedSnaps(for: snapIndexCopy)
+                    igScrollViewDelegate?.stopProgressors(for: snapIndexCopy)
+                    snapIndexCopy -= 1
+                    igScrollViewDelegate?.resetSnapProgressors(for: snapIndexCopy)
+                    willMoveToPreviousOrNextSnap(nextIndex: snapIndexCopy)
                 } else {
                     igScrollViewDelegate?.moveToPreviousStory()
                 }
             } else {
                 if snapIndex >= 0 && snapIndex <= snapCount {
                     //Stopping the current running progressors
-                    igScrollViewDelegate?.stopProgressors(for: n)
+                    igScrollViewDelegate?.stopProgressors(for: snapIndexCopy)
                     direction = .forward
-                    n += 1
-                    willMoveToPreviousOrNextSnap(n: n)
+                    snapIndexCopy += 1
+                    willMoveToPreviousOrNextSnap(nextIndex: snapIndexCopy)
                 }
             }
         }
     }
-    private func createSnapView(for snap:IGSnap) -> IGSnapView{
+    private func createSnapView(for snap: IGSnap) -> IGSnapView {
         let snapView = IGSnapView(frame: frame, snap: snap)
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.igSnapViewDelegate = self
         children.append(snapView)
         self.addSubview(snapView)
-        
         // Setting constraints for snap view.
-        NSLayoutConstraint.activate([
-            snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? self.leadingAnchor : self.subviews[previousSnapIndex].trailingAnchor),
+        NSLayoutConstraint.activate(
+            [snapView.leadingAnchor.constraint(
+                equalTo: (snapIndex == 0) ? self.leadingAnchor : self.subviews[previousSnapIndex].trailingAnchor
+                ),
             snapView.igTopAnchor.constraint(equalTo: self.igTopAnchor),
             snapView.widthAnchor.constraint(equalTo: self.widthAnchor),
             snapView.heightAnchor.constraint(equalTo: self.heightAnchor),
             self.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
-        ])
+        ]
+        )
         return snapView
     }
     private func getSnapview(snapIndex: Int) -> IGSnapView? {
@@ -185,17 +187,18 @@ class IGScrollView: UIScrollView {
         }
         return self.children[snapIndex]
     }
-    private func createVideoView(for snap:IGSnap) -> IGSnapView {
+    private func createVideoView(for snap: IGSnap) -> IGSnapView {
         let snapView = IGSnapView(frame: frame, snap: snap)
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.igSnapViewDelegate = self
-        snapView.igVideoView.playerView.playerObserverDelegate = self
+        snapView.igVideoView?.playerView.playerObserverDelegate = self
         children.append(snapView)
         self.addSubview(snapView)
-        
         // Setting constraints for snap view.
         NSLayoutConstraint.activate([
-            snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? self.leadingAnchor : self.subviews[previousSnapIndex].trailingAnchor),
+            snapView.leadingAnchor.constraint(
+                equalTo: (snapIndex == 0) ? self.leadingAnchor : self.subviews[previousSnapIndex].trailingAnchor
+            ),
             snapView.igTopAnchor.constraint(equalTo: self.igTopAnchor),
             snapView.widthAnchor.constraint(equalTo: self.widthAnchor),
             snapView.heightAnchor.constraint(equalTo: self.heightAnchor),
@@ -203,40 +206,39 @@ class IGScrollView: UIScrollView {
         ])
         return snapView
     }
-    private func willMoveToPreviousOrNextSnap(n: Int) {
+    private func willMoveToPreviousOrNextSnap(nextIndex: Int) {
         if let count = story?.snapsCount {
-            if n < count {
+            if nextIndex < count {
                 //Move to next or previous snap based on index n
-                let x = n.CGFlot * frame.width
-                let offset = CGPoint(x: x,y: 0)
+                let maxX = nextIndex.CGFlot * frame.width
+                let offset = CGPoint(x: maxX, y: 0)
                 self.setContentOffset(offset, animated: false)
-                story?.lastPlayedSnapIndex = n
-                snapIndex = n
+                story?.lastPlayedSnapIndex = nextIndex
+                snapIndex = nextIndex
             } else {
                 igScrollViewDelegate?.didCompletePreview()
             }
         }
     }
-    
-    //MARK: Internal methods
+    // MARK: Internal methods
     func startPlayer(videoView: IGSnapView) {
         if !(self.children.isEmpty) &&  story?.isCompletelyVisible == true {
-            videoView.igVideoView.loadContent()
+            videoView.igVideoView?.loadContent()
         }
     }
     func pausePlayer(with sIndex: Int) {
-        self.children[sIndex].igVideoView.pauseVideo()
+        self.children[sIndex].igVideoView?.pauseVideo()
     }
     func stopPlayer() {
         let videoView = self.children[videoSnapIndex].igVideoView
-        if videoView.playerView.player?.timeControlStatus != .playing {
-            videoView.playerView.player?.replaceCurrentItem(with: nil)
+        if videoView?.playerView.player?.timeControlStatus != .playing {
+            videoView?.playerView.player?.replaceCurrentItem(with: nil)
         }
-        videoView.stopVideo()
-        videoView.playerView.player = nil
+        videoView?.stopVideo()
+        videoView?.playerView.player = nil
     }
     func resumePlayer(with sIndex: Int) {
-        self.children[sIndex].igVideoView.resumeVideo()
+        self.children[sIndex].igVideoView?.resumeVideo()
     }
     func clearScrollViewGarbages() {
         self.contentOffset = CGPoint(x: 0, y: 0)
@@ -246,26 +248,26 @@ class IGScrollView: UIScrollView {
         self.children.removeAll()
     }
     func pauseEntireSnap() {
-        if(self.children[snapIndex].snap.kind == MimeType.video) {
+        if self.children[snapIndex].snap.kind == .video {
             igScrollViewDelegate?.pauseProgressView()
-            self.children[snapIndex].igVideoView.pauseVideo()
+            self.children[snapIndex].igVideoView?.pauseVideo()
         } else {
             igScrollViewDelegate?.pauseProgressView()
         }
     }
     func resumeEntireSnap() {
         //let v = getProgressView(with: snapIndex)
-        if(self.children[snapIndex].snap.kind == MimeType.video) {
+        if self.children[snapIndex].snap.kind == .video {
             igScrollViewDelegate?.resumeProgressView()
-            self.children[snapIndex].igVideoView.resumeVideo()
+            self.children[snapIndex].igVideoView?.resumeVideo()
         } else {
             igScrollViewDelegate?.resumeProgressView()
         }
     }
     func fillUpMissingImageViews(_ sIndex: Int) {
         if sIndex != 0 {
-            for i in 0..<sIndex {
-                snapIndex = i
+            for index in 0..<sIndex {
+                snapIndex = index
             }
             let xValue = sIndex.CGFlot * self.frame.width
             self.contentOffset = CGPoint(x: xValue, y: 0)
@@ -273,19 +275,21 @@ class IGScrollView: UIScrollView {
     }
 }
 
-//MARK: - Extension|IGSnapViewDelegate
-extension IGScrollView : IGSnapViewDelegate {
+// MARK: - Extension|IGSnapViewDelegate
+extension IGScrollView: IGSnapViewDelegate {
     func imageLoaded(isLoaded: Bool) {
-        if(isLoaded){
+        if isLoaded {
             igScrollViewDelegate?.contentLoaded()
         }
     }
 }
 
-//MARK: - Extension|IGPlayerObserverDelegate
+// MARK: Extension|IGPlayerObserverDelegate
 extension IGScrollView: IGPlayerObserver {
     func didStartPlaying() {
-        let videoView = self.children[snapIndex].igVideoView.playerView
+        guard let videoView = self.children[snapIndex].igVideoView?.playerView else {
+            return
+        }
         if videoView.currentTime <= 0 {
             if videoView.error == nil && (story?.isCompletelyVisible)! == true {
                 igScrollViewDelegate?.startPlayerProgressor(for: videoView)
@@ -298,7 +302,6 @@ extension IGScrollView: IGPlayerObserver {
     func didCompletePlay() {
         //Video completed
     }
-    
     func didTrack(progress: Float) {
         //Delegate already handled. If we just print progress, it will print the player current running time
     }

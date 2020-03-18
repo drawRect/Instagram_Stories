@@ -1,5 +1,5 @@
 //
-//  IGSetImage.swift
+//  IGImageRequestable.swift
 //  InstagramStories
 //
 //  Created by Boominadha Prakash on 02/04/19.
@@ -12,7 +12,9 @@ import UIKit
 public typealias ImageResponse = (IGResult<UIImage, Error>) -> Void
 
 protocol IGImageRequestable {
-    func setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?)
+    func setImage(urlString: String,
+                  placeHolderImage: UIImage?,
+                  completionBlock: ImageResponse?)
 }
 
 extension IGImageRequestable where Self: UIImageView {
@@ -24,20 +26,14 @@ extension IGImageRequestable where Self: UIImageView {
 
         if let cachedImage = IGCache.shared.object(forKey: urlString as AnyObject) as? UIImage {
             self.hideActivityIndicator()
-            DispatchQueue.main.async {
-                self.image = cachedImage
-            }
             guard let completion = completionBlock else { return }
             return completion(.success(cachedImage))
-        }else {
+        } else {
             IGURLSession.default.downloadImage(using: urlString) { [weak self] (response) in
                 guard let strongSelf = self else { return }
                 strongSelf.hideActivityIndicator()
                 switch response {
                 case .success(let image):
-                    DispatchQueue.main.async {
-                        strongSelf.image = image
-                    }
                     guard let completion = completionBlock else { return }
                     return completion(.success(image))
                 case .failure(let error):

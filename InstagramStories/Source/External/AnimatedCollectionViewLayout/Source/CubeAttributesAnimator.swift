@@ -6,6 +6,8 @@
 //  Copyright © 2017 Uthoft. All rights reserved.
 //
 
+// swiftlint:disable all
+
 import UIKit
 
 /// An animator that applies a cube transition effect when you scroll.
@@ -41,9 +43,9 @@ public struct CubeAttributesAnimator: LayoutAttributesAnimator {
             UIView.animate(withDuration: 0.3, animations: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = false
                 attributes.contentView?.layer.transform = transform
-            }) {
+            }, completion: {
                 attributes.contentView?.subviews.first?.isUserInteractionEnabled = $0
-            }
+            })
             attributes.contentView?.keepCenterAndApplyAnchorPoint(CGPoint(x: position > 0 ? 0 : 1, y: 0.5))
         } else {
             let rotateAngle = totalAngle * position

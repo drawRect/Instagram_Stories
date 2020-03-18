@@ -9,32 +9,47 @@
 import UIKit
 
 final class IGStoryListCell: UICollectionViewCell {
-    
-    //MARK: - Public iVars
+    // MARK: Public iVars
     public var story: IGStory? {
         didSet {
             self.profileNameLabel.text = story?.user.name
             if let picture = story?.user.picture {
-                self.profileImageView.imageView.setImage(url: picture)
+                profileImageView.imageView.setImage(url: picture, style: .rounded) { (result) in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let image):
+                            self.profileImageView.imageView.image = image
+                        case .failure(let error):
+                            debugPrint("image load erro:\(error.localizedDescription)")
+                        }
+                    }
+                }
             }
         }
     }
-    public var userDetails: (String,String)? {
-        didSet {
-            if let details = userDetails {
-                self.profileNameLabel.text = details.0
-                self.profileImageView.imageView.setImage(url: details.1)
-            }
-        }
-    }
-    
-    //MARK: -  Private ivars
+//    public var userDetails: (String, String)? {
+//        didSet {
+//            if let details = userDetails {
+//                self.profileNameLabel.text = details.0
+//                profileImageView.imageView.setImage(url: details.1, style: .rounded) { (result) in
+//                    DispatchQueue.main.async {
+//                        switch result {
+//                        case .success(let image):
+//                            self.profileImageView.imageView.image = image
+//                        case .failure(let error):
+//                            debugPrint("image load erro:\(error.localizedDescription)")
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    // MARK: Private ivars
     private let profileImageView: IGRoundedView = {
         let roundedView = IGRoundedView()
         roundedView.translatesAutoresizingMaskIntoConstraints = false
         return roundedView
     }()
-    
     private let profileNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -43,8 +58,7 @@ final class IGStoryListCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
-    
-    //MARK: - Overriden functions
+    // MARK: - Overriden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
         loadUIElements()
@@ -54,8 +68,7 @@ final class IGStoryListCell: UICollectionViewCell {
         super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK:- Private functions
+    // MARK: Private functions
     private func loadUIElements() {
         addSubview(profileImageView)
         addSubview(profileNameLabel)
@@ -73,7 +86,6 @@ final class IGStoryListCell: UICollectionViewCell {
             profileNameLabel.igTopAnchor.constraint(equalTo: self.profileImageView.igBottomAnchor, constant: 2),
             profileNameLabel.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
             self.igBottomAnchor.constraint(equalTo: profileNameLabel.igBottomAnchor, constant: 8)])
-        
         layoutIfNeeded()
     }
 }

@@ -8,42 +8,38 @@
 
 import UIKit
 
-protocol IGSnapViewDelegate {
+protocol IGSnapViewDelegate: class {
     func imageLoaded(isLoaded: Bool)
 }
 class IGSnapView: UIView {
-    
-    //MARK: iVars
+    // MARK: iVars
     let snap: IGSnap
-    var igSnapViewDelegate: IGSnapViewDelegate?
-    
-    var igImageView: IGImageView {
-        return self.subviews.last as! IGImageView
+    weak var igSnapViewDelegate: IGSnapViewDelegate?
+    var igImageView: IGImageView? {
+        return self.subviews.last as? IGImageView
     }
-    var igVideoView: IGVideoView {
-        return self.subviews.last as! IGVideoView
+    var igVideoView: IGVideoView? {
+        return self.subviews.last as? IGVideoView
     }
-    
-    //MARK: init methods
+    // MARK: init methods
     init(frame: CGRect, snap: IGSnap) {
         self.snap = snap
         super.init(frame: frame)
         self.backgroundColor = .black
-        
         switch snap.kind {
-            case .image:
-                let contentView: IGXView = IGImageView(frame: frame, snap: snap)
-                addSubview(contentView)
-                contentView.contentLoaded = { [weak self] status in
-                    guard let strongSelf = self else {
-                        return
-                    }
-                    strongSelf.igSnapViewDelegate?.imageLoaded(isLoaded: status)
+        case .image:
+            let contentView: IGXView = IGImageView(frame: frame, snap: snap)
+            addSubview(contentView)
+            contentView.contentLoaded = { [weak self] status in
+                guard let strongSelf = self else {
+                    return
+                }
+                strongSelf.igSnapViewDelegate?.imageLoaded(isLoaded: status)
             }
-            case .video:
-                let contentView: IGXView = IGVideoView(frame: frame, snap: snap)
-                addSubview(contentView)
-            case .unknown:
+        case .video:
+            let contentView: IGXView = IGVideoView(frame: frame, snap: snap)
+            addSubview(contentView)
+        case .unknown:
                 break
         }
     }

@@ -15,36 +15,48 @@ enum ProgressorState {
     case finished
 }
 protocol ViewAnimator: class {
-    func start(with duration: TimeInterval, holderView: UIView, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void)
+    func start(with duration: TimeInterval,
+               holderView: UIView,
+               completion: @escaping (
+        _ storyIdentifier: String,
+        _ snapIndex: Int,
+        _ isCancelledAbruptly: Bool
+        ) -> Void)
     func resume()
     func pause()
     func stop()
     func reset()
 }
 extension ViewAnimator where Self: IGSnapProgressView {
-    func start(with duration: TimeInterval, holderView: UIView, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void) {
+    func start(with duration: TimeInterval,
+               holderView: UIView,
+               completion: @escaping (
+        _ storyIdentifier: String,
+        _ snapIndex: Int,
+        _ isCancelledAbruptly: Bool
+        ) -> Void
+    ) {
         // Modifying the existing widthConstraint and setting the width equalTo holderView's widthAchor
         self.state = .running
         self.widthConstraint?.isActive = false
         self.widthConstraint = self.widthAnchor.constraint(equalToConstant: 0)
         self.widthConstraint?.isActive = true
         self.widthConstraint?.constant = holderView.igWidth
-        
-        UIView.animate(withDuration: duration, delay: 0.0, options: [.curveLinear], animations: {[weak self] in
-            if let strongSelf = self {
-                strongSelf.superview?.layoutIfNeeded()
-            }
-        }) { [weak self] (finished) in
-            self?.story.isCancelledAbruptly = !finished
-            self?.state = .finished
-            if finished == true {
-                if let strongSelf = self {
-                    return completion(strongSelf.story_identifier!, strongSelf.snapIndex!, strongSelf.story.isCancelledAbruptly)
-                }
-            } else {
-                return completion(self?.story_identifier ?? "Unknown", self?.snapIndex ?? 0, self?.story.isCancelledAbruptly ?? true)
-            }
-        }
+        UIView.animate(
+            withDuration: duration,
+            delay: 0.0,
+            options: [.curveLinear],
+            animations: {
+                [weak self] in
+                self?.superview?.layoutIfNeeded()
+            },
+            completion: { [weak self] (finished) in
+                self?.story.isCancelledAbruptly = !finished
+                self?.state = .finished
+                return completion(self?.storyIdentifier ?? "Unknown",
+                                  self?.snapIndex ?? 0,
+                                  self?.story.isCancelledAbruptly ?? true)
+        })
     }
     func resume() {
         let pausedTime = layer.timeOffset
@@ -76,7 +88,7 @@ extension ViewAnimator where Self: IGSnapProgressView {
 }
 
 final class IGSnapProgressView: UIView, ViewAnimator {
-    public var story_identifier: String?
+    public var storyIdentifier: String?
     public var snapIndex: Int?
     public var story: IGStory!
     public var widthConstraint: NSLayoutConstraint?

@@ -1,5 +1,5 @@
 //
-//  IGErrors.swift
+//  IGError.swift
 //  InstagramStories
 //
 //  Created by Boominadha Prakash on 02/04/19.

@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 
 class IGHomeView: UIView {
-    
-    //MARK: - iVars
+    // MARK: iVars
     lazy var layout: UICollectionViewFlowLayout = {
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -19,17 +18,16 @@ class IGHomeView: UIView {
         return flowLayout
     }()
     lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
-        cv.backgroundColor = .white
-        cv.showsVerticalScrollIndicator = false
-        cv.showsHorizontalScrollIndicator = false
-        cv.register(IGStoryListCell.self, forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier)
-        cv.register(IGAddStoryCell.self, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier)
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        return cv
+        let collectionView = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .white
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(IGStoryListCell.self, forCellWithReuseIdentifier: IGStoryListCell.reuseIdentifier)
+        collectionView.register(IGAddStoryCell.self, forCellWithReuseIdentifier: IGAddStoryCell.reuseIdentifier)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
     }()
-    
-    //MARK: - Overridden functions
+    // MARK: Overridden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor(rgb: 0xEFEFF4)
@@ -40,12 +38,11 @@ class IGHomeView: UIView {
         super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: - Private functions
-    private func createUIElements(){
+    // MARK: Private functions
+    private func createUIElements() {
         addSubview(collectionView)
     }
-    private func installLayoutConstraints(){
+    private func installLayoutConstraints() {
         NSLayoutConstraint.activate([
             igLeftAnchor.constraint(equalTo: collectionView.igLeftAnchor),
             igTopAnchor.constraint(equalTo: collectionView.igTopAnchor),

@@ -10,8 +10,7 @@ import UIKit
 
 class IGVideoView: IGXView {
     //Add your Video related stuff here
-    
-    //MARK: iVars
+    // MARK: iVars
     lazy var videoView: IGPlayerView = {
         let videoView = IGPlayerView(frame: self.bounds)
         return videoView
@@ -19,8 +18,7 @@ class IGVideoView: IGXView {
     var playerView: IGPlayerView {
         return videoView
     }
-    
-    //MARK: Init methods
+    // MARK: Init methods
     override init(frame: CGRect, snap: IGSnap) {
         super.init(frame: frame, snap: snap)
         self.addSubview(videoView)
@@ -28,18 +26,17 @@ class IGVideoView: IGXView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //MARK: Internal methods
+    // MARK: Internal methods
     @objc override func loadContent() {
         //start request this video using avplayer with contents of url
         videoView.startAnimating()
         IGVideoCacheManager.shared.getFile(for: snap.url) { [weak self] (result) in
             guard let strongSelf = self else { return }
             switch result {
-                case .success(let url):
+            case .success(let url):
                     let videoResource = VideoResource(filePath: url.absoluteString)
                     strongSelf.videoView.play(with: videoResource)
-                case .failure(let error):
+            case .failure(let error):
                     strongSelf.videoView.stopAnimating()
                     strongSelf.contentState = .isFailed
                     debugPrint("Video error: \(error)")

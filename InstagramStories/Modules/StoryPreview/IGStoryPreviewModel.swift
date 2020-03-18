@@ -9,18 +9,15 @@
 import Foundation
 
 class IGStoryPreviewModel: NSObject {
-    
-    //MARK:- iVars
+    // MARK: iVars
     var stories: IGStories?
     var handPickedStoryIndex: Int? //starts with(i)
-    
-    //MARK:- Init method
+    // MARK: Init method
     init(_ stories: IGStories, _ handPickedStoryIndex: Int) {
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
     }
-    
-    //MARK:- Functions
+    // MARK: Functions
     func numberOfItemsInSection(_ section: Int) -> Int {
         if let count = stories?.count {
             return count
@@ -31,7 +28,7 @@ class IGStoryPreviewModel: NSObject {
         guard let count = stories?.count else {return nil}
         if indexPath.item < count {
             return stories?.stories[indexPath.item]
-        }else {
+        } else {
             fatalError("Stories Index mis-matched :(")
         }
     }

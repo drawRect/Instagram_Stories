@@ -13,6 +13,8 @@ protocol RetryBtnDelegate: class {
     func retryButtonTapped()
 }
 
+private let retryButtonTag = 100
+
 public class IGRetryLoaderButton: UIButton {
     var contentURL: String?
     weak var delegate: RetryBtnDelegate?
@@ -23,7 +25,7 @@ public class IGRetryLoaderButton: UIButton {
         self.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
         self.addTarget(self, action: #selector(didTapRetryBtn), for: .touchUpInside)
         self.contentURL = url
-        self.tag = 100
+        self.tag = retryButtonTag
     }
     @objc func didTapRetryBtn() {
         delegate?.retryButtonTapped()
@@ -32,9 +34,10 @@ public class IGRetryLoaderButton: UIButton {
 
 extension UIView {
     func removeRetryButton() {
-        self.subviews.forEach({v in
-            if(v.tag == 100){v.removeFromSuperview()}
+        self.subviews.forEach({
+            if $0.tag == retryButtonTag {
+                $0.removeFromSuperview()
+            }
         })
     }
-    
 }

@@ -9,30 +9,24 @@
 import UIKit
 
 extension Int {
-    
     var `CGFlot`: CGFloat {
         return CGFloat(self)
     }
-    
 }
 
 extension Array {
-    
     var sortedByPosition: [Element] {
-        return sorted(by: { (obj1 : Element, obj2 : Element) -> Bool in
-            
-            let view1 = obj1 as! UIView
-            let view2 = obj2 as! UIView
-            
-            let x1 = view1.frame.minX
-            let y1 = view1.frame.minY
-            let x2 = view2.frame.minX
-            let y2 = view2.frame.minY
-            
-            if y1 != y2 {
-                return y1 < y2
+        return sorted(by: { (elem1: Element, elem2: Element) -> Bool in
+            guard let elem1MinX = (elem1 as? UIView)?.frame.minX,
+                let elem1MinY = (elem1 as? UIView)?.frame.minY,
+                let elem2MinX = (elem2 as? UIView)?.frame.minX,
+                let elem2MinY = (elem2 as? UIView)?.frame.minY else {
+                    return false
+            }
+            if elem1MinY != elem2MinY {
+                return elem1MinY < elem2MinY
             } else {
-                return x1 < x2
+                return elem1MinX < elem2MinX
             }
         })
     }

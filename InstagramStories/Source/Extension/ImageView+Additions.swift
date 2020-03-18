@@ -1,10 +1,10 @@
 import UIKit
 
 enum ImageStyle: Int {
-    case squared,rounded
+    case squared, rounded
 }
 
-typealias SetImageRequester = (IGResult<Bool,Error>) -> Void
+typealias SetImageRequester = (IGResult<UIImage, Error>) -> Void
 
 extension UIImageView: IGImageRequestable {
     func setImage(url: String,
@@ -18,9 +18,9 @@ extension UIImageView: IGImageRequestable {
         if style == .rounded {
             layer.cornerRadius = frame.height/2
             if #available(iOS 13.0, *) {
-                activityStyle = .medium
+                activityStyle = .white
                 activityIndicator.color = .white
-            }else {
+            } else {
                 activityStyle = .white
             }
         } else if style == .squared {
@@ -28,17 +28,16 @@ extension UIImageView: IGImageRequestable {
             if #available(iOS 13.0, *) {
                 activityStyle = .large
                 activityIndicator.color = .white
-            }else {
+            } else {
                 activityStyle = .whiteLarge
             }
         }
-        
         clipsToBounds = true
         setImage(urlString: url) { (response) in
             if let completion = completion {
                 switch response {
-                case .success(_):
-                    completion(IGResult.success(true))
+                case .success(let img):
+                    completion(IGResult.success(img))
                 case .failure(let error):
                     completion(IGResult.failure(error))
                 }

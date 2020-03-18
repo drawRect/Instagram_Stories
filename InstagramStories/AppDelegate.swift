@@ -11,27 +11,32 @@ import UIKit
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     let window: UIWindow = {
-        let w = UIWindow()
-        w.backgroundColor = .white
-        w.makeKeyAndVisible()
-        return w
+        let wndow = UIWindow()
+        wndow.backgroundColor = .white
+        wndow.makeKeyAndVisible()
+        return wndow
     }()
     /// set orientations you want to be allowed in this property by default
-    var orientationLock = UIInterfaceOrientationMask.all
-    
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+    var orientationSupport = UIInterfaceOrientationMask.all
+    func application(
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
+    ) -> Bool {
         rootSceneSetup()
         return true
     }
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        return self.orientationLock
+    func application(
+        _ application: UIApplication,
+        supportedInterfaceOrientationsFor window: UIWindow?
+    ) -> UIInterfaceOrientationMask {
+        return self.orientationSupport
     }
 }
 
 extension AppDelegate {
      func rootSceneSetup() {
-        let nc = UINavigationController(rootViewController: IGHomeController())
-        nc.navigationBar.isTranslucent = false
-        window.rootViewController = nc
+        let navController = UINavigationController(rootViewController: IGHomeController())
+        navController.navigationBar.isTranslucent = false
+        window.rootViewController = navController
     }
 }
