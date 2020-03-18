@@ -68,7 +68,7 @@ UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGAddStoryCell.reuseIdentifier, for: indexPath) as? IGAddStoryCell else { fatalError() }
-            cell.userDetails = ("Your Story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            cell.userDetails = ("Your story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
             return cell
         }else {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryListCell.reuseIdentifier,for: indexPath) as? IGStoryListCell else { fatalError() }
@@ -80,7 +80,7 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            showAlert(withMsg: "Try to implement your own functionality for 'Add Story'")
+            showAlert(withMsg: "Try to implement your own functionality for 'Add story'")
         }else {
             DispatchQueue.main.async {
                 if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {

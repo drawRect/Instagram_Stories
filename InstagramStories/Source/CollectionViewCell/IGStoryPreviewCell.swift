@@ -147,7 +147,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next snap
-                let x = n.toFloat * frame.width
+                let x = n.CGFlot * frame.width
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n

@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-/******** UITableViewCell&UICollectionViewCell<Extension> *******************************/
+/******** UICollectionViewCell<Extension> **************/
 protocol CellConfigurer:class {
     static var nib: UINib {get}
     static var reuseIdentifier: String {get}
@@ -25,11 +25,3 @@ extension CellConfigurer {
 }
 
 extension UICollectionViewCell: CellConfigurer {}
-extension UITableViewCell: CellConfigurer {}
-
-/*************************** UINIB<Extension> ************************************************/
-extension UINib {
-    class func nib(with name: String) -> UINib {
-        return UINib(nibName: name, bundle: nil)
-    }
-}

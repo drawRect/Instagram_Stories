@@ -9,13 +9,16 @@
 import UIKit
 
 extension Int {
-    var toFloat: CGFloat {
+    
+    var `CGFlot`: CGFloat {
         return CGFloat(self)
     }
+    
 }
 
 extension Array {
-     func sortedArrayByPosition() -> [Element] {
+    
+    var sortedByPosition: [Element] {
         return sorted(by: { (obj1 : Element, obj2 : Element) -> Bool in
             
             let view1 = obj1 as! UIView

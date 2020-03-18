@@ -50,7 +50,7 @@ class IGScrollView: UIScrollView {
     var children: [IGSnapView] = [] //if you want respective child using index, you can directly get it (we are avoiding subviews explicitly)
     var videoSnapIndex = 0
     var snapIndex: Int = 0 {
-        didSet{
+        didSet {
             self.isUserInteractionEnabled = true
             switch direction {
                 case .forward:
@@ -207,7 +207,7 @@ class IGScrollView: UIScrollView {
         if let count = story?.snapsCount {
             if n < count {
                 //Move to next or previous snap based on index n
-                let x = n.toFloat * frame.width
+                let x = n.CGFlot * frame.width
                 let offset = CGPoint(x: x,y: 0)
                 self.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
@@ -267,7 +267,7 @@ class IGScrollView: UIScrollView {
             for i in 0..<sIndex {
                 snapIndex = i
             }
-            let xValue = sIndex.toFloat * self.frame.width
+            let xValue = sIndex.CGFlot * self.frame.width
             self.contentOffset = CGPoint(x: xValue, y: 0)
         }
     }

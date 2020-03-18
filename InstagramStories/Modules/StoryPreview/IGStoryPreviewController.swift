@@ -126,7 +126,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
         
         //Taking Previous(Visible) cell to store previous story
-        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+        let visibleCells = collectionView.visibleCells.sortedByPosition
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         if let vCell = visibleCell {
             vCell.story?.isCompletelyVisible = false
@@ -144,7 +144,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+        let visibleCells = collectionView.visibleCells.sortedByPosition
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
         guard let vCellIndexPath = _view.snapsCollectionView.indexPath(for: vCell) else {
@@ -179,7 +179,7 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
          * Also, adjusting progress view width to updated frame width when the progress view animation is executing.
          */
         if isTransitioning {
-            let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
+            let visibleCells = collectionView.visibleCells.sortedByPosition
             let visibleCell = visibleCells.first as? IGStoryPreviewCell
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
                 guard let strongSelf = self,
@@ -213,7 +213,7 @@ extension IGStoryPreviewController {
         vCell.pausePlayer(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
+        let sortedVCells = _view.snapsCollectionView.visibleCells.sortedByPosition
         guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell else {return}
         guard let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
         let f_IndexPath = _view.snapsCollectionView.indexPath(for: f_Cell)
