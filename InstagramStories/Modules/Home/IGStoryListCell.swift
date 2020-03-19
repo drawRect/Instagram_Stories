@@ -14,7 +14,7 @@ final class IGStoryListCell: UICollectionViewCell {
         didSet {
             self.profileNameLabel.text = story?.user.name
             if let picture = story?.user.picture {
-                profileImageView.imageView.setImage(url: picture, style: .rounded) { (result) in
+                profileImageView.imageView.requestImage(url: picture, style: .rounded) { (result) in
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let image):
@@ -27,23 +27,6 @@ final class IGStoryListCell: UICollectionViewCell {
             }
         }
     }
-//    public var userDetails: (String, String)? {
-//        didSet {
-//            if let details = userDetails {
-//                self.profileNameLabel.text = details.0
-//                profileImageView.imageView.setImage(url: details.1, style: .rounded) { (result) in
-//                    DispatchQueue.main.async {
-//                        switch result {
-//                        case .success(let image):
-//                            self.profileImageView.imageView.image = image
-//                        case .failure(let error):
-//                            debugPrint("image load erro:\(error.localizedDescription)")
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
     // MARK: Private ivars
     private let profileImageView: IGRoundedView = {
         let roundedView = IGRoundedView()
@@ -58,7 +41,7 @@ final class IGStoryListCell: UICollectionViewCell {
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
-    // MARK: - Overriden functions
+    // MARK: Overriden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
         loadUIElements()

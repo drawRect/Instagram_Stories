@@ -1,5 +1,5 @@
 //
-//  IGError.swift
+//  IGImageLoadError.swift
 //  InstagramStories
 //
 //  Created by Boominadha Prakash on 02/04/19.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum IGError: Error, CustomStringConvertible {
+public enum IGImageLoadError: Error, CustomStringConvertible {
 
     case invalidImageURL
     case downloadError

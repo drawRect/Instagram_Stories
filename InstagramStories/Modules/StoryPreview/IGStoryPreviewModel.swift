@@ -19,10 +19,7 @@ class IGStoryPreviewModel: NSObject {
     }
     // MARK: Functions
     func numberOfItemsInSection(_ section: Int) -> Int {
-        if let count = stories?.count {
-            return count
-        }
-        return 0
+        return stories?.count ?? 0
     }
     func cellForItemAtIndexPath(_ indexPath: IndexPath) -> IGStory? {
         guard let count = stories?.count else {return nil}

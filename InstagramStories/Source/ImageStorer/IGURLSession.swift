@@ -21,17 +21,17 @@ extension IGURLSession {
             }
         })
     }
+////                IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
 
-    func downloadImage(using urlString: String, completionBlock: @escaping ImageResponse) {
-        guard let url = URL(string: urlString) else {
-            return completionBlock(.failure(IGError.invalidImageURL))
+    func downloadImage(fromUrl: String, completionBlock: @escaping ImageRequestHandler) {
+        guard let url = URL(string: fromUrl) else {
+            return completionBlock(.failure(IGImageLoadError.invalidImageURL))
         }
         dataTasks.append(IGURLSession.shared.dataTask(with: url, completionHandler: { (data, _, error) in
-            if let result = data, error == nil, let imageToCache = UIImage(data: result) {
-                IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
-                completionBlock(.success(imageToCache))
+            if let result = data, error == nil {
+                completionBlock(.success(result))
             } else {
-                return completionBlock(.failure(error ?? IGError.downloadError))
+                completionBlock(.failure(error ?? IGImageLoadError.downloadError))
             }
         }))
         dataTasks.last?.resume()

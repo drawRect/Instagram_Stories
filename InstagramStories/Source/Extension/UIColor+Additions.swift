@@ -1,5 +1,5 @@
 //
-//  Color+Additions.swift
+//  UIColor+Additions.swift
 //  InstagramStories
 //
 //  Created by Ranjith Kumar on 9/8/17.

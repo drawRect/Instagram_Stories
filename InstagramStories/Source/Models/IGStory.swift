@@ -19,10 +19,10 @@ public class IGStory: Codable {
     var isCancelledAbruptly = false
     enum CodingKeys: String, CodingKey {
         case snapsCount = "snaps_count"
-        case snaps = "snaps"
+        case snaps
         case internalIdentifier = "id"
         case lastUpdated = "last_updated"
-        case user = "user"
+        case user
     }
 }
 

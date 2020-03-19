@@ -1,5 +1,5 @@
 //
-//  IGAdditions.swift
+//  Int+Array+Extension.swift
 //  InstagramStories
 //
 //  Created by  Boominadha Prakash on 12/11/17.

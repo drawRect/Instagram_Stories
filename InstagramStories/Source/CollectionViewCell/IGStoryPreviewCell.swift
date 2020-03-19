@@ -47,7 +47,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             storyHeaderView.story = story
             scrollview.story = story
             if let picture = story?.user.picture {
-                storyHeaderView.snaperImageView.setImage(url: picture, style: .rounded) { (result) in
+                storyHeaderView.snaperImageView.requestImage(url: picture, style: .rounded) { (result) in
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let image):

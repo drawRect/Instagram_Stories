@@ -33,7 +33,7 @@ final class IGAddStoryCell: UICollectionViewCell {
         didSet {
             if let details = userDetails {
                 addStoryLabel.text = details.0
-                profileImageView.imageView.setImage(url: details.1, style: .rounded) { (result) in
+                profileImageView.imageView.requestImage(url: details.1, style: .rounded) { (result) in
                     DispatchQueue.main.async {
                         switch result {
                         case .success(let image):

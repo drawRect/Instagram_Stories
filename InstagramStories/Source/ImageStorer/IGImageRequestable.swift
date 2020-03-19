@@ -9,33 +9,36 @@
 import Foundation
 import UIKit
 
-public typealias ImageResponse = (IGResult<UIImage, Error>) -> Void
+public typealias ImageRequestHandler = (Result<Data, Error>) -> Void
 
 protocol IGImageRequestable {
-    func setImage(urlString: String,
-                  placeHolderImage: UIImage?,
-                  completionBlock: ImageResponse?)
+    func requestImage(
+        urlString: String,
+        placeHolderImage: UIImage?,
+        completionBlock: ImageRequestHandler?)
 }
 
 extension IGImageRequestable where Self: UIImageView {
 
-    func setImage(urlString: String, placeHolderImage: UIImage? = nil, completionBlock: ImageResponse?) {
+//extension IGImageRequestable {
+
+    func requestImage(urlString: String, placeHolderImage: UIImage? = nil, completionBlock: ImageRequestHandler?) {
 
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         self.showActivityIndicator()
 
-        if let cachedImage = IGCache.shared.object(forKey: urlString as AnyObject) as? UIImage {
+        if let cachedImageRaw = IGCache.shared.object(forKey: urlString as AnyObject) as? Data {
             self.hideActivityIndicator()
             guard let completion = completionBlock else { return }
-            return completion(.success(cachedImage))
+            return completion(.success(cachedImageRaw))
         } else {
-            IGURLSession.default.downloadImage(using: urlString) { [weak self] (response) in
+            IGURLSession.default.downloadImage(fromUrl: urlString) { [weak self] (response) in
                 guard let strongSelf = self else { return }
                 strongSelf.hideActivityIndicator()
                 switch response {
-                case .success(let image):
+                case .success(let imageRaw):
                     guard let completion = completionBlock else { return }
-                    return completion(.success(image))
+                    return completion(.success(imageRaw))
                 case .failure(let error):
                     guard let completion = completionBlock else { return }
                     return completion(.failure(error))

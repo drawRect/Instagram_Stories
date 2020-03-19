@@ -27,7 +27,7 @@ class IGImageView: IGXView {
     @objc override func loadContent() {
         //start request this image using sdwebimage using snap.url
         self.contentState = .isLoading
-        imageview.setImage(url: snap.url, style: .squared) {[weak self] (result) in
+        imageview.requestImage(url: snap.url, style: .squared) {[weak self] (result) in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let img):

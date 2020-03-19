@@ -9,16 +9,28 @@
 import UIKit
 
 protocol IGScrollViewDelegate: class {
+    /// updating the Story Header View based on the snap update
     func updateStoryHeaderView(for snap: IGSnap)
+    /// its going to fill last played snap like.
+    /// you watched and simply tries to go back last story, we explictly filling up this
     func fillLastPlayedSnap(for snapIndex: Int)
+    /// clear last played snap
     func clearLastPlayedSnaps(for snapIndex: Int)
+    /// reset snap progressors if cell is reused
     func resetSnapProgressors(for snapIndex: Int)
+    /// move back to previous story
     func moveToPreviousStory()
+    /// stop headerview progressor views based on the snap index
     func stopProgressors(for snapIndex: Int)
+    /// pause progress view
     func pauseProgressView()
+    /// resume progress view
     func resumeProgressView()
+    /// callback which complete the snap preview
     func didCompletePreview()
+    /// image or video has been loaded
     func contentLoaded()
+    /// start progressor for video player
     func startPlayerProgressor(for videoView: IGPlayerView)
 }
 
@@ -83,7 +95,7 @@ class IGScrollView: UIScrollView {
             case .backward:
                     if snapIndex < story?.snapsCount ?? 0 {
                         if let snap = story?.snaps[snapIndex] {
-                            if snap.kind != MimeType.video {
+                            if snap.kind != .video {
                                 if let snapView = getSnapview(snapIndex: snapIndex) {
                                     snapView.igImageView?.loadContent()
                                 }

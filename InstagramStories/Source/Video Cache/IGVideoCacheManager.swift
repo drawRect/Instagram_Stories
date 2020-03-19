@@ -8,19 +8,20 @@
 
 import Foundation
 
-class IGVideoCacheManager {
-    enum VideoError: Error, CustomStringConvertible {
-        case downloadError
-        case fileRetrieveError
-        var description: String {
-            switch self {
-            case .downloadError:
-                return "Can't download video"
-            case .fileRetrieveError:
-                return "File not found"
-            }
+private enum IGVideoLoadError: Error, CustomStringConvertible {
+    case downloadError
+    case fileRetrieveError
+    var description: String {
+        switch self {
+        case .downloadError:
+            return "Can't download video"
+        case .fileRetrieveError:
+            return "File not found"
         }
     }
+}
+
+class IGVideoCacheManager {
     static let shared = IGVideoCacheManager()
     private init() {}
     typealias Response = Result<URL, Error>
@@ -31,7 +32,7 @@ class IGVideoCacheManager {
     }()
     func getFile(for stringUrl: String, completionHandler: @escaping (Response) -> Void) {
         guard let file = directoryFor(stringUrl: stringUrl) else {
-            completionHandler(Result.failure(VideoError.fileRetrieveError))
+            completionHandler(Result.failure(IGVideoLoadError.fileRetrieveError))
             return
         }
         //return file path if already exists in cache directory
@@ -47,7 +48,7 @@ class IGVideoCacheManager {
                 }
             } else {
                 DispatchQueue.main.async {
-                    completionHandler(Result.failure(VideoError.downloadError))
+                    completionHandler(Result.failure(IGVideoLoadError.downloadError))
                 }
             }
         }
