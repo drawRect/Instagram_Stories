@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>VideoCacheTasks Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/VideoCacheTasks" class="dashAnchor"></a>
+    <a title="VideoCacheTasks Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (25% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        VideoCacheTasks Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AnimatedCollectionViewLayout.html">AnimatedCollectionViewLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AnimatedCollectionViewLayoutAttributes.html">AnimatedCollectionViewLayoutAttributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes.html#/c:@M@InstagramStories@objc(cs)IGRetryLoaderButton">IGRetryLoaderButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGSnap.html">IGSnap</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStories.html">IGStories</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStory.html">IGStory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGUser.html">IGUser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGVideoCacheHelper.html">IGVideoCacheHelper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Reachability.html">Reachability</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Reachability/Connection.html">– Connection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:16InstagramStories24progressIndicatorViewTagSivp">progressIndicatorViewTag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:16InstagramStories15progressViewTagSivp">progressViewTag</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/IGImageLoadError.html">IGImageLoadError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/IGLayoutType.html">IGLayoutType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MimeType.html">MimeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReachabilityError.html">ReachabilityError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification.html">Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification/Name.html">– Name</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIImageView.html">UIImageView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/LayoutAttributesAnimator.html">LayoutAttributesAnimator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/VideoCacheTasks.html">VideoCacheTasks</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/CubeAttributesAnimator.html">CubeAttributesAnimator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:16InstagramStories8IGScreenV">IGScreen</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:16InstagramStories7IGThemeV">IGTheme</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:16InstagramStories19ImageRequestHandlera">ImageRequestHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:16InstagramStories16VideoReadHandlera">VideoReadHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:16InstagramStories18VideoRemoveHandlera">VideoRemoveHandler</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:16InstagramStories17VideoWriteHandlera">VideoWriteHandler</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>VideoCacheTasks</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">VideoCacheTasks</span> <span class="p">:</span> <span class="kt">AnyObject</span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories15VideoCacheTasksP04readC07fromUrl10Foundation3URLVSgSS_tF"></a>
+                    <a name="//apple_ref/swift/Method/readVideo(fromUrl:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories15VideoCacheTasksP04readC07fromUrl10Foundation3URLVSgSS_tF">readVideo(fromUrl:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Call this function to get the Video from Cache Directory using Optional URL,
+if there is no URL means No video available on the directory</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">readVideo</span><span class="p">(</span><span class="nv">fromUrl</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">URL</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fromUrl</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Video URL</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>optional URL file path url</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories15VideoCacheTasksP05writeC07fromUrl7handlerySS_ys6ResultOySbs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/writeVideo(fromUrl:handler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories15VideoCacheTasksP05writeC07fromUrl7handlerySS_ys6ResultOySbs5Error_pGctF">writeVideo(fromUrl:handler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Call this function to write a video which we load it from snap.url into cached directory</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">writeVideo</span><span class="p">(</span><span class="nv">fromUrl</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:16InstagramStories17VideoWriteHandlera">VideoWriteHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fromUrl</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Video URL</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Handler which returns write sucess or error</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>return</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Void</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories15VideoCacheTasksP06removeC07fromUrl7handlerySS_ys6ResultOySbs5Error_pGctF"></a>
+                    <a name="//apple_ref/swift/Method/removeVideo(fromUrl:handler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories15VideoCacheTasksP06removeC07fromUrl7handlerySS_ys6ResultOySbs5Error_pGctF">removeVideo(fromUrl:handler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Call this function to remove respective video from cache directory using video url</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeVideo</span><span class="p">(</span><span class="nv">fromUrl</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:16InstagramStories18VideoRemoveHandlera">VideoRemoveHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>fromUrl</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Video URL</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Handler which returns remove sucess or error</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories15VideoCacheTasksP8clearAll7handleryys6ResultOySbs5Error_pGc_tF"></a>
+                    <a name="//apple_ref/swift/Method/clearAll(handler:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories15VideoCacheTasksP8clearAll7handleryys6ResultOySbs5Error_pGc_tF">clearAll(handler:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Call this function to remove all videos which are stored in the cache directory</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">clearAll</span><span class="p">(</span><span class="nv">handler</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Typealiases.html#/s:16InstagramStories18VideoRemoveHandlera">VideoRemoveHandler</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>handler</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Handler which returns remove all sucess or error</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-03-21)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

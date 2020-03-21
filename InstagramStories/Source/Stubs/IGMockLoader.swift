@@ -36,8 +36,7 @@ struct IGMockLoader {
                 with: data as Data,
                 options: .allowFragments
                 ) as? [String: Any] != nil {
-                let stories = try JSONDecoder().decode(IGStories.self, from: data)
-                return stories
+                return try JSONDecoder().decode(IGStories.self, from: data)
             } else {
                 throw MockLoaderError.invalidFileURL(url)
             }
@@ -48,8 +47,7 @@ struct IGMockLoader {
     static func loadAPIResponse(response: [String: Any]) throws -> IGStories {
         let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
         do {
-            let stories = try JSONDecoder().decode(IGStories.self, from: data)
-            return stories
+            return try JSONDecoder().decode(IGStories.self, from: data)
         } catch {
             throw MockLoaderError.invalidJSON("Input Response")
         }

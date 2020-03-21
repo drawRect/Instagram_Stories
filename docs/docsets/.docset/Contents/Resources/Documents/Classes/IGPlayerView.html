@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>IGPlayerView Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/IGPlayerView" class="dashAnchor"></a>
+    <a title="IGPlayerView Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (7% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        IGPlayerView Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/AnimatedCollectionViewLayout.html">AnimatedCollectionViewLayout</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AnimatedCollectionViewLayoutAttributes.html">AnimatedCollectionViewLayoutAttributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/AppDelegate.html">AppDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGAddStoryCell.html">IGAddStoryCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGCache.html">IGCache</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGHomeController.html">IGHomeController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGHomeView.html">IGHomeView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGPlayerView.html">IGPlayerView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGRetryLoaderButton.html">IGRetryLoaderButton</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGRoundedView.html">IGRoundedView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGSnap.html">IGSnap</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGSnap/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGSnapProgressView.html">IGSnapProgressView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStories.html">IGStories</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStory.html">IGStory</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStory/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStoryListCell.html">IGStoryListCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStoryPreviewCell.html">IGStoryPreviewCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStoryPreviewController.html">IGStoryPreviewController</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStoryPreviewHeaderView.html">IGStoryPreviewHeaderView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStoryPreviewModel.html">IGStoryPreviewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGStoryPreviewView.html">IGStoryPreviewView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGURLSession.html">IGURLSession</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGUser.html">IGUser</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/IGUser/CodingKeys.html">– CodingKeys</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Reachability.html">Reachability</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/Reachability/Connection.html">– Connection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Global%20Variables.html">Global Variables</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:16InstagramStories24progressIndicatorViewTagSivp">progressIndicatorViewTag</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Global%20Variables.html#/s:16InstagramStories15progressViewTagSivp">progressViewTag</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/IGLayoutType.html">IGLayoutType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MimeType.html">MimeType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/MockLoaderError.html">MockLoaderError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/PlayerStatus.html">PlayerStatus</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ProgressorState.html">ProgressorState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/ReachabilityError.html">ReachabilityError</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SnapMovementDirectionState.html">SnapMovementDirectionState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification.html">Notification</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Notification/Name.html">– Name</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/SCNetworkReachabilityFlags.html">SCNetworkReachabilityFlags</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions.html#/c:objc(cs)UICollectionViewCell">UICollectionViewCell</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIImageView.html">UIImageView</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIImageView/ActivityIndicator.html">– ActivityIndicator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/UIView.html">UIView</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols/CellConfigurer.html">CellConfigurer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/IGImageRequestable.html">IGImageRequestable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/IGPlayerObserver.html">IGPlayerObserver</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/LayoutAttributesAnimator.html">LayoutAttributesAnimator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/PlayerControls.html">PlayerControls</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RetryBtnDelegate.html">RetryBtnDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StoryPreviewHeaderProtocol.html">StoryPreviewHeaderProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StoryPreviewProtocol.html">StoryPreviewProtocol</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ViewAnimator.html">ViewAnimator</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Attributes.html">Attributes</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CubeAttributesAnimator.html">CubeAttributesAnimator</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/IGAppUtility.html">IGAppUtility</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/IGHomeViewModel.html">IGHomeViewModel</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/IGMockLoader.html">IGMockLoader</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/IGScreen.html">IGScreen</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/IGTheme.html">IGTheme</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/VideoResource.html">VideoResource</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:16InstagramStories19ImageRequestHandlera">ImageRequestHandler</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>IGPlayerView</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">IGPlayerView</span> <span class="p">:</span> <span class="kt">UIView</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">IGPlayerView</span><span class="p">:</span> <span class="kt"><a href="../Protocols/PlayerControls.html">PlayerControls</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>Undocumented</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/iVars"></a>
+                <a name="//apple_ref/swift/Section/iVars" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/iVars"></a>
+                  <h3 class="section-name"><p>iVars</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC6playerSo8AVPlayerCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/player" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC6playerSo8AVPlayerCSgvp">player</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">player</span><span class="p">:</span> <span class="kt">AVPlayer</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC5errors5Error_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/error" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC5errors5Error_pSgvp">error</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC17activityIndicatorSo010UIActivityfD0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/activityIndicator" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC17activityIndicatorSo010UIActivityfD0CSgvp">activityIndicator</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">activityIndicator</span><span class="p">:</span> <span class="kt">UIActivityIndicatorView</span><span class="o">!</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC11currentItemSo08AVPlayerF0CSgvp"></a>
+                    <a name="//apple_ref/swift/Property/currentItem" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC11currentItemSo08AVPlayerF0CSgvp">currentItem</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">currentItem</span><span class="p">:</span> <span class="kt">AVPlayerItem</span><span class="p">?</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC11currentTimeSfvp"></a>
+                    <a name="//apple_ref/swift/Property/currentTime" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC11currentTimeSfvp">currentTime</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">currentTime</span><span class="p">:</span> <span class="kt">Float</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Public%20Vars"></a>
+                <a name="//apple_ref/swift/Section/Public Vars" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Public%20Vars"></a>
+                  <h3 class="section-name"><p>Public Vars</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC22playerObserverDelegateAA0cF0_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/playerObserverDelegate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC22playerObserverDelegateAA0cF0_pSgvp">playerObserverDelegate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">playerObserverDelegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IGPlayerObserver.html">IGPlayerObserver</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Init%20methods"></a>
+                <a name="//apple_ref/swift/Section/Init methods" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Init%20methods"></a>
+                  <h3 class="section-name"><p>Init methods</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@InstagramStories@objc(cs)IGPlayerView(im)initWithFrame:"></a>
+                    <a name="//apple_ref/swift/Method/init(frame:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@InstagramStories@objc(cs)IGPlayerView(im)initWithFrame:">init(frame:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">override</span> <span class="nf">init</span><span class="p">(</span><span class="nv">frame</span><span class="p">:</span> <span class="kt">CGRect</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@InstagramStories@objc(cs)IGPlayerView(im)initWithCoder:"></a>
+                    <a name="//apple_ref/swift/Method/init(coder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@InstagramStories@objc(cs)IGPlayerView(im)initWithCoder:">init(coder:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">required</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@InstagramStories@objc(cs)IGPlayerView(im)layoutSubviews"></a>
+                    <a name="//apple_ref/swift/Method/layoutSubviews()" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@InstagramStories@objc(cs)IGPlayerView(im)layoutSubviews">layoutSubviews()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">override</span> <span class="kd">func</span> <span class="nf">layoutSubviews</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/c:@M@InstagramStories@objc(cs)IGPlayerView(im)dealloc"></a>
+                    <a name="//apple_ref/swift/Method/deinit" class="dashAnchor"></a>
+                    <a class="token" href="#/c:@M@InstagramStories@objc(cs)IGPlayerView(im)dealloc">deinit</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">deinit</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Internal%20methods"></a>
+                <a name="//apple_ref/swift/Section/Internal methods" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Internal%20methods"></a>
+                  <h3 class="section-name"><p>Internal methods</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC22setupActivityIndicatoryyF"></a>
+                    <a name="//apple_ref/swift/Method/setupActivityIndicator()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC22setupActivityIndicatoryyF">setupActivityIndicator()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">setupActivityIndicator</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC14startAnimatingyyF"></a>
+                    <a name="//apple_ref/swift/Method/startAnimating()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC14startAnimatingyyF">startAnimating()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">startAnimating</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC13stopAnimatingyyF"></a>
+                    <a name="//apple_ref/swift/Method/stopAnimating()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC13stopAnimatingyyF">stopAnimating()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">stopAnimating</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC15removeObserversyyF"></a>
+                    <a name="//apple_ref/swift/Method/removeObservers()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC15removeObserversyyF">removeObservers()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">removeObservers</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC33cleanUpPlayerPeriodicTimeObserveryyF"></a>
+                    <a name="//apple_ref/swift/Method/cleanUpPlayerPeriodicTimeObserver()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC33cleanUpPlayerPeriodicTimeObserveryyF">cleanUpPlayerPeriodicTimeObserver()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">cleanUpPlayerPeriodicTimeObserver</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC31setupPlayerPeriodicTimeObserveryyF"></a>
+                    <a name="//apple_ref/swift/Method/setupPlayerPeriodicTimeObserver()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC31setupPlayerPeriodicTimeObserveryyF">setupPlayerPeriodicTimeObserver()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">setupPlayerPeriodicTimeObserver</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Protocol%20%7C%20PlayerControls"></a>
+                <a name="//apple_ref/swift/Section/Protocol | PlayerControls" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Protocol%20%7C%20PlayerControls"></a>
+                  <h3 class="section-name"><p>Protocol | PlayerControls</p>
+</h3>
+                </div>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC4play4withyAA13VideoResourceV_tF"></a>
+                    <a name="//apple_ref/swift/Method/play(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC4play4withyAA13VideoResourceV_tF">play(with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">play</span><span class="p">(</span><span class="n">with</span> <span class="nv">resource</span><span class="p">:</span> <span class="kt"><a href="../Structs/VideoResource.html">VideoResource</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC4playyyF"></a>
+                    <a name="//apple_ref/swift/Method/play()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC4playyyF">play()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">play</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC5pauseyyF"></a>
+                    <a name="//apple_ref/swift/Method/pause()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC5pauseyyF">pause()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">pause</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC4stopyyF"></a>
+                    <a name="//apple_ref/swift/Method/stop()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC4stopyyF">stop()</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">stop</span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:16InstagramStories12IGPlayerViewC12playerStatusAA06PlayerF0Ovp"></a>
+                    <a name="//apple_ref/swift/Property/playerStatus" class="dashAnchor"></a>
+                    <a class="token" href="#/s:16InstagramStories12IGPlayerViewC12playerStatusAA06PlayerF0Ovp">playerStatus</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">playerStatus</span><span class="p">:</span> <span class="kt"><a href="../Enums/PlayerStatus.html">PlayerStatus</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-03-21)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

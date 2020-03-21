@@ -9,12 +9,8 @@
 import UIKit
 
 class IGVideoView: IGXView {
-    //Add your Video related stuff here
     // MARK: iVars
-    lazy var videoView: IGPlayerView = {
-        let videoView = IGPlayerView(frame: self.bounds)
-        return videoView
-    }()
+    lazy var videoView: IGPlayerView = IGPlayerView(frame: self.bounds)
     var playerView: IGPlayerView {
         return videoView
     }
@@ -27,21 +23,29 @@ class IGVideoView: IGXView {
         fatalError("init(coder:) has not been implemented")
     }
     // MARK: Internal methods
+    /// start request this video using avplayer with contents of url
     @objc override func loadContent() {
-        //start request this video using avplayer with contents of url
         videoView.startAnimating()
-        IGVideoCacheManager.shared.getFile(for: snap.url) { [weak self] (result) in
-            guard let strongSelf = self else { return }
-            switch result {
-            case .success(let url):
-                    let videoResource = VideoResource(filePath: url.absoluteString)
-                    strongSelf.videoView.play(with: videoResource)
-            case .failure(let error):
-                    strongSelf.videoView.stopAnimating()
-                    strongSelf.contentState = .isFailed
-                    debugPrint("Video error: \(error)")
+        guard let savedURL = IGVideoCacheHelper.default.readVideo(fromUrl: snap.url) else {
+            return IGVideoCacheHelper.default.writeVideo(fromUrl: snap.url) { (result) in
+                switch result {
+                case .success(let written):
+                    guard written, let svURL = IGVideoCacheHelper.default.readVideo(fromUrl: self.snap.url) else {
+                        return self.videoView.stopAnimating()
+                    }
+                    self.playVideo(using: svURL)
+                case .failure(let error):
+                    self.videoView.stopAnimating()
+                    debugPrint("Error:\(error.localizedDescription)")
+                    self.contentState = .isFailed
+                }
             }
         }
+        playVideo(using: savedURL)
+    }
+    func playVideo(using: URL) {
+        let videoResource = VideoResource(filePath: using.absoluteString)
+        self.videoView.play(with: videoResource)
     }
     func pauseVideo() {
         playerView.pause()

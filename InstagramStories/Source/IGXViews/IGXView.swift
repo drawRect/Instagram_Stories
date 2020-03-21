@@ -29,10 +29,11 @@ class IGXView: UIView, IGXMisc {
     enum ContentState {
         case isLoading, isLoaded, isFailed
     }
-    typealias CompletionHandler = (_ success: Bool) -> Void
+    typealias ContentHandler = (_ success: Bool) -> Void
     // MARK: iVars
-    var contentLoaded: CompletionHandler?
+    var contentLoaded: ContentHandler?
     lazy var retryBtn: UIButton = {
+        /// Todo: Use LayoutConstraints
         let btn = UIButton(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         btn.backgroundColor = .white
         btn.setImage(#imageLiteral(resourceName: "ic_retry"), for: .normal)
@@ -46,12 +47,12 @@ class IGXView: UIView, IGXMisc {
         didSet {
             switch contentState {
             case .isLoading:
-                    showLoader()
+                showLoader()
             case .isLoaded:
-                    hideLoader()
-                    //Implement remove retryButton code
-                    if contentLoaded != nil {
-                        contentLoaded!(true)
+                hideLoader()
+                //Implement remove retryButton code
+                if contentLoaded != nil {
+                    contentLoaded!(true)
                 }
             case .isFailed:
                     hideLoader(color: UIColor.black.withAlphaComponent(0.2))//dimmed

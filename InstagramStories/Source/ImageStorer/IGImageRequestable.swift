@@ -19,15 +19,12 @@ protocol IGImageRequestable {
 }
 
 extension IGImageRequestable where Self: UIImageView {
-
-//extension IGImageRequestable {
-
     func requestImage(urlString: String, placeHolderImage: UIImage? = nil, completionBlock: ImageRequestHandler?) {
 
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         self.showActivityIndicator()
 
-        if let cachedImageRaw = IGCache.shared.object(forKey: urlString as AnyObject) as? Data {
+        if let cachedImageRaw = IGCache.default.object(forKey: urlString as AnyObject) as? Data {
             self.hideActivityIndicator()
             guard let completion = completionBlock else { return }
             return completion(.success(cachedImageRaw))

@@ -1,0 +1,649 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 272,
+      "symbol": "IGStoryPreviewCell.startSnapProgress(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 282,
+      "symbol": "IGStoryPreviewCell.pauseSnapProgressors(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 286,
+      "symbol": "IGStoryPreviewCell.stopSnapProgressors(for:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 289,
+      "symbol": "IGStoryPreviewCell.resetSnapProgressors(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 292,
+      "symbol": "IGStoryPreviewCell.resumePreviousSnapProgress(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 295,
+      "symbol": "IGStoryPreviewCell.pauseSnapProgressor()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 298,
+      "symbol": "IGStoryPreviewCell.resumeSnapProgressor()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 332,
+      "symbol": "IGStoryPreviewCell.pausePlayer(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 335,
+      "symbol": "IGStoryPreviewCell.stopPlayer()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/CollectionViewCell/IGStoryPreviewCell.swift",
+      "line": 344,
+      "symbol": "IGStoryPreviewCell.resumePlayer(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Common/IGConstants.swift",
+      "line": 11,
+      "symbol": "IGScreen",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Common/IGConstants.swift",
+      "line": 21,
+      "symbol": "IGTheme",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Common/IGRetryButton.swift",
+      "line": 18,
+      "symbol": "IGRetryLoaderButton",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 23,
+      "symbol": "AnimatedCollectionViewLayout.layoutAttributesForElements(in:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 28,
+      "symbol": "AnimatedCollectionViewLayout.shouldInvalidateLayout(forBoundsChange:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 37,
+      "symbol": "AnimatedCollectionViewLayout.prepare(forAnimatedBoundsChange:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 42,
+      "symbol": "AnimatedCollectionViewLayout.targetContentOffset(forProposedContentOffset:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 52,
+      "symbol": "AnimatedCollectionViewLayout.finalizeAnimatedBoundsChange()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 103,
+      "symbol": "AnimatedCollectionViewLayoutAttributes.contentView",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 104,
+      "symbol": "AnimatedCollectionViewLayoutAttributes.scrollDirection",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 115,
+      "symbol": "AnimatedCollectionViewLayoutAttributes.copy(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/AnimatedCollectionViewLayout.swift",
+      "line": 125,
+      "symbol": "AnimatedCollectionViewLayoutAttributes.isEqual(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/CubeAttributesAnimator.swift",
+      "line": 22,
+      "symbol": "CubeAttributesAnimator.init(perspective:totalAngle:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/CubeAttributesAnimator.swift",
+      "line": 27,
+      "symbol": "CubeAttributesAnimator.animate(collectionView:attributes:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/LayoutAttributesAnimator.swift",
+      "line": 13,
+      "symbol": "LayoutAttributesAnimator",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/AnimatedCollectionViewLayout/Source/LayoutAttributesAnimator.swift",
+      "line": 14,
+      "symbol": "LayoutAttributesAnimator.animate(collectionView:attributes:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 29,
+      "symbol": "ReachabilityError",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 30,
+      "symbol": "ReachabilityError.FailedToCreateWithAddress(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 31,
+      "symbol": "ReachabilityError.FailedToCreateWithHostname(_:)",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 32,
+      "symbol": "ReachabilityError.UnableToSetCallback",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 33,
+      "symbol": "ReachabilityError.UnableToSetDispatchQueue",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 34,
+      "symbol": "ReachabilityError.UnableToGetInitialFlags",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 41,
+      "symbol": "Notification.Name.reachabilityChanged",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 44,
+      "symbol": "Reachability",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 46,
+      "symbol": "Reachability.NetworkReachable",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 47,
+      "symbol": "Reachability.NetworkUnreachable",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 61,
+      "symbol": "Reachability.Connection",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 62,
+      "symbol": "Reachability.Connection.cellular",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 62,
+      "symbol": "Reachability.Connection.none",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 62,
+      "symbol": "Reachability.Connection.wifi",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 72,
+      "symbol": "Reachability.whenReachable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 73,
+      "symbol": "Reachability.whenUnreachable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 76,
+      "symbol": "Reachability.reachableOnWWAN",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 82,
+      "symbol": "Reachability.notificationCenter",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 85,
+      "symbol": "Reachability.currentReachabilityString",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 94,
+      "symbol": "Reachability.connection",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 124,
+      "symbol": "Reachability.init(reachabilityRef:queueQoS:targetQueue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 130,
+      "symbol": "Reachability.init(hostname:queueQoS:targetQueue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 135,
+      "symbol": "Reachability.init(queueQoS:targetQueue:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 150,
+      "symbol": "Reachability",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 153,
+      "symbol": "Reachability.startNotifier()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 181,
+      "symbol": "Reachability.stopNotifier()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 190,
+      "symbol": "Reachability.isReachable",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 195,
+      "symbol": "Reachability.isReachableViaWWAN",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 201,
+      "symbol": "Reachability.isReachableViaWiFi",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/External/Reachability/Reachability.swift",
+      "line": 205,
+      "symbol": "Reachability.description",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/ImageStorer/IGImageRequestable.swift",
+      "line": 12,
+      "symbol": "ImageRequestHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/ImageStorer/UIImageView+Extension.swift",
+      "line": 35,
+      "symbol": "UIImageView.isActivityEnabled",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/ImageStorer/UIImageView+Extension.swift",
+      "line": 51,
+      "symbol": "UIImageView.activityStyle",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/ImageStorer/UIImageView+Extension.swift",
+      "line": 68,
+      "symbol": "UIImageView.activityIndicator",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 10,
+      "symbol": "MimeType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 11,
+      "symbol": "MimeType.image",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 12,
+      "symbol": "MimeType.video",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 13,
+      "symbol": "MimeType.unknown",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 15,
+      "symbol": "IGSnap",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 16,
+      "symbol": "IGSnap.internalIdentifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 17,
+      "symbol": "IGSnap.mimeType",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 18,
+      "symbol": "IGSnap.lastUpdated",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 19,
+      "symbol": "IGSnap.url",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGSnap.swift",
+      "line": 20,
+      "symbol": "IGSnap.kind",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStories.swift",
+      "line": 11,
+      "symbol": "IGStories",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStories.swift",
+      "line": 12,
+      "symbol": "IGStories.count",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStories.swift",
+      "line": 13,
+      "symbol": "IGStories.stories",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 10,
+      "symbol": "IGStory",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 12,
+      "symbol": "IGStory.snapsCount",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 13,
+      "symbol": "IGStory.snaps",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 14,
+      "symbol": "IGStory.internalIdentifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 15,
+      "symbol": "IGStory.lastUpdated",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 16,
+      "symbol": "IGStory.user",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGStory.swift",
+      "line": 29,
+      "symbol": "IGStory",
+      "symbol_kind": "source.lang.swift.decl.extension",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGUser.swift",
+      "line": 10,
+      "symbol": "IGUser",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGUser.swift",
+      "line": 11,
+      "symbol": "IGUser.internalIdentifier",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGUser.swift",
+      "line": 12,
+      "symbol": "IGUser.name",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/Models/IGUser.swift",
+      "line": 13,
+      "symbol": "IGUser.picture",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/StoryHeaderView & ProgressView/IGStoryPreviewHeaderView.swift",
+      "line": 18,
+      "symbol": "progressIndicatorViewTag",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/StoryHeaderView & ProgressView/IGStoryPreviewHeaderView.swift",
+      "line": 19,
+      "symbol": "progressViewTag",
+      "symbol_kind": "source.lang.swift.decl.var.global",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/StoryPreviewView/IGStoryPreviewView.swift",
+      "line": 11,
+      "symbol": "IGLayoutType",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/StoryPreviewView/IGStoryPreviewView.swift",
+      "line": 12,
+      "symbol": "IGLayoutType.cubic",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/VideoCache/VideoCacheTasks.swift",
+      "line": 11,
+      "symbol": "VideoReadHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/VideoCache/VideoCacheTasks.swift",
+      "line": 12,
+      "symbol": "VideoWriteHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/VideoCache/VideoCacheTasks.swift",
+      "line": 13,
+      "symbol": "VideoRemoveHandler",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/rankum/Documents/GitHub/Instagram_Stories/InstagramStories/Source/VideoCache/VideoCacheTasks.swift",
+      "line": 15,
+      "symbol": "VideoCacheTasks",
+      "symbol_kind": "source.lang.swift.decl.protocol",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/rankum/Documents/GitHub/Instagram_Stories"
+}

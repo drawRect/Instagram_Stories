@@ -11,11 +11,8 @@ import UIKit
 class IGImageView: IGXView {
     //Add your Image related stuff here
     // MARK: iVars
-    lazy var imageview: UIImageView = {
-        let imageview = UIImageView(frame: self.bounds)
-        return imageview
-    }()
-    // MARK: Init methods
+    lazy var imageview: UIImageView = UIImageView(frame: self.bounds)
+    // MARK: init
     override init(frame: CGRect, snap: IGSnap) {
         super.init(frame: frame, snap: snap)
         self.addSubview(imageview)

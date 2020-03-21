@@ -38,7 +38,7 @@ final class IGHomeController: UIViewController {
                 title: "Clear Cache",
                 style: .done,
                 target: self,
-                action: #selector(clearImageCache))
+                action: #selector(clearCache))
             navigationItem.rightBarButtonItem?.tintColor = UIColor(
                 red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0
             )
@@ -46,10 +46,20 @@ final class IGHomeController: UIViewController {
         return navigationItem
     }
     // MARK: Private functions
-    @objc private func clearImageCache() {
-        IGCache.shared.removeAllObjects()
-        IGStories.removeAllVideoFilesFromCache()
-        showAlert(withMsg: "Images & Videos are deleted from cache")
+    @objc private func clearCache() {
+        IGVideoCacheHelper.default.clearAll { (result) in
+            switch result {
+            case .success(let isDone):
+                if isDone {
+                    self.showAlert(withMsg: "Images & Videos are deleted from cache")
+                    IGCache.default.removeAllObjects()
+                } else {
+                    debugPrint("Error while clearing all datas")
+                }
+            case .failure(let error):
+                debugPrint("Error while clearing all datas:\(error.localizedDescription)")
+            }
+        }
     }
     private func showAlert(withMsg: String) {
         let alertController = UIAlertController(title: withMsg, message: nil, preferredStyle: .alert)

@@ -11,7 +11,7 @@ import Foundation
 private let oneHundredMegaBytes = 1024 * 1024 * 100
 
 class IGCache: NSCache<AnyObject, AnyObject> {
-    static let shared = IGCache()
+    static let `default` = IGCache()
     private override init() {
         super.init()
         self.setMaximumLimit()

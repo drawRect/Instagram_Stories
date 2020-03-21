@@ -22,7 +22,7 @@ extension UIImageView: IGImageRequestable {
                             Result.failure(IGImageLoadError.downloadError)
                         )
                     }
-                    IGCache.shared.setObject(imgRaw as AnyObject, forKey: url as AnyObject)
+                    IGCache.default.setObject(imgRaw as AnyObject, forKey: url as AnyObject)
                     completion(Result.success(image))
                 case .failure(let error):
                     completion(Result.failure(error))
