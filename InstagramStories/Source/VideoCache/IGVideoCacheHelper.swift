@@ -56,7 +56,7 @@ extension IGVideoCacheHelper: VideoCacheTasks {
     }
     public func readVideo(fromUrl: String) -> URL? {
         let filePath = getDirPath(from: fromUrl)
-        guard !FileManager.default.fileExists(atPath: filePath.path) else {
+        guard FileManager.default.fileExists(atPath: filePath.path) else {
             return nil
         }
         return filePath
@@ -74,6 +74,7 @@ extension IGVideoCacheHelper: VideoCacheTasks {
     }
     public func clearAll(handler: @escaping(VideoRemoveHandler) -> Void) {
         do {
+            let fileNames = try FileManager.default.contentsOfDirectory(at: cacheDirectoryURL, includingPropertiesForKeys: [])
             try FileManager.default.contentsOfDirectory(
                 at: cacheDirectoryURL,
                 includingPropertiesForKeys: nil,

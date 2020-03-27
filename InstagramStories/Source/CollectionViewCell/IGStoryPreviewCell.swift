@@ -17,8 +17,6 @@ enum SnapMovementDirectionState {
     case forward
     case backward
 }
-//Identifiers
-private let snapViewTagIndicator: Int = 8
 
 final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     // MARK: Delegate
@@ -27,8 +25,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             storyHeaderView.delegate = self
         }
     }
-    // MARK: Private iVars
-    private lazy var storyHeaderView: IGStoryPreviewHeaderView = {
+    // MARK: Internal iVars
+    lazy var storyHeaderView: IGStoryPreviewHeaderView = {
         let headerView = IGStoryPreviewHeaderView()
         headerView.translatesAutoresizingMaskIntoConstraints = false
         return headerView
@@ -50,10 +48,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 storyHeaderView.snaperImageView.requestImage(url: picture, style: .rounded) { (result) in
                     DispatchQueue.main.async {
                         switch result {
-                        case .success(let image):
-                            self.storyHeaderView.snaperImageView.image = image
-                        case .failure(let error):
-                            debugPrint("image load erro:\(error.localizedDescription)")
+                            case .success(let image):
+                                self.storyHeaderView.snaperImageView.image = image
+                            case .failure(let error):
+                                debugPrint("image load erro:\(error.localizedDescription)")
                         }
                     }
                 }
@@ -82,7 +80,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     // MARK: Private functions
     private func loadUIElements() {
         scrollview.delegate = self
-        scrollview.igScrollViewDelegate = self
         contentView.addSubview(scrollview)
         contentView.addSubview(storyHeaderView)
     }
@@ -138,21 +135,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    //Before progress view starts we have to fill the progressView
-    private func fillupLastPlayedSnap(_ sIndex: Int) {
-        if let snap = story?.snaps[sIndex], snap.kind == .video {
-            scrollview.videoSnapIndex = sIndex
-            stopPlayer()
-        }
-        if let holderView = self.getProgressIndicatorView(with: sIndex),
-            let progressView = self.getProgressView(with: sIndex) {
-            progressView.widthConstraint?.isActive = false
-            progressView.widthConstraint = progressView.widthAnchor.constraint(
-                equalTo: holderView.widthAnchor, multiplier: 1.0
-            )
-            progressView.widthConstraint?.isActive = true
-        }
-    }
     private func fillupLastPlayedSnaps(_ sIndex: Int) {
         //Coz, we are ignoring the first.snap
         if sIndex != 0 {
@@ -166,14 +148,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                     progressView.widthConstraint?.isActive = true
                 }
             }
-        }
-    }
-    private func clearLastPlayedSnaps(_ sIndex: Int) {
-        if self.getProgressIndicatorView(with: sIndex) != nil,
-            let progressView = self.getProgressView(with: sIndex) {
-            progressView.widthConstraint?.isActive = false
-            progressView.widthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
-            progressView.widthConstraint?.isActive = true
         }
     }
     private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
@@ -197,7 +171,31 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
+    
     // MARK: Internal functions
+    //Before progress view starts we have to fill the progressView
+    func fillupLastPlayedSnap(_ sIndex: Int) {
+        if let snap = story?.snaps[sIndex], snap.kind == .video {
+            scrollview.videoSnapIndex = sIndex
+            stopPlayer()
+        }
+        if let holderView = self.getProgressIndicatorView(with: sIndex),
+            let progressView = self.getProgressView(with: sIndex) {
+            progressView.widthConstraint?.isActive = false
+            progressView.widthConstraint = progressView.widthAnchor.constraint(
+                equalTo: holderView.widthAnchor, multiplier: 1.0
+            )
+            progressView.widthConstraint?.isActive = true
+        }
+    }
+    func clearLastPlayedSnaps(_ sIndex: Int) {
+        if self.getProgressIndicatorView(with: sIndex) != nil,
+            let progressView = self.getProgressView(with: sIndex) {
+            progressView.widthConstraint?.isActive = false
+            progressView.widthConstraint = progressView.widthAnchor.constraint(equalToConstant: 0)
+            progressView.widthConstraint?.isActive = true
+        }
+    }
     func startProgressors() {
         DispatchQueue.main.async {[weak self] in
             guard let strongSelf = self else { return }
@@ -238,6 +236,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
         fillupLastPlayedSnaps(index)
     }
+    
     // MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
         story?.isCompletelyVisible = true
@@ -359,40 +358,5 @@ extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
         shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
     ) -> Bool {
         return true
-    }
-}
-extension IGStoryPreviewCell: IGScrollViewDelegate {
-    func startPlayerProgressor(for videoView: IGPlayerView) {
-        self.startPlayerSnapProgressor(for: videoView)
-    }
-    func contentLoaded() {
-        self.startProgressors()
-    }
-    func updateStoryHeaderView(for snap: IGSnap) {
-        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-    }
-    func fillLastPlayedSnap(for snapIndex: Int) {
-        self.fillupLastPlayedSnap(snapIndex)
-    }
-    func clearLastPlayedSnaps(for snapIndex: Int) {
-        self.clearLastPlayedSnaps(snapIndex)
-    }
-    func resetSnapProgressors(for snapIndex: Int) {
-        self.resetSnapProgressors(with: snapIndex)
-    }
-    func moveToPreviousStory() {
-        delegate?.moveToPreviousStory()
-    }
-    func stopProgressors(for snapIndex: Int) {
-        self.stopSnapProgressors(for: snapIndex)
-    }
-    func pauseProgressView() {
-        self.pauseSnapProgressor()
-    }
-    func resumeProgressView() {
-        self.resumeSnapProgressor()
-    }
-    func didCompletePreview() {
-        delegate?.didCompletePreview()
     }
 }
