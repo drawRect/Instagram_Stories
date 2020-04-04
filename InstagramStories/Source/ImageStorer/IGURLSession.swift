@@ -21,8 +21,6 @@ extension IGURLSession {
             }
         })
     }
-////                IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
-
     func downloadImage(fromUrl: String, completionBlock: @escaping ImageRequestHandler) {
         guard let url = URL(string: fromUrl) else {
             return completionBlock(.failure(IGImageLoadError.invalidImageURL))

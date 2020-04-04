@@ -13,10 +13,6 @@ protocol StoryPreviewProtocol: class {
     func moveToPreviousStory()
     func didTapCloseButton()
 }
-enum SnapMovementDirectionState {
-    case forward
-    case backward
-}
 
 final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     // MARK: Delegate
@@ -48,10 +44,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 storyHeaderView.snaperImageView.requestImage(url: picture, style: .rounded) { (result) in
                     DispatchQueue.main.async {
                         switch result {
-                            case .success(let image):
-                                self.storyHeaderView.snaperImageView.image = image
-                            case .failure(let error):
-                                debugPrint("image load erro:\(error.localizedDescription)")
+                        case .success(let image):
+                            self.storyHeaderView.snaperImageView.image = image
+                        case .failure(let error):
+                            debugPrint("image load erro:\(error.localizedDescription)")
                         }
                     }
                 }
@@ -171,9 +167,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             }
         }
     }
-    
     // MARK: Internal functions
-    //Before progress view starts we have to fill the progressView
+    ///Before progress view starts we have to fill the progressView
     func fillupLastPlayedSnap(_ sIndex: Int) {
         if let snap = story?.snaps[sIndex], snap.kind == .video {
             scrollview.videoSnapIndex = sIndex
@@ -206,9 +201,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                         strongSelf.gearupTheProgressors(type: .image)
                     }
                 } else {
-                    //Didend displaying will call this startProgressors method.
-                    //After that only isCompletelyVisible get true.
-                    //Then we have to start the video if that snap contains video.
+                    /**
+                        Didend displaying will call this startProgressors method.
+                        After that only isCompletelyVisible get true.
+                        Then we have to start the video if that snap contains video.
+                    */
                     if strongSelf.story?.isCompletelyVisible == true {
                         let videoView = strongSelf.scrollview.children[strongSelf.snapIndex]
                         strongSelf.scrollview.startPlayer(videoView: videoView)
@@ -236,7 +233,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
         fillupLastPlayedSnaps(index)
     }
-    
     // MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
         story?.isCompletelyVisible = true

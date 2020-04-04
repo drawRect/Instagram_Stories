@@ -8,6 +8,8 @@
 
 import UIKit
 
+// Still finding the usage of these?
+// Loader from ImageView+Extension and IGPlayerView move it here
 protocol IGXMisc: class {
     func showLoader(color: UIColor)
     func hideLoader(color: UIColor)
@@ -22,9 +24,11 @@ extension IGXMisc where Self: IGXView {
     }
 }
 
-//This class can act as Person class
-//ScrollView children should have Parent class of IGXView
-//but the instance is based on the MIME Type whether it is a IGImageView or IGPlayerView
+/**
+ This class can act as Person class
+ ScrollView children should have Parent class of IGXView
+ but the instance is based on the MIME Type whether it is a IGImageView or IGPlayerView
+ */
 class IGXView: UIView, IGXMisc {
     enum ContentState {
         case isLoading, isLoaded, isFailed

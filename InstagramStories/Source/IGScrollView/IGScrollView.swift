@@ -8,15 +8,12 @@
 
 import UIKit
 
-/*(We have to create our own freezed scrollview.
- I mean when asking the scrollview it should give me the scrollview
- with all the settings which are sealed(ie.Gestures are long press and tap,
- and other settings)
- Nobody can create this scrollview without sealed settings,
- but they can override the properties and update their values repectively */
-
-//There is no direct dealing between IGSnapview vs Cell.
+/**
+ This is Subclass of ScrollView with some basic properties
+ enabled like longPressGesture and TapGesture
+ */
 class IGScrollView: UIScrollView {
+    //There is no direct dealing between IGSnapview vs Cell.
     enum Direction {
         case forward, backward
     }
@@ -34,11 +31,14 @@ class IGScrollView: UIScrollView {
     // MARK: iVars
     var story: IGStory?
     var direction: Direction = .forward
-    //The below var is replacement of subviews.
-    //anyone can add subview in scrollview. but children is blueprint
-    //of our requirement. it can have our babies only. :P
-    var children: [IGSnapView] = [] //if you want respective child using index,
-    //you can directly get it (we are avoiding subviews explicitly)
+    /**
+     The below var is replacement of subviews.
+    anyone can add subview in scrollview. but children is blueprint
+    of our requirement. it can have our babies only.
+     if you want respective child simply get by index
+     */
+    var children: [IGSnapView] = []
+    ///you can directly get it (we are avoiding subviews explicitly)
     var videoSnapIndex = 0
     private var igStoryPreviewCell: IGStoryPreviewCell? {
         if let cell = self.superview?.superview as? IGStoryPreviewCell {
@@ -50,7 +50,7 @@ class IGScrollView: UIScrollView {
         didSet {
             self.isUserInteractionEnabled = true
             switch direction {
-                case .forward:
+            case .forward:
                     if snapIndex < story?.snapsCount ?? 0 {
                         if let snap = story?.snaps[snapIndex] {
                             if snap.kind == MimeType.image {
@@ -71,7 +71,7 @@ class IGScrollView: UIScrollView {
                             igStoryPreviewCell?.storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                         }
                 }
-                case .backward:
+            case .backward:
                     if snapIndex < story?.snapsCount ?? 0 {
                         if let snap = story?.snaps[snapIndex] {
                             if snap.kind != .video {

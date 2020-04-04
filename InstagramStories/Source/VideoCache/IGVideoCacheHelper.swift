@@ -74,7 +74,6 @@ extension IGVideoCacheHelper: VideoCacheTasks {
     }
     public func clearAll(handler: @escaping(VideoRemoveHandler) -> Void) {
         do {
-            let fileNames = try FileManager.default.contentsOfDirectory(at: cacheDirectoryURL, includingPropertiesForKeys: [])
             try FileManager.default.contentsOfDirectory(
                 at: cacheDirectoryURL,
                 includingPropertiesForKeys: nil,

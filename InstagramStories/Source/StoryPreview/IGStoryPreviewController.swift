@@ -20,9 +20,9 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     private var viewModel: IGStoryPreviewModel?
     private(set) var stories: IGStories
-    /** This index will tell you which Story, user has picked*/
+    /** This index will tell you which Story, user has picked */
     private(set) var handPickedStoryIndex: Int //starts with(i)
-    /** This index will help you simply iterate the story one by one*/
+    /** This index will help you simply iterate the story one by one */
     private var nStoryIndex: Int = 0 //iteration(i+1)
     private var storyCopy: IGStory?
     private(set) var layoutType: IGLayoutType
