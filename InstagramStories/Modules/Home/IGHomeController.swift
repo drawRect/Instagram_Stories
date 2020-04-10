@@ -9,6 +9,7 @@
 import UIKit
 
 fileprivate let isClearCacheEnabled = true
+internal let isDeleteSnapEnabled = true
 
 final class IGHomeController: UIViewController {
     

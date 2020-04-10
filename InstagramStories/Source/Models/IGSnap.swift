@@ -17,6 +17,7 @@ public class IGSnap: Codable {
     public let mimeType: String
     public let lastUpdated: String
     public let url: String
+    public var isDeleted: Bool = false
     public var kind: MimeType {
         switch mimeType {
         case MimeType.image.rawValue:

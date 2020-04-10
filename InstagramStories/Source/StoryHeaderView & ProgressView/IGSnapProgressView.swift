@@ -14,7 +14,7 @@ enum ProgressorState {
     case running
     case finished
 }
-protocol ViewAnimator: class {
+protocol ViewAnimator {
     func start(with duration: TimeInterval, holderView: UIView, completion: @escaping (_ storyIdentifier: String, _ snapIndex: Int, _ isCancelledAbruptly: Bool) -> Void)
     func resume()
     func pause()
@@ -81,4 +81,10 @@ final class IGSnapProgressView: UIView, ViewAnimator {
     public var story: IGStory!
     public var widthConstraint: NSLayoutConstraint?
     public var state: ProgressorState = .notStarted
+}
+
+final class IGSnapProgressIndicatorView: UIView {
+    public var widthConstraint: NSLayoutConstraint?
+    public var leftConstraiant: NSLayoutConstraint?
+     public var rightConstraiant: NSLayoutConstraint?
 }

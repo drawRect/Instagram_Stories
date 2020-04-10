@@ -431,6 +431,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             DispatchQueue.main.async {
                 if type == .image {
                     progressView.start(with: 5.0, holderView: holderView, completion: {(identifier, snapIndex, isCancelledAbruptly) in
+                        print("Completed snapindex: \(snapIndex)")
                         if isCancelledAbruptly == false {
                             self.didCompleteProgress()
                         }
@@ -474,13 +475,66 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
         return nil
     }
-    func getProgressIndicatorView(with index: Int) -> UIView? {
+    func getProgressIndicatorView(with index: Int) -> IGSnapProgressIndicatorView? {
         let progressView = storyHeaderView.getProgressView
-        return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first ?? nil
+        return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first as? IGSnapProgressIndicatorView ?? nil
     }
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
         fillupLastPlayedSnaps(index)
     }
+    func deleteSnap() {
+        
+        let progressView = storyHeaderView.getProgressView
+        if let snapCount = story?.snaps.count, snapIndex != 0, snapIndex != snapCount-1, snapCount > 2 {
+            if let indicatorView = getProgressIndicatorView(with: snapIndex), let nextIndicatorView = getProgressIndicatorView(with: snapIndex+1), let previousIndicatorView =  getProgressIndicatorView(with: snapIndex-1){
+                indicatorView.widthConstraint?.isActive = false
+                
+                indicatorView.leftConstraiant?.isActive = false
+                indicatorView.leftConstraiant = indicatorView.igLeftAnchor.constraint(equalTo: previousIndicatorView.igRightAnchor, constant: 0)
+                indicatorView.leftConstraiant?.isActive = true
+                
+                nextIndicatorView.widthConstraint?.isActive = false
+                nextIndicatorView.widthConstraint = nextIndicatorView.widthAnchor.constraint(equalTo: previousIndicatorView.widthAnchor, multiplier: 1.0)
+                nextIndicatorView.widthConstraint?.isActive = true
+            }
+        } else if let snapCount = story?.snaps.count, snapIndex == 0, snapCount > 1 {
+            if let indicatorView = getProgressIndicatorView(with: snapIndex), let nextIndicatorView = getProgressIndicatorView(with: snapIndex+1) {
+                
+                indicatorView.widthConstraint?.isActive = false
+                
+                indicatorView.leftConstraiant?.isActive = false
+                indicatorView.leftConstraiant = indicatorView.igLeftAnchor.constraint(equalTo: progressView.igLeftAnchor, constant: 0)
+                indicatorView.leftConstraiant?.isActive = true
+                
+                
+                nextIndicatorView.leftConstraiant?.isActive = false
+                nextIndicatorView.leftConstraiant = nextIndicatorView.igLeftAnchor.constraint(equalTo: progressView.igLeftAnchor, constant: 8)
+                nextIndicatorView.leftConstraiant?.isActive = true
+                nextIndicatorView.widthConstraint?.isActive = false
+            }
+        } else if let snapCount = story?.snaps.count, snapIndex == 0, snapCount == 1 {
+            //TODO: Story shouldn't be visible
+        }else if let snapCount = story?.snaps.count, snapIndex == snapCount-1, snapCount > 1 {
+            if let indicatorView = getProgressIndicatorView(with: snapIndex), let previousIndicatorView = getProgressIndicatorView(with: snapIndex-1) {
+                
+                indicatorView.widthConstraint?.isActive = false
+                
+                indicatorView.leftConstraiant?.isActive = false
+                indicatorView.leftConstraiant = indicatorView.igLeftAnchor.constraint(equalTo: progressView.igLeftAnchor, constant: 0)
+                indicatorView.leftConstraiant?.isActive = true
+                
+                indicatorView.rightConstraiant?.isActive = false
+                
+                previousIndicatorView.rightConstraiant = progressView.igRightAnchor.constraint(equalTo: previousIndicatorView.igRightAnchor, constant: 8)
+                previousIndicatorView.rightConstraiant!.isActive = true
+            }
+        }
+        story?.snaps[snapIndex].isDeleted = true
+        scrollview.subviews[snapIndex].frame.size.width = 0
+        direction = .forward
+        willMoveToPreviousOrNextSnap(n: snapIndex+1)
+    }
+    
     //MARK: - Public functions
     public func willDisplayCellForZerothIndex(with sIndex: Int) {
         story?.isCompletelyVisible = true

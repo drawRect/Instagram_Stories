@@ -15,7 +15,7 @@ import UIKit
  */
 final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
-    //MARK: - iVars
+    //MARK: - Private Vars
     private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
     private var viewModel: IGStoryPreviewModel?
     
@@ -26,17 +26,42 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private var nStoryIndex: Int = 0 //iteration(i+1)
     private var story_copy: IGStory?
     private(set) var layoutType: IGLayoutType
+    private(set) var executeOnce = false
+    private(set) var isDeleteSnapCalled = false
+    
+    //check whether device rotation is happening or not
+    private(set) var isTransitioning = false
+    private(set) var currentIndexPath: IndexPath?
     
     private let dismissGesture: UISwipeGestureRecognizer = {
         let gesture = UISwipeGestureRecognizer()
         gesture.direction = .down
         return gesture
     }()
-    
-    private(set) var executeOnce = false
-    
-    //check whether device rotation is happening or not
-    private(set) var isTransitioning = false
+    private let showActionSheetGesture: UISwipeGestureRecognizer = {
+        let gesture = UISwipeGestureRecognizer()
+        gesture.direction = .up
+        return gesture
+    }()
+    private var currentCell: IGStoryPreviewCell? {
+        guard let indexPath = self.currentIndexPath else {
+            debugPrint("Current IndexPath is nil")
+            return nil
+        }
+        return self._view.snapsCollectionView.cellForItem(at: indexPath) as? IGStoryPreviewCell
+    }
+    lazy private var actionSheetController: UIAlertController = {
+        let alertController = UIAlertController(title: "Instagram Stories", message: "More Options", preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.deleteSnap()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            self?.currentCell?.resumeEntireSnap()
+        }
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+        return alertController
+    }()
     
     //MARK: - Overriden functions
     override func loadView() {
@@ -44,8 +69,16 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         view = IGStoryPreviewView.init(layoutType: self.layoutType)
         viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
         _view.snapsCollectionView.decelerationRate = .fast
+        dismissGesture.delegate = self
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
         _view.snapsCollectionView.addGestureRecognizer(dismissGesture)
+        
+        // This should be handled for only currently logged in user story and not for all other user stories.
+        if(isDeleteSnapEnabled) {
+            showActionSheetGesture.delegate = self
+            showActionSheetGesture.addTarget(self, action: #selector(showActionSheet))
+            _view.snapsCollectionView.addGestureRecognizer(showActionSheetGesture)
+        }
     }
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -94,6 +127,25 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override var prefersStatusBarHidden: Bool { return true }
     
+    @objc private func showActionSheet() {
+        self.present(actionSheetController, animated: true) { [weak self] in
+            self?.currentCell?.pauseEntireSnap()
+        }
+    }
+    private func deleteSnap() {
+        guard let indexPath = currentIndexPath else {
+            debugPrint("Current IndexPath is nil")
+            return
+        }
+        let cell = _view.snapsCollectionView.cellForItem(at: indexPath) as? IGStoryPreviewCell
+        
+        cell?.deleteSnap()
+        /*if(status) {
+            isDeleteSnapCalled = true
+            self?._view.snapsCollectionView.reloadSections([indexPath.section])
+            //_view.snapsCollectionView.deleteItems(at: [currentIndexPath!])
+        }*/
+    }
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
@@ -113,6 +165,7 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
         cell.story = story
         cell.delegate = self
+        currentIndexPath = indexPath
         nStoryIndex = indexPath.item
         return cell
     }
@@ -144,6 +197,10 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if(isDeleteSnapCalled) {
+            isDeleteSnapCalled = true
+            return
+        }
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
@@ -228,6 +285,9 @@ extension IGStoryPreviewController {
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
 
