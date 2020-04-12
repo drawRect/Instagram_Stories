@@ -9,7 +9,7 @@
 import UIKit
 
 fileprivate let isClearCacheEnabled = true
-internal let isDeleteSnapEnabled = true
+internal var isDeleteSnapEnabled = true
 
 final class IGHomeController: UIViewController {
     
@@ -38,6 +38,7 @@ final class IGHomeController: UIViewController {
             navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear Cache", style: .done, target: self, action: #selector(clearImageCache))
             navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
         }
+        navigationItem.rightBarButtonItem?.tintColor = UIColor(red: 203.0/255, green: 69.0/255, blue: 168.0/255, alpha: 1.0)
         return navigationItem
     }
     
@@ -81,10 +82,21 @@ UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            showAlert(withMsg: "Try to implement your own functionality for 'Your story'")
+            isDeleteSnapEnabled = true
+            if(isDeleteSnapEnabled) {
+                DispatchQueue.main.async {
+                    if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy().myStory, stories_copy.count > 0 {
+                        let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row)
+                        self.present(storyPreviewScene, animated: true, completion: nil)
+                    }
+                }
+            } else {
+                showAlert(withMsg: "Try to implement your own functionality for 'Your story'")
+            }
         }else {
+            isDeleteSnapEnabled = false
             DispatchQueue.main.async {
-                if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy() {
+                if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy().otherStories {
                     let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
                     self.present(storyPreviewScene, animated: true, completion: nil)
                 }

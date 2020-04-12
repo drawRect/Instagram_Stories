@@ -19,7 +19,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
     private var viewModel: IGStoryPreviewModel?
     
-    private(set) var stories: IGStories
+    private(set) var stories: [IGStory]
     /** This index will tell you which Story, user has picked*/
     private(set) var handPickedStoryIndex: Int //starts with(i)
     /** This index will help you simply iterate the story one by one*/
@@ -27,7 +27,6 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private var story_copy: IGStory?
     private(set) var layoutType: IGLayoutType
     private(set) var executeOnce = false
-    private(set) var isDeleteSnapCalled = false
     
     //check whether device rotation is happening or not
     private(set) var isTransitioning = false
@@ -116,7 +115,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
-    init(layout:IGLayoutType = .cubic,stories: IGStories,handPickedStoryIndex: Int) {
+    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
@@ -138,13 +137,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
             return
         }
         let cell = _view.snapsCollectionView.cellForItem(at: indexPath) as? IGStoryPreviewCell
-        
         cell?.deleteSnap()
-        /*if(status) {
-            isDeleteSnapCalled = true
-            self?._view.snapsCollectionView.reloadSections([indexPath.section])
-            //_view.snapsCollectionView.deleteItems(at: [currentIndexPath!])
-        }*/
     }
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
@@ -192,15 +185,11 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             return
         }
         if indexPath.item == nStoryIndex {
-            let s = stories.stories[nStoryIndex+handPickedStoryIndex]
+            let s = stories[nStoryIndex+handPickedStoryIndex]
             cell.willDisplayCell(with: s.lastPlayedSnapIndex)
         }
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if(isDeleteSnapCalled) {
-            isDeleteSnapCalled = true
-            return
-        }
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
@@ -297,7 +286,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         let n = handPickedStoryIndex+nStoryIndex+1
         if n < stories.count {
             //Move to next story
-            story_copy = stories.stories[nStoryIndex+handPickedStoryIndex]
+            story_copy = stories[nStoryIndex+handPickedStoryIndex]
             nStoryIndex = nStoryIndex + 1
             let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
             //_view.snapsCollectionView.layer.speed = 0;
@@ -313,7 +302,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
         //let n = handPickedStoryIndex+nStoryIndex+1
         let n = nStoryIndex+1
         if n <= stories.count && n > 1 {
-            story_copy = stories.stories[nStoryIndex+handPickedStoryIndex]
+            story_copy = stories[nStoryIndex+handPickedStoryIndex]
             nStoryIndex = nStoryIndex - 1
             let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
             _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .left, animated: true)

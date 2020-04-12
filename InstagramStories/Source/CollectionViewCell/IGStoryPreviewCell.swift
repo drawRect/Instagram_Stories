@@ -483,56 +483,31 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         fillupLastPlayedSnaps(index)
     }
     func deleteSnap() {
-        
         let progressView = storyHeaderView.getProgressView
-        if let snapCount = story?.snaps.count, snapIndex != 0, snapIndex != snapCount-1, snapCount > 2 {
-            if let indicatorView = getProgressIndicatorView(with: snapIndex), let nextIndicatorView = getProgressIndicatorView(with: snapIndex+1), let previousIndicatorView =  getProgressIndicatorView(with: snapIndex-1){
-                indicatorView.widthConstraint?.isActive = false
-                
-                indicatorView.leftConstraiant?.isActive = false
-                indicatorView.leftConstraiant = indicatorView.igLeftAnchor.constraint(equalTo: previousIndicatorView.igRightAnchor, constant: 0)
-                indicatorView.leftConstraiant?.isActive = true
-                
-                nextIndicatorView.widthConstraint?.isActive = false
-                nextIndicatorView.widthConstraint = nextIndicatorView.widthAnchor.constraint(equalTo: previousIndicatorView.widthAnchor, multiplier: 1.0)
-                nextIndicatorView.widthConstraint?.isActive = true
-            }
-        } else if let snapCount = story?.snaps.count, snapIndex == 0, snapCount > 1 {
-            if let indicatorView = getProgressIndicatorView(with: snapIndex), let nextIndicatorView = getProgressIndicatorView(with: snapIndex+1) {
-                
-                indicatorView.widthConstraint?.isActive = false
-                
-                indicatorView.leftConstraiant?.isActive = false
-                indicatorView.leftConstraiant = indicatorView.igLeftAnchor.constraint(equalTo: progressView.igLeftAnchor, constant: 0)
-                indicatorView.leftConstraiant?.isActive = true
-                
-                
-                nextIndicatorView.leftConstraiant?.isActive = false
-                nextIndicatorView.leftConstraiant = nextIndicatorView.igLeftAnchor.constraint(equalTo: progressView.igLeftAnchor, constant: 8)
-                nextIndicatorView.leftConstraiant?.isActive = true
-                nextIndicatorView.widthConstraint?.isActive = false
-            }
-        } else if let snapCount = story?.snaps.count, snapIndex == 0, snapCount == 1 {
+        
+        clearLastPlayedSnaps(snapIndex)
+        stopSnapProgressors(with: snapIndex)
+        let snapCount = story?.snapsCount ?? 0
+        if(snapCount == 1) {
             //TODO: Story shouldn't be visible
-        }else if let snapCount = story?.snaps.count, snapIndex == snapCount-1, snapCount > 1 {
-            if let indicatorView = getProgressIndicatorView(with: snapIndex), let previousIndicatorView = getProgressIndicatorView(with: snapIndex-1) {
-                
-                indicatorView.widthConstraint?.isActive = false
-                
-                indicatorView.leftConstraiant?.isActive = false
-                indicatorView.leftConstraiant = indicatorView.igLeftAnchor.constraint(equalTo: progressView.igLeftAnchor, constant: 0)
-                indicatorView.leftConstraiant?.isActive = true
-                
-                indicatorView.rightConstraiant?.isActive = false
-                
-                previousIndicatorView.rightConstraiant = progressView.igRightAnchor.constraint(equalTo: previousIndicatorView.igRightAnchor, constant: 8)
-                previousIndicatorView.rightConstraiant!.isActive = true
-            }
+            //No need to do any constraint changes. Because when we are setting isDeleted true that snap will not be display.
+        } else if let lastIndicatorView = getProgressIndicatorView(with: snapCount-1), let preLastIndicatorView = getProgressIndicatorView(with: snapCount-2) {
+            lastIndicatorView.rightConstraiant?.isActive = false
+            
+            preLastIndicatorView.rightConstraiant?.isActive = false
+            preLastIndicatorView.rightConstraiant = progressView.igRightAnchor.constraint(equalTo: preLastIndicatorView.igRightAnchor, constant: 8)
+            preLastIndicatorView.rightConstraiant?.isActive = true
+        } else {
+            debugPrint("No Snaps")
         }
+        
+        
+        //Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
         story?.snaps[snapIndex].isDeleted = true
-        scrollview.subviews[snapIndex].frame.size.width = 0
         direction = .forward
-        willMoveToPreviousOrNextSnap(n: snapIndex+1)
+        willMoveToPreviousOrNextSnap(n: snapIndex)
+        
+        //Do the api call, when api request is success remove the snap using snap internal identifier from the nsuserdefaults.
     }
     
     //MARK: - Public functions

@@ -28,13 +28,17 @@ struct IGHomeViewModel {
         return stories
     }
     public func numberOfItemsInSection(_ section:Int) -> Int {
-        if let count = stories?.count {
-            return count + 1 // Add Story cell
+        if let count = stories?.otherStoriesCount {
+            return count + 1
         }
         return 1
     }
     public func cellForItemAt(indexPath:IndexPath) -> IGStory? {
-        return stories?.stories[indexPath.row-1]
+        if indexPath.row == 0 {
+            return stories?.myStory[indexPath.row]
+        }else {
+            return stories?.otherStories[indexPath.row-1]
+        }
     }
     
 }
