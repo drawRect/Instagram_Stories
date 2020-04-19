@@ -262,8 +262,12 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         longPressGestureState = sender.state
-        if sender.state == .began {
-            pauseEntireSnap()
+        if sender.state == .began ||  sender.state == .ended {
+            if(sender.state == .began) {
+                pauseEntireSnap()
+            } else {
+                resumeEntireSnap()
+            }
         }
     }
     @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
