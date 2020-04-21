@@ -151,12 +151,16 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             return
         }
         vCell.story?.isCompletelyVisible = true
+        
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
-            vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            if vCell.longPressGestureState == nil {
+                vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            }
             if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
                 vCell.resumePlayer(with: vCell.story?.lastPlayedSnapIndex ?? 0)
             }
+            vCell.longPressGestureState = nil
         }else {
             if let cell = cell as? IGStoryPreviewCell {
                 cell.stopPlayer()

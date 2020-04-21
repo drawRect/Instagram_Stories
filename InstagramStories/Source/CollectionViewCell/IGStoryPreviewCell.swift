@@ -56,6 +56,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     private var videoSnapIndex: Int = 0
     
     var retryBtn: IGRetryLoaderButton!
+    var longPressGestureState: UILongPressGestureRecognizer.State?
     
     //MARK:- Public iVars
     public var direction: SnapMovementDirectionState = .forward
@@ -74,45 +75,45 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         didSet {
             scrollview.isUserInteractionEnabled = true
             switch direction {
-            case .forward:
-                if snapIndex < story?.snapsCount ?? 0 {
-                    if let snap = story?.snaps[snapIndex] {
-                        if snap.kind != MimeType.video {
-                            if let snapView = getSnapview() {
-                                startRequest(snapView: snapView, with: snap.url)
-                            } else {
-                                let snapView = createSnapView()
-                                startRequest(snapView: snapView, with: snap.url)
-                            }
-                        }else {
-                            if let videoView = getVideoView(with: snapIndex) {
-                                startPlayer(videoView: videoView, with: snap.url)
+                case .forward:
+                    if snapIndex < story?.snapsCount ?? 0 {
+                        if let snap = story?.snaps[snapIndex] {
+                            if snap.kind != MimeType.video {
+                                if let snapView = getSnapview() {
+                                    startRequest(snapView: snapView, with: snap.url)
+                                } else {
+                                    let snapView = createSnapView()
+                                    startRequest(snapView: snapView, with: snap.url)
+                                }
                             }else {
-                                let videoView = createVideoView()
-                                startPlayer(videoView: videoView, with: snap.url)
+                                if let videoView = getVideoView(with: snapIndex) {
+                                    startPlayer(videoView: videoView, with: snap.url)
+                                }else {
+                                    let videoView = createVideoView()
+                                    startPlayer(videoView: videoView, with: snap.url)
+                                }
                             }
+                            storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                         }
-                        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-                    }
                 }
-            case .backward:
-                if snapIndex < story?.snapsCount ?? 0 {
-                    if let snap = story?.snaps[snapIndex] {
-                        if snap.kind != MimeType.video {
-                            if let snapView = getSnapview() {
-                                self.startRequest(snapView: snapView, with: snap.url)
+                case .backward:
+                    if snapIndex < story?.snapsCount ?? 0 {
+                        if let snap = story?.snaps[snapIndex] {
+                            if snap.kind != MimeType.video {
+                                if let snapView = getSnapview() {
+                                    self.startRequest(snapView: snapView, with: snap.url)
+                                }
+                            }else {
+                                if let videoView = getVideoView(with: snapIndex) {
+                                    startPlayer(videoView: videoView, with: snap.url)
+                                }
+                                else {
+                                    let videoView = self.createVideoView()
+                                    self.startPlayer(videoView: videoView, with: snap.url)
+                                }
                             }
-                        }else {
-                            if let videoView = getVideoView(with: snapIndex) {
-                                startPlayer(videoView: videoView, with: snap.url)
-                            }
-                            else {
-                                let videoView = self.createVideoView()
-                                self.startPlayer(videoView: videoView, with: snap.url)
-                            }
+                            storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
                         }
-                        storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-                    }
                 }
             }
         }
@@ -145,7 +146,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     //MARK: - Private functions
     private func loadUIElements() {
         scrollview.delegate = self
@@ -165,13 +166,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             contentView.igBottomAnchor.constraint(equalTo: scrollview.igBottomAnchor),
             scrollview.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 1.0),
             scrollview.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1.0)
-            ])
+        ])
         NSLayoutConstraint.activate([
             storyHeaderView.igLeftAnchor.constraint(equalTo: contentView.igLeftAnchor),
             contentView.igRightAnchor.constraint(equalTo: storyHeaderView.igRightAnchor),
             storyHeaderView.igTopAnchor.constraint(equalTo: contentView.igTopAnchor),
             storyHeaderView.heightAnchor.constraint(equalToConstant: 80)
-            ])
+        ])
     }
     private func createSnapView() -> UIImageView {
         let snapView = UIImageView()
@@ -186,7 +187,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             snapView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
-            ])
+        ])
         return snapView
     }
     private func getSnapview() -> UIImageView? {
@@ -207,7 +208,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             videoView.widthAnchor.constraint(equalTo: scrollview.widthAnchor),
             videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.igBottomAnchor.constraint(equalTo: videoView.igBottomAnchor)
-            ])
+        ])
         return videoView
     }
     private func getVideoView(with index: Int) -> IGPlayerView? {
@@ -222,15 +223,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             guard let strongSelf = self else { return }
             DispatchQueue.main.async {
                 switch result {
-                case .success(_):
-                    strongSelf.startProgressors()
-                case .failure(_):
-                    strongSelf.showRetryButton(with: url, for: snapView)
+                    case .success(_):
+                        strongSelf.startProgressors()
+                    case .failure(_):
+                        strongSelf.showRetryButton(with: url, for: snapView)
                 }
             }
         }
     }
-
+    
     private func showRetryButton(with url: String, for snapView: UIImageView) {
         self.retryBtn = IGRetryLoaderButton.init(withURL: url)
         self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
@@ -240,7 +241,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         NSLayoutConstraint.activate([
             self.retryBtn.igCenterXAnchor.constraint(equalTo: snapView.igCenterXAnchor),
             self.retryBtn.igCenterYAnchor.constraint(equalTo: snapView.igCenterYAnchor)
-            ])
+        ])
     }
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollview.subviews.count > 0 {
@@ -248,22 +249,23 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 videoView.startAnimating()
                 IGVideoCacheManager.shared.getFile(for: url) { (result) in
                     switch result {
-                    case .success(let url):
-                        let videoResource = VideoResource(filePath: url.absoluteString)
-                        videoView.play(with: videoResource)
-                    case .failure(let error):
-                        videoView.stopAnimating()
-                        debugPrint("Video error: \(error)")
+                        case .success(let url):
+                            let videoResource = VideoResource(filePath: url.absoluteString)
+                            videoView.play(with: videoResource)
+                        case .failure(let error):
+                            videoView.stopAnimating()
+                            debugPrint("Video error: \(error)")
                     }
                 }
             }
         }
     }
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
-        if sender.state == .began || sender.state == .ended {
-            if sender.state == .began {
+        longPressGestureState = sender.state
+        if sender.state == .began ||  sender.state == .ended {
+            if(sender.state == .began) {
                 pauseEntireSnap()
-            }else {
+            } else {
                 resumeEntireSnap()
             }
         }
@@ -629,7 +631,7 @@ extension IGStoryPreviewCell: IGPlayerObserver {
             NSLayoutConstraint.activate([
                 self.retryBtn.igCenterXAnchor.constraint(equalTo: videoView.igCenterXAnchor),
                 self.retryBtn.igCenterYAnchor.constraint(equalTo: videoView.igCenterYAnchor)
-                ])
+            ])
         }
     }
     func didCompletePlay() {
@@ -643,6 +645,9 @@ extension IGStoryPreviewCell: IGPlayerObserver {
 
 extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+        if(gestureRecognizer is UISwipeGestureRecognizer) {
+            return true
+        }
+        return false
     }
 }
