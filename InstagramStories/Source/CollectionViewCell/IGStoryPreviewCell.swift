@@ -645,6 +645,9 @@ extension IGStoryPreviewCell: IGPlayerObserver {
 
 extension IGStoryPreviewCell: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return true
+        if(gestureRecognizer is UISwipeGestureRecognizer) {
+            return true
+        }
+        return false
     }
 }
