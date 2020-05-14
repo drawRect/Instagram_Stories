@@ -224,6 +224,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 guard let strongSelf = self else { return}
                 switch result {
                     case .success(_):
+                        /// Start progressor only if handpickedSnapIndex matches with snapIndex and the requested image url should be matched with current snapIndex imageurl
                         if(strongSelf.handpickedSnapIndex == strongSelf.snapIndex && url == strongSelf.story!.snaps[strongSelf.snapIndex].url) {
                             strongSelf.startProgressors()
                     }
@@ -252,9 +253,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 IGVideoCacheManager.shared.getFile(for: url) { [weak self] (result) in
                     guard let strongSelf = self else { return }
                     switch result {
-                        case .success(let url):
+                        case .success(let videoURL):
+                            /// Start progressor only if handpickedSnapIndex matches with snapIndex
                             if(strongSelf.handpickedSnapIndex == strongSelf.snapIndex) {
-                                let videoResource = VideoResource(filePath: url.absoluteString)
+                                let videoResource = VideoResource(filePath: videoURL.absoluteString)
                                 videoView.play(with: videoResource)
                         }
                         case .failure(let error):

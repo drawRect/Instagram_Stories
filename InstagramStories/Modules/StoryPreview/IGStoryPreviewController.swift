@@ -146,6 +146,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             let s = stories.stories[nStoryIndex+handPickedStoryIndex]
             cell.willDisplayCell(with: s.lastPlayedSnapIndex)
         }
+        /// Setting to 0, otherwise for next story snaps, it will consider the same previous story's handPickedSnapIndex. It will create issue in starting the snap progressors.
         handPickedSnapIndex = 0
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
