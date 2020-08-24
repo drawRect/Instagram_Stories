@@ -54,7 +54,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         return (snapIndex == 0) ? 0 : scrollview.subviews[previousSnapIndex].frame.maxX
     }
     private var videoSnapIndex: Int = 0
-    
+    private var handpickedSnapIndex: Int = 0
     var retryBtn: IGRetryLoaderButton!
     var longPressGestureState: UILongPressGestureRecognizer.State?
     
@@ -219,12 +219,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     
     private func startRequest(snapView: UIImageView, with url: String) {
-        snapView.setImage(url: url, style: .squared) {[weak self] (result) in
-            guard let strongSelf = self else { return }
-            DispatchQueue.main.async {
+        snapView.setImage(url: url, style: .squared) { result in
+            DispatchQueue.main.async { [weak self] in
+                guard let strongSelf = self else { return}
                 switch result {
                     case .success(_):
-                        strongSelf.startProgressors()
+                        /// Start progressor only if handpickedSnapIndex matches with snapIndex and the requested image url should be matched with current snapIndex imageurl
+                        if(strongSelf.handpickedSnapIndex == strongSelf.snapIndex && url == strongSelf.story!.snaps[strongSelf.snapIndex].url) {
+                            strongSelf.startProgressors()
+                    }
                     case .failure(_):
                         strongSelf.showRetryButton(with: url, for: snapView)
                 }
@@ -247,11 +250,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         if scrollview.subviews.count > 0 {
             if story?.isCompletelyVisible == true {
                 videoView.startAnimating()
-                IGVideoCacheManager.shared.getFile(for: url) { (result) in
+                IGVideoCacheManager.shared.getFile(for: url) { [weak self] (result) in
+                    guard let strongSelf = self else { return }
                     switch result {
-                        case .success(let url):
-                            let videoResource = VideoResource(filePath: url.absoluteString)
-                            videoView.play(with: videoResource)
+                        case .success(let videoURL):
+                            /// Start progressor only if handpickedSnapIndex matches with snapIndex
+                            if(strongSelf.handpickedSnapIndex == strongSelf.snapIndex) {
+                                let videoResource = VideoResource(filePath: videoURL.absoluteString)
+                                videoView.play(with: videoResource)
+                        }
                         case .failure(let error):
                             videoView.stopAnimating()
                             debugPrint("Video error: \(error)")
@@ -341,6 +348,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 let offset = CGPoint(x: x,y: 0)
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
+                handpickedSnapIndex = n
                 snapIndex = n
             } else {
                 delegate?.didCompletePreview()
@@ -357,6 +365,7 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 scrollview.setContentOffset(offset, animated: false)
                 story?.lastPlayedSnapIndex = n
                 direction = .forward
+                handpickedSnapIndex = n
                 snapIndex = n
             }else {
                 stopPlayer()
@@ -484,9 +493,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         fillupLastPlayedSnaps(index)
     }
     //MARK: - Public functions
-    public func willDisplayCellForZerothIndex(with sIndex: Int) {
+    public func willDisplayCellForZerothIndex(with sIndex: Int, handpickedSnapIndex: Int) {
+        self.handpickedSnapIndex = handpickedSnapIndex
         story?.isCompletelyVisible = true
-        willDisplayCell(with: sIndex)
+        willDisplayCell(with: handpickedSnapIndex)
     }
     public func willDisplayCell(with sIndex: Int) {
         //Todo:Make sure to move filling part and creating at one place
