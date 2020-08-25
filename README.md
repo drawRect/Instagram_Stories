@@ -29,6 +29,7 @@
     
     `let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row-1,  handPickedSnapIndex: 2)`
 * Delete snap
+* Clear Image & Video Caches
 
 ## How To Use
 * Open the project(InstagramStories) folder. You can find the Source folder inside.
