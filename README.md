@@ -26,8 +26,9 @@
 * Image caching handled using NSCache
 * Video caching handled in documents directory using FileManager.
 * User can define the snap index, from where they want to start the snap by setting the **handPickedSnapIndex** value. In IGHomeController, when instantiating IGStoryPreviewController user can set this value. The below code is just reference and it has written in IGHomeController.
-
+    
     `let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row-1,  handPickedSnapIndex: 2)`
+* Delete snap
 
 ## How To Use
 * Open the project(InstagramStories) folder. You can find the Source folder inside.
