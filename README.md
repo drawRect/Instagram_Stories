@@ -13,7 +13,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cbf93e2e9c2c4032a1cbe7aee31a2db5)](https://app.codacy.com/gh/drawRect/Instagram_Stories?utm_source=github.com&utm_medium=referral&utm_content=drawRect/Instagram_Stories&utm_campaign=Badge_Grade_Dashboard)
 
-<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="230" height="480"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="230" height="480"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="230" height="480"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="230" height="480">
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="233" height="483">
 
 ## Features
 * Supports portrait orientation(only) in iPhone and all orientations in iPad.
