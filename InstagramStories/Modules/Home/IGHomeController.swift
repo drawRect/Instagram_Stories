@@ -85,9 +85,11 @@ UICollectionViewDelegateFlowLayout {
             isDeleteSnapEnabled = true
             if(isDeleteSnapEnabled) {
                 DispatchQueue.main.async {
-                    if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy().myStory, stories_copy.count > 0 {
-                        let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row)
+                    if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy().myStory, stories_copy.count > 0 && stories_copy[0].snaps.count > 0 {
+                        let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row, handPickedSnapIndex: 0)
                         self.present(storyPreviewScene, animated: true, completion: nil)
+                    } else {
+                        self.showAlert(withMsg: "Redirect to Add Story screen")
                     }
                 }
             } else {
@@ -97,7 +99,7 @@ UICollectionViewDelegateFlowLayout {
             isDeleteSnapEnabled = false
             DispatchQueue.main.async {
                 if let stories = self.viewModel.getStories(), let stories_copy = try? stories.copy().otherStories {
-                    let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1)
+                    let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex:  indexPath.row-1, handPickedSnapIndex: 0)
                     self.present(storyPreviewScene, animated: true, completion: nil)
                 }
             }

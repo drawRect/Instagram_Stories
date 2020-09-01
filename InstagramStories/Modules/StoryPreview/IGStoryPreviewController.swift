@@ -22,7 +22,10 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private(set) var stories: [IGStory]
     /** This index will tell you which Story, user has picked*/
     private(set) var handPickedStoryIndex: Int //starts with(i)
+    /** This index will tell you which Snap, user has picked*/
+    private(set) var handPickedSnapIndex: Int //starts with(i)
     /** This index will help you simply iterate the story one by one*/
+    
     private var nStoryIndex: Int = 0 //iteration(i+1)
     private var story_copy: IGStory?
     private(set) var layoutType: IGLayoutType
@@ -115,10 +118,11 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
-    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int) {
+    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
+        self.handPickedSnapIndex = handPickedSnapIndex
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder aDecoder: NSCoder) {
@@ -181,13 +185,15 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         }
         //Prepare the setup for first time story launch
         if story_copy == nil {
-            cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0)
+            cell.willDisplayCellForZerothIndex(with: cell.story?.lastPlayedSnapIndex ?? 0, handpickedSnapIndex: handPickedSnapIndex)
             return
         }
         if indexPath.item == nStoryIndex {
             let s = stories[nStoryIndex+handPickedStoryIndex]
             cell.willDisplayCell(with: s.lastPlayedSnapIndex)
         }
+        /// Setting to 0, otherwise for next story snaps, it will consider the same previous story's handPickedSnapIndex. It will create issue in starting the snap progressors.
+        handPickedSnapIndex = 0
     }
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
@@ -197,12 +203,16 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             return
         }
         vCell.story?.isCompletelyVisible = true
+        
         if vCell.story == story_copy {
             nStoryIndex = vCellIndexPath.item
-            vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            if vCell.longPressGestureState == nil {
+                vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
+            }
             if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
                 vCell.resumePlayer(with: vCell.story?.lastPlayedSnapIndex ?? 0)
             }
+            vCell.longPressGestureState = nil
         }else {
             if let cell = cell as? IGStoryPreviewCell {
                 cell.stopPlayer()

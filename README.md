@@ -13,7 +13,7 @@
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/cbf93e2e9c2c4032a1cbe7aee31a2db5)](https://app.codacy.com/gh/drawRect/Instagram_Stories?utm_source=github.com&utm_medium=referral&utm_content=drawRect/Instagram_Stories&utm_campaign=Badge_Grade_Dashboard)
 
-<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-1.png" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="250" height="500"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="250" height="500">
+<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="233" height="483">
 
 ## Features
 * Supports portrait orientation(only) in iPhone and all orientations in iPad.
@@ -25,6 +25,11 @@
 * If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
 * Image caching handled using NSCache
 * Video caching handled in documents directory using FileManager.
+* User can define the snap index, from where they want to start the snap by setting the **handPickedSnapIndex** value. In IGHomeController, when instantiating IGStoryPreviewController user can set this value. The below code is just reference and it has written in IGHomeController.
+    
+    `let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row-1,  handPickedSnapIndex: 2)`
+* Delete snap
+* Clear Image & Video Caches
 
 ## How To Use
 * Open the project(InstagramStories) folder. You can find the Source folder inside.
