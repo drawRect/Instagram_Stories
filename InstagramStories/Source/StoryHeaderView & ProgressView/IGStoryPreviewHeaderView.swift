@@ -20,14 +20,14 @@ final class IGStoryPreviewHeaderView: UIView {
     
     //MARK: - iVars
     public weak var delegate:StoryPreviewHeaderProtocol?
-    fileprivate var snapsPerStory:Int = 0
+    fileprivate var snapsPerStory: Int = 0
     public var story:IGStory? {
         didSet {
             snapsPerStory  = (story?.snapsCount)! < maxSnaps ? (story?.snapsCount)! : maxSnaps
         }
     }
-    fileprivate var progressView:UIView?
-    internal let snaperImageView:UIImageView = {
+    fileprivate var progressView: UIView?
+    internal let snaperImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = imageView.frame.height/2
         imageView.clipsToBounds = true
@@ -36,24 +36,24 @@ final class IGStoryPreviewHeaderView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    private let detailView:UIView = {
+    private let detailView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private let snaperNameLabel:UILabel = {
+    private let snaperNameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         return label
     }()
-    internal let lastUpdatedLabel:UILabel = {
+    internal let lastUpdatedLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .white
         return label
     }()
-    private lazy var closeButton:UIButton = {
+    private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(#imageLiteral(resourceName: "ic_close"), for: .normal)
@@ -173,16 +173,24 @@ final class IGStoryPreviewHeaderView: UIView {
             v.removeFromSuperview()
         }
     }
-    
+    public func clearAllProgressors() {
+        clearTheProgressorSubviews()
+        getProgressView.removeFromSuperview()
+        self.progressView = nil
+    }
+    public func clearSnapProgressor(at index:Int) {
+        getProgressView.subviews[index].removeFromSuperview()
+    }
     public func createSnapProgressors(){
+        print("Progressor count: \(getProgressView.subviews.count)")
         let padding: CGFloat = 8 //GUI-Padding
         let height: CGFloat = 3
-        var pvIndicatorArray: [UIView] = []
+        var pvIndicatorArray: [IGSnapProgressIndicatorView] = []
         var pvArray: [IGSnapProgressView] = []
         
         // Adding all ProgressView Indicator and ProgressView to seperate arrays
         for i in 0..<snapsPerStory{
-            let pvIndicator = UIView()
+            let pvIndicator = IGSnapProgressIndicatorView()
             pvIndicator.translatesAutoresizingMaskIntoConstraints = false
             getProgressView.addSubview(applyProperties(pvIndicator, with: i+progressIndicatorViewTag, alpha:0.2))
             pvIndicatorArray.append(pvIndicator)
@@ -196,24 +204,29 @@ final class IGStoryPreviewHeaderView: UIView {
         for index in 0..<pvIndicatorArray.count {
             let pvIndicator = pvIndicatorArray[index]
             if index == 0 {
+                pvIndicator.leftConstraiant = pvIndicator.igLeftAnchor.constraint(equalTo: self.getProgressView.igLeftAnchor, constant: padding)
                 NSLayoutConstraint.activate([
-                    pvIndicator.igLeftAnchor.constraint(equalTo: self.getProgressView.igLeftAnchor, constant: padding),
+                    pvIndicator.leftConstraiant!,
                     pvIndicator.igCenterYAnchor.constraint(equalTo: self.getProgressView.igCenterYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height)
                     ])
                 if pvIndicatorArray.count == 1 {
-                    self.getProgressView.igRightAnchor.constraint(equalTo: pvIndicator.igRightAnchor, constant: padding).isActive = true
+                    pvIndicator.rightConstraiant = self.getProgressView.igRightAnchor.constraint(equalTo: pvIndicator.igRightAnchor, constant: padding)
+                    pvIndicator.rightConstraiant!.isActive = true
                 }
             }else {
                 let prePVIndicator = pvIndicatorArray[index-1]
+                pvIndicator.widthConstraint = pvIndicator.widthAnchor.constraint(equalTo: prePVIndicator.widthAnchor, multiplier: 1.0)
+                pvIndicator.leftConstraiant = pvIndicator.igLeftAnchor.constraint(equalTo: prePVIndicator.igRightAnchor, constant: padding)
                 NSLayoutConstraint.activate([
-                    pvIndicator.igLeftAnchor.constraint(equalTo: prePVIndicator.igRightAnchor, constant: padding),
+                    pvIndicator.leftConstraiant!,
                     pvIndicator.igCenterYAnchor.constraint(equalTo: prePVIndicator.igCenterYAnchor),
                     pvIndicator.heightAnchor.constraint(equalToConstant: height),
-                    pvIndicator.widthAnchor.constraint(equalTo: prePVIndicator.widthAnchor, multiplier: 1.0)
+                    pvIndicator.widthConstraint!
                     ])
                 if index == pvIndicatorArray.count-1 {
-                    self.igRightAnchor.constraint(equalTo: pvIndicator.igRightAnchor, constant: padding).isActive = true
+                    pvIndicator.rightConstraiant = self.igRightAnchor.constraint(equalTo: pvIndicator.igRightAnchor, constant: padding)
+                    pvIndicator.rightConstraiant!.isActive = true
                 }
             }
         }
