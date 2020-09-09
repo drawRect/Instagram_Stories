@@ -495,14 +495,10 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     func deleteSnap() {
         let progressView = storyHeaderView.getProgressView
-        
         clearLastPlayedSnaps(snapIndex)
         stopSnapProgressors(with: snapIndex)
+        
         let snapCount = story?.snapsCount ?? 0
-//        if(snapCount == 1) {
-//            //TODO: Story shouldn't be visible
-//            //No need to do any constraint changes. Because when we are setting isDeleted true that snap will not be display.
-//        } else
         if let lastIndicatorView = getProgressIndicatorView(with: snapCount-1), let preLastIndicatorView = getProgressIndicatorView(with: snapCount-2) {
             lastIndicatorView.rightConstraiant?.isActive = false
             
@@ -513,11 +509,17 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             debugPrint("No Snaps")
         }
         
+        /**
+         If user is going to delete video snap, then we need to do some extra work. First stop the player and then remove the video view from the scrollview subviews. Because once the snap got deleted, the next snap will be created on that same frame(x,y,width,height). Suppose, If user is going to delete image and the next snap is also image, then next snap will reuse the already created snapView. But once the video got deleted, the next snapview will be created on top of the videoview which will create weird issue.
+         */
         if story?.snaps[snapIndex].kind == .video {
             stopPlayer()
             scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
         }
-        //Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
+        
+        /**
+         Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
+         */
         story?.snaps[snapIndex].isDeleted = true
         direction = .forward
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3) {[weak self] in
