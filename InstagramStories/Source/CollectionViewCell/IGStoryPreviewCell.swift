@@ -513,11 +513,19 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             debugPrint("No Snaps")
         }
         
-        
+        if story?.snaps[snapIndex].kind == .video {
+            stopPlayer()
+            scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
+        }
         //Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
         story?.snaps[snapIndex].isDeleted = true
         direction = .forward
-        willMoveToPreviousOrNextSnap(n: snapIndex)
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3) {[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.willMoveToPreviousOrNextSnap(n: strongSelf.snapIndex)
+        }
         
         //Do the api call, when api request is success remove the snap using snap internal identifier from the nsuserdefaults.
     }

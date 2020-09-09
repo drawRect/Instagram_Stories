@@ -9,7 +9,7 @@
                 "name": "My Story",
                 "picture": "https://avatars2.githubusercontent.com/u/32802714?s=200&v=4"
             },
-            "snaps_count": 5,
+            "snaps_count": 6,
             "snaps": [
                 {
                     "id": "c1",
@@ -19,27 +19,33 @@
                 },
                 {
                     "id": "c2",
-                    "mime_type": "image",
-                    "url": "https://images.bluethumb.com.au/uploads/listing/310962/alex-frayne-silhouette-duplicate-bluethumb-7868.jpg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=dff4209ba8e0ebb3e733c4a391bf9d9f",
+                    "mime_type": "video",
+                    "url": "http://mirrors.standaloneinstaller.com/video-sample/small.mp4",
                     "last_updated": "2m"
                 },
                 {
                     "id": "c3",
                     "mime_type": "image",
-                    "url": "https://images.bluethumb.com.au/uploads/listing/220637/alex-frayne-5-minutes-cruising-around-adelaide-bluethumb-128e.jpg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=2804e1b9b52933d1ae2362443d88a1e9",
+                    "url": "https://images.bluethumb.com.au/uploads/listing/310962/alex-frayne-silhouette-duplicate-bluethumb-7868.jpg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=dff4209ba8e0ebb3e733c4a391bf9d9f",
                     "last_updated": "3m"
                 },
                 {
                     "id": "c4",
                     "mime_type": "image",
-                    "url": "https://images.bluethumb.com.au/uploads/listing/303083/nadia-culph-beauty-in-death-bluethumb-12c9.jpeg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=0c9762634b60e792e050b3b503d8e154",
+                    "url": "https://images.bluethumb.com.au/uploads/listing/220637/alex-frayne-5-minutes-cruising-around-adelaide-bluethumb-128e.jpg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=2804e1b9b52933d1ae2362443d88a1e9",
                     "last_updated": "4m"
                 },
                 {
                     "id": "c5",
                     "mime_type": "image",
-                    "url": "https://images.bluethumb.com.au/uploads/listing/303957/nadia-culph-listing-bluethumb-c105.jpeg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=59c39b246a193e383b75bf25939c24dd",
+                    "url": "https://images.bluethumb.com.au/uploads/listing/303083/nadia-culph-beauty-in-death-bluethumb-12c9.jpeg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=0c9762634b60e792e050b3b503d8e154",
                     "last_updated": "5m"
+                },
+                {
+                    "id": "c6",
+                    "mime_type": "image",
+                    "url": "https://images.bluethumb.com.au/uploads/listing/303957/nadia-culph-listing-bluethumb-c105.jpeg?w=766&h=766&fit=crop&auto=compress&cs=tinysrgb&q=70&s=59c39b246a193e383b75bf25939c24dd",
+                    "last_updated": "6m"
                 }
             ]
         }
