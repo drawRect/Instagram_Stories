@@ -204,7 +204,6 @@
 			isa = PBXGroup;
 			children = (
 				1024C9F51FAA0D3A00237538 /* Home */,
-				D6287E5D223FC6BA0070E5FE /* StoryPreview */,
 			);
 			name = Modules;
 			sourceTree = "<group>";
@@ -252,6 +251,7 @@
 				D6287E37223FC2050070E5FE /* IGPlayerView */,
 				D65EC406225791D9000D01B6 /* StoryPreviewView */,
 				D6287E38223FC2440070E5FE /* CollectionViewCell */,
+				D6287E5D223FC6BA0070E5FE /* StoryPreview */,
 			);
 			path = Source;
 			sourceTree = "<group>";
@@ -336,8 +336,7 @@
 				D6287E5F223FC6BA0070E5FE /* IGStoryPreviewModel.swift */,
 				D6287E60223FC6BA0070E5FE /* IGStoryPreviewController.swift */,
 			);
-			name = StoryPreview;
-			path = Modules/StoryPreview;
+			path = StoryPreview;
 			sourceTree = "<group>";
 		};
 		D65EC406225791D9000D01B6 /* StoryPreviewView */ = {

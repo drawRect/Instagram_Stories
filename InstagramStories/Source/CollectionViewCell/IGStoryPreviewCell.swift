@@ -500,7 +500,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         
         let snapCount = story?.snapsCount ?? 0
         if let lastIndicatorView = getProgressIndicatorView(with: snapCount-1), let preLastIndicatorView = getProgressIndicatorView(with: snapCount-2) {
-            lastIndicatorView.rightConstraiant?.isActive = false
+            
+            lastIndicatorView.constraints.forEach { $0.isActive = false }
             
             preLastIndicatorView.rightConstraiant?.isActive = false
             preLastIndicatorView.rightConstraiant = progressView.igRightAnchor.constraint(equalTo: preLastIndicatorView.igRightAnchor, constant: 8)
@@ -508,7 +509,6 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         } else {
             debugPrint("No Snaps")
         }
-        
         /**
          - If user is going to delete video snap, then we need to stop the player.
          - Remove the videoView/snapView from the scrollview subviews. Because once the snap got deleted, the next snap will be created on that same frame(x,y,width,height). If we didn't remove the videoView/snapView from scrollView subviews then it will create some wierd issues.
@@ -523,6 +523,14 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
          */
         story?.snaps[snapIndex].isDeleted = true
         direction = .forward
+        for sIndex in 0..<snapIndex {
+            if let holderView = self.getProgressIndicatorView(with: sIndex),
+                let progressView = self.getProgressView(with: sIndex){
+                progressView.widthConstraint?.isActive = false
+                progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
+                progressView.widthConstraint?.isActive = true
+            }
+        }
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3) {[weak self] in
             guard let strongSelf = self else {
                 return
