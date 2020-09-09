@@ -510,12 +510,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         }
         
         /**
-         If user is going to delete video snap, then we need to do some extra work. First stop the player and then remove the video view from the scrollview subviews. Because once the snap got deleted, the next snap will be created on that same frame(x,y,width,height). Suppose, If user is going to delete image and the next snap is also image, then next snap will reuse the already created snapView. But once the video got deleted, the next snapview will be created on top of the videoview which will create weird issue.
+         - If user is going to delete video snap, then we need to stop the player.
+         - Remove the videoView/snapView from the scrollview subviews. Because once the snap got deleted, the next snap will be created on that same frame(x,y,width,height). If we didn't remove the videoView/snapView from scrollView subviews then it will create some wierd issues.
          */
         if story?.snaps[snapIndex].kind == .video {
             stopPlayer()
-            scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
         }
+        scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
         
         /**
          Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
