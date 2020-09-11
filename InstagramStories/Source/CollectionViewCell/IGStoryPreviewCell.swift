@@ -178,9 +178,18 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         let snapView = UIImageView()
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.tag = snapIndex + snapViewTagIndicator
+        
+        /**
+         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
+         - If only snapViews are there, it will not create any issues.
+         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
+         - That's why we need to remove if any snap exists on the same position.
+         */
+        scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
+        
         scrollview.addSubview(snapView)
         
-        // Setting constraints for snap view.
+        /// Setting constraints for snap view.
         NSLayoutConstraint.activate([
             snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             snapView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
@@ -188,6 +197,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
         ])
+        if(snapIndex != 0) {
+            NSLayoutConstraint.activate([
+                snapView.leadingAnchor.constraint(equalTo: scrollview.leadingAnchor, constant: CGFloat(snapIndex)*scrollview.width)
+            ])
+        }
         return snapView
     }
     private func getSnapview() -> UIImageView? {
@@ -201,6 +215,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         videoView.translatesAutoresizingMaskIntoConstraints = false
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
+        
+        /**
+         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
+         - If only snapViews are there, it will not create any issues.
+         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
+         - That's why we need to remove if any snap exists on the same position.
+         */
+        scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
+        
         scrollview.addSubview(videoView)
         NSLayoutConstraint.activate([
             videoView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
@@ -209,6 +232,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.igBottomAnchor.constraint(equalTo: videoView.igBottomAnchor)
         ])
+        if(snapIndex != 0) {
+            NSLayoutConstraint.activate([
+                videoView.leadingAnchor.constraint(equalTo: scrollview.leadingAnchor, constant: CGFloat(snapIndex)*scrollview.width),
+            ])
+        }
         return videoView
     }
     private func getVideoView(with index: Int) -> IGPlayerView? {
@@ -495,16 +523,13 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     func deleteSnap() {
         let progressView = storyHeaderView.getProgressView
-        
         clearLastPlayedSnaps(snapIndex)
         stopSnapProgressors(with: snapIndex)
+        
         let snapCount = story?.snapsCount ?? 0
-//        if(snapCount == 1) {
-//            //TODO: Story shouldn't be visible
-//            //No need to do any constraint changes. Because when we are setting isDeleted true that snap will not be display.
-//        } else
         if let lastIndicatorView = getProgressIndicatorView(with: snapCount-1), let preLastIndicatorView = getProgressIndicatorView(with: snapCount-2) {
-            lastIndicatorView.rightConstraiant?.isActive = false
+            
+            lastIndicatorView.constraints.forEach { $0.isActive = false }
             
             preLastIndicatorView.rightConstraiant?.isActive = false
             preLastIndicatorView.rightConstraiant = progressView.igRightAnchor.constraint(equalTo: preLastIndicatorView.igRightAnchor, constant: 8)
@@ -512,12 +537,34 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         } else {
             debugPrint("No Snaps")
         }
+        /**
+         - If user is going to delete video snap, then we need to stop the player.
+         - Remove the videoView/snapView from the scrollview subviews. Because once the snap got deleted, the next snap will be created on that same frame(x,y,width,height). If we didn't remove the videoView/snapView from scrollView subviews then it will create some wierd issues.
+         */
+        if story?.snaps[snapIndex].kind == .video {
+            stopPlayer()
+        }
+        scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
         
-        
-        //Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
+        /**
+         Once we set isDeleted, snaps and snaps count will be reduced by one. So, instead of snapIndex+1, we need to pass snapIndex to willMoveToPreviousOrNextSnap. But the corresponding progressIndicator is not currently in active. Another possible way is we can always remove last presented progress indicator. So that snapIndex and tag will matches, so that progress indicator starts.
+         */
         story?.snaps[snapIndex].isDeleted = true
         direction = .forward
-        willMoveToPreviousOrNextSnap(n: snapIndex)
+        for sIndex in 0..<snapIndex {
+            if let holderView = self.getProgressIndicatorView(with: sIndex),
+                let progressView = self.getProgressView(with: sIndex){
+                progressView.widthConstraint?.isActive = false
+                progressView.widthConstraint = progressView.widthAnchor.constraint(equalTo: holderView.widthAnchor, multiplier: 1.0)
+                progressView.widthConstraint?.isActive = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3) {[weak self] in
+            guard let strongSelf = self else {
+                return
+            }
+            strongSelf.willMoveToPreviousOrNextSnap(n: strongSelf.snapIndex)
+        }
         
         //Do the api call, when api request is success remove the snap using snap internal identifier from the nsuserdefaults.
     }
