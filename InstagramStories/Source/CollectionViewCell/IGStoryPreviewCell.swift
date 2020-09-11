@@ -178,9 +178,18 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         let snapView = UIImageView()
         snapView.translatesAutoresizingMaskIntoConstraints = false
         snapView.tag = snapIndex + snapViewTagIndicator
+        
+        /**
+         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
+         - If only snapViews are there, it will not create any issues.
+         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
+         - That's why we need to remove if any snap exists on the same position.
+         */
+        scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
+        
         scrollview.addSubview(snapView)
         
-        // Setting constraints for snap view.
+        /// Setting constraints for snap view.
         NSLayoutConstraint.activate([
             snapView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
             snapView.igTopAnchor.constraint(equalTo: scrollview.igTopAnchor),
@@ -188,6 +197,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             snapView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
         ])
+        if(snapIndex != 0) {
+            NSLayoutConstraint.activate([
+                snapView.leadingAnchor.constraint(equalTo: scrollview.leadingAnchor, constant: CGFloat(snapIndex)*scrollview.width)
+            ])
+        }
         return snapView
     }
     private func getSnapview() -> UIImageView? {
@@ -201,6 +215,15 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
         videoView.translatesAutoresizingMaskIntoConstraints = false
         videoView.tag = snapIndex + snapViewTagIndicator
         videoView.playerObserverDelegate = self
+        
+        /**
+         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
+         - If only snapViews are there, it will not create any issues.
+         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
+         - That's why we need to remove if any snap exists on the same position.
+         */
+        scrollview.subviews.filter({$0.tag == snapIndex + snapViewTagIndicator}).first?.removeFromSuperview()
+        
         scrollview.addSubview(videoView)
         NSLayoutConstraint.activate([
             videoView.leadingAnchor.constraint(equalTo: (snapIndex == 0) ? scrollview.leadingAnchor : scrollview.subviews[previousSnapIndex].trailingAnchor),
@@ -209,6 +232,11 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
             videoView.heightAnchor.constraint(equalTo: scrollview.heightAnchor),
             scrollview.igBottomAnchor.constraint(equalTo: videoView.igBottomAnchor)
         ])
+        if(snapIndex != 0) {
+            NSLayoutConstraint.activate([
+                videoView.leadingAnchor.constraint(equalTo: scrollview.leadingAnchor, constant: CGFloat(snapIndex)*scrollview.width),
+            ])
+        }
         return videoView
     }
     private func getVideoView(with index: Int) -> IGPlayerView? {
