@@ -70,7 +70,15 @@ extension IGHomeController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        viewModel.cellForItemAt(collectionView: collectionView, indexPath: indexPath)
+        if indexPath.row == 0 {
+            let cell = collectionView.register(IGAddStoryCell.self, indexPath: indexPath)
+            cell.userDetails = ("Your story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            return cell
+        } else {
+            let cell =  collectionView.register(IGStoryListCell.self, indexPath: indexPath)
+            cell.story = viewModel.cellForItemAt(indexPath: indexPath)
+            return cell
+        }
     }
 }
 
@@ -84,6 +92,12 @@ extension IGHomeController: UICollectionViewDelegate {
 //MARK: - UICollectionViewDelegateFlowLayout
 extension IGHomeController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        viewModel.sizeForItemAt(indexPath: indexPath)
+        var itemSize: CGSize!
+        if indexPath.row == 0 {
+            itemSize = CGSize(width: 100, height: 100)
+        }  else {
+            itemSize = CGSize(width: 80, height: 100)
+        }
+        return itemSize
     }
 }
