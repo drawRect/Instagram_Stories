@@ -7,38 +7,56 @@
 //
 
 import Foundation
+import UIKit
 
-struct IGHomeViewModel {
+public struct IGHomeViewModel {
     
     //MARK: - iVars
-    //Keep it Immutable! don't get Dirty :P
-    private let stories: IGStories? = {
-        do {
-            return try IGMockLoader.loadMockFile(named: "stories.json", bundle: .main)
-        }catch let e as MockLoaderError {
-            debugPrint(e.description)
-        }catch{
-            debugPrint("could not read Mock json file :(")
-        }
-        return nil
-    }()
+    var stories: IGStories
+    var showAlertMsg = Dynamic<String>()
+    var presentPreviewScreen = Dynamic<IGStoryPreviewController>()
     
     //MARK: - Public functions
-    public func getStories() -> IGStories? {
-        return stories
+    
+    func numberOfItemsInSection(_ section: Int) -> Int {
+        stories.otherStoriesCount + 1
     }
-    public func numberOfItemsInSection(_ section:Int) -> Int {
-        if let count = stories?.otherStoriesCount {
-            return count + 1
-        }
-        return 1
-    }
-    public func cellForItemAt(indexPath:IndexPath) -> IGStory? {
+    func cellForItemAt(collectionView: UICollectionView, indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
-            return stories?.myStory[indexPath.row]
-        }else {
-            return stories?.otherStories[indexPath.row-1]
+            let cell = collectionView.register(IGAddStoryCell.self, indexPath: indexPath)
+            cell.userDetails = ("Your story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            return cell
+        } else {
+            let cell =  collectionView.register(IGStoryListCell.self, indexPath: indexPath)
+            cell.story = stories.otherStories[indexPath.row-1]
+            return cell
         }
     }
     
+    func didSelectItemAt(indexPath: IndexPath) {
+        if indexPath.row == 0 {
+            isDeleteSnapEnabled = true
+            if(isDeleteSnapEnabled) {
+                if let stories_copy = try? self.stories.copy().myStory,
+                   stories_copy.count > 0 && stories_copy[0].snaps.count > 0 {
+                    let storyPreviewController = IGStoryPreviewController(stories: stories_copy, handPickedStoryIndex: indexPath.row, handPickedSnapIndex: 0)
+                    self.presentPreviewScreen.value = storyPreviewController
+                } else {
+                    self.showAlertMsg.value = "Redirect to Add Story screen"
+                }
+            } else {
+                self.showAlertMsg.value = "Try to implement your own functionality for 'Your story'"
+            }
+        }else {
+            isDeleteSnapEnabled = false
+            if let stories_copy = try? self.stories.copy().otherStories {
+                let storyPreviewController = IGStoryPreviewController(stories: stories_copy, handPickedStoryIndex: indexPath.row-1, handPickedSnapIndex: 0)
+                self.presentPreviewScreen.value = storyPreviewController
+            }
+        }
+    }
+    
+    func sizeForItemAt(indexPath: IndexPath) -> CGSize {
+        indexPath.row == 0 ? CGSize(width: 100, height: 100) : CGSize(width: 80, height: 100)
+    }
 }

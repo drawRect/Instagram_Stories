@@ -9,27 +9,16 @@
 import Foundation
 import UIKit
 
-/******** UITableViewCell&UICollectionViewCell<Extension> *******************************/
-protocol CellConfigurer:class {
-    static var nib: UINib {get}
-    static var reuseIdentifier: String {get}
-}
-
-extension CellConfigurer {
-    static var nib: UINib {
-        return UINib(nibName: reuseIdentifier, bundle: nil)
+extension UICollectionView {
+    
+    func register<T: UICollectionViewCell>(_: T.Type, indexPath: IndexPath) -> T {
+        self.register(T.self, forCellWithReuseIdentifier: String(describing: T.self))
+        return self.dequeueReusableCell(withReuseIdentifier: String(describing: T.self), for: indexPath) as! T
     }
-    static var reuseIdentifier: String{
-        return String(describing: self)
+    
+    func registerNib<T: UICollectionViewCell>(_: T.Type, indexPath: IndexPath) -> T {
+        self.register(UINib(nibName: String(describing: T.self), bundle: Bundle.main), forCellWithReuseIdentifier: String(describing: T.self))
+        return self.dequeueReusableCell(withReuseIdentifier: String(describing: T.self), for: indexPath) as! T
     }
-}
 
-extension UICollectionViewCell: CellConfigurer {}
-extension UITableViewCell: CellConfigurer {}
-
-/*************************** UINIB<Extension> ************************************************/
-extension UINib {
-    class func nib(with name: String) -> UINib {
-        return UINib(nibName: name, bundle: nil)
-    }
 }

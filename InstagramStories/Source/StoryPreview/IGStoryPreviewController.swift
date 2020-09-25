@@ -156,9 +156,10 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
         return model.numberOfItemsInSection(section)
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
-            fatalError()
-        }
+//        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
+//            fatalError()
+//        }
+        let cell = collectionView.register(IGStoryPreviewCell.self, indexPath: indexPath)
         let story = viewModel?.cellForItemAtIndexPath(indexPath)
         cell.story = story
         cell.delegate = self

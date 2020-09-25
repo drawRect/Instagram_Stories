@@ -37,7 +37,7 @@ class IGStoryPreviewView: UIView {
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
-        cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
+//        cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
