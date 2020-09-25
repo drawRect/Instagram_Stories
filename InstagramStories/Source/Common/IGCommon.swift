@@ -15,10 +15,5 @@ extension UICollectionView {
         self.register(T.self, forCellWithReuseIdentifier: String(describing: T.self))
         return self.dequeueReusableCell(withReuseIdentifier: String(describing: T.self), for: indexPath) as! T
     }
-    
-    func registerNib<T: UICollectionViewCell>(_: T.Type, indexPath: IndexPath) -> T {
-        self.register(UINib(nibName: String(describing: T.self), bundle: Bundle.main), forCellWithReuseIdentifier: String(describing: T.self))
-        return self.dequeueReusableCell(withReuseIdentifier: String(describing: T.self), for: indexPath) as! T
-    }
 
 }
