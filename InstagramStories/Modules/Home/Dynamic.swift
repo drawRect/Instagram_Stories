@@ -15,9 +15,9 @@ final class Dynamic<T> {
             observer?(value)
         }
     }
-    var observer:((Listener?) -> Void)?
+    var observer: ((Listener?) -> Void)?
 
-    func bind(observer:@escaping ((Listener?) -> Void)) {
+    func bind(observer: @escaping ((Listener?) -> Void)) {
         self.observer = observer
     }
 }

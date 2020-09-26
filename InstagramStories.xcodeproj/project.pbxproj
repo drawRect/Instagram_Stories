@@ -254,7 +254,6 @@
 				D6287E4F223FC68F0070E5FE /* Models */,
 				D6287E58223FC69B0070E5FE /* StoryHeaderView & ProgressView */,
 				D6287E37223FC2050070E5FE /* IGPlayerView */,
-				D65EC406225791D9000D01B6 /* StoryPreviewView */,
 				D6287E38223FC2440070E5FE /* CollectionViewCell */,
 				D6287E5D223FC6BA0070E5FE /* StoryPreview */,
 			);
@@ -339,18 +338,11 @@
 		D6287E5D223FC6BA0070E5FE /* StoryPreview */ = {
 			isa = PBXGroup;
 			children = (
+				D6287E5E223FC6BA0070E5FE /* IGStoryPreviewView.swift */,
 				D6287E5F223FC6BA0070E5FE /* IGStoryPreviewModel.swift */,
 				D6287E60223FC6BA0070E5FE /* IGStoryPreviewController.swift */,
 			);
 			path = StoryPreview;
-			sourceTree = "<group>";
-		};
-		D65EC406225791D9000D01B6 /* StoryPreviewView */ = {
-			isa = PBXGroup;
-			children = (
-				D6287E5E223FC6BA0070E5FE /* IGStoryPreviewView.swift */,
-			);
-			path = StoryPreviewView;
 			sourceTree = "<group>";
 		};
 		D6910FDC22EADD16001727D9 /* Video Cache */ = {
