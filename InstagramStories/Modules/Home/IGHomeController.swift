@@ -49,6 +49,7 @@ final class IGHomeController: UIViewController {
         }
         self.viewModel.presentPreviewScreen.bind {
             if let controller = $0 {
+                controller.modalPresentationStyle = .fullScreen
                 self.present(controller, animated: true, completion: nil)
             }
         }

@@ -11,10 +11,10 @@ import UIKit
 
 extension UIViewController {
     
+    ///Presenting an alert and also enabling 0.5 sec to dismiss the alert
     func showAlert(withMsg: String) {
         let alertController = UIAlertController(title: withMsg, message: nil, preferredStyle: .alert)
         present(alertController, animated: true) {
-            //FIXME:: What is the reason behind this delay??? 0.5
             DispatchQueue.main.asyncAfter(deadline: .now()+0.5){
                 alertController.dismiss(animated: true, completion: nil)
             }

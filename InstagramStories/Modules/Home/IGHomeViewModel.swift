@@ -8,7 +8,7 @@
 
 import Foundation
 
-class IGHomeViewModel {
+final class IGHomeViewModel {
     
     //MARK: - iVars
     var stories: IGStories

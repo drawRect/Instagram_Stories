@@ -8,7 +8,7 @@
 
 import UIKit
 
-class IGHomeView: UIView {
+final class IGHomeView: UIView {
     
     //MARK: - iVars
     lazy var layout: UICollectionViewFlowLayout = {
