@@ -20,7 +20,6 @@ final class IGHomeViewModel {
     }
     
     internal let isClearCacheEnabled = true
-    internal var isDeleteSnapEnabled = true
     
     //MARK: - Public functions
     
@@ -42,21 +41,15 @@ final class IGHomeViewModel {
     ///CollectionView didSelectItem Method
     public func didSelectItemAt(indexPath: IndexPath) {
         if indexPath.row == 0 {
-            isDeleteSnapEnabled = true
-            if(isDeleteSnapEnabled) {
-                guard let storiesCopy = try? self.stories.copy().myStory,
-                      let story = storiesCopy.first,
-                      !story.snaps.isEmpty else {
-                    return self.showAlertMsg.value = "Redirect to Add Story screen"
-                }
-                self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row)
-            } else {
-                self.showAlertMsg.value = "Try to implement your own functionality for 'Your story'"
+            guard let storiesCopy = try? self.stories.copy().myStory,
+                  let story = storiesCopy.first,
+                  !story.snaps.isEmpty else {
+                return self.showAlertMsg.value = "Redirect to Add Story screen"
             }
-        }else {
-            isDeleteSnapEnabled = false
+            self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row, isDeleteEnabled: true)
+        } else {
             if let storiesCopy = try? self.stories.copy().otherStories {
-                self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row-1)
+                self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row-1, isDeleteEnabled: false)
             }
         }
     }
@@ -69,11 +62,11 @@ final class IGHomeViewModel {
     }
     
     private func getPreviewController(stories: [IGStory],
-                                      storyIndex: Int) -> IGStoryPreviewController {
+                                      storyIndex: Int, isDeleteEnabled: Bool) -> IGStoryPreviewController {
         IGStoryPreviewController(stories: stories,
                                  handPickedStoryIndex: storyIndex,
                                  handPickedSnapIndex: 0,
-                                 isDeleteSnapEnabled: isDeleteSnapEnabled)
+                                 isDeleteSnapEnabled: isDeleteEnabled)
     }
     
 }

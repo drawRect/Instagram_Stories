@@ -30,7 +30,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private var story_copy: IGStory?
     private(set) var layoutType: IGLayoutType
     private(set) var executeOnce = false
-    let isDeleteSnapEnabled: Bool
+    var isDeleteSnapEnabled: Bool = false
     
     //check whether device rotation is happening or not
     private(set) var isTransitioning = false
@@ -70,7 +70,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     override func loadView() {
         super.loadView()
         view = IGStoryPreviewView.init(layoutType: self.layoutType)
-        viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
+        viewModel = IGStoryPreviewModel(self.stories, self.handPickedStoryIndex)
         _view.snapsCollectionView.decelerationRate = .fast
         dismissGesture.delegate = self
         dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
@@ -119,7 +119,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
-    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0, isDeleteSnapEnabled: Bool) {
+    init(layout: IGLayoutType = .cubic, stories: [IGStory], handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0, isDeleteSnapEnabled: Bool = false) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
