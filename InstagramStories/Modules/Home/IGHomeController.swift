@@ -8,14 +8,11 @@
 
 import UIKit
 
-fileprivate let isClearCacheEnabled = true
-internal var isDeleteSnapEnabled = true
-
 final class IGHomeController: UIViewController {
     
     //MARK: - iVars
     private var _view: IGHomeView { return view as! IGHomeView }
-    private var viewModel: IGHomeViewModel = IGHomeViewModel(stories: Bundle.main.decode("stories.json"))
+    private var viewModel = IGHomeViewModel(stories: Bundle.main.decode("stories.json"))
     
     //MARK: - Overridden functions
     override func loadView() {
@@ -33,11 +30,12 @@ final class IGHomeController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    ///Custom Navigation Item with Cache button and Logo
     override var navigationItem: UINavigationItem {
         let navigationItem = UINavigationItem()
         navigationItem.titleView = UIImageView(image: UIImage(named: "Logo"))
-        if isClearCacheEnabled {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear", style: .done, target: self, action: #selector(clearImageCache))
+        if viewModel.isClearCacheEnabled {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Clear", style: .done, target: viewModel, action: #selector(viewModel.clearImageCache))
         }
         return navigationItem
     }
@@ -55,11 +53,6 @@ final class IGHomeController: UIViewController {
             }
         }
     }
-    @objc private func clearImageCache() {
-        IGCache.shared.removeAllObjects()
-        IGStories.removeAllVideoFilesFromCache()
-        showAlert(withMsg: "Images & Videos are deleted from cache")
-    }
     
 }
 
@@ -72,7 +65,7 @@ extension IGHomeController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.row == 0 {
             let cell = collectionView.register(IGAddStoryCell.self, indexPath: indexPath)
-            cell.userDetails = ("Your story","https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+            cell.userDetails = viewModel.presentUserDetails
             return cell
         } else {
             let cell =  collectionView.register(IGStoryListCell.self, indexPath: indexPath)

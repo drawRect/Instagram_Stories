@@ -7,7 +7,7 @@
 //
 
 ///This Dynamic helper class help us to build the MVVM Architecture.
-class Dynamic<T> {
+final class Dynamic<T> {
     typealias Listener = (T)
     
     var value: Listener? {

@@ -30,6 +30,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private var story_copy: IGStory?
     private(set) var layoutType: IGLayoutType
     private(set) var executeOnce = false
+    let isDeleteSnapEnabled: Bool
     
     //check whether device rotation is happening or not
     private(set) var isTransitioning = false
@@ -118,11 +119,12 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
-    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0) {
+    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0, isDeleteSnapEnabled: Bool) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
         self.handPickedSnapIndex = handPickedSnapIndex
+        self.isDeleteSnapEnabled = isDeleteSnapEnabled
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder aDecoder: NSCoder) {

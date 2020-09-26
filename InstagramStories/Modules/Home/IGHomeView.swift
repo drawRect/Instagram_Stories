@@ -6,7 +6,6 @@
 //  Copyright © 2017 DrawRect. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class IGHomeView: UIView {
@@ -19,7 +18,7 @@ class IGHomeView: UIView {
         return flowLayout
     }()
     lazy var collectionView: UICollectionView = {
-        let cv = UICollectionView.init(frame: CGRect.zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
         cv.backgroundColor = .white
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
@@ -40,14 +39,14 @@ class IGHomeView: UIView {
     }
     
     //MARK: - Private functions
-    private func createUIElements(){
+    private func createUIElements() {
         addSubview(collectionView)
     }
-    private func installLayoutConstraints(){
-        NSLayoutConstraint.activate([
-            igLeftAnchor.constraint(equalTo: collectionView.igLeftAnchor),
-            igTopAnchor.constraint(equalTo: collectionView.igTopAnchor),
-            collectionView.igRightAnchor.constraint(equalTo: igRightAnchor),
-            collectionView.heightAnchor.constraint(equalToConstant: 100)])
+    private func installLayoutConstraints() {
+        let top = igTopAnchor.constraint(equalTo: collectionView.igTopAnchor)
+        let left = igLeftAnchor.constraint(equalTo: collectionView.igLeftAnchor)
+        let right = collectionView.igRightAnchor.constraint(equalTo: igRightAnchor)
+        let height = collectionView.heightAnchor.constraint(equalToConstant: 100)
+        NSLayoutConstraint.activate([top,left,right,height])
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class IGHomeViewModel {
+class IGHomeViewModel {
     
     //MARK: - iVars
     var stories: IGStories
@@ -19,16 +19,28 @@ public class IGHomeViewModel {
         self.stories = stories
     }
     
+    internal let isClearCacheEnabled = true
+    internal var isDeleteSnapEnabled = true
+    
     //MARK: - Public functions
     
-    func numberOfItemsInSection(_ section: Int) -> Int {
+    var presentUserDetails: (String, String) {
+        ("Your story",
+         "https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
+    }
+    
+    ///CollectionView numberOfItemsInSection Method
+    public func numberOfItemsInSection(_ section: Int) -> Int {
         stories.otherStoriesCount + 1
     }
-    func cellForItemAt(indexPath: IndexPath) -> IGStory {
+    
+    ///CollectionView cellForItemAt Method
+    public func cellForItemAt(indexPath: IndexPath) -> IGStory {
         stories.otherStories[indexPath.row-1]
     }
     
-    func didSelectItemAt(indexPath: IndexPath) {
+    ///CollectionView didSelectItem Method
+    public func didSelectItemAt(indexPath: IndexPath) {
         if indexPath.row == 0 {
             isDeleteSnapEnabled = true
             if(isDeleteSnapEnabled) {
@@ -49,11 +61,19 @@ public class IGHomeViewModel {
         }
     }
     
+    ///Clear Image & Video cache
+    @objc public func clearImageCache() {
+        IGCache.shared.removeAllObjects()
+        IGStories.removeAllVideoFilesFromCache()
+        self.showAlertMsg.value = "Images & Videos are deleted from cache"
+    }
+    
     private func getPreviewController(stories: [IGStory],
                                       storyIndex: Int) -> IGStoryPreviewController {
         IGStoryPreviewController(stories: stories,
                                  handPickedStoryIndex: storyIndex,
-                                 handPickedSnapIndex: 0)
+                                 handPickedSnapIndex: 0,
+                                 isDeleteSnapEnabled: isDeleteSnapEnabled)
     }
-
+    
 }
