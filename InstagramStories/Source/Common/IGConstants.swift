@@ -9,6 +9,7 @@
 import UIKit
 
 public struct IGScreen {
+    private init() { }
     /**UIScreen.main.bounds.width*/
     static let width = UIScreen.main.bounds.width
     /**UIScreen.main.bounds.height*/

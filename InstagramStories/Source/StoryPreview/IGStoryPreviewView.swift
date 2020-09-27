@@ -32,17 +32,30 @@ class IGStoryPreviewView: UIView {
         flowLayout.sectionInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: 0.0)
         return flowLayout
     }()
-    lazy var snapsCollectionView: UICollectionView! = {
-        let cv = UICollectionView.init(frame: CGRect(x: 0,y: 0,width: UIScreen.main.bounds.width,height:  UIScreen.main.bounds.height), collectionViewLayout: snapsCollectionViewFlowLayout)
+    lazy var snapsCollectionView: UICollectionView = {
+        let cv = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  UIScreen.main.bounds.height), collectionViewLayout: snapsCollectionViewFlowLayout)
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
-//        cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
         cv.collectionViewLayout = snapsCollectionViewFlowLayout
+        cv.addGestureRecognizer(swipeDownGestureRecognizer)
+        cv.addGestureRecognizer(showActionSheetGesture)
         return cv
+    }()
+    
+    let swipeDownGestureRecognizer: UISwipeGestureRecognizer = {
+        let gesture = UISwipeGestureRecognizer()
+        gesture.direction = .down
+        return gesture
+    }()
+    
+    let showActionSheetGesture: UISwipeGestureRecognizer = {
+        let gesture = UISwipeGestureRecognizer()
+        gesture.direction = .up
+        return gesture
     }()
     
     //MARK:- Overridden functions
@@ -65,11 +78,10 @@ class IGStoryPreviewView: UIView {
         addSubview(snapsCollectionView)
     }
     private func installLayoutConstraints(){
-        //Setting constraints for snapsCollectionview
-        NSLayoutConstraint.activate([
-            igLeftAnchor.constraint(equalTo: snapsCollectionView.igLeftAnchor),
-            igTopAnchor.constraint(equalTo: snapsCollectionView.igTopAnchor),
-            snapsCollectionView.igRightAnchor.constraint(equalTo: igRightAnchor),
-            snapsCollectionView.igBottomAnchor.constraint(equalTo: igBottomAnchor)])
+        let top = igTopAnchor.constraint(equalTo: snapsCollectionView.igTopAnchor)
+        let left = igLeftAnchor.constraint(equalTo: snapsCollectionView.igLeftAnchor)
+        let right = snapsCollectionView.igRightAnchor.constraint(equalTo: igRightAnchor)
+        let bottom = snapsCollectionView.igBottomAnchor.constraint(equalTo: igBottomAnchor)
+        NSLayoutConstraint.activate([top, left, right, bottom ])
     }
 }

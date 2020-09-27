@@ -30,7 +30,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
      func rootSceneSetup() {
-        let nc = UINavigationController(rootViewController: IGHomeController())
+        let storiesModel: IGStories =  Bundle.main.decode("stories.json")
+        let homeViewModel = IGHomeViewModel(stories: storiesModel)
+        let nc = UINavigationController(rootViewController: IGHomeController(viewModel: homeViewModel))
         nc.navigationBar.isTranslucent = false
         window.rootViewController = nc
     }

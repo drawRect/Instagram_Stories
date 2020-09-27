@@ -16,7 +16,8 @@ import UIKit
 final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - Private Vars
-    private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
+    private var _view: IGStoryPreviewView { return view as! IGStoryPreviewView }
+    #warning("ViewModel should not be a OPTIONAL. At any cost it should not be lossing this instance")
     private var viewModel: IGStoryPreviewModel?
     
     private(set) var stories: [IGStory]
@@ -36,16 +37,6 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     private(set) var isTransitioning = false
     private(set) var currentIndexPath: IndexPath?
     
-    private let dismissGesture: UISwipeGestureRecognizer = {
-        let gesture = UISwipeGestureRecognizer()
-        gesture.direction = .down
-        return gesture
-    }()
-    private let showActionSheetGesture: UISwipeGestureRecognizer = {
-        let gesture = UISwipeGestureRecognizer()
-        gesture.direction = .up
-        return gesture
-    }()
     private var currentCell: IGStoryPreviewCell? {
         guard let indexPath = self.currentIndexPath else {
             debugPrint("Current IndexPath is nil")
@@ -69,18 +60,16 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
-        view = IGStoryPreviewView.init(layoutType: self.layoutType)
-        viewModel = IGStoryPreviewModel(self.stories, self.handPickedStoryIndex)
+        view = IGStoryPreviewView(layoutType: self.layoutType)
+        viewModel = IGStoryPreviewModel(stories: self.stories, handPickedStoryIndex: self.handPickedStoryIndex)
         _view.snapsCollectionView.decelerationRate = .fast
-        dismissGesture.delegate = self
-        dismissGesture.addTarget(self, action: #selector(didSwipeDown(_:)))
-        _view.snapsCollectionView.addGestureRecognizer(dismissGesture)
+        _view.swipeDownGestureRecognizer.delegate = self
+        _view.swipeDownGestureRecognizer.addTarget(self, action: #selector(didSwipeDown(_:)))
         
         // This should be handled for only currently logged in user story and not for all other user stories.
         if(isDeleteSnapEnabled) {
-            showActionSheetGesture.delegate = self
-            showActionSheetGesture.addTarget(self, action: #selector(showActionSheet))
-            _view.snapsCollectionView.addGestureRecognizer(showActionSheetGesture)
+            _view.showActionSheetGesture.delegate = self
+            _view.showActionSheetGesture.addTarget(self, action: #selector(showActionSheet))
         }
     }
     override func viewDidLoad() {
@@ -119,6 +108,9 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
+    #warning("can we move handPickedStoryIndex variable in IGStories Model or ViewModel")
+    #warning("can we move handPickedSnapIndex variable in IGStory Model or ViewModel")
+    //because Controller should not aware of the Model and model related things directly.
     init(layout: IGLayoutType = .cubic, stories: [IGStory], handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0, isDeleteSnapEnabled: Bool = false) {
         self.layoutType = layout
         self.stories = stories
@@ -209,7 +201,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
             if vCell.longPressGestureState == nil {
                 vCell.resumePreviousSnapProgress(with: (vCell.story?.lastPlayedSnapIndex)!)
             }
-            if (vCell.story?.snaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
+            if (vCell.story?.nonDeletedSnaps[vCell.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
                 vCell.resumePlayer(with: vCell.story?.lastPlayedSnapIndex ?? 0)
             }
             vCell.longPressGestureState = nil
@@ -298,7 +290,7 @@ extension IGStoryPreviewController: StoryPreviewProtocol {
             //Move to next story
             story_copy = stories[nStoryIndex+handPickedStoryIndex]
             nStoryIndex = nStoryIndex + 1
-            let nIndexPath = IndexPath.init(row: nStoryIndex, section: 0)
+            let nIndexPath = IndexPath(row: nStoryIndex, section: 0)
             //_view.snapsCollectionView.layer.speed = 0;
             _view.snapsCollectionView.scrollToItem(at: nIndexPath, at: .right, animated: true)
             /**@Note:

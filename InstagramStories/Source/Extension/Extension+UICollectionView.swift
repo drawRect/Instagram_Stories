@@ -1,12 +1,13 @@
 //
-//  IGCommon.swift
+//  Extension+UICollectionView.swift
 //  InstagramStories
 //
-//  Created by Ranjith Kumar on 9/12/17.
-//  Copyright © 2017 DrawRect. All rights reserved.
+//  Created by Ranjit on 27/09/20.
+//  Copyright © 2020 DrawRect. All rights reserved.
 //
 
 import Foundation
+
 import UIKit
 
 extension UICollectionView {

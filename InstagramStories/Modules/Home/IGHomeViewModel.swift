@@ -43,7 +43,7 @@ final class IGHomeViewModel {
         if indexPath.row == 0 {
             guard let storiesCopy = try? self.stories.copy().myStory,
                   let story = storiesCopy.first,
-                  !story.snaps.isEmpty else {
+                  !story.nonDeletedSnaps.isEmpty else {
                 return self.showAlertMsg.value = "Redirect to Add Story screen"
             }
             self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row, isDeleteEnabled: true)

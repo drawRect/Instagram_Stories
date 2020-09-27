@@ -1,18 +1,13 @@
 //
-//  IGAdditions.swift
+//  Extension+Array.swift
 //  InstagramStories
 //
-//  Created by  Boominadha Prakash on 12/11/17.
-//  Copyright © 2017 DrawRect. All rights reserved.
+//  Created by Ranjit on 27/09/20.
+//  Copyright © 2020 DrawRect. All rights reserved.
 //
 
+import Foundation
 import UIKit
-
-extension Int {
-    var toFloat: CGFloat {
-        return CGFloat(self)
-    }
-}
 
 extension Array {
      func sortedArrayByPosition() -> [Element] {

@@ -12,15 +12,26 @@ final class IGHomeController: UIViewController {
     
     //MARK: - iVars
     private var _view: IGHomeView { return view as! IGHomeView }
-    private var viewModel = IGHomeViewModel(stories: Bundle.main.decode("stories.json"))
+    private let viewModel: IGHomeViewModel
     
     //MARK: - Overridden functions
+    
+    init(viewModel: IGHomeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func loadView() {
         super.loadView()
         view = IGHomeView(frame: UIScreen.main.bounds)
         _view.collectionView.delegate = self
         _view.collectionView.dataSource = self
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         automaticallyAdjustsScrollViewInsets = false

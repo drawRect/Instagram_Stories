@@ -30,11 +30,11 @@ public class IGRetryLoaderButton: UIButton {
     }
 }
 
+#warning("why did we write one special function on UIView Extension to remove retry button, instead can you move this function to extension to IGRetryButton class")
 extension UIView {
     func removeRetryButton() {
         self.subviews.forEach({v in
             if(v.tag == 100){v.removeFromSuperview()}
         })
     }
-    
 }
