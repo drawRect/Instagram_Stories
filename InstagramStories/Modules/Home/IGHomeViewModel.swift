@@ -24,7 +24,7 @@ final class IGHomeViewModel {
     //MARK: - Public functions
     
     var presentUserDetails: (String, String) {
-        ("Your story",
+        ("Draw Rect",
          "https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
     }
     
@@ -63,10 +63,10 @@ final class IGHomeViewModel {
     
     private func getPreviewController(stories: [IGStory],
                                       storyIndex: Int, isDeleteEnabled: Bool) -> IGStoryPreviewController {
-        IGStoryPreviewController(stories: stories,
-                                 handPickedStoryIndex: storyIndex,
-                                 handPickedSnapIndex: 0,
-                                 isDeleteSnapEnabled: isDeleteEnabled)
+        let viewModel = IGStoryPreviewModel(stories: stories, handPickedStoryIndex: storyIndex, handPickedSnapIndex: 0)
+        return IGStoryPreviewController(layout: .cubic,
+                                        viewModel: viewModel,
+                                        isDeleteSnap: isDeleteEnabled)
     }
     
 }

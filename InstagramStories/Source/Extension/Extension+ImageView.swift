@@ -6,6 +6,7 @@ enum ImageStyle: Int {
 
 typealias SetImageRequester = (IGResult<Bool,Error>) -> Void
 
+#warning("Needs to refactor this extension")
 extension UIImageView: IGImageRequestable {
     func setImage(url: String,
                   style: ImageStyle = .rounded,

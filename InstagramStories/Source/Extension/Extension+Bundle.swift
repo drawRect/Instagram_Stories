@@ -30,3 +30,10 @@ extension Bundle {
     
 }
 
+extension Bundle {
+    ///This display name we are using it for displaying an alert
+    var displayName: String? {
+        return object(forInfoDictionaryKey: "CFBundleName") as? String
+    }
+}
+

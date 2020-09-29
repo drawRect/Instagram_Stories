@@ -8,6 +8,8 @@
 
 import Foundation
 
+#warning("First concentrate on StoryPreviewController then go for StoryPreviewCell")
+
 /*
  Actions Performs on Preview Controller
  Test cases would have followed below functions
@@ -32,22 +34,61 @@ import Foundation
 
 class IGStoryPreviewModel: NSObject {
     
-    //MARK:- iVars
     let stories: [IGStory]
-    let handPickedStoryIndex: Int //starts with(i)
+    var handPickedStoryIndex: Int
+    var handPickedSnapIndex: Int
+    var nStoryIndex: Int = 0
+    var currentIndexPath: IndexPath?
+    var story_copy: IGStory?
     
-    //MARK:- Init method
-    init(stories: [IGStory], handPickedStoryIndex: Int) {
+    var moveStoryOnIndexPath = Dynamic<IndexPath>()
+    var dismissScreen = Dynamic<Bool>()
+    
+    //FIXME: have to write a code
+    var isDeleteSnap = Dynamic<Bool>()
+    
+    init(stories: [IGStory], handPickedStoryIndex: Int, handPickedSnapIndex: Int) {
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
+        self.handPickedSnapIndex = handPickedSnapIndex
     }
     
-    //MARK:- Functions
     func numberOfItemsInSection(_ section: Int) -> Int {
         stories.count
     }
-    func cellForItemAtIndexPath(_ indexPath: IndexPath) -> IGStory? {
-        assert(indexPath.item < stories.count,"Story index mis-match")
+    func cellForItemAtIndexPath(_ indexPath: IndexPath) -> IGStory {
+        assert(indexPath.item < stories.count,"index path is out of bounds")
+        currentIndexPath = indexPath
+        nStoryIndex = indexPath.item
         return stories[indexPath.item]
+    }
+}
+
+
+extension IGStoryPreviewModel: StoryPreviewProtocol {
+    func didCompletePreview() {
+        let n = handPickedStoryIndex+nStoryIndex+1
+        if n < stories.count {
+            //Move to next story
+            story_copy = stories[nStoryIndex+handPickedStoryIndex]
+            nStoryIndex += 1
+            moveStoryOnIndexPath.value = IndexPath(row: nStoryIndex, section: 0)
+        } else {
+            self.dismissScreen.value = true
+        }
+    }
+    func moveToPreviousStory() {
+        let n = nStoryIndex+1
+        if n <= stories.count && n > 1 {
+            //Move to previous story
+            story_copy = stories[nStoryIndex+handPickedStoryIndex]
+            nStoryIndex -=  1
+            moveStoryOnIndexPath.value = IndexPath(row: nStoryIndex, section: 0)
+        } else {
+            self.dismissScreen.value = true
+        }
+    }
+    func didTapCloseButton() {
+        self.dismissScreen.value = true
     }
 }

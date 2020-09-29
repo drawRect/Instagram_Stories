@@ -12,7 +12,9 @@ public enum IGLayoutType {
     case cubic
     var animator: LayoutAttributesAnimator {
         switch self {
-        case .cubic:return CubeAttributesAnimator(perspective: -1/100, totalAngle: .pi/12)
+        case .cubic:
+            return CubeAttributesAnimator(perspective: -1/100,
+                                          totalAngle: .pi/12)
         }
     }
 }
@@ -23,6 +25,7 @@ class IGStoryPreviewView: UIView {
     var layoutType: IGLayoutType?
     /**Layout Animate options(ie.choose which kinda animation you want!)*/
     lazy var layoutAnimator: (LayoutAttributesAnimator, Bool, Int, Int) = (layoutType!.animator, true, 1, 1)
+    var isDeleteSnap: Bool = false
     lazy var snapsCollectionViewFlowLayout: AnimatedCollectionViewLayout = {
         let flowLayout = AnimatedCollectionViewLayout()
         flowLayout.scrollDirection = .horizontal
@@ -33,17 +36,29 @@ class IGStoryPreviewView: UIView {
         return flowLayout
     }()
     lazy var snapsCollectionView: UICollectionView = {
-        let cv = UICollectionView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height:  UIScreen.main.bounds.height), collectionViewLayout: snapsCollectionViewFlowLayout)
+        let cv = UICollectionView(
+            frame: CGRect(
+                x: 0, y: 0, width: UIScreen.main.bounds.width,
+                height: UIScreen.main.bounds.height),
+            collectionViewLayout: snapsCollectionViewFlowLayout
+        )
         cv.backgroundColor = .black
         cv.showsVerticalScrollIndicator = false
         cv.showsHorizontalScrollIndicator = false
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
         cv.isPrefetchingEnabled = false
+        cv.decelerationRate = .fast
         cv.collectionViewLayout = snapsCollectionViewFlowLayout
         cv.addGestureRecognizer(swipeDownGestureRecognizer)
-        cv.addGestureRecognizer(showActionSheetGesture)
+        cv.addGestureRecognizer(swipeUpGestureRecognizer)
         return cv
+    }()
+    
+    let swipeUpGestureRecognizer: UISwipeGestureRecognizer = {
+        let gesture = UISwipeGestureRecognizer()
+        gesture.direction = .up
+        return gesture
     }()
     
     let swipeDownGestureRecognizer: UISwipeGestureRecognizer = {
@@ -52,22 +67,33 @@ class IGStoryPreviewView: UIView {
         return gesture
     }()
     
-    let showActionSheetGesture: UISwipeGestureRecognizer = {
-        let gesture = UISwipeGestureRecognizer()
-        gesture.direction = .up
-        return gesture
+    lazy var actionSheet: UIAlertController = {
+        let ac = UIAlertController(title: Bundle.main.displayName, message: "More...", preferredStyle: .actionSheet)
+        let delete = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            #warning("enable this func as delegate or property based block in viewcontroller to communicate further")
+//            self?.deleteSnap()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            #warning("enable this func as delegate or property based block in viewcontroller to communicate further")
+//            self?.currentCell?.resumeEntireSnap()
+        }
+        ac.addAction(delete)
+        ac.addAction(cancel)
+        return ac
     }()
     
     //MARK:- Overridden functions
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    convenience init(layoutType: IGLayoutType) {
+    convenience init(layoutType: IGLayoutType, isDeleteSnap: Bool) {
         self.init()
         self.layoutType = layoutType
+        self.isDeleteSnap = isDeleteSnap
         createUIElements()
         installLayoutConstraints()
     }
+    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -77,6 +103,7 @@ class IGStoryPreviewView: UIView {
         backgroundColor = .black
         addSubview(snapsCollectionView)
     }
+    
     private func installLayoutConstraints(){
         let top = igTopAnchor.constraint(equalTo: snapsCollectionView.igTopAnchor)
         let left = igLeftAnchor.constraint(equalTo: snapsCollectionView.igLeftAnchor)

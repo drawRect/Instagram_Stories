@@ -69,6 +69,8 @@ final class IGHomeController: UIViewController {
 }
 
 //MARK: - UICollectionViewDataSource
+#warning("Instead of assinging self to UICollectionViewDataSource and keeping two methods one from viewcontroller and one from viewModel for numberOfItemsInSection, instead why dont go with ViewModel to keep the delegate and datasource methods there.")
+#warning("if we are going to follow the above approach, then we are breaking the law. which says, ViewModel should not be aware of UserInterfact. So, you should not even import UIKit there.")
 extension IGHomeController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItemsInSection(section)
