@@ -46,10 +46,10 @@ final class IGHomeViewModel {
                   !story.nonDeletedSnaps.isEmpty else {
                 return self.showAlertMsg.value = "Redirect to Add Story screen"
             }
-            self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row, isDeleteEnabled: true)
+            self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row, ableToDelete: true)
         } else {
             if let storiesCopy = try? self.stories.copy().otherStories {
-                self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row-1, isDeleteEnabled: false)
+                self.presentPreviewScreen.value = getPreviewController(stories: storiesCopy, storyIndex: indexPath.row-1, ableToDelete: false)
             }
         }
     }
@@ -62,11 +62,10 @@ final class IGHomeViewModel {
     }
     
     private func getPreviewController(stories: [IGStory],
-                                      storyIndex: Int, isDeleteEnabled: Bool) -> IGStoryPreviewController {
+                                      storyIndex: Int, ableToDelete: Bool) -> IGStoryPreviewController {
         let viewModel = IGStoryPreviewModel(stories: stories, handPickedStoryIndex: storyIndex, handPickedSnapIndex: 0)
-        return IGStoryPreviewController(layout: .cubic,
-                                        viewModel: viewModel,
-                                        isDeleteSnap: isDeleteEnabled)
+        return IGStoryPreviewController(viewModel: viewModel,
+                                        ableToDelete: ableToDelete)
     }
     
 }

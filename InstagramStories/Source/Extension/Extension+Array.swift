@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 extension Array {
-    func sortedArrayByPosition() -> [Element] {
+    var sortedByPosition: [Element] {
         return sorted(by: { (obj1: Element, obj2: Element) -> Bool in
             
             guard let view1 = obj1 as? UIView,

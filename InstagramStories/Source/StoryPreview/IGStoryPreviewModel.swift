@@ -5,7 +5,6 @@
 //  Created by Boominadha Prakash on 18/03/18.
 //  Copyright © 2018 DrawRect. All rights reserved.
 //
-
 import Foundation
 
 #warning("First concentrate on StoryPreviewController then go for StoryPreviewCell")
@@ -32,7 +31,7 @@ import Foundation
  
  */
 
-class IGStoryPreviewModel: NSObject {
+final class IGStoryPreviewModel {
     
     let stories: [IGStory]
     var handPickedStoryIndex: Int
@@ -43,10 +42,7 @@ class IGStoryPreviewModel: NSObject {
     
     var moveStoryOnIndexPath = Dynamic<IndexPath>()
     var dismissScreen = Dynamic<Bool>()
-    
-    //FIXME: have to write a code
-    var isDeleteSnap = Dynamic<Bool>()
-    
+        
     init(stories: [IGStory], handPickedStoryIndex: Int, handPickedSnapIndex: Int) {
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
@@ -66,6 +62,7 @@ class IGStoryPreviewModel: NSObject {
 
 
 extension IGStoryPreviewModel: StoryPreviewProtocol {
+    #warning("can you merge didCompletePreview & moveToPreviousStory function in one. where it should carry forward the bool or enum, which should tell move forward or backward. then apply the logic")
     func didCompletePreview() {
         let n = handPickedStoryIndex+nStoryIndex+1
         if n < stories.count {
@@ -79,7 +76,7 @@ extension IGStoryPreviewModel: StoryPreviewProtocol {
     }
     func moveToPreviousStory() {
         let n = nStoryIndex+1
-        if n <= stories.count && n > 1 {
+        if n > 1 && n <= stories.count {
             //Move to previous story
             story_copy = stories[nStoryIndex+handPickedStoryIndex]
             nStoryIndex -=  1

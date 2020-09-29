@@ -8,47 +8,45 @@
 
 import UIKit
 
-/**Road-Map: Story(CollectionView)->Cell(ScrollView(nImageViews:Snaps))
- If Story.Starts -> Snap.Index(Captured|StartsWith.0)
- While Snap.done->Next.snap(continues)->done
- then Story Completed
- */
-final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
+final class IGStoryPreviewController: UIViewController {
     
     //MARK: - Private Vars
     private var _view: IGStoryPreviewView { return view as! IGStoryPreviewView }
     public let viewModel: IGStoryPreviewModel
     
-    private(set) var layoutType: IGLayoutType
     private(set) var executeOnce = false
-    var isDeleteSnap: Bool = false
+    let ableToDelete: Bool
     
     //check whether device rotation is happening or not
     private(set) var isTransitioning = false
     
+    #warning("Needs to refactor current cell and cell related stuff. when you start segregating the cell and view model. then automatically everything will be leveraged!")
     private var currentCell: IGStoryPreviewCell? {
-        guard let indexPath = viewModel.currentIndexPath else {
-            debugPrint("Current IndexPath is nil")
-            return nil
+        var cell: IGStoryPreviewCell?
+        if let indexPath = viewModel.currentIndexPath {
+            cell = _view.collectionView.cellForItem(at: indexPath) as? IGStoryPreviewCell
         }
-        return self._view.snapsCollectionView.cellForItem(at: indexPath) as? IGStoryPreviewCell
+        return cell
     }
-   
     
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
-        view = IGStoryPreviewView(layoutType: self.layoutType, isDeleteSnap: isDeleteSnap)
+        view = IGStoryPreviewView()
+        
+        self._view.collectionView.delegate = self
+        self._view.collectionView.dataSource = self
         
         // This should be handled for only currently logged in user story and not for all other user stories.
-        if isDeleteSnap {
+        if ableToDelete {
             _view.swipeUpGestureRecognizer.delegate = self
             _view.swipeUpGestureRecognizer.addTarget(self, action: #selector(showDeleteSnapActions))
         }
         
         ///Adding this gesture to dimiss the screen
         _view.swipeDownGestureRecognizer.delegate = self
-        _view.swipeDownGestureRecognizer.addTarget(self, action: #selector(didSwipeDown(_:)))
+        _view.swipeDownGestureRecognizer.addTarget(self, action: #selector(dismissScreen(_:)))
+        
     }
     
     override func viewDidLoad() {
@@ -56,15 +54,10 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         self.viewModelObservers()
     }
     
-    private func viewModelObservers() {
-        self.viewModel.isDeleteSnap.bind {
-            if $0 == true {
-                
-            }
-        }
+    private func viewModelObservers() {       
         self.viewModel.moveStoryOnIndexPath.bind {
             if let indexPath = $0 {
-                self._view.snapsCollectionView.scrollToItem(at: indexPath, at: .right, animated: true)
+                self._view.collectionView.scrollToItem(at: indexPath, at: .right, animated: true)
             }
         }
         self.viewModel.dismissScreen.bind {
@@ -82,13 +75,15 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
             IGAppUtility.lockOrientation(.portrait, andRotateTo: .portrait)
         }
         if !executeOnce {
-            DispatchQueue.main.async {
-                self._view.snapsCollectionView.delegate = self
-                self._view.snapsCollectionView.dataSource = self
-                let indexPath = IndexPath(item: self.viewModel.handPickedStoryIndex, section: 0)
-                self._view.snapsCollectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
-                self.viewModel.handPickedStoryIndex = 0
-                self.executeOnce = true
+            DispatchQueue.main.async { [weak self] in
+                if let index = self?.viewModel.handPickedStoryIndex {
+                    let indexPath = IndexPath(item: index, section: 0)
+                    self?._view.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: false)
+                    self?.viewModel.handPickedStoryIndex = 0
+                    self?.executeOnce = true
+                } else {
+                    debugPrint("self become nil, so cannot access the hand picked story index")
+                }
             }
         }
     }
@@ -105,43 +100,53 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         isTransitioning = true
-        _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
+        _view.collectionView.collectionViewLayout.invalidateLayout()
     }
-    #warning("can we move handPickedStoryIndex variable in IGStories Model or ViewModel")
-    #warning("can we move handPickedSnapIndex variable in IGStory Model or ViewModel")
-    //because Controller should not aware of the Model and model related things directly.
-    init(layout: IGLayoutType = .cubic, viewModel: IGStoryPreviewModel, isDeleteSnap: Bool = false) {
-        self.layoutType = layout
+    
+    init(viewModel: IGStoryPreviewModel, ableToDelete: Bool = false) {
         self.viewModel = viewModel
-        self.isDeleteSnap = isDeleteSnap
+        self.ableToDelete = ableToDelete
         super.init(nibName: nil, bundle: nil)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override var prefersStatusBarHidden: Bool { return true }
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
+    ///Showing an alert view where user can do delete, share, favourite and other options.
     @objc private func showDeleteSnapActions() {
-        self.present(_view.actionSheet, animated: true) { [weak self] in
+        let alertController = UIAlertController(title: Bundle.main.displayName, message: "More...", preferredStyle: .actionSheet)
+        let delete = UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            self?.deleteSnap()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            self?.currentCell?.resumeEntireSnap()
+        }
+        alertController.addAction(delete)
+        alertController.addAction(cancel)
+        
+        self.present(alertController, animated: true) { [weak self] in
             self?.currentCell?.pauseEntireSnap()
         }
     }
+    
     private func deleteSnap() {
-        guard let indexPath = viewModel.currentIndexPath else {
-            debugPrint("Current IndexPath is nil")
-            return
+        if let indexPath = viewModel.currentIndexPath {
+            let cell = _view.collectionView.cellForItem(at: indexPath) as! IGStoryPreviewCell
+            cell.deleteSnap()
         }
-        let cell = _view.snapsCollectionView.cellForItem(at: indexPath) as? IGStoryPreviewCell
-        cell?.deleteSnap()
     }
-    //MARK: - Selectors
-    @objc func didSwipeDown(_ sender: Any) {
+    
+    @objc func dismissScreen(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
 }
 
-//MARK:- Extension|UICollectionViewDataSource
-extension IGStoryPreviewController:UICollectionViewDataSource {
+//MARK:- UICollectionViewDataSource
+extension IGStoryPreviewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         viewModel.numberOfItemsInSection(section)
     }
@@ -155,24 +160,23 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
     }
 }
 
-//MARK:- Extension|UICollectionViewDelegate
+//MARK:- UICollectionViewDelegate
 extension IGStoryPreviewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? IGStoryPreviewCell else {
-            return
-        }
+        let cell = cell as! IGStoryPreviewCell
         
         //Taking Previous(Visible) cell to store previous story
-        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
-        let visibleCell = visibleCells.first as? IGStoryPreviewCell
-        if let vCell = visibleCell {
-            vCell.viewModel.story?.isCompletelyVisible = false
-            vCell.pauseSnapProgressors(with: (vCell.viewModel.story?.lastPlayedSnapIndex)!)
-            viewModel.story_copy = vCell.viewModel.story
+        let visibleCells = collectionView.visibleCells.sortedByPosition
+        if !visibleCells.isEmpty {
+            let visibleCell = visibleCells.first as! IGStoryPreviewCell
+            visibleCell.viewModel.story.isCompletelyVisible = false
+            visibleCell.pauseSnapProgressors(with: visibleCell.viewModel.story.lastPlayedSnapIndex)
+            viewModel.story_copy = visibleCell.viewModel.story
         }
+        
         //Prepare the setup for first time story launch
         if viewModel.story_copy == nil {
-            cell.willDisplayCellForZerothIndex(with: cell.viewModel.story?.lastPlayedSnapIndex ?? 0, handpickedSnapIndex: viewModel.handPickedSnapIndex)
+            cell.willDisplayCellForZerothIndex(with: cell.viewModel.story.lastPlayedSnapIndex, handpickedSnapIndex: viewModel.handPickedSnapIndex)
             return
         }
         if indexPath.item == viewModel.nStoryIndex {
@@ -182,90 +186,107 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         /// Setting to 0, otherwise for next story snaps, it will consider the same previous story's handPickedSnapIndex. It will create issue in starting the snap progressors.
         viewModel.handPickedSnapIndex = 0
     }
+    
     func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
-        let visibleCell = visibleCells.first as? IGStoryPreviewCell
-        guard let vCell = visibleCell else {return}
-        guard let vCellIndexPath = _view.snapsCollectionView.indexPath(for: vCell) else {
-            return
-        }
-        vCell.viewModel.story?.isCompletelyVisible = true
-        
-        if vCell.viewModel.story == viewModel.story_copy {
-            viewModel.nStoryIndex = vCellIndexPath.item
-            if vCell.longPressGestureState == nil {
-                vCell.resumePreviousSnapProgress(with: (vCell.viewModel.story?.lastPlayedSnapIndex)!)
-            }
-            if (vCell.viewModel.story?.nonDeletedSnaps[vCell.viewModel.story?.lastPlayedSnapIndex ?? 0])?.kind == .video {
-                vCell.resumePlayer(with: vCell.viewModel.story?.lastPlayedSnapIndex ?? 0)
-            }
-            vCell.longPressGestureState = nil
-        }else {
-            if let cell = cell as? IGStoryPreviewCell {
-                cell.stopPlayer()
-            }
-            vCell.startProgressors()
-        }
-        if vCellIndexPath.item == viewModel.nStoryIndex {
-            vCell.didEndDisplayingCell()
-        }
-    }
-}
-
-//MARK:- Extension|UICollectionViewDelegateFlowLayout
-extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        /* During device rotation, invalidateLayout gets call to make cell width and height proper.
-         * InvalidateLayout methods call this UICollectionViewDelegateFlowLayout method, and the scrollView content offset moves to (0, 0). Which is not the expected result.
-         * To keep the contentOffset to that same position adding the below code which will execute after 0.1 second because need time for collectionView adjusts its width and height.
-         * Adjusting preview snap progressors width to Holder view width because when animation finished in portrait orientation, when we switch to landscape orientation, we have to update the progress view width for preview snap progressors also.
-         * Also, adjusting progress view width to updated frame width when the progress view animation is executing.
-         */
-        if isTransitioning {
-            let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
-            let visibleCell = visibleCells.first as? IGStoryPreviewCell
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
-                guard let strongSelf = self,
-                    let vCell = visibleCell,
-                    let progressIndicatorView = vCell.getProgressIndicatorView(with: vCell.snapIndex),
-                    let pv = vCell.getProgressView(with: vCell.snapIndex) else {
-                        fatalError("Visible cell or progressIndicatorView or progressView is nil")
-                }
-                vCell.scrollview.setContentOffset(CGPoint(x: CGFloat(vCell.snapIndex) * collectionView.frame.width, y: 0), animated: false)
-                vCell.adjustPreviousSnapProgressorsWidth(with: vCell.snapIndex)
+        let visibleCells = collectionView.visibleCells.sortedByPosition
+        if !visibleCells.isEmpty {
+            let visibleCell = visibleCells.first as! IGStoryPreviewCell
+            if let indexPathOnCell = _view.collectionView.indexPath(for: visibleCell) {
+                visibleCell.viewModel.story.isCompletelyVisible = true
                 
-                if pv.state == .running {
-                    pv.widthConstraint?.constant = progressIndicatorView.frame.width
+                if visibleCell.viewModel.story == viewModel.story_copy {
+                    viewModel.nStoryIndex = indexPathOnCell.item
+                    if visibleCell.longPressGestureState == nil {
+                        visibleCell.resumePreviousSnapProgress(with: visibleCell.viewModel.story.lastPlayedSnapIndex)
+                    }
+                    let snaps = visibleCell.viewModel.story.nonDeletedSnaps
+                    let snapIndex = visibleCell.viewModel.story.lastPlayedSnapIndex
+                    if snaps[snapIndex].kind == .video {
+                        visibleCell.resumePlayer(with: snapIndex)
+                    }
+                    visibleCell.longPressGestureState = nil
+                }else {
+                    let cell = cell as! IGStoryPreviewCell
+                    cell.stopPlayer()
+                    visibleCell.startProgressors()
                 }
-                strongSelf.isTransitioning = false
+                if indexPathOnCell.item == viewModel.nStoryIndex {
+                    visibleCell.didEndDisplayingCell()
+                }
+            } else {
+                fatalError("IndexPath is matched with IGStoryPreviewCell")
             }
         }
-        if #available(iOS 11.0, *) {
-            return CGSize(width: _view.snapsCollectionView.safeAreaLayoutGuide.layoutFrame.width, height: _view.snapsCollectionView.safeAreaLayoutGuide.layoutFrame.height)
-        } else {
-            return CGSize(width: _view.snapsCollectionView.frame.width, height: _view.snapsCollectionView.frame.height)
-        }
     }
-}
-
-//MARK:- Extension|UIScrollViewDelegate<CollectionView>
-extension IGStoryPreviewController {
+    
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let cell = _view.snapsCollectionView.visibleCells.first as! IGStoryPreviewCell
+        let cell = _view.collectionView.visibleCells.first as! IGStoryPreviewCell
         cell.pauseSnapProgressors(with: cell.viewModel.story.lastPlayedSnapIndex)
         cell.pausePlayer(with: cell.viewModel.story.lastPlayedSnapIndex)
     }
+    
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        let sortedVisibleCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
-        let firstIndexPath = _view.snapsCollectionView.indexPath(for: sortedVisibleCells.first!)
-        let lastIndexPath = _view.snapsCollectionView.indexPath(for: sortedVisibleCells.last!)
-        let numberOfItems = viewModel.numberOfItemsInSection(0) - 1
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
-            if lastIndexPath?.item == 0 || firstIndexPath?.item == numberOfItems {
-                self.dismiss(animated: true, completion: nil)
+        let visibleCells = _view.collectionView.visibleCells.sortedByPosition
+        if !visibleCells.isEmpty {
+            let firstIndexPath = _view.collectionView.indexPath(for: visibleCells.first!)
+            let lastIndexPath = _view.collectionView.indexPath(for: visibleCells.last!)
+            let numberOfItems = viewModel.numberOfItemsInSection(0) - 1
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
+                if lastIndexPath?.item == 0 || firstIndexPath?.item == numberOfItems {
+                    self.dismiss(animated: true, completion: nil)
+                }
             }
         }
     }
+    
+}
+
+//MARK:- UICollectionViewDelegateFlowLayout
+extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
+    
+    #warning("The below lengthy notes is it mandatory or self explanatory?")
+    /* NOTE:*/
+    /* During device rotation, invalidateLayout gets call to make cell width and height proper.
+     * InvalidateLayout methods call this UICollectionViewDelegateFlowLayout method, and the scrollView content offset moves to (0, 0). Which is not the expected result.
+     * To keep the contentOffset to that same position adding the below code which will execute after 0.1 second because need time for collectionView adjusts its width and height.
+     * Adjusting preview snap progressors width to Holder view width because when animation finished in portrait orientation, when we switch to landscape orientation, we have to update the progress view width for preview snap progressors also.
+     * Also, adjusting progress view width to updated frame width when the progress view animation is executing.
+     */
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let visibleCells = collectionView.visibleCells.sortedByPosition
+        if isTransitioning && !visibleCells.isEmpty {
+            let visibleCell = visibleCells.first as! IGStoryPreviewCell
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) { [weak self] in
+                if let progressIndicatorView = visibleCell.getProgressIndicatorView(with: visibleCell.snapIndex),
+                   let pv = visibleCell.getProgressView(with: visibleCell.snapIndex) {
+                    visibleCell.scrollview.setContentOffset(CGPoint(x: CGFloat(visibleCell.snapIndex) * collectionView.frame.width, y: 0), animated: false)
+                    visibleCell.adjustPreviousSnapProgressorsWidth(with: visibleCell.snapIndex)
+                    
+                    if pv.state == .running {
+                        pv.widthConstraint?.constant = progressIndicatorView.frame.width
+                    }
+                    self?.isTransitioning = false
+                } else {
+                    fatalError("ProgressIndicatorView is nil due to cell snapIndex is wrong")
+                }
+            }
+        }
+        
+        var width: CGFloat!
+        var height: CGFloat!
+        if #available(iOS 11.0, *) {
+            width = _view.collectionView.safeAreaLayoutGuide.layoutFrame.width
+            height = _view.collectionView.safeAreaLayoutGuide.layoutFrame.height
+        } else {
+            width = _view.collectionView.frame.width
+            height = _view.collectionView.frame.height
+        }
+        return CGSize(width: width, height: height)
+    }
+}
+
+//MARK:- UIGestureRecognizerDelegate
+extension IGStoryPreviewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
