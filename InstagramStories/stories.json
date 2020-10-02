@@ -20,7 +20,7 @@
                 {
                     "id": "c2",
                     "mime_type": "video",
-                    "url": "http://mirrors.standaloneinstaller.com/video-sample/small.mp4",
+                    "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
                     "last_updated": "2m"
                 },
                 {

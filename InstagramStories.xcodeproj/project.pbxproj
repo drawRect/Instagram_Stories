@@ -329,8 +329,8 @@
 				D6287E60223FC6BA0070E5FE /* IGStoryPreviewController.swift */,
 				D6287E5E223FC6BA0070E5FE /* IGStoryPreviewView.swift */,
 				D6287E5F223FC6BA0070E5FE /* IGStoryPreviewModel.swift */,
-				073C37DA252224B100732EF6 /* IGStoryPreviewCellViewModel.swift */,
 				1099660E1F6053DA005292CF /* IGStoryPreviewCell.swift */,
+				073C37DA252224B100732EF6 /* IGStoryPreviewCellViewModel.swift */,
 			);
 			path = StoryPreview;
 			sourceTree = "<group>";
