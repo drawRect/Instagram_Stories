@@ -11,22 +11,7 @@ import UIKit
 final class IGStoryListCell: UICollectionViewCell {
     
     //MARK: - Public iVars
-    public var story: IGStory? {
-        didSet {
-            self.profileNameLabel.text = story?.user.name
-            if let picture = story?.user.picture {
-                self.profileImageView.imageView.setImage(url: picture)
-            }
-        }
-    }
-    public var userDetails: (String,String)? {
-        didSet {
-            if let details = userDetails {
-                self.profileNameLabel.text = details.0
-                self.profileImageView.imageView.setImage(url: details.1)
-            }
-        }
-    }
+    public var viewModel = IGStoryListCellViewModel()
     
     //MARK: -  Private ivars
     private let profileImageView: IGRoundedView = {
@@ -49,10 +34,24 @@ final class IGStoryListCell: UICollectionViewCell {
         super.init(frame: frame)
         loadUIElements()
         installLayoutConstraints()
+        viewModelObservers()
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func viewModelObservers() {
+        self.viewModel.name.bind {
+            if let name = $0 {
+                self.profileNameLabel.text = name
+            }
+        }
+        self.viewModel.picture.bind {
+            if let picture = $0 {
+                self.profileImageView.imageView.setImage(url: picture)
+            }
+        }
     }
     
     //MARK:- Private functions
@@ -61,19 +60,25 @@ final class IGStoryListCell: UICollectionViewCell {
         addSubview(profileNameLabel)
     }
     private func installLayoutConstraints() {
-        NSLayoutConstraint.activate([
-            profileImageView.widthAnchor.constraint(equalToConstant: 68),
-            profileImageView.heightAnchor.constraint(equalToConstant: 68),
-            profileImageView.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 8),
-            profileImageView.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor)])
-
-        NSLayoutConstraint.activate([
-            profileNameLabel.igLeftAnchor.constraint(equalTo: self.igLeftAnchor),
-            profileNameLabel.igRightAnchor.constraint(equalTo: self.igRightAnchor),
-            profileNameLabel.igTopAnchor.constraint(equalTo: self.profileImageView.igBottomAnchor, constant: 2),
-            profileNameLabel.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor),
-            self.igBottomAnchor.constraint(equalTo: profileNameLabel.igBottomAnchor, constant: 8)])
-        
+        installProfileImageViewConstraints()
+        installProfileNameConstraints()
         layoutIfNeeded()
+    }
+    
+    private func installProfileImageViewConstraints() {
+        let width = profileImageView.widthAnchor.constraint(equalToConstant: 68)
+        let height = profileImageView.heightAnchor.constraint(equalToConstant: 68)
+        let top = profileImageView.igTopAnchor.constraint(equalTo: self.igTopAnchor, constant: 8)
+        let centerX = profileImageView.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor)
+        NSLayoutConstraint.activate([width, height, top, centerX])
+    }
+    
+    private func installProfileNameConstraints() {
+        let left = profileNameLabel.igLeftAnchor.constraint(equalTo: self.igLeftAnchor)
+        let right = profileNameLabel.igRightAnchor.constraint(equalTo: self.igRightAnchor)
+        let top = profileNameLabel.igTopAnchor.constraint(equalTo: self.profileImageView.igBottomAnchor, constant: 2)
+        let centerX = profileNameLabel.igCenterXAnchor.constraint(equalTo: self.igCenterXAnchor)
+        let bottom = self.igBottomAnchor.constraint(equalTo: profileNameLabel.igBottomAnchor, constant: 8)
+        NSLayoutConstraint.activate([left, right, top, centerX, bottom])
     }
 }

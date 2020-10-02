@@ -14,6 +14,7 @@
 		078E413D1F61E86500222191 /* stories.json in Resources */ = {isa = PBXBuildFile; fileRef = 078E413C1F61E86500222191 /* stories.json */; };
 		079640BC251E994F003BB07A /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079640BB251E994F003BB07A /* Dynamic.swift */; };
 		079640C4251E9F9C003BB07A /* Extension+ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 079640C3251E9F9C003BB07A /* Extension+ViewController.swift */; };
+		07BE894A252722BF00AFE816 /* IGStoryListCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BE8949252722BF00AFE816 /* IGStoryListCellViewModel.swift */; };
 		07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */; };
 		07FDECDE1F5FD9BA004BC833 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */; };
 		07FDECE11F5FD9BA004BC833 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 07FDECDF1F5FD9BA004BC833 /* LaunchScreen.storyboard */; };
@@ -79,6 +80,7 @@
 		078E413C1F61E86500222191 /* stories.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = stories.json; sourceTree = "<group>"; };
 		079640BB251E994F003BB07A /* Dynamic.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Dynamic.swift; path = Modules/Home/Dynamic.swift; sourceTree = "<group>"; };
 		079640C3251E9F9C003BB07A /* Extension+ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+ViewController.swift"; sourceTree = "<group>"; };
+		07BE8949252722BF00AFE816 /* IGStoryListCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = IGStoryListCellViewModel.swift; path = Modules/Home/IGStoryListCellViewModel.swift; sourceTree = "<group>"; };
 		07FDECD31F5FD9BA004BC833 /* InstagramStories.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InstagramStories.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07FDECD61F5FD9BA004BC833 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07FDECDD1F5FD9BA004BC833 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -204,6 +206,7 @@
 				1024CA001FAA102200237538 /* IGHomeViewModel.swift */,
 				1024C9F71FAA0D4300237538 /* IGAddStoryCell.swift */,
 				1024C9F81FAA0D4300237538 /* IGStoryListCell.swift */,
+				07BE8949252722BF00AFE816 /* IGStoryListCellViewModel.swift */,
 				079640BB251E994F003BB07A /* Dynamic.swift */,
 			);
 			name = Home;
@@ -503,6 +506,7 @@
 				07374C702520DF6F0075DE48 /* Extension+UICollectionView.swift in Sources */,
 				D6287E61223FC6BA0070E5FE /* IGStoryPreviewView.swift in Sources */,
 				D6287E62223FC6BA0070E5FE /* IGStoryPreviewModel.swift in Sources */,
+				07BE894A252722BF00AFE816 /* IGStoryListCellViewModel.swift in Sources */,
 				109966181F6053DA005292CF /* IGStoryPreviewCell.swift in Sources */,
 				D6287E3B223FC6320070E5FE /* Reachability.swift in Sources */,
 				07FDECD71F5FD9BA004BC833 /* AppDelegate.swift in Sources */,

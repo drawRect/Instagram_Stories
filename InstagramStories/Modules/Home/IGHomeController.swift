@@ -83,7 +83,7 @@ extension IGHomeController: UICollectionViewDataSource {
             return cell
         } else {
             let cell =  collectionView.register(IGStoryListCell.self, indexPath: indexPath)
-            cell.story = viewModel.cellForItemAt(indexPath: indexPath)
+            cell.viewModel.story = viewModel.cellForItemAt(indexPath: indexPath)
             return cell
         }
     }
