@@ -45,8 +45,14 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         return scrollView
     }()
     
-    var retryBtn: IGRetryLoaderButton!
     var longPressGestureState: UILongPressGestureRecognizer.State?
+    
+    lazy var retryButton: IGRetryLoaderButton = {
+        var retryButton = IGRetryLoaderButton()
+        retryButton.translatesAutoresizingMaskIntoConstraints = false
+        retryButton.delegate = self
+        return retryButton
+    }()
     
     //MARK:- Public iVars
     public var viewModel = IGStoryPreviewCellViewModel()
@@ -252,16 +258,16 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     private func showRetryButton(with url: String, for snapView: UIImageView) {
-        self.retryBtn = IGRetryLoaderButton(withURL: url)
-        self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
-        self.retryBtn.delegate = self
+        self.retryButton.contentURL = url
         self.isUserInteractionEnabled = true
-        snapView.addSubview(self.retryBtn)
-        NSLayoutConstraint.activate([
-            self.retryBtn.igCenterXAnchor.constraint(equalTo: snapView.igCenterXAnchor),
-            self.retryBtn.igCenterYAnchor.constraint(equalTo: snapView.igCenterYAnchor)
-        ])
+        snapView.addSubview(self.retryButton)
+        
+        let centerX = retryButton.igCenterXAnchor.constraint(equalTo: snapView.igCenterXAnchor)
+        let centerY = retryButton.igCenterYAnchor.constraint(equalTo: snapView.igCenterYAnchor)
+        
+        NSLayoutConstraint.activate([centerX, centerY])
     }
+    
     private func startPlayer(videoView: IGPlayerView, with url: String) {
         if scrollView.subviews.count > 0 {
             if viewModel.story?.isCompletelyVisible == true {
@@ -302,13 +308,13 @@ final class IGStoryPreviewCell: UICollectionViewCell {
              */
             if let snap = viewModel.story?.nonDeletedSnaps[n], snap.kind == .image, (getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView)?.image == nil {
                 //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView, let btn = retryBtn, snapView.subviews.contains(btn) {
+                if let snapView = getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView, snapView.subviews.contains(retryButton) {
                     snapView.removeRetryButton()
                 }
                 fillupLastPlayedSnap(n)
             }else {
                 //Remove retry button if tap forward or backward if it exists
-                if let videoView = getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView, let btn = retryBtn, videoView.subviews.contains(btn) {
+                if let videoView = getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView, videoView.subviews.contains(retryButton) {
                     videoView.removeRetryButton()
                 }
                 if (getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView)?.player?.timeControlStatus != .playing {
@@ -400,7 +406,8 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     //Before progress view starts we have to fill the progressView
     private func fillupLastPlayedSnap(_ sIndex: Int) {
-        if let snap = viewModel.story?.nonDeletedSnaps[sIndex], snap.kind == .video {
+        if let snap = viewModel.story?.nonDeletedSnaps[sIndex],
+           snap.kind == .video {
             viewModel.videoSnapIndex = sIndex
             stopPlayer()
         }
@@ -661,7 +668,11 @@ extension IGStoryPreviewCell: StoryPreviewHeaderProtocol {
 //MARK: - Extension|RetryBtnDelegate
 extension IGStoryPreviewCell: RetryBtnDelegate {
     func retryButtonTapped() {
-        self.retryRequest(view: retryBtn.superview!, with: retryBtn.contentURL!)
+        guard let parentView = retryButton.superview,
+              let url = retryButton.contentURL else {
+            return
+        }
+        retryRequest(view: parentView, with: url)
     }
 }
 
@@ -698,15 +709,12 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     func didFailed(withError error: String, for url: URL?) {
         debugPrint("Failed with error: \(error)")
         if let videoView = (getSnapView(index: viewModel.snapIndex+viewModel.snapViewTag) as? IGPlayerView), let videoURL = url {
-            self.retryBtn = IGRetryLoaderButton(withURL: videoURL.absoluteString)
-            self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
-            self.retryBtn.delegate = self
+            self.retryButton.contentURL = videoURL.absoluteString
             self.isUserInteractionEnabled = true
-            videoView.addSubview(self.retryBtn)
-            NSLayoutConstraint.activate([
-                self.retryBtn.igCenterXAnchor.constraint(equalTo: videoView.igCenterXAnchor),
-                self.retryBtn.igCenterYAnchor.constraint(equalTo: videoView.igCenterYAnchor)
-            ])
+            videoView.addSubview(self.retryButton)
+            let centerX = retryButton.igCenterXAnchor.constraint(equalTo: videoView.igCenterXAnchor)
+            let centerY = retryButton.igCenterYAnchor.constraint(equalTo: videoView.igCenterYAnchor)
+            NSLayoutConstraint.activate([centerX, centerY])
         }
     }
     func didCompletePlay() {
