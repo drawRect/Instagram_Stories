@@ -8,19 +8,22 @@
 
 import Foundation
 
-
 class IGStoryPreviewCellViewModel {
     
     public var story: IGStory!
-    public var direction: SnapMovementDirectionState = .forward
+    public var direction = ScreenDirection.forward
     
-    var updateScreenDirection = Dynamic<SnapMovementDirectionState>()
+    var enableScrollViewUserInteraction = Dynamic<Bool>()
+    var startRequest = Dynamic<String>()
+    var startPlayer = Dynamic<String>()
+    var lastUpdated = Dynamic<String>()
     
     public var handpickedSnapIndex: Int = 0
     
     public var snapIndex: Int = 0 {
         didSet {
-            updateScreenDirection.value = direction
+            print("snapIndex:\(snapIndex) and user.name:\(story.user.name)")
+            moveSnapOnDirection()
         }
     }
     
@@ -32,6 +35,23 @@ class IGStoryPreviewCellViewModel {
         snapIndex - 1
     }
     
+    public var snapIndexWithTag: Int {
+        snapIndex + snapViewTag
+    }
     
+    func moveSnapOnDirection() {
+        print(#function)
+        if snapIndex < story.snapsCount {
+            #warning("why are we enabling the userInteraction of scrollview always here!. what is the catch?")
+            enableScrollViewUserInteraction.value = true
+            let snap = story.nonDeletedSnaps[snapIndex]
+            lastUpdated.value = snap.lastUpdated
+            if snap.kind == .image {
+                startRequest.value = snap.url
+            } else if snap.kind == .video {
+                startPlayer.value = snap.url
+            }
+        }
+    }
     
 }

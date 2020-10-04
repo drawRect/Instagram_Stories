@@ -13,9 +13,9 @@ protocol StoryPreviewProtocol: class {
     func moveToPreviousStory()
     func didTapCloseButton()
 }
-enum SnapMovementDirectionState {
-    case forward
-    case backward
+
+enum ScreenDirection {
+    case forward, backward
 }
 
 final class IGStoryPreviewCell: UICollectionViewCell {
@@ -82,15 +82,37 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     private func viewModelObservers() {
-        viewModel.updateScreenDirection.bind {
-            if let didUpdate = $0 {
-                self.scrollView.isUserInteractionEnabled = true
-                switch didUpdate {
-                case .forward:
-                    self.moveSnapOnForwardDirection()
-                case .backward:
-                    self.moveSnapOnBackwardDirection()
+        viewModel.enableScrollViewUserInteraction.bind { _ in
+            self.scrollView.isUserInteractionEnabled = true
+        }
+        
+        viewModel.startRequest.bind {
+            if let url = $0 {
+                let snapView: UIImageView!
+                if let imageView = self.getSnapView(index: self.viewModel.snapIndexWithTag) as? UIImageView {
+                    snapView = imageView
+                } else {
+                    snapView = self.createSnapView()
                 }
+                self.startRequest(snapView: snapView, with: url)
+            }
+        }
+        
+        viewModel.startPlayer.bind {
+            if let url = $0 {
+                let videoView: IGPlayerView!
+                if let playerView = self.getSnapView(index: self.viewModel.snapIndex + self.viewModel.snapViewTag) as? IGPlayerView {
+                    videoView = playerView
+                } else {
+                    videoView = self.createVideoView()
+                }
+                self.startPlayer(videoView: videoView, with: url)
+            }
+        }
+        
+        viewModel.lastUpdated.bind {
+            if let updated = $0 {
+                self.storyHeaderView.lastUpdatedLabel.text = updated
             }
         }
     }
@@ -140,50 +162,6 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([left, right, top, height])
     }
     
-    func moveSnapOnForwardDirection() {
-        if viewModel.snapIndex < viewModel.story.snapsCount {
-            if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
-                if snap.kind != MimeType.video {
-                    if let snapView = getSnapview() {
-                        startRequest(snapView: snapView, with: snap.url)
-                    } else {
-                        let snapView = createSnapView()
-                        startRequest(snapView: snapView, with: snap.url)
-                    }
-                }else {
-                    if let videoView = getVideoView(with: viewModel.snapIndex) {
-                        startPlayer(videoView: videoView, with: snap.url)
-                    }else {
-                        let videoView = createVideoView()
-                        startPlayer(videoView: videoView, with: snap.url)
-                    }
-                }
-                storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-            }
-        }
-    }
-    
-    func moveSnapOnBackwardDirection() {
-        if viewModel.snapIndex < viewModel.story.snapsCount {
-            if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
-                if snap.kind != MimeType.video {
-                    if let snapView = getSnapview() {
-                        self.startRequest(snapView: snapView, with: snap.url)
-                    }
-                }else {
-                    if let videoView = getVideoView(with: viewModel.snapIndex) {
-                        startPlayer(videoView: videoView, with: snap.url)
-                    }
-                    else {
-                        let videoView = self.createVideoView()
-                        self.startPlayer(videoView: videoView, with: snap.url)
-                    }
-                }
-                storyHeaderView.lastUpdatedLabel.text = snap.lastUpdated
-            }
-        }
-    }
-    
     private var snapViewXPos: CGFloat {
         var xPosition: CGFloat!
         if viewModel.snapIndex == 0 {
@@ -195,77 +173,66 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     private func createSnapView() -> UIImageView {
-        let snapView = UIImageView()
-        snapView.translatesAutoresizingMaskIntoConstraints = false
-        snapView.tag = viewModel.snapIndex + viewModel.snapViewTag
-        
-        /**
-         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
-         - If only snapViews are there, it will not create any issues.
-         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
-         - That's why we need to remove if any snap exists on the same position.
-         */
-        scrollView.subviews.filter({$0.tag == viewModel.snapIndex + viewModel.snapViewTag}).first?.removeFromSuperview()
-        
-        scrollView.addSubview(snapView)
-        
-        /// Setting constraints for snap view.
-        NSLayoutConstraint.activate([
-            snapView.leadingAnchor.constraint(equalTo: (viewModel.snapIndex == 0) ? scrollView.leadingAnchor : scrollView.subviews[viewModel.previousSnapIndex].trailingAnchor),
-            snapView.igTopAnchor.constraint(equalTo: scrollView.igTopAnchor),
-            snapView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            snapView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            scrollView.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
-        ])
-        if(viewModel.snapIndex != 0) {
-            NSLayoutConstraint.activate([
-                snapView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: CGFloat(viewModel.snapIndex)*scrollView.width)
-            ])
-        }
-        return snapView
-    }
-    private func getSnapview() -> UIImageView? {
-        if let imageView = scrollView.subviews.filter({$0.tag == viewModel.snapIndex + viewModel.snapViewTag}).first as? UIImageView {
-            return imageView
-        }
-        return nil
-    }
-    private func createVideoView() -> IGPlayerView {
-        let videoView = IGPlayerView()
-        videoView.translatesAutoresizingMaskIntoConstraints = false
-        videoView.tag = viewModel.snapIndex + viewModel.snapViewTag
-        videoView.playerObserverDelegate = self
-        
-        /**
-         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
-         - If only snapViews are there, it will not create any issues.
-         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
-         - That's why we need to remove if any snap exists on the same position.
-         */
-        scrollView.subviews.filter({$0.tag == viewModel.snapIndex + viewModel.snapViewTag}).first?.removeFromSuperview()
-        
-        scrollView.addSubview(videoView)
-        NSLayoutConstraint.activate([
-            videoView.leadingAnchor.constraint(equalTo: (viewModel.snapIndex == 0) ? scrollView.leadingAnchor : scrollView.subviews[viewModel.previousSnapIndex].trailingAnchor),
-            videoView.igTopAnchor.constraint(equalTo: scrollView.igTopAnchor),
-            videoView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            videoView.heightAnchor.constraint(equalTo: scrollView.heightAnchor),
-            scrollView.igBottomAnchor.constraint(equalTo: videoView.igBottomAnchor)
-        ])
-        if(viewModel.snapIndex != 0) {
-            NSLayoutConstraint.activate([
-                videoView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: CGFloat(viewModel.snapIndex)*scrollView.width),
-            ])
-        }
-        return videoView
-    }
-    private func getVideoView(with index: Int) -> IGPlayerView? {
-        if let videoView = scrollView.subviews.filter({$0.tag == index + viewModel.snapViewTag}).first as? IGPlayerView {
-            return videoView
-        }
-        return nil
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.tag = viewModel.snapIndexWithTag
+        applySnapViewLayout(snapView: imageView)
+        return imageView
     }
     
+    private func getSnapView(index: Int) -> UIView? {
+        var match: UIView?
+        let matched = scrollView.subviews.filter({$0.tag == index})
+        if !matched.isEmpty {
+            match = matched.first
+        }
+        return match
+    }
+    
+    private func createVideoView() -> IGPlayerView {
+        let playerView = IGPlayerView()
+        playerView.translatesAutoresizingMaskIntoConstraints = false
+        playerView.tag = viewModel.snapIndexWithTag
+        playerView.playerObserverDelegate = self
+        applySnapViewLayout(snapView: playerView)
+        return playerView
+    }
+    
+    private func applySnapViewLayout(snapView: UIView) {
+        /**
+         Delete if there is any snapview/videoview already present in that frame location. Because of snap delete functionality, snapview/videoview can occupy different frames(created in 2nd position(frame), when 1st postion snap gets deleted, it will move to first position) which leads to weird issues.
+         - If only snapViews are there, it will not create any issues.
+         - But if story contains both image and video snaps, there will be a chance in same position both snapView and videoView gets created.
+         - That's why we need to remove if any snap exists on the same position.
+         */
+        let matched = scrollView.subviews.filter({$0.tag == viewModel.snapIndexWithTag})
+        matched.first?.removeFromSuperview()
+        
+        scrollView.addSubview(snapView)
+        var leadingAnchor: NSLayoutXAxisAnchor!
+        if viewModel.snapIndex == 0 {
+            leadingAnchor = scrollView.leadingAnchor
+        } else {
+            leadingAnchor = scrollView.subviews[viewModel.previousSnapIndex].trailingAnchor
+        }
+        
+        let leading = snapView.leadingAnchor.constraint(equalTo: leadingAnchor)
+        let top = snapView.igTopAnchor.constraint(equalTo: scrollView.igTopAnchor)
+        let width = snapView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        let height = snapView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        let bottom = scrollView.igBottomAnchor.constraint(equalTo: snapView.igBottomAnchor)
+        
+        /// Setting constraints for snap view.
+        NSLayoutConstraint.activate([leading, top, width, height, bottom])
+        #warning("is this condition really matters? because we are already doing something related to leading, please check the above one")
+        if(viewModel.snapIndex != 0) {
+            let constant = CGFloat(viewModel.snapIndex) * scrollView.width
+            let leading = snapView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: constant)
+            NSLayoutConstraint.activate([leading])
+        }
+    }
+    
+    #warning("REFACTOR CONTINUE")
     private func startRequest(snapView: UIImageView, with url: String) {
         snapView.setImage(url: url, style: .squared) { result in
             DispatchQueue.main.async { [weak self] in
@@ -333,18 +300,18 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if let snap = viewModel.story?.nonDeletedSnaps[n], snap.kind == .image, getSnapview()?.image == nil {
+            if let snap = viewModel.story?.nonDeletedSnaps[n], snap.kind == .image, (getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView)?.image == nil {
                 //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapview(), let btn = retryBtn, snapView.subviews.contains(btn) {
+                if let snapView = getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView, let btn = retryBtn, snapView.subviews.contains(btn) {
                     snapView.removeRetryButton()
                 }
                 fillupLastPlayedSnap(n)
             }else {
                 //Remove retry button if tap forward or backward if it exists
-                if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
+                if let videoView = getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView, let btn = retryBtn, videoView.subviews.contains(btn) {
                     videoView.removeRetryButton()
                 }
-                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
+                if (getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView)?.player?.timeControlStatus != .playing {
                     fillupLastPlayedSnap(n)
                 }
             }
@@ -373,7 +340,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     @objc private func didEnterForeground() {
         if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
             if snap.kind == .video {
-                if let videoView = getVideoView(with: viewModel.snapIndex) {
+                if let videoView = getSnapView(index: viewModel.snapIndexWithTag) as? IGPlayerView {
                     startPlayer(videoView: videoView, with: snap.url)
                 }
             }else {
@@ -394,7 +361,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             if n < count {
                 //Move to next or previous snap based on index n
                 let x = n.toFloat * frame.width
-                let offset = CGPoint(x: x,y: 0)
+                let offset = CGPoint(x: x, y: 0)
                 scrollView.setContentOffset(offset, animated: false)
                 viewModel.story?.lastPlayedSnapIndex = n
                 viewModel.handpickedSnapIndex = n
@@ -410,7 +377,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             if n < count {
                 //Move to next snap
                 let x = n.toFloat * frame.width
-                let offset = CGPoint(x: x,y: 0)
+                let offset = CGPoint(x: x, y: 0)
                 scrollView.setContentOffset(offset, animated: false)
                 viewModel.story?.lastPlayedSnapIndex = n
                 viewModel.direction = .forward
@@ -633,18 +600,18 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         self.getProgressView(with: sIndex)?.reset()
     }
     public func pausePlayer(with sIndex: Int) {
-        getVideoView(with: sIndex)?.pause()
+        (getSnapView(index: sIndex+viewModel.snapViewTag) as? IGPlayerView)?.pause()
     }
     public func stopPlayer() {
-        let videoView = getVideoView(with: viewModel.videoSnapIndex)
+        let videoView = getSnapView(index: viewModel.videoSnapIndex+viewModel.snapViewTag) as? IGPlayerView
         if videoView?.player?.timeControlStatus != .playing {
-            getVideoView(with: viewModel.videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
+            (getSnapView(index: viewModel.videoSnapIndex+viewModel.snapViewTag) as? IGPlayerView)?.player?.replaceCurrentItem(with: nil)
         }
         videoView?.stop()
         //getVideoView(with: videoSnapIndex)?.player = nil
     }
     public func resumePlayer(with sIndex: Int) {
-        getVideoView(with: sIndex)?.play()
+        (getSnapView(index: sIndex+viewModel.snapViewTag) as? IGPlayerView)?.play()
     }
     public func didEndDisplayingCell() {
         
@@ -702,7 +669,7 @@ extension IGStoryPreviewCell: RetryBtnDelegate {
 extension IGStoryPreviewCell: IGPlayerObserver {
     
     func didStartPlaying() {
-        if let videoView = getVideoView(with: viewModel.snapIndex), videoView.currentTime <= 0 {
+        if let videoView = getSnapView(index: viewModel.snapIndex+viewModel.snapViewTag) as? IGPlayerView, videoView.currentTime <= 0 {
             if videoView.error == nil && (viewModel.story?.isCompletelyVisible)! == true {
                 if let holderView = getProgressIndicatorView(with: viewModel.snapIndex),
                    let progressView = getProgressView(with: viewModel.snapIndex) {
@@ -730,7 +697,7 @@ extension IGStoryPreviewCell: IGPlayerObserver {
     }
     func didFailed(withError error: String, for url: URL?) {
         debugPrint("Failed with error: \(error)")
-        if let videoView = getVideoView(with: viewModel.snapIndex), let videoURL = url {
+        if let videoView = (getSnapView(index: viewModel.snapIndex+viewModel.snapViewTag) as? IGPlayerView), let videoURL = url {
             self.retryBtn = IGRetryLoaderButton(withURL: videoURL.absoluteString)
             self.retryBtn.translatesAutoresizingMaskIntoConstraints = false
             self.retryBtn.delegate = self
