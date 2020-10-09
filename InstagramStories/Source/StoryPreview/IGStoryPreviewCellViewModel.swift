@@ -17,12 +17,15 @@ class IGStoryPreviewCellViewModel {
     var startRequest = Dynamic<String>()
     var startPlayer = Dynamic<String>()
     var lastUpdated = Dynamic<String>()
+    var showRetryButton = Dynamic<String>()
+    var startProgressor = Dynamic<Bool>()
+    var playVideo = Dynamic<VideoResource>()
+    var stopAnimation = Dynamic<Bool>()
     
     public var handpickedSnapIndex: Int = 0
     
     public var snapIndex: Int = 0 {
         didSet {
-            print("snapIndex:\(snapIndex) and user.name:\(story.user.name)")
             moveSnapOnDirection()
         }
     }
@@ -40,7 +43,6 @@ class IGStoryPreviewCellViewModel {
     }
     
     func moveSnapOnDirection() {
-        print(#function)
         if snapIndex < story.snapsCount {
             #warning("why are we enabling the userInteraction of scrollview always here!. what is the catch?")
             enableScrollViewUserInteraction.value = true
@@ -50,6 +52,41 @@ class IGStoryPreviewCellViewModel {
                 startRequest.value = snap.url
             } else if snap.kind == .video {
                 startPlayer.value = snap.url
+            }
+        }
+    }
+    
+    func processImageResponse(urlString: String, result: IGResult<Bool, Error>) {
+        switch result {
+        case .success(_):
+            let nonDeletedSnapUrl = story.nonDeletedSnaps[snapIndex].url
+            //start progressor if handpickedSnapIndex matches with snapIndex
+            #warning("urlString == nonDeletedSnapUrl this condtion why we have not enabled on Video request")
+            #warning("if you have enabled it. then create one custom getter to get bool out of it")
+            if handpickedSnapIndex == snapIndex && urlString == nonDeletedSnapUrl {
+                self.startProgressor.value = true
+            } else {
+                debugPrint("could not start the progress because of snapindex mismatches")
+            }
+        case .failure(_):
+            showRetryButton.value = urlString
+        }
+    }
+    
+    func requestVideo(urlString: String) {
+        IGVideoCacheManager.shared.getFile(for: urlString) { [weak self] (result) in
+            switch result {
+            case .success(let videoURL):
+                //start progressor if handpickedSnapIndex matches with snapIndex
+                if self?.handpickedSnapIndex == self?.snapIndex {
+                    let videoResource = VideoResource(filePath: videoURL.absoluteString)
+                    self?.playVideo.value = videoResource
+                }  else {
+                    debugPrint("could not start the progress because of snapindex mismatches")
+                }
+            case .failure(let error):
+                debugPrint("could not load the video. \(error)")
+                self?.stopAnimation.value = true
             }
         }
     }

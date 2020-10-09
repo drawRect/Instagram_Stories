@@ -94,20 +94,14 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         
         viewModel.startRequest.bind {
             if let url = $0 {
-                let snapView: UIImageView!
-                if let imageView = self.getSnapView(index: self.viewModel.snapIndexWithTag) as? UIImageView {
-                    snapView = imageView
-                } else {
-                    snapView = self.createSnapView()
-                }
-                self.startRequest(snapView: snapView, with: url)
+                self.startRequest(snapView: self.snapImageView, with: url)
             }
         }
         
         viewModel.startPlayer.bind {
             if let url = $0 {
                 let videoView: IGPlayerView!
-                if let playerView = self.getSnapView(index: self.viewModel.snapIndex + self.viewModel.snapViewTag) as? IGPlayerView {
+                if let playerView = self.getSnapView(index: self.viewModel.snapIndexWithTag) as? IGPlayerView {
                     videoView = playerView
                 } else {
                     videoView = self.createVideoView()
@@ -120,6 +114,26 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             if let updated = $0 {
                 self.storyHeaderView.lastUpdatedLabel.text = updated
             }
+        }
+        
+        viewModel.startProgressor.bind { _ in
+            self.startProgressors()
+        }
+        
+        viewModel.showRetryButton.bind {
+            if let urlString = $0 {
+                self.showRetryButton(using: urlString)
+            }
+        }
+        
+        viewModel.playVideo.bind {
+            if let videoResource = $0 {
+                self.snapVideoView.play(with: videoResource)
+            }
+        }
+        
+        viewModel.stopAnimation.bind { _ in
+            self.snapVideoView.stopAnimating()
         }
     }
     
@@ -178,6 +192,26 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         return xPosition
     }
     
+    private var snapImageView: UIImageView {
+        let snapView: UIImageView!
+        if let imageView = self.getSnapView(index: self.viewModel.snapIndexWithTag) as? UIImageView {
+            snapView = imageView
+        } else {
+            snapView = self.createSnapView()
+        }
+        return snapView
+    }
+    
+    private var snapVideoView: IGPlayerView {
+        let videoView: IGPlayerView!
+        if let playerView = self.getSnapView(index: self.viewModel.snapIndexWithTag) as? IGPlayerView {
+            videoView = playerView
+        } else {
+            videoView = self.createVideoView()
+        }
+        return videoView
+    }
+    
     private func createSnapView() -> UIImageView {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -187,12 +221,8 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     
     private func getSnapView(index: Int) -> UIView? {
-        var match: UIView?
         let matched = scrollView.subviews.filter({$0.tag == index})
-        if !matched.isEmpty {
-            match = matched.first
-        }
-        return match
+        return matched.first
     }
     
     private func createVideoView() -> IGPlayerView {
@@ -238,64 +268,44 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         }
     }
     
-    #warning("REFACTOR CONTINUE")
     private func startRequest(snapView: UIImageView, with url: String) {
+        #warning("can you please move this setImage out of uiimageview. because once we moved out of it. we can call it from view model.")
         snapView.setImage(url: url, style: .squared) { result in
-            DispatchQueue.main.async { [weak self] in
-                switch result {
-                case .success(_):
-                    if let snapIndex = self?.viewModel.snapIndex {
-                        /// Start progressor only if handpickedSnapIndex matches with snapIndex and the requested image url should be matched with current snapIndex imageurl
-                        if(self?.viewModel.handpickedSnapIndex == snapIndex && url == self?.viewModel.story.nonDeletedSnaps[snapIndex].url) {
-                            self?.startProgressors()
-                        }
-                    }
-                case .failure(_):
-                    self?.showRetryButton(with: url, for: snapView)
-                }
-            }
+            self.viewModel.processImageResponse(urlString: url, result: result)
         }
     }
     
-    private func showRetryButton(with url: String, for snapView: UIImageView) {
-        self.retryButton.contentURL = url
-        self.isUserInteractionEnabled = true
-        snapView.addSubview(self.retryButton)
+    private func startPlayer(videoView: IGPlayerView, with url: String) {
+        if !scrollView.subviews.isEmpty {
+            if viewModel.story?.isCompletelyVisible == true {
+                videoView.startAnimating()
+                viewModel.requestVideo(urlString: url)
+            } else {
+                debugPrint("view model story is not completely visible")
+            }
+        } else {
+            debugPrint("scrollview subviews are empty")
+        }
+    }
+    
+    private func showRetryButton(using url: String) {
+        retryButton.contentURL = url
+        isUserInteractionEnabled = true
+        snapImageView.addSubview(retryButton)
         
-        let centerX = retryButton.igCenterXAnchor.constraint(equalTo: snapView.igCenterXAnchor)
-        let centerY = retryButton.igCenterYAnchor.constraint(equalTo: snapView.igCenterYAnchor)
+        let centerX = retryButton.igCenterXAnchor.constraint(equalTo: snapImageView.igCenterXAnchor)
+        let centerY = retryButton.igCenterYAnchor.constraint(equalTo: snapImageView.igCenterYAnchor)
         
         NSLayoutConstraint.activate([centerX, centerY])
     }
     
-    private func startPlayer(videoView: IGPlayerView, with url: String) {
-        if scrollView.subviews.count > 0 {
-            if viewModel.story?.isCompletelyVisible == true {
-                videoView.startAnimating()
-                IGVideoCacheManager.shared.getFile(for: url) { [weak self] (result) in
-                    switch result {
-                    case .success(let videoURL):
-                        /// Start progressor only if handpickedSnapIndex matches with snapIndex
-                        if(self?.viewModel.handpickedSnapIndex == self?.viewModel.snapIndex) {
-                            let videoResource = VideoResource(filePath: videoURL.absoluteString)
-                            videoView.play(with: videoResource)
-                        }
-                    case .failure(let error):
-                        videoView.stopAnimating()
-                        debugPrint("Video error: \(error)")
-                    }
-                }
-            }
-        }
-    }
+    #warning("REFACTOR CONTINUE")
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         longPressGestureState = sender.state
-        if sender.state == .began ||  sender.state == .ended {
-            if(sender.state == .began) {
-                pauseEntireSnap()
-            } else {
-                resumeEntireSnap()
-            }
+        if sender.state == .began {
+            pauseEntireSnap()
+        } else if sender.state == .ended {
+            resumeEntireSnap()
         }
     }
     @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
@@ -482,13 +492,13 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     func startProgressors() {
         DispatchQueue.main.async {
             if self.scrollView.subviews.count > 0 {
-                let imageView = self.scrollView.subviews.filter{v in v.tag == self.viewModel.snapIndex + self.viewModel.snapViewTag}.first as? UIImageView
+                let imageView = self.scrollView.subviews.filter{v in v.tag == self.viewModel.snapIndexWithTag}.first as? UIImageView
                 if imageView?.image != nil && self.viewModel.story?.isCompletelyVisible == true {
                     self.gearupTheProgressors(type: .image)
                 } else {
                     // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
                     if self.viewModel.story?.isCompletelyVisible == true {
-                        let videoView = self.scrollView.subviews.filter{v in v.tag == self.viewModel.snapIndex + self.viewModel.snapViewTag}.first as? IGPlayerView
+                        let videoView = self.scrollView.subviews.filter{v in v.tag == self.viewModel.snapIndexWithTag}.first as? IGPlayerView
                         let snap = self.viewModel.story?.nonDeletedSnaps[self.viewModel.snapIndex]
                         if let vv = videoView, self.viewModel.story?.isCompletelyVisible == true {
                             self.startPlayer(videoView: vv, with: snap!.url)

@@ -13,7 +13,7 @@ extension UIImageView: IGImageRequestable {
                   completion: SetImageRequester? = nil) {
         image = nil
 
-        //The following stmts are in SEQUENCE. before changing the order think twice :P
+        //The following stmts are in SEQUENCE. before changing the order think twice
         isActivityEnabled = true
         layer.masksToBounds = false
         if style == .rounded {
