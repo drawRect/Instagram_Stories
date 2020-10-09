@@ -100,13 +100,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         
         viewModel.startPlayer.bind {
             if let url = $0 {
-                let videoView: IGPlayerView!
-                if let playerView = self.getSnapView(index: self.viewModel.snapIndexWithTag) as? IGPlayerView {
-                    videoView = playerView
-                } else {
-                    videoView = self.createVideoView()
-                }
-                self.startPlayer(videoView: videoView, with: url)
+                self.startPlayer(videoView: self.snapVideoView, with: url)
             }
         }
         
@@ -308,47 +302,50 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             resumeEntireSnap()
         }
     }
+    
     @objc private func didTapSnap(_ sender: UITapGestureRecognizer) {
-        let touchLocation = sender.location(ofTouch: 0, in: self.scrollView)
         
         if let snapCount = viewModel.story?.snapsCount {
-            var n = viewModel.snapIndex
+            var snapIndex = viewModel.snapIndex
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if let snap = viewModel.story?.nonDeletedSnaps[n], snap.kind == .image, (getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView)?.image == nil {
+            if let snap = viewModel.story?.nonDeletedSnaps[snapIndex], snap.kind == .image, snapImageView.image == nil {
                 //Remove retry button if tap forward or backward if it exists
-                if let snapView = getSnapView(index: viewModel.snapIndexWithTag) as? UIImageView, snapView.subviews.contains(retryButton) {
-                    snapView.removeRetryButton()
+                if snapImageView.subviews.contains(retryButton) {
+                    snapImageView.removeRetryButton()
                 }
-                fillupLastPlayedSnap(n)
-            }else {
+                fillupLastPlayedSnap(snapIndex)
+            } else {
                 //Remove retry button if tap forward or backward if it exists
-                if let videoView = getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView, videoView.subviews.contains(retryButton) {
-                    videoView.removeRetryButton()
+                if snapVideoView.subviews.contains(retryButton) {
+                    snapVideoView.removeRetryButton()
                 }
-                if (getSnapView(index: n + viewModel.snapViewTag) as? IGPlayerView)?.player?.timeControlStatus != .playing {
-                    fillupLastPlayedSnap(n)
+                if snapVideoView.player?.timeControlStatus != .playing {
+                    fillupLastPlayedSnap(snapIndex)
                 }
             }
+            
+            let touchLocation = sender.location(ofTouch: 0, in: scrollView)
+
             if touchLocation.x < scrollView.contentOffset.x + (scrollView.frame.width/2) {
                 viewModel.direction = .backward
                 if viewModel.snapIndex >= 1 && viewModel.snapIndex <= snapCount {
-                    clearLastPlayedSnaps(n)
-                    stopSnapProgressors(with: n)
-                    n -= 1
-                    resetSnapProgressors(with: n)
-                    willMoveToPreviousOrNextSnap(n: n)
+                    clearLastPlayedSnaps(snapIndex)
+                    stopSnapProgressors(with: snapIndex)
+                    snapIndex -= 1
+                    resetSnapProgressors(with: snapIndex)
+                    willMoveToPreviousOrNextSnap(n: snapIndex)
                 } else {
                     delegate?.moveToPreviousStory()
                 }
             } else {
                 if viewModel.snapIndex >= 0 && viewModel.snapIndex <= snapCount {
                     //Stopping the current running progressors
-                    stopSnapProgressors(with: n)
+                    stopSnapProgressors(with: snapIndex)
                     viewModel.direction = .forward
-                    n += 1
-                    willMoveToPreviousOrNextSnap(n: n)
+                    snapIndex += 1
+                    willMoveToPreviousOrNextSnap(n: snapIndex)
                 }
             }
         }
