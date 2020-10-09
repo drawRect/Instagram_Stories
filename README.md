@@ -16,29 +16,29 @@
 <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="233" height="483">
 
 ## Features
-* Supports portrait orientation(only) in iPhone and all orientations in iPad.
+* Supports portrait orientation(only) in iPhone and all orientations on iPad.
 * Image Support
 * Video Support
 * Long press pause and play
 * Manual swipe between stories
-* Left tap and Right tap gestures to switch between snaps and stories
-* If there is no user interruption, it will automatically move to next snap or next story, once progress bar completes.
-* Image caching handled using NSCache
-* Video caching handled in documents directory using FileManager.
-* User can define the snap index, from where they want to start the snap by setting the **handPickedSnapIndex** value. In IGHomeController, when instantiating IGStoryPreviewController user can set this value. The below code is just reference and it has written in IGHomeController.
+* Left tap and Right-tap gestures to switch between snaps and stories
+* If there is no user interruption, it will automatically move to the next snap or next story, once the progress bar completes.
+* Image caching handled using NSCache.
+* Video caching is handled in the documents directory using FileManager.
+* Users can define the snap index, from where they want to start the snap by setting the **handPickedSnapIndex** value. In IGHomeController, when instantiating IGStoryPreviewController user can set this value. The below code is just reference and it has been written in IGHomeController.
     
     `let storyPreviewScene = IGStoryPreviewController.init(stories: stories_copy, handPickedStoryIndex: indexPath.row-1,  handPickedSnapIndex: 2)`
 * Delete snap
 * Clear Image & Video Caches
 
 ## How To Use
-* Open the project(InstagramStories) folder. You can find the Source folder inside.
-* Drag and drop **Source** folder into your project.
-* In your project use same **IGStoryPreviewController**.
-* But do not change default code what we have written inside IGStoryPreviewController. You can add code on top of that.
-* Also do not change collectionView custom cell. Use the same **IGStoryPreviewCell**.
+* Open the project(Instagram_Stories) folder. You can find the Source folder inside.
+* Drag and drop the **Source** folder into your project.
+* In your project, use the same **IGStoryPreviewController**.
+* But do not change the default code that we have written in IGStoryPreviewController. You can add code on top of that.
+* Also do not change the collectionView custom cell. Use the same **IGStoryPreviewCell**.
 * Because all the functionalities are handled in the IGStoryPreviewCell only.
-* If there is any issue or stuck somewhere on configuring Source folder on your project, please raise issues on github. We will reply back as soon as possible.
+* If there is any issue or don't know how to configure the Source folder on your project, please raise Github's issues. We will reply as soon as possible.
 
 ## Requirements
 * iOS 10
@@ -47,12 +47,12 @@
 ### Swift v4.2: https://github.com/drawRect/Instagram_Stories/tree/Swift-v4.2
 
 ## We
-* Hi! We are two people joined together and spent weekends and free time to make this repo as a example of how Instagram stories built in our assumption.
+* Hi! We are two people joined together and spent weekends and free time to make this repo as an example of how Instagram stories built in our assumption.
 * Ranjith(https://github.com/ranmyfriend), Boominadha Prakash(https://github.com/boominadhaprakash)
 
 ## Contributing
-* If you like this repository please do :star: to make this useful for others.
-* Feel free to contribute by [open a Issue](https://github.com/drawRect/Instagram_Stories/issues/new/choose) or [create a Pull Request](https://github.com/drawRect/Instagram_Stories/pull/new)
+* If you like this repository, please do :star: to make this useful for others.
+* Feel free to contribute by [open an Issue](https://github.com/drawRect/Instagram_Stories/issues/new/choose) or [create a Pull Request](https://github.com/drawRect/Instagram_Stories/pull/new)
 
 ## License
 
