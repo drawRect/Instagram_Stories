@@ -116,7 +116,9 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         
         viewModel.showRetryButton.bind {
             if let urlString = $0 {
-                self.showRetryButton(using: urlString)
+                DispatchQueue.main.async {
+                    self.showRetryButton(using: urlString)
+                }
             }
         }
         
@@ -293,7 +295,6 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         NSLayoutConstraint.activate([centerX, centerY])
     }
     
-    #warning("REFACTOR CONTINUE")
     @objc private func didLongPress(_ sender: UILongPressGestureRecognizer) {
         longPressGestureState = sender.state
         if sender.state == .began {
@@ -310,25 +311,25 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             /*!
              * Based on the tap gesture(X) setting the direction to either forward or backward
              */
-            if let snap = viewModel.story?.nonDeletedSnaps[snapIndex], snap.kind == .image, snapImageView.image == nil {
-                //Remove retry button if tap forward or backward if it exists
-                if snapImageView.subviews.contains(retryButton) {
-                    snapImageView.removeRetryButton()
-                }
+            
+            //Remove retry button if tap forward or backward if it exists
+            if self.retryButton.superview != nil {
+                self.retryButton.removeFromSuperview()
+            }
+                        
+            if let snap = viewModel.story?.nonDeletedSnaps[snapIndex],
+               snap.kind == .image,
+               snapImageView.image == nil {
                 fillupLastPlayedSnap(snapIndex)
-            } else {
-                //Remove retry button if tap forward or backward if it exists
-                if snapVideoView.subviews.contains(retryButton) {
-                    snapVideoView.removeRetryButton()
-                }
-                if snapVideoView.player?.timeControlStatus != .playing {
-                    fillupLastPlayedSnap(snapIndex)
-                }
+            } else if snapVideoView.player?.timeControlStatus != .playing {
+                fillupLastPlayedSnap(snapIndex)
             }
             
             let touchLocation = sender.location(ofTouch: 0, in: scrollView)
-
-            if touchLocation.x < scrollView.contentOffset.x + (scrollView.frame.width/2) {
+            let firstOffSurface = scrollView.contentOffset.x + scrollView.frame.width / 2
+            
+            #warning("there are some rooms to refactor on tiny functions")
+            if touchLocation.x < firstOffSurface {
                 viewModel.direction = .backward
                 if viewModel.snapIndex >= 1 && viewModel.snapIndex <= snapCount {
                     clearLastPlayedSnaps(snapIndex)
@@ -350,17 +351,18 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             }
         }
     }
+    
+    #warning("REFACTOR CONTINUE")
     @objc private func didEnterForeground() {
         if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
             if snap.kind == .video {
-                if let videoView = getSnapView(index: viewModel.snapIndexWithTag) as? IGPlayerView {
-                    startPlayer(videoView: videoView, with: snap.url)
-                }
-            }else {
+                startPlayer(videoView: snapVideoView, with: snap.url)
+            } else {
                 startSnapProgress(with: viewModel.snapIndex)
             }
         }
     }
+    
     @objc private func didEnterBackground() {
         if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
             if snap.kind == .video {
@@ -369,6 +371,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         }
         resetSnapProgressors(with: viewModel.snapIndex)
     }
+    
     private func willMoveToPreviousOrNextSnap(n: Int) {
         if let count = viewModel.story?.snapsCount {
             if n < count {
