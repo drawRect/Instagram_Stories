@@ -28,6 +28,10 @@ final class IGHomeViewModel {
          "https://avatars2.githubusercontent.com/u/32802714?s=200&v=4")
     }
     
+    var isUserDetailsExist: Bool {
+        !stories.myStory.isEmpty
+    }
+    
     ///CollectionView numberOfItemsInSection Method
     public func numberOfItemsInSection(_ section: Int) -> Int {
         stories.otherStoriesCount + 1

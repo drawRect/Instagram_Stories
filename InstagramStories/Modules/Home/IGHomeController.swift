@@ -80,6 +80,7 @@ extension IGHomeController: UICollectionViewDataSource {
         if indexPath.row == 0 {
             let cell = collectionView.register(IGAddStoryCell.self, indexPath: indexPath)
             cell.userDetails = viewModel.presentUserDetails
+            cell.addImageView.isHidden = viewModel.isUserDetailsExist
             return cell
         } else {
             let cell =  collectionView.register(IGStoryListCell.self, indexPath: indexPath)

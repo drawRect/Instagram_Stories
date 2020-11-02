@@ -17,8 +17,10 @@ public class IGStory: Codable {
     private var snaps: [IGSnap]
     
     // To carry forwarding non-deleted snaps.
+    //But this variable is computed one. So everytime when we trying to access this, it will do unnecessary computation.
+    // bit of expensive
     public var nonDeletedSnaps: [IGSnap] {
-        return snaps.filter{!($0.isDeleted)}
+        return snaps.filter{!$0.isDeleted}
     }
     public var id: String
     public var lastUpdated: Int
@@ -38,7 +40,7 @@ public class IGStory: Codable {
 
 extension IGStory: Equatable {
     public static func == (lhs: IGStory, rhs: IGStory) -> Bool {
-        return lhs.id == rhs.id
+         lhs.id == rhs.id
     }
 }
 
