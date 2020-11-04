@@ -131,6 +131,24 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         viewModel.stopAnimation.bind { _ in
             self.snapVideoView.stopAnimating()
         }
+        
+        viewModel.startSnapProgress.bind {
+            if let index = $0 {
+                self.startSnapProgress(with: index)
+            }
+        }
+        
+        viewModel.stopPlayer.bind { _ in
+            self.stopPlayer()
+        }
+        
+        viewModel.resetSnapProgressors.bind {
+            if let index = $0 {
+                self.resetSnapProgressors(with: index)
+            }
+        }
+        
+        
     }
     
     //MARK: - Private functions
@@ -352,59 +370,42 @@ final class IGStoryPreviewCell: UICollectionViewCell {
         }
     }
     
-    #warning("REFACTOR CONTINUE")
     @objc private func didEnterForeground() {
-        if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
-            if snap.kind == .video {
-                startPlayer(videoView: snapVideoView, with: snap.url)
-            } else {
-                startSnapProgress(with: viewModel.snapIndex)
-            }
-        }
+        viewModel.didEnterForeground()
     }
     
     @objc private func didEnterBackground() {
-        if let snap = viewModel.story?.nonDeletedSnaps[viewModel.snapIndex] {
-            if snap.kind == .video {
-                stopPlayer()
-            }
-        }
-        resetSnapProgressors(with: viewModel.snapIndex)
+        viewModel.didEnterBackground()
     }
     
     private func willMoveToPreviousOrNextSnap(n: Int) {
-        if let count = viewModel.story?.snapsCount {
-            if n < count {
-                //Move to next or previous snap based on index n
-                let x = n.toFloat * frame.width
-                let offset = CGPoint(x: x, y: 0)
-                scrollView.setContentOffset(offset, animated: false)
-                viewModel.story?.lastPlayedSnapIndex = n
-                viewModel.handpickedSnapIndex = n
-                viewModel.snapIndex = n
-            } else {
-                delegate?.didCompletePreview()
-            }
+        if n < viewModel.story.snapsCount {
+            moveForward(to: n)
+        } else {
+            delegate?.didCompletePreview()
         }
     }
+    
     @objc private func didCompleteProgress() {
         let n = viewModel.snapIndex + 1
-        if let count = viewModel.story?.snapsCount {
-            if n < count {
-                //Move to next snap
-                let x = n.toFloat * frame.width
-                let offset = CGPoint(x: x, y: 0)
-                scrollView.setContentOffset(offset, animated: false)
-                viewModel.story?.lastPlayedSnapIndex = n
-                viewModel.direction = .forward
-                viewModel.handpickedSnapIndex = n
-                viewModel.snapIndex = n
-            }else {
-                stopPlayer()
-                delegate?.didCompletePreview()
-            }
+        if n < viewModel.story.snapsCount {
+            moveForward(to: n)
+        } else {
+            stopPlayer()
+            delegate?.didCompletePreview()
         }
     }
+    
+    private func moveForward(to n: Int) {
+        let x = n.toFloat * frame.width
+        let offset = CGPoint(x: x, y: 0)
+        scrollView.setContentOffset(offset, animated: false)
+        viewModel.story?.lastPlayedSnapIndex = n
+        viewModel.direction = .forward
+        viewModel.handpickedSnapIndex = n
+        viewModel.snapIndex = n
+    }
+        
     private func fillUpMissingImageViews(_ sIndex: Int) {
         if sIndex != 0 {
             for i in 0..<sIndex {
@@ -452,7 +453,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     private func clearScrollViewGarbages() {
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
         if scrollView.subviews.count > 0 {
-            #warning("why specially declared 0 here. ha ha ha")
+            #warning("why specially declared 0 here.")
             var i = 0 + viewModel.snapViewTag
             var snapViews = [UIView]()
             scrollView.subviews.forEach({ (imageView) in
@@ -468,6 +469,8 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             }
         }
     }
+    
+    #warning("REFACTOR CONTINUE")
     private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
         if let holderView = getProgressIndicatorView(with: viewModel.snapIndex),
            let progressView = getProgressView(with: viewModel.snapIndex){

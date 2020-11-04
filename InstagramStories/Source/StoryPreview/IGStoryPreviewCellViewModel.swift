@@ -21,6 +21,9 @@ class IGStoryPreviewCellViewModel {
     var startProgressor = Dynamic<Bool>()
     var playVideo = Dynamic<VideoResource>()
     var stopAnimation = Dynamic<Bool>()
+    var startSnapProgress = Dynamic<Int>()
+    var stopPlayer = Dynamic<Bool>()
+    var resetSnapProgressors = Dynamic<Int>()
     
     public var handpickedSnapIndex: Int = 0
     
@@ -53,6 +56,8 @@ class IGStoryPreviewCellViewModel {
             } else if snap.kind == .video {
                 startPlayer.value = snap.url
             }
+        } else {
+            fatalError("snapIndex is out of bounds")
         }
     }
     
@@ -91,4 +96,21 @@ class IGStoryPreviewCellViewModel {
         }
     }
     
+    func didEnterForeground() {
+        let snap = story.nonDeletedSnaps[snapIndex]
+        if snap.kind == .video {
+            startPlayer.value = snap.url
+        } else {
+            startSnapProgress.value = snapIndex
+        }
+    }
+    
+    func didEnterBackground() {
+        let snap = story.nonDeletedSnaps[snapIndex]
+        if snap.kind == .video {
+            stopPlayer.value = true
+        }
+        resetSnapProgressors.value = snapIndex
+    }
+
 }

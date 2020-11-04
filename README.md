@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="logo.png" width="480” max-width="90%" alt="Instagram Stories" />
+    <img src="logo.gif" width="400” max-width="100%"/>
 </p>
                                                                            
 <p align="center">

@@ -67,7 +67,7 @@ final class IGStoryPreviewHeaderView: UIView {
         let v = UIView()
         v.translatesAutoresizingMaskIntoConstraints = false
         self.progressView = v
-        self.addSubview(self.getProgressView)
+        self.addSubview(v)
         return v
     }
     
