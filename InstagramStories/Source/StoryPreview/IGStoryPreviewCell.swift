@@ -452,41 +452,32 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     private func clearScrollViewGarbages() {
         scrollView.contentOffset = CGPoint(x: 0, y: 0)
-        if scrollView.subviews.count > 0 {
-            #warning("why specially declared 0 here.")
-            var i = 0 + viewModel.snapViewTag
-            var snapViews = [UIView]()
-            scrollView.subviews.forEach({ (imageView) in
-                if imageView.tag == i {
-                    snapViews.append(imageView)
-                    i += 1
-                }
-            })
-            if snapViews.count > 0 {
-                snapViews.forEach({ (view) in
-                    view.removeFromSuperview()
-                })
+        #warning("why specially declared 0 here.")
+        var i = 0 + viewModel.snapViewTag
+        var matches = [UIView]()
+        scrollView.subviews.forEach {
+            if $0.tag == i {
+                matches.append($0)
+                i += 1
             }
+        }
+        matches.forEach {
+            $0.removeFromSuperview()
         }
     }
     
     #warning("REFACTOR CONTINUE")
-    private func gearupTheProgressors(type: MimeType, playerView: IGPlayerView? = nil) {
+    private func gearupTheProgressorOnImage() {
         if let holderView = getProgressIndicatorView(with: viewModel.snapIndex),
            let progressView = getProgressView(with: viewModel.snapIndex){
             progressView.story_identifier = viewModel.story?.id
             progressView.snapIndex = viewModel.snapIndex
             DispatchQueue.main.async {
-                if type == .image {
-                    progressView.start(with: 5.0, holderView: holderView, completion: {(identifier, snapIndex, isCancelledAbruptly) in
-                        print("Completed snapindex: \(snapIndex)")
-                        if isCancelledAbruptly == false {
-                            self.didCompleteProgress()
-                        }
-                    })
-                }else {
-                    //Handled in delegate methods for videos
-                }
+                progressView.start(with: 5.0, holderView: holderView, completion: {(_, _, isCancelledAbruptly) in
+                    if isCancelledAbruptly == false {
+                        self.didCompleteProgress()
+                    }
+                })
             }
         }
     }
@@ -497,7 +488,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
             if self.scrollView.subviews.count > 0 {
                 let imageView = self.scrollView.subviews.filter{v in v.tag == self.viewModel.snapIndexWithTag}.first as? UIImageView
                 if imageView?.image != nil && self.viewModel.story?.isCompletelyVisible == true {
-                    self.gearupTheProgressors(type: .image)
+                    self.gearupTheProgressorOnImage()
                 } else {
                     // Didend displaying will call this startProgressors method. After that only isCompletelyVisible get true. Then we have to start the video if that snap contains video.
                     if self.viewModel.story?.isCompletelyVisible == true {
@@ -525,7 +516,7 @@ final class IGStoryPreviewCell: UICollectionViewCell {
     }
     func getProgressIndicatorView(with index: Int) -> IGSnapProgressIndicatorView? {
         let progressView = storyHeaderView.getProgressView
-        return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first as? IGSnapProgressIndicatorView ?? nil
+        return progressView.subviews.filter({v in v.tag == index+progressIndicatorViewTag}).first as? IGSnapProgressIndicatorView
     }
     func adjustPreviousSnapProgressorsWidth(with index: Int) {
         fillupLastPlayedSnaps(index)
