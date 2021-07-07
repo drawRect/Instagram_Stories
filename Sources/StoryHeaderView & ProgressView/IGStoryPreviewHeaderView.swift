@@ -56,7 +56,8 @@ final class IGStoryPreviewHeaderView: UIView {
     private lazy var closeButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setImage(#imageLiteral(resourceName: "ic_close"), for: .normal)
+        let image =  UIImage(named: "ic_close", in: Bundle.module, with: nil)
+        button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(didTapClose(_:)), for: .touchUpInside)
         return button
     }()
