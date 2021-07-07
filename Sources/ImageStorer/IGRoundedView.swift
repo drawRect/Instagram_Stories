@@ -19,7 +19,7 @@ struct Attributes {
 
 public class IGRoundedView: UIView {
     private var attributes:Attributes = Attributes()
-    lazy var imageView: UIImageView = {
+    public lazy var imageView: UIImageView = {
         let iv = UIImageView()
         iv.layer.borderWidth = (attributes.borderWidth)
         iv.layer.borderColor = attributes.borderColor.cgColor
@@ -48,7 +48,7 @@ public class IGRoundedView: UIView {
     }
 }
 
-extension IGRoundedView {
+public extension IGRoundedView {
     func enableBorder(enabled: Bool = true) {
         if enabled {
             layer.borderColor = UIColor.clear.cgColor
