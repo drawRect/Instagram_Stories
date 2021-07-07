@@ -324,12 +324,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
                 if let videoView = getVideoView(with: n), let btn = retryBtn, videoView.subviews.contains(btn) {
                     videoView.removeRetryButton()
                 }
-                if #available(iOS 10.0, *) {
-                    if getVideoView(with: n)?.player?.timeControlStatus != .playing {
-                        fillupLastPlayedSnap(n)
-                    }
-                } else {
-                    // Fallback on earlier versions
+                if getVideoView(with: n)?.player?.timeControlStatus != .playing {
+                    fillupLastPlayedSnap(n)
                 }
             }
             if touchLocation.x < scrollview.contentOffset.x + (scrollview.frame.width/2) {
@@ -620,12 +616,8 @@ final class IGStoryPreviewCell: UICollectionViewCell, UIScrollViewDelegate {
     }
     public func stopPlayer() {
         let videoView = getVideoView(with: videoSnapIndex)
-        if #available(iOS 10.0, *) {
-            if videoView?.player?.timeControlStatus != .playing {
-                getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
-            }
-        } else {
-            // Fallback on earlier versions
+        if videoView?.player?.timeControlStatus != .playing {
+            getVideoView(with: videoSnapIndex)?.player?.replaceCurrentItem(with: nil)
         }
         videoView?.stop()
         //getVideoView(with: videoSnapIndex)?.player = nil

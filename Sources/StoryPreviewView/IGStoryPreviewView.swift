@@ -40,11 +40,7 @@ class IGStoryPreviewView: UIView {
         cv.register(IGStoryPreviewCell.self, forCellWithReuseIdentifier: IGStoryPreviewCell.reuseIdentifier)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.isPagingEnabled = true
-        if #available(iOS 10.0, *) {
-            cv.isPrefetchingEnabled = false
-        } else {
-            // Fallback on earlier versions
-        }
+        cv.isPrefetchingEnabled = false
         cv.collectionViewLayout = snapsCollectionViewFlowLayout
         return cv
     }()

@@ -76,22 +76,18 @@ class IGPlayerView: UIView {
             playerTimeControlStatusObserver.invalidate()
         }
         didSet {
-            if #available(iOS 10.0, *) {
-                playerTimeControlStatusObserver = player?.observe(\AVPlayer.timeControlStatus, options: [.new, .initial], changeHandler: { [weak self] (player, _) in
-                    guard let strongSelf = self else { return }
-                    if player.timeControlStatus == .playing {
-                        //Started Playing
-                        strongSelf.activityIndicator.stopAnimating()
-                        strongSelf.playerObserverDelegate?.didStartPlaying()
-                    } else if player.timeControlStatus == .paused {
-                        // player paused
-                    } else {
-                        //
-                    }
-                })
-            } else {
-                // Fallback on earlier versions
-            }
+            playerTimeControlStatusObserver = player?.observe(\AVPlayer.timeControlStatus, options: [.new, .initial], changeHandler: { [weak self] (player, _) in
+                guard let strongSelf = self else { return }
+                if player.timeControlStatus == .playing {
+                    //Started Playing
+                    strongSelf.activityIndicator.stopAnimating()
+                    strongSelf.playerObserverDelegate?.didStartPlaying()
+                } else if player.timeControlStatus == .paused {
+                    // player paused
+                } else {
+                    //
+                }
+            })
         }
     }
     var error: Error? {
