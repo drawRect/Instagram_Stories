@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension UIView {
+public extension UIView {
     
     var igLeftAnchor: NSLayoutXAxisAnchor {
         if #available(iOS 11.0, *) {

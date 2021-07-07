@@ -13,7 +13,7 @@ import UIKit
  While Snap.done->Next.snap(continues)->done
  then Story Completed
  */
-final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
+public final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - Private Vars
     private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
@@ -66,7 +66,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }()
     
     //MARK: - Overriden functions
-    override func loadView() {
+    public override func loadView() {
         super.loadView()
         view = IGStoryPreviewView.init(layoutType: self.layoutType)
         viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
@@ -82,10 +82,10 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
 //            _view.snapsCollectionView.addGestureRecognizer(showActionSheetGesture)
 //        }
     }
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
     }
-    override func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         // AppUtility.lockOrientation(.portrait)
         // Or to rotate and lock
@@ -102,11 +102,11 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         }
     }
 
-    override func didReceiveMemoryWarning() {
+    public override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+    public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
@@ -121,7 +121,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    override var prefersStatusBarHidden: Bool { return true }
+    public override var prefersStatusBarHidden: Bool { return true }
     
     @objc private func showActionSheet() {
         self.present(actionSheetController, animated: true) { [weak self] in
@@ -144,11 +144,11 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
 
 //MARK:- Extension|UICollectionViewDataSource
 extension IGStoryPreviewController:UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let model = viewModel else {return 0}
         return model.numberOfItemsInSection(section)
     }
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IGStoryPreviewCell.reuseIdentifier, for: indexPath) as? IGStoryPreviewCell else {
             fatalError()
         }
@@ -163,7 +163,7 @@ extension IGStoryPreviewController:UICollectionViewDataSource {
 
 //MARK:- Extension|UICollectionViewDelegate
 extension IGStoryPreviewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         guard let cell = cell as? IGStoryPreviewCell else {
             return
         }
@@ -188,7 +188,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
         /// Setting to 0, otherwise for next story snaps, it will consider the same previous story's handPickedSnapIndex. It will create issue in starting the snap progressors.
         handPickedSnapIndex = 0
     }
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+    public func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         let visibleCells = collectionView.visibleCells.sortedArrayByPosition()
         let visibleCell = visibleCells.first as? IGStoryPreviewCell
         guard let vCell = visibleCell else {return}
@@ -220,7 +220,7 @@ extension IGStoryPreviewController: UICollectionViewDelegate {
 
 //MARK:- Extension|UICollectionViewDelegateFlowLayout
 extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         /* During device rotation, invalidateLayout gets call to make cell width and height proper.
          * InvalidateLayout methods call this UICollectionViewDelegateFlowLayout method, and the scrollView content offset moves to (0, 0). Which is not the expected result.
          * To keep the contentOffset to that same position adding the below code which will execute after 0.1 second because need time for collectionView adjusts its width and height.
@@ -256,12 +256,12 @@ extension IGStoryPreviewController: UICollectionViewDelegateFlowLayout {
 
 //MARK:- Extension|UIScrollViewDelegate<CollectionView>
 extension IGStoryPreviewController {
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         guard let vCell = _view.snapsCollectionView.visibleCells.first as? IGStoryPreviewCell else {return}
         vCell.pauseSnapProgressors(with: (vCell.story?.lastPlayedSnapIndex)!)
         vCell.pausePlayer(with: (vCell.story?.lastPlayedSnapIndex)!)
     }
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         let sortedVCells = _view.snapsCollectionView.visibleCells.sortedArrayByPosition()
         guard let f_Cell = sortedVCells.first as? IGStoryPreviewCell else {return}
         guard let l_Cell = sortedVCells.last as? IGStoryPreviewCell else {return}
@@ -278,7 +278,7 @@ extension IGStoryPreviewController {
             }
         }
     }
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
 }

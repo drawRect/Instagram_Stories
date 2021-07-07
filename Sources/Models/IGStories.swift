@@ -37,7 +37,7 @@ extension IGStories {
             }
         }
     }
-    static func removeAllVideoFilesFromCache() {
+    public static func removeAllVideoFilesFromCache() {
         IGVideoCacheManager.shared.clearCache()
     }
 }

@@ -17,7 +17,7 @@ struct Attributes {
     let size = CGSize(width:68,height:68)
 }
 
-class IGRoundedView: UIView {
+public class IGRoundedView: UIView {
     private var attributes:Attributes = Attributes()
     lazy var imageView: UIImageView = {
         let iv = UIImageView()
@@ -40,7 +40,7 @@ class IGRoundedView: UIView {
         backgroundColor = attributes.backgroundColor
         addSubview(imageView)
     }
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
         layer.cornerRadius = frame.height/2
         imageView.frame = CGRect(x:1,y:1,width:(attributes.size.width)-2,height:attributes.size.height-2)
