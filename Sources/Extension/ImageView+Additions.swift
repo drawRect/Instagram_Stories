@@ -1,13 +1,13 @@
 import UIKit
 
-enum ImageStyle: Int {
+public enum ImageStyle: Int {
     case squared,rounded
 }
 
-typealias SetImageRequester = (IGResult<Bool,Error>) -> Void
+public typealias SetImageRequester = (IGResult<Bool,Error>) -> Void
 
 extension UIImageView: IGImageRequestable {
-    func setImage(url: String,
+    public func setImage(url: String,
                   style: ImageStyle = .rounded,
                   completion: SetImageRequester? = nil) {
         image = nil

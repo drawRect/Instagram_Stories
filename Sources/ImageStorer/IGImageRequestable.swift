@@ -17,7 +17,7 @@ public protocol IGImageRequestable {
 
 extension IGImageRequestable where Self: UIImageView {
 
-    func setImage(urlString: String, placeHolderImage: UIImage? = nil, completionBlock: ImageResponse?) {
+    public func setImage(urlString: String, placeHolderImage: UIImage? = nil, completionBlock: ImageResponse?) {
 
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         self.showActivityIndicator()
