@@ -11,9 +11,9 @@
 
 ## Screenshots
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cbf93e2e9c2c4032a1cbe7aee31a2db5)](https://app.codacy.com/gh/drawRect/Instagram_Stories?utm_source=github.com&utm_medium=referral&utm_content=drawRect/Instagram_Stories&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/cbf93e2e9c2c4032a1cbe7aee31a2db5)](https://app.codacy.com/gh/drawRect/Stories?utm_source=github.com&utm_medium=referral&utm_content=drawRect/Stories&utm_campaign=Badge_Grade_Dashboard)
 
-<img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="233" height="483">
+<img src="https://github.com/drawRect/Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="233" height="483"> <img src="https://github.com/drawRect/Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="233" height="483"> <img src="https://github.com/drawRect/Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="233" height="483"> <img src="https://github.com/drawRect/Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="233" height="483">
 
 ## Features
 * Supports portrait orientation(only) in iPhone and all orientations on iPad.
@@ -32,7 +32,7 @@
 * Clear Image & Video Caches
 
 ## How To Use
-* Open the project(Instagram_Stories) folder. You can find the Source folder inside.
+* Open the project(Stories) folder. You can find the Source folder inside.
 * Drag and drop the **Source** folder into your project.
 * In your project, use the same **IGStoryPreviewController**.
 * But do not change the default code that we have written in IGStoryPreviewController. You can add code on top of that.
@@ -44,7 +44,7 @@
 * iOS 10
 * Xcode 8
 
-### Swift v4.2: https://github.com/drawRect/Instagram_Stories/tree/Swift-v4.2
+### Swift v4.2: https://github.com/drawRect/Stories/tree/Swift-v4.2
 
 ## We
 * Hi! We are two people joined together and spent weekends and free time to make this repo as an example of how Instagram stories built in our assumption.
@@ -52,7 +52,7 @@
 
 ## Contributing
 * If you like this repository, please do :star: to make this useful for others.
-* Feel free to contribute by [open an Issue](https://github.com/drawRect/Instagram_Stories/issues/new/choose) or [create a Pull Request](https://github.com/drawRect/Instagram_Stories/pull/new)
+* Feel free to contribute by [open an Issue](https://github.com/drawRect/Stories/issues/new/choose) or [create a Pull Request](https://github.com/drawRect/Stories/pull/new)
 
 ## License
 
