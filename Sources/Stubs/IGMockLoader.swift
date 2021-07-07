@@ -8,11 +8,11 @@
 
 import Foundation
 
-enum MockLoaderError: Error, CustomStringConvertible {
+public enum MockLoaderError: Error, CustomStringConvertible {
     case invalidFileName(String)
     case invalidFileURL(URL)
     case invalidJSON(String)
-    var description: String {
+    public var description: String {
         switch self {
         case .invalidFileName(let name): return "\(name) FileName is incorrect"
         case .invalidFileURL(let url): return "\(url) FilePath is incorrect"
@@ -21,9 +21,9 @@ enum MockLoaderError: Error, CustomStringConvertible {
     }
 }
 
-struct IGMockLoader {
+public struct IGMockLoader {
     //@Note:XCTestCase will go for differnt set of bundle
-    static func loadMockFile(named fileName:String,bundle:Bundle = .main) throws -> IGStories {
+    public static func loadMockFile(named fileName:String,bundle:Bundle = .main) throws -> IGStories {
         guard let url = bundle.url(forResource: fileName, withExtension: nil) else {throw MockLoaderError.invalidFileName(fileName)}
         do {
             let data = try Data.init(contentsOf: url)
@@ -37,7 +37,7 @@ struct IGMockLoader {
             throw MockLoaderError.invalidJSON(fileName)
         }
     }
-    static func loadAPIResponse(response: [String: Any]) throws -> IGStories {
+    public static func loadAPIResponse(response: [String: Any]) throws -> IGStories {
         let data = try JSONSerialization.data(withJSONObject: response, options: .prettyPrinted)
         do {
             let stories = try JSONDecoder().decode(IGStories.self, from: data)

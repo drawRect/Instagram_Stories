@@ -11,7 +11,7 @@ import UIKit
 
 public typealias ImageResponse = (IGResult<UIImage, Error>) -> Void
 
-protocol IGImageRequestable {
+public protocol IGImageRequestable {
     func setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?)
 }
 
