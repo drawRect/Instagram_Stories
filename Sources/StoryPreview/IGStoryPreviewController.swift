@@ -111,7 +111,7 @@ public final class IGStoryPreviewController: UIViewController, UIGestureRecogniz
         isTransitioning = true
         _view.snapsCollectionView.collectionViewLayout.invalidateLayout()
     }
-    init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0) {
+    public init(layout:IGLayoutType = .cubic,stories: [IGStory],handPickedStoryIndex: Int, handPickedSnapIndex: Int = 0) {
         self.layoutType = layout
         self.stories = stories
         self.handPickedStoryIndex = handPickedStoryIndex
