@@ -12,12 +12,12 @@ import UIKit
 public typealias ImageResponse = (IGResult<UIImage, Error>) -> Void
 
 public protocol IGImageRequestable {
-    func setImage(urlString: String, placeHolderImage: UIImage?, completionBlock: ImageResponse?)
+    func setImage(urlString: String, withHeaders headers: [String: String], placeHolderImage: UIImage?, completionBlock: ImageResponse?)
 }
 
 extension IGImageRequestable where Self: UIImageView {
 
-    public func setImage(urlString: String, placeHolderImage: UIImage? = nil, completionBlock: ImageResponse?) {
+    public func setImage(urlString: String, withHeaders headers: [String: String], placeHolderImage: UIImage? = nil, completionBlock: ImageResponse?) {
 
         self.image = (placeHolderImage != nil) ? placeHolderImage! : nil
         self.showActivityIndicator()
@@ -29,8 +29,8 @@ extension IGImageRequestable where Self: UIImageView {
             }
             guard let completion = completionBlock else { return }
             return completion(.success(cachedImage))
-        }else {
-            IGURLSession.default.downloadImage(using: urlString) { [weak self] (response) in
+        } else {
+            IGURLSession.default.downloadImage(using: urlString, andHeaders: headers) { [weak self] (response) in
                 guard let strongSelf = self else { return }
                 strongSelf.hideActivityIndicator()
                 switch response {

@@ -22,11 +22,16 @@ extension IGURLSession {
         })
     }
 
-    func downloadImage(using urlString: String, completionBlock: @escaping ImageResponse) {
+    func downloadImage(using urlString: String, andHeaders headers: [String: String], completionBlock: @escaping ImageResponse) {
         guard let url = URL(string: urlString) else {
             return completionBlock(.failure(IGError.invalidImageURL))
         }
-        dataTasks.append(IGURLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
+
+        var request = URLRequest(url: url)
+        headers.forEach { (key, value) in
+            request.addValue(key, forHTTPHeaderField: value)
+        }
+        dataTasks.append(IGURLSession.shared.dataTask(with: request, completionHandler: { (data, response, error) in
             if let result = data, error == nil, let imageToCache = UIImage(data: result) {
                 IGCache.shared.setObject(imageToCache, forKey: url.absoluteString as AnyObject)
                 completionBlock(.success(imageToCache))

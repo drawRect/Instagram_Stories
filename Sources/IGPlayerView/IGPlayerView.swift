@@ -32,7 +32,7 @@ protocol IGPlayerObserver: class {
 }
 
 protocol PlayerControls: class {
-    func play(with resource: VideoResource)
+    func play(with resource: VideoResource, withHeaders headers: [String: String])
     func play()
     func pause()
     func stop()
@@ -178,7 +178,7 @@ class IGPlayerView: UIView {
 // MARK: - Protocol | PlayerControls
 extension IGPlayerView: PlayerControls {
     
-    func play(with resource: VideoResource) {
+    func play(with resource: VideoResource, withHeaders headers: [String: String] = [:]) {
         
         guard let url = URL(string: resource.filePath) else {fatalError("Unable to form URL from resource")}
         if let existingPlayer = player {
@@ -187,7 +187,8 @@ extension IGPlayerView: PlayerControls {
                 strongSelf.player = existingPlayer
             }
         } else {
-            let asset = AVAsset(url: url)
+            let asset = AVURLAsset(url: url, options: ["AVURLAssetHTTPHeaderFieldsKey": headers])
+            
             playerItem = AVPlayerItem(asset: asset)
             player = AVPlayer(playerItem: playerItem)
             playerLayer = AVPlayerLayer(player: player)
