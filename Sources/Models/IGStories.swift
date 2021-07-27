@@ -9,17 +9,20 @@
 import Foundation
 
 public class IGStories: Codable {
-    //TODO: count should be computed property. Because if there is only one snap in story and that snap user deleted means, that story shouldn't be visible.
-    public let otherStoriesCount: Int
-    public let otherStories: [IGStory]
-    public let myStory: [IGStory]
+    public let count: Int
+    public let stories: [IGStory]
+    
+    
+    init(count: Int, stories: [IGStory]) {
+        self.count = count
+        self.stories = stories
+    }
     
     enum CodingKeys: String, CodingKey {
-        case otherStoriesCount = "other_stories_count"
-        case otherStories = "other_stories"
-        case myStory = "my_story"
+        case count = "count"
+        case stories = "stories"
     }
-    public func copy() throws -> IGStories {
+    func copy() throws -> IGStories {
         let data = try JSONEncoder().encode(self)
         let copy = try JSONDecoder().decode(IGStories.self, from: data)
         return copy
@@ -37,7 +40,7 @@ extension IGStories {
             }
         }
     }
-    public static func removeAllVideoFilesFromCache() {
+    static func removeAllVideoFilesFromCache() {
         IGVideoCacheManager.shared.clearCache()
     }
 }
