@@ -16,7 +16,7 @@ import UIKit
 final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - Private Vars
-    private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
+    private var _view: IGStoryPreviewView = IGStoryPreviewView()
     private var viewModel: IGStoryPreviewModel?
     
     private(set) var stories: [IGStory]
@@ -84,6 +84,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup_view()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -146,6 +147,18 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+ 
+   private func setup_view() {
+        view.addSubview(_view)
+        _view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            _view.leadingAnchor.constraint(equalTo: view.leadingAnchor,constant: .zero),
+            _view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,constant: .zero),
+            _view.trailingAnchor.constraint(equalTo: view.trailingAnchor,constant: .zero),
+            _view.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: .zero)
+        ])
     }
 }
 
