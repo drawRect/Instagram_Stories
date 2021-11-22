@@ -68,7 +68,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
-        view = IGStoryPreviewView.init(layoutType: self.layoutType)
+        _view = IGStoryPreviewView.init(layoutType: self.layoutType)
         viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
         _view.snapsCollectionView.decelerationRate = .fast
         dismissGesture.delegate = self
