@@ -149,15 +149,15 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
         dismiss(animated: true, completion: nil)
     }
  
-   private func setup_viewConstraint() {
+   private func setup_viewConstraint() {
         view.addSubview(_view)
         _view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            _view.leadingAnchor.constraint(equalTo: view.igLeftAnchor,constant: .zero),
+            _view.leftAnchor.constraint(equalTo: view.igLeftAnchor,constant: .zero),
             _view.topAnchor.constraint(equalTo: view.igTopAnchor,constant: .zero),
-            _view.trailingAnchor.constraint(equalTo: view.igRightAnchor,constant: .zero),
-            _view.bottomAnchor.constraint(equalTo: view.igBottomAnchor,constant: .zero)
+            _view.rightAnchor.constraint(equalTo: view.igRightAnchor,constant: .zero),
+            _view.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: .zero)
         ])
     }
 }
