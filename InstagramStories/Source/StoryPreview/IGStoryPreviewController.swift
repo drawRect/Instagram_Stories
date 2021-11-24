@@ -16,7 +16,7 @@ import UIKit
 final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - Private Vars
-    private var _view: IGStoryPreviewView {return view as! IGStoryPreviewView}
+    private var _view: IGStoryPreviewView!
     private var viewModel: IGStoryPreviewModel?
     
     private(set) var stories: [IGStory]
@@ -68,7 +68,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     //MARK: - Overriden functions
     override func loadView() {
         super.loadView()
-        view = IGStoryPreviewView.init(layoutType: self.layoutType)
+        _view = IGStoryPreviewView.init(layoutType: self.layoutType)
         viewModel = IGStoryPreviewModel.init(self.stories, self.handPickedStoryIndex)
         _view.snapsCollectionView.decelerationRate = .fast
         dismissGesture.delegate = self
@@ -84,6 +84,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     }
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup_viewConstraint()
     }
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -146,6 +147,18 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
     //MARK: - Selectors
     @objc func didSwipeDown(_ sender: Any) {
         dismiss(animated: true, completion: nil)
+    }
+ 
+   private func setup_viewConstraint() {
+        view.addSubview(_view)
+        _view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            _view.leftAnchor.constraint(equalTo: view.igLeftAnchor,constant: .zero),
+            _view.topAnchor.constraint(equalTo: view.igTopAnchor,constant: .zero),
+            _view.rightAnchor.constraint(equalTo: view.igRightAnchor,constant: .zero),
+            _view.bottomAnchor.constraint(equalTo: view.igBottomAnchor,constant: .zero)
+        ])
     }
 }
 
