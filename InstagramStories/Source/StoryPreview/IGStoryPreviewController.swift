@@ -16,7 +16,7 @@ import UIKit
 final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDelegate {
     
     //MARK: - Private Vars
-    private var _view: IGStoryPreviewView = IGStoryPreviewView()
+    private var _view: IGStoryPreviewView!
     private var viewModel: IGStoryPreviewModel?
     
     private(set) var stories: [IGStory]
@@ -157,7 +157,7 @@ final class IGStoryPreviewController: UIViewController, UIGestureRecognizerDeleg
             _view.leftAnchor.constraint(equalTo: view.igLeftAnchor,constant: .zero),
             _view.topAnchor.constraint(equalTo: view.igTopAnchor,constant: .zero),
             _view.rightAnchor.constraint(equalTo: view.igRightAnchor,constant: .zero),
-            _view.bottomAnchor.constraint(equalTo: view.bottomAnchor,constant: .zero)
+            _view.bottomAnchor.constraint(equalTo: view.igBottomAnchor,constant: .zero)
         ])
     }
 }
