@@ -9,7 +9,7 @@
 import UIKit
 import AVKit
 
-protocol StoryPreviewProtocol: class {
+protocol StoryPreviewProtocol: AnyObject {
     func didCompletePreview()
     func moveToPreviousStory()
     func didTapCloseButton()

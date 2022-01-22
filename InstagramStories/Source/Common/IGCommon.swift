@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /******** UITableViewCell&UICollectionViewCell<Extension> *******************************/
-protocol CellConfigurer:class {
+protocol CellConfigurer: AnyObject {
     static var nib: UINib {get}
     static var reuseIdentifier: String {get}
 }

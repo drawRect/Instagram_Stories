@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol RetryBtnDelegate: class {
+protocol RetryBtnDelegate: AnyObject {
     func retryButtonTapped()
 }
 

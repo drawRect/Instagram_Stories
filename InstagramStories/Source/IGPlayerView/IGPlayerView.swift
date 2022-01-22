@@ -24,14 +24,14 @@ enum PlayerStatus {
 
 //Move Implementation on ViewController or cell which ever the UIElement
 //CALL BACK
-protocol IGPlayerObserver: class {
+protocol IGPlayerObserver: AnyObject {
     func didStartPlaying()
     func didCompletePlay()
     func didTrack(progress: Float)
     func didFailed(withError error: String, for url: URL?)
 }
 
-protocol PlayerControls: class {
+protocol PlayerControls: AnyObject {
     func play(with resource: VideoResource)
     func play()
     func pause()

@@ -8,7 +8,9 @@
 
 import UIKit
 
-protocol StoryPreviewHeaderProtocol:class {func didTapCloseButton()}
+protocol StoryPreviewHeaderProtocol: AnyObject {
+    func didTapCloseButton()
+}
 
 fileprivate let maxSnaps = 30
 

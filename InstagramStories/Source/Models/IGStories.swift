@@ -9,7 +9,6 @@
 import Foundation
 
 public class IGStories: Codable {
-    //TODO: count should be computed property. Because if there is only one snap in story and that snap user deleted means, that story shouldn't be visible.
     public let otherStoriesCount: Int
     public let otherStories: [IGStory]
     public let myStory: [IGStory]
