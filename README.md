@@ -16,7 +16,7 @@
 <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/ig_home.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/snap_delete.png" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/demo.gif" width="233" height="483"> <img src="https://github.com/drawRect/Instagram_Stories/blob/master/InstagramStories/Sample%20Screenshots/xr-2.png" width="233" height="483">
 
 ## Features
-* Supports portrait orientation(only) in iPhone and all orientations on iPad.
+* Supports portrait orientation(only) in iPhone.
 * Image Support
 * Video Support
 * Long press pause and play
